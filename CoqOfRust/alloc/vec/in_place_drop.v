@@ -31,11 +31,11 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::vec::in_place_drop::InPlaceDrop",
                     "dst"
                   |)
@@ -44,7 +44,7 @@ Module vec.
                 M.pointer_coercion
                   (M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::vec::in_place_drop::InPlaceDrop",
                       "inner"
                     |)
@@ -86,25 +86,34 @@ Module vec.
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::vec::in_place_drop::InPlaceDrop",
-                              "inner"
-                            |)
-                          |);
+                      M.borrow (|
+                        Pointer.Kind.MutPointer,
+                        M.deref (|
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ],
-                              "len",
-                              []
-                            |),
-                            [ M.read (| self |) ]
+                            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::vec::in_place_drop::InPlaceDrop",
+                                  "inner"
+                                |)
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                    []
+                                    [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -167,6 +176,7 @@ Module vec.
                           []
                           [ Src; Ty.path "alloc::alloc::Global" ],
                         "from_nonnull_in",
+                        [],
                         []
                       |),
                       [
@@ -174,12 +184,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                             "cast",
+                            [],
                             [ Src ]
                           |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
                                 "ptr"
                               |)
@@ -188,7 +199,7 @@ Module vec.
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
                             "src_cap"
                           |)
@@ -213,12 +224,13 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
                                     "ptr"
                                   |)
@@ -227,7 +239,7 @@ Module vec.
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
                                 "len"
                               |)

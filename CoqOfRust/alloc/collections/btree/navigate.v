@@ -102,14 +102,19 @@ Module collections.
                               ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::navigate::LeafRange",
-                          "front"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::navigate::LeafRange",
+                            "front"
+                          |)
                         |)
                       ]
                     |));
@@ -138,14 +143,19 @@ Module collections.
                               ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::navigate::LeafRange",
-                          "back"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::navigate::LeafRange",
+                            "back"
+                          |)
                         |)
                       ]
                     |))
@@ -273,6 +283,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ]
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -296,18 +307,25 @@ Module collections.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::navigate::LeafRange",
-                    "front"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::navigate::LeafRange",
+                      "front"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::navigate::LeafRange",
-                    "back"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::navigate::LeafRange",
+                      "back"
+                    |)
                   |)
                 ]
               |)))
@@ -369,6 +387,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -453,13 +472,17 @@ Module collections.
                                   ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::navigate::LeafRange",
-                              "front"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::navigate::LeafRange",
+                                "front"
+                              |)
                             |)
                           ]
                         |);
@@ -496,9 +519,15 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| f |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| f |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -535,6 +564,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -619,13 +649,17 @@ Module collections.
                                   ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::navigate::LeafRange",
-                              "back"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::navigate::LeafRange",
+                                "back"
+                              |)
                             |)
                           ]
                         |);
@@ -662,9 +696,15 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| b |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| b |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -723,9 +763,10 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)) in
                         let _ :=
@@ -800,39 +841,9 @@ Module collections.
                               ]
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  BorrowType;
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Leaf"
-                                                ];
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Edge"
-                                            ]
-                                        ]
-                                    ],
-                                  "unwrap",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -840,35 +851,77 @@ Module collections.
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
+                                            (Ty.path "&mut")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                (Ty.path "alloc::collections::btree::node::Handle")
                                                 []
                                                 [
-                                                  BorrowType;
-                                                  K;
-                                                  V;
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      BorrowType;
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Leaf"
+                                                    ];
                                                   Ty.path
-                                                    "alloc::collections::btree::node::marker::Leaf"
-                                                ];
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Edge"
+                                                    "alloc::collections::btree::node::marker::Edge"
+                                                ]
                                             ]
                                         ],
-                                      "as_mut",
+                                      "unwrap",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::navigate::LeafRange",
-                                        "front"
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::node::Handle")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      BorrowType;
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Leaf"
+                                                    ];
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Edge"
+                                                ]
+                                            ],
+                                          "as_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::btree::navigate::LeafRange",
+                                              "front"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                ]
+                                |)
                               |);
                               M.closure
                                 (fun γ =>
@@ -912,6 +965,7 @@ Module collections.
                                                                 ]
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -953,6 +1007,7 @@ Module collections.
                                                                     ]
                                                                 ],
                                                               "ok",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -978,6 +1033,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::Edge"
                                                                     ],
                                                                   "next_kv",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| front |) ]
@@ -993,6 +1049,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::Fn",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -1023,9 +1080,24 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ f; Value.Tuple [ kv ] ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.Ref, f |);
+                                                          Value.Tuple
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    kv
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                        ]
                                                       |)
                                                     |) in
                                                   M.alloc (|
@@ -1053,6 +1125,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::KV"
                                                               ],
                                                             "next_leaf_edge",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| kv |) ]
@@ -1127,9 +1200,10 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "is_empty",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)) in
                         let _ :=
@@ -1204,39 +1278,9 @@ Module collections.
                               ]
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                                []
-                                                [
-                                                  BorrowType;
-                                                  K;
-                                                  V;
-                                                  Ty.path
-                                                    "alloc::collections::btree::node::marker::Leaf"
-                                                ];
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Edge"
-                                            ]
-                                        ]
-                                    ],
-                                  "unwrap",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -1244,35 +1288,77 @@ Module collections.
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::Handle")
+                                            (Ty.path "&mut")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                (Ty.path "alloc::collections::btree::node::Handle")
                                                 []
                                                 [
-                                                  BorrowType;
-                                                  K;
-                                                  V;
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      BorrowType;
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Leaf"
+                                                    ];
                                                   Ty.path
-                                                    "alloc::collections::btree::node::marker::Leaf"
-                                                ];
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Edge"
+                                                    "alloc::collections::btree::node::marker::Edge"
+                                                ]
                                             ]
                                         ],
-                                      "as_mut",
+                                      "unwrap",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::navigate::LeafRange",
-                                        "back"
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::node::Handle")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::NodeRef")
+                                                    []
+                                                    [
+                                                      BorrowType;
+                                                      K;
+                                                      V;
+                                                      Ty.path
+                                                        "alloc::collections::btree::node::marker::Leaf"
+                                                    ];
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Edge"
+                                                ]
+                                            ],
+                                          "as_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::btree::navigate::LeafRange",
+                                              "back"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                ]
+                                |)
                               |);
                               M.closure
                                 (fun γ =>
@@ -1316,6 +1402,7 @@ Module collections.
                                                                 ]
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1357,6 +1444,7 @@ Module collections.
                                                                     ]
                                                                 ],
                                                               "ok",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1382,6 +1470,7 @@ Module collections.
                                                                         "alloc::collections::btree::node::marker::Edge"
                                                                     ],
                                                                   "next_back_kv",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| back |) ]
@@ -1397,6 +1486,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::Fn",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -1427,9 +1517,24 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ f; Value.Tuple [ kv ] ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.Ref, f |);
+                                                          Value.Tuple
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    kv
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                        ]
                                                       |)
                                                     |) in
                                                   M.alloc (|
@@ -1457,6 +1562,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::KV"
                                                               ],
                                                             "next_back_leaf_edge",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| kv |) ]
@@ -1518,6 +1624,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                   "perform_next_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1552,7 +1659,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1585,9 +1692,10 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| kv |) |) ]
+                                      [ M.read (| M.deref (| M.read (| kv |) |) |) ]
                                     |)))
                               ]
                             |)))
@@ -1625,6 +1733,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
                   "perform_next_back_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1659,7 +1768,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1692,9 +1801,10 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| kv |) |) ]
+                                      [ M.read (| M.deref (| M.read (| kv |) |) |) ]
                                     |)))
                               ]
                             |)))
@@ -1740,6 +1850,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                   "perform_next_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1774,7 +1885,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1807,6 +1918,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv_valmut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1836,7 +1948,12 @@ Module collections.
                                                 ]
                                             ]
                                           |),
-                                          [ M.read (| kv |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.ConstPointer,
+                                              M.deref (| M.read (| kv |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)))
@@ -1876,6 +1993,7 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
                   "perform_next_back_checked",
+                  [],
                   [
                     Ty.function
                       [
@@ -1910,7 +2028,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1943,6 +2061,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::KV"
                                           ],
                                         "into_kv_valmut",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1972,7 +2091,12 @@ Module collections.
                                                 ]
                                             ]
                                           |),
-                                          [ M.read (| kv |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.ConstPointer,
+                                              M.deref (| M.read (| kv |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)))
@@ -2080,7 +2204,7 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::navigate::LazyLeafHandle::Root"
-                            [ M.read (| M.read (| root |) |) ]
+                            [ M.read (| M.deref (| M.read (| root |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2095,7 +2219,7 @@ Module collections.
                         M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::navigate::LazyLeafHandle::Edge"
-                            [ M.read (| M.read (| edge |) |) ]
+                            [ M.read (| M.deref (| M.read (| edge |) |) |) ]
                         |)))
                   ]
                 |)
@@ -2169,9 +2293,10 @@ Module collections.
                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                     ],
                                   "reborrow",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| root |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| root |) |) |) ]
                               |)
                             ]
                         |)));
@@ -2207,9 +2332,10 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "reborrow",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| edge |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| edge |) |) |) ]
                               |)
                             ]
                         |)))
@@ -2326,14 +2452,19 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::navigate::LazyLeafRange",
-                          "front"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::navigate::LazyLeafRange",
+                            "front"
+                          |)
                         |)
                       ]
                     |));
@@ -2351,14 +2482,19 @@ Module collections.
                               [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
                           ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::navigate::LazyLeafRange",
-                          "back"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::navigate::LazyLeafRange",
+                            "back"
+                          |)
                         |)
                       ]
                     |))
@@ -2450,6 +2586,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::navigate::LazyLeafHandle")
@@ -2490,13 +2627,17 @@ Module collections.
                                   [ BorrowType; K; V ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::navigate::LazyLeafRange",
-                              "front"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::navigate::LazyLeafRange",
+                                "front"
+                              |)
                             |)
                           ]
                         |);
@@ -2520,9 +2661,15 @@ Module collections.
                                                 []
                                                 [ BorrowType; K; V ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| f |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| f |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -2548,6 +2695,7 @@ Module collections.
                               ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::navigate::LazyLeafHandle")
@@ -2588,13 +2736,17 @@ Module collections.
                                   [ BorrowType; K; V ]
                               ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::navigate::LazyLeafRange",
-                              "back"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::navigate::LazyLeafRange",
+                                "back"
+                              |)
                             |)
                           ]
                         |);
@@ -2618,9 +2770,15 @@ Module collections.
                                                 []
                                                 [ BorrowType; K; V ],
                                               "reborrow",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| b |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| b |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -2670,10 +2828,13 @@ Module collections.
                         ltac:(M.monadic
                           (let γ :=
                             M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::navigate::LazyLeafRange",
-                                "front"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::navigate::LazyLeafRange",
+                                  "front"
+                                |)
                               |)
                             |) in
                           let γ := M.read (| γ |) in
@@ -2693,7 +2854,7 @@ Module collections.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::btree::navigate::LazyLeafRange",
                                 "front"
                               |),
@@ -2716,6 +2877,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "first_leaf_edge",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2737,7 +2899,12 @@ Module collections.
                                                   ]
                                               ]
                                             |),
-                                            [ M.read (| root |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.ConstPointer,
+                                                M.deref (| M.read (| root |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2750,10 +2917,13 @@ Module collections.
                   |) in
                 M.match_operator (|
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::navigate::LazyLeafRange",
-                      "front"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::navigate::LazyLeafRange",
+                        "front"
+                      |)
                     |)
                   |),
                   [
@@ -2779,7 +2949,9 @@ Module collections.
                           |) in
                         let edge := M.alloc (| γ2_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| edge |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| edge |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2849,10 +3021,13 @@ Module collections.
                         ltac:(M.monadic
                           (let γ :=
                             M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::navigate::LazyLeafRange",
-                                "back"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::navigate::LazyLeafRange",
+                                  "back"
+                                |)
                               |)
                             |) in
                           let γ := M.read (| γ |) in
@@ -2872,7 +3047,7 @@ Module collections.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::btree::navigate::LazyLeafRange",
                                 "back"
                               |),
@@ -2895,6 +3070,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::LeafOrInternal"
                                             ],
                                           "last_leaf_edge",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2916,7 +3092,12 @@ Module collections.
                                                   ]
                                               ]
                                             |),
-                                            [ M.read (| root |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.ConstPointer,
+                                                M.deref (| M.read (| root |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2929,10 +3110,13 @@ Module collections.
                   |) in
                 M.match_operator (|
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::navigate::LazyLeafRange",
-                      "back"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::navigate::LazyLeafRange",
+                        "back"
+                      |)
                     |)
                   |),
                   [
@@ -2958,7 +3142,9 @@ Module collections.
                           |) in
                         let edge := M.alloc (| γ2_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| edge |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| edge |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3035,52 +3221,60 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::Handle")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::Immut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                    ];
-                                  Ty.path "alloc::collections::btree::node::marker::Edge"
-                                ]
-                            ]
-                        ],
-                      "unwrap",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                            (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
-                          "init_front",
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Immut";
+                                          K;
+                                          V;
+                                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::Edge"
+                                    ]
+                                ]
+                            ],
+                          "unwrap",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                                []
+                                [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
+                              "init_front",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -3125,52 +3319,60 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_back_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::Handle")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::Immut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                    ];
-                                  Ty.path "alloc::collections::btree::node::marker::Edge"
-                                ]
-                            ]
-                        ],
-                      "unwrap",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                            (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
-                          "init_back",
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::Immut";
+                                          K;
+                                          V;
+                                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::Edge"
+                                    ]
+                                ]
+                            ],
+                          "unwrap",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                                []
+                                [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ],
+                              "init_back",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -3223,52 +3425,60 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::Handle")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::ValMut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                    ];
-                                  Ty.path "alloc::collections::btree::node::marker::Edge"
-                                ]
-                            ]
-                        ],
-                      "unwrap",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                            (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
-                          "init_front",
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::ValMut";
+                                          K;
+                                          V;
+                                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::Edge"
+                                    ]
+                                ]
+                            ],
+                          "unwrap",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                                []
+                                [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
+                              "init_front",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -3313,52 +3523,60 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
                   "next_back_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::Handle")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    []
-                                    [
-                                      Ty.path "alloc::collections::btree::node::marker::ValMut";
-                                      K;
-                                      V;
-                                      Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                    ];
-                                  Ty.path "alloc::collections::btree::node::marker::Edge"
-                                ]
-                            ]
-                        ],
-                      "unwrap",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                            (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
-                          "init_back",
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
+                                        [
+                                          Ty.path "alloc::collections::btree::node::marker::ValMut";
+                                          K;
+                                          V;
+                                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                                        ];
+                                      Ty.path "alloc::collections::btree::node::marker::Edge"
+                                    ]
+                                ]
+                            ],
+                          "unwrap",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::navigate::LazyLeafRange")
+                                []
+                                [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ],
+                              "init_back",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -3418,7 +3636,9 @@ Module collections.
                                     ]
                                 ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -3439,13 +3659,17 @@ Module collections.
                                         ]
                                     ],
                                   "take",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::navigate::LazyLeafRange",
-                                    "front"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::navigate::LazyLeafRange",
+                                      "front"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3493,6 +3717,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ]
                                             ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3500,6 +3725,7 @@ Module collections.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -3547,6 +3773,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "first_leaf_edge",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| root |) ]
@@ -3636,13 +3863,17 @@ Module collections.
                                                       ]
                                                   ],
                                                 "is_some",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "alloc::collections::btree::navigate::LazyLeafRange",
-                                                  "front"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::collections::btree::navigate::LazyLeafRange",
+                                                    "front"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -3702,6 +3933,7 @@ Module collections.
                               ]
                           ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -3712,9 +3944,10 @@ Module collections.
                               []
                               [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V ],
                             "init_front",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
@@ -3738,9 +3971,13 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "deallocating_next_unchecked",
+                      [],
                       [ A ]
                     |),
-                    [ M.read (| front |); M.read (| alloc |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| front |) |) |);
+                      M.read (| alloc |)
+                    ]
                   |)
                 |)
               |)))
@@ -3814,13 +4051,17 @@ Module collections.
                                                       ]
                                                   ],
                                                 "is_some",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "alloc::collections::btree::navigate::LazyLeafRange",
-                                                  "back"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::collections::btree::navigate::LazyLeafRange",
+                                                    "back"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -3880,6 +4121,7 @@ Module collections.
                               ]
                           ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -3890,9 +4132,10 @@ Module collections.
                               []
                               [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V ],
                             "init_back",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
@@ -3916,9 +4159,13 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
                       "deallocating_next_back_unchecked",
+                      [],
                       [ A ]
                     |),
-                    [ M.read (| back |); M.read (| alloc |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| back |) |) |);
+                      M.read (| alloc |)
+                    ]
                   |)
                 |)
               |)))
@@ -3967,9 +4214,11 @@ Module collections.
                                   [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V
                                   ],
                                 "take_front",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -3998,6 +4247,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::Edge"
                                 ],
                               "deallocating_end",
+                              [],
                               [ A ]
                             |),
                             [ M.read (| front |); M.read (| alloc |) ]
@@ -4089,9 +4339,16 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "search_tree_for_bifurcation",
+                            [],
                             [ Q; R ]
                           |),
-                          [ M.read (| self |); range ]
+                          [
+                            M.read (| self |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, range |) |)
+                            |)
+                          ]
                         |)
                       |),
                       [
@@ -4111,6 +4368,7 @@ Module collections.
                                     []
                                     [ BorrowType; K; V ],
                                   "none",
+                                  [],
                                   []
                                 |),
                                 []
@@ -4155,6 +4413,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "new_edge",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4175,7 +4434,12 @@ Module collections.
                                             ]
                                         ]
                                       |),
-                                      [ node ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, node |) |)
+                                        |)
+                                      ]
                                     |);
                                     M.read (| lower_edge_idx |)
                                   ]
@@ -4202,6 +4466,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "new_edge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| node |); M.read (| upper_edge_idx |) ]
@@ -4238,6 +4503,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| lower_edge |) ]
@@ -4264,6 +4530,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Edge"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| upper_edge |) ]
@@ -4346,6 +4613,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                                           ],
                                                         "find_lower_bound_edge",
+                                                        [],
                                                         [ Q ]
                                                       |),
                                                       [
@@ -4371,6 +4639,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "descend",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| f |) ]
@@ -4418,6 +4687,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::LeafOrInternal"
                                                           ],
                                                         "find_upper_bound_edge",
+                                                        [],
                                                         [ Q ]
                                                       |),
                                                       [
@@ -4443,6 +4713,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "descend",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| b |) ]
@@ -4489,26 +4760,45 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: BTreeMap has different depths"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "internal error: entered unreachable code: BTreeMap has different depths"
+                                                                      |)
+                                                                    ]
                                                                 |)
-                                                              ]
+                                                              |)
+                                                            |)
                                                           |);
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "none",
-                                                                []
-                                                              |),
-                                                              []
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "none",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    []
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           |)
                                                         ]
@@ -4582,6 +4872,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "force",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| node |) ]
@@ -4615,6 +4906,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Leaf"
                                                     ],
                                                   "first_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| leaf |) ]
@@ -4655,6 +4947,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "descend",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4672,6 +4965,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::Internal"
                                                   ],
                                                 "first_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| internal |) ]
@@ -4743,6 +5037,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "force",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| node |) ]
@@ -4776,6 +5071,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Leaf"
                                                     ],
                                                   "last_edge",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| leaf |) ]
@@ -4816,6 +5112,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "descend",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4833,6 +5130,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::Internal"
                                                   ],
                                                 "last_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| internal |) ]
@@ -4915,6 +5213,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "find_lower_bound_edge",
+                                      [],
                                       [ Q ]
                                     |),
                                     [ M.read (| node |); M.read (| bound |) ]
@@ -4950,6 +5249,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "force",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edge |) ]
@@ -5004,6 +5304,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5087,6 +5388,7 @@ Module collections.
                                             "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ],
                                       "find_upper_bound_edge",
+                                      [],
                                       [ Q ]
                                     |),
                                     [ M.read (| node |); M.read (| bound |) ]
@@ -5122,6 +5424,7 @@ Module collections.
                                                     "alloc::collections::btree::node::marker::Edge"
                                                 ],
                                               "force",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| edge |) ]
@@ -5176,6 +5479,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5292,6 +5596,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "find_leaf_edges_spanning_range",
+                  [],
                   [ Q; R ]
                 |),
                 [ M.read (| self |); M.read (| range |) ]
@@ -5394,6 +5699,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                               ],
                             "force",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -5414,6 +5720,7 @@ Module collections.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -5429,10 +5736,11 @@ Module collections.
                                       ]
                                   ],
                                   "call_mut",
+                                  [],
                                   []
                                 |),
                                 [
-                                  visit;
+                                  M.borrow (| Pointer.Kind.MutRef, visit |);
                                   Value.Tuple
                                     [
                                       Value.StructTuple
@@ -5457,6 +5765,7 @@ Module collections.
                                   M.get_trait_method (|
                                     "core::ops::function::FnMut",
                                     F,
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -5473,10 +5782,11 @@ Module collections.
                                         ]
                                     ],
                                     "call_mut",
+                                    [],
                                     []
                                   |),
                                   [
-                                    visit;
+                                    M.borrow (| Pointer.Kind.MutRef, visit |);
                                     Value.Tuple
                                       [
                                         Value.StructTuple
@@ -5500,6 +5810,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Internal"
                                       ],
                                     "first_edge",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| internal |) ]
@@ -5530,6 +5841,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "force",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5556,6 +5868,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "descend",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| edge |) ]
@@ -5579,6 +5892,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::FnMut",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -5595,10 +5909,11 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          visit;
+                                                          M.borrow (| Pointer.Kind.MutRef, visit |);
                                                           Value.Tuple
                                                             [
                                                               Value.StructTuple
@@ -5633,6 +5948,7 @@ Module collections.
                                                                 "alloc::collections::btree::node::marker::Edge"
                                                             ],
                                                           "next_kv",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| edge |) ]
@@ -5654,6 +5970,7 @@ Module collections.
                                                                 M.get_trait_method (|
                                                                   "core::ops::function::FnMut",
                                                                   F,
+                                                                  [],
                                                                   [
                                                                     Ty.tuple
                                                                       [
@@ -5670,10 +5987,14 @@ Module collections.
                                                                       ]
                                                                   ],
                                                                   "call_mut",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  visit;
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    visit
+                                                                  |);
                                                                   Value.Tuple
                                                                     [
                                                                       Value.StructTuple
@@ -5707,6 +6028,7 @@ Module collections.
                                                                       "alloc::collections::btree::node::marker::KV"
                                                                   ],
                                                                 "right_edge",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| kv |) ]
@@ -5744,6 +6066,7 @@ Module collections.
                                                         M.get_trait_method (|
                                                           "core::ops::function::FnMut",
                                                           F,
+                                                          [],
                                                           [
                                                             Ty.tuple
                                                               [
@@ -5760,10 +6083,11 @@ Module collections.
                                                               ]
                                                           ],
                                                           "call_mut",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          visit;
+                                                          M.borrow (| Pointer.Kind.MutRef, visit |);
                                                           Value.Tuple
                                                             [
                                                               Value.StructTuple
@@ -5789,6 +6113,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Internal"
                                                           ],
                                                         "first_edge",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| internal |) ]
@@ -5851,6 +6176,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                           ],
                         "visit_nodes_in_order",
+                        [],
                         [
                           Ty.function
                             [
@@ -5913,9 +6239,10 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Leaf"
                                                               ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ node ]
+                                                          [ M.borrow (| Pointer.Kind.Ref, node |) ]
                                                         |)
                                                       |)
                                                     |)));
@@ -5948,9 +6275,10 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Internal"
                                                               ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ node ]
+                                                          [ M.borrow (| Pointer.Kind.Ref, node |) ]
                                                         |)
                                                       |)
                                                     |)));
@@ -6028,6 +6356,7 @@ Module collections.
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
                   "find_leaf_edges_spanning_range",
+                  [],
                   [ Q; R ]
                 |),
                 [ M.read (| self |); M.read (| range |) ]
@@ -6077,7 +6406,12 @@ Module collections.
                             ]
                         ]
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -6149,7 +6483,12 @@ Module collections.
                             ]
                         ]
                       |),
-                      [ self ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -6237,6 +6576,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -6272,6 +6612,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6323,6 +6664,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6348,6 +6690,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6388,6 +6731,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -6485,6 +6829,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -6520,6 +6865,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "left_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6571,6 +6917,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6596,6 +6943,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6636,6 +6984,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -6758,6 +7107,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -6809,6 +7159,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::Internal"
                                                     ],
                                                   "ascend",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -6834,6 +7185,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -6965,6 +7317,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -7001,6 +7354,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "right_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -7048,6 +7402,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::KV"
                                                                 ],
                                                               "next_leaf_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7078,7 +7433,17 @@ Module collections.
                                                                       ]
                                                                   ]
                                                                 |),
-                                                                [ kv ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.ConstPointer,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        kv
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                           |);
@@ -7115,6 +7480,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "deallocate_and_ascend",
+                                                  [],
                                                   [ A ]
                                                 |),
                                                 [
@@ -7141,6 +7507,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -7150,10 +7517,12 @@ Module collections.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ alloc ]
+                                                    [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                                                   |)
                                                 ]
                                               |)
@@ -7192,6 +7561,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -7289,6 +7659,7 @@ Module collections.
                                 Ty.path "alloc::collections::btree::node::marker::Edge"
                               ],
                             "forget_node_type",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -7325,6 +7696,7 @@ Module collections.
                                                 "alloc::collections::btree::node::marker::Edge"
                                             ],
                                           "left_kv",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| edge |) ]
@@ -7372,6 +7744,7 @@ Module collections.
                                                                     "alloc::collections::btree::node::marker::KV"
                                                                 ],
                                                               "next_back_leaf_edge",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7402,7 +7775,17 @@ Module collections.
                                                                       ]
                                                                   ]
                                                                 |),
-                                                                [ kv ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.ConstPointer,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        kv
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                           |);
@@ -7439,6 +7822,7 @@ Module collections.
                                                         "alloc::collections::btree::node::marker::LeafOrInternal"
                                                     ],
                                                   "deallocate_and_ascend",
+                                                  [],
                                                   [ A ]
                                                 |),
                                                 [
@@ -7465,6 +7849,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "into_node",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| last_edge |) ]
@@ -7474,10 +7859,12 @@ Module collections.
                                                       "core::clone::Clone",
                                                       A,
                                                       [],
+                                                      [],
                                                       "clone",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ alloc ]
+                                                    [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                                                   |)
                                                 ]
                                               |)
@@ -7516,6 +7903,7 @@ Module collections.
                                                               "alloc::collections::btree::node::marker::Edge"
                                                           ],
                                                         "forget_node_type",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| parent_edge |) ]
@@ -7601,6 +7989,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Edge"
                           ],
                         "forget_node_type",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -7628,6 +8017,7 @@ Module collections.
                                           "alloc::collections::btree::node::marker::LeafOrInternal"
                                       ],
                                     "deallocate_and_ascend",
+                                    [],
                                     [ A ]
                                   |),
                                   [
@@ -7651,6 +8041,7 @@ Module collections.
                                             Ty.path "alloc::collections::btree::node::marker::Edge"
                                           ],
                                         "into_node",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| edge |) ]
@@ -7660,10 +8051,12 @@ Module collections.
                                         "core::clone::Clone",
                                         A,
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
-                                      [ alloc ]
+                                      [ M.borrow (| Pointer.Kind.Ref, alloc |) ]
                                     |)
                                   ]
                                 |)
@@ -7698,6 +8091,7 @@ Module collections.
                                         Ty.path "alloc::collections::btree::node::marker::Edge"
                                       ],
                                     "forget_node_type",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| parent_edge |) ]
@@ -7839,7 +8233,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -7903,6 +8297,7 @@ Module collections.
                                               ]
                                           ],
                                         "unwrap",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7928,6 +8323,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "deallocating_next",
+                                            [],
                                             [ A ]
                                           |),
                                           [ M.read (| leaf_edge |); M.read (| alloc |) ]
@@ -8064,7 +8460,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8128,6 +8524,7 @@ Module collections.
                                               ]
                                           ],
                                         "unwrap",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8153,6 +8550,7 @@ Module collections.
                                                   "alloc::collections::btree::node::marker::Edge"
                                               ],
                                             "deallocating_next_back",
+                                            [],
                                             [ A ]
                                           |),
                                           [ M.read (| leaf_edge |); M.read (| alloc |) ]
@@ -8278,7 +8676,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8322,6 +8720,7 @@ Module collections.
                                                     ]
                                                 ],
                                               "unwrap",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8365,6 +8764,7 @@ Module collections.
                                                         ]
                                                     ],
                                                   "ok",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8391,6 +8791,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "next_kv",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| leaf_edge |) ]
@@ -8426,6 +8827,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "next_leaf_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8453,6 +8855,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "into_kv",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8557,7 +8960,7 @@ Module collections.
                   ]
                 |),
                 [
-                  M.read (| self |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -8601,6 +9004,7 @@ Module collections.
                                                     ]
                                                 ],
                                               "unwrap",
+                                              [],
                                               []
                                             |),
                                             [
@@ -8644,6 +9048,7 @@ Module collections.
                                                         ]
                                                     ],
                                                   "ok",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8670,6 +9075,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::Edge"
                                                         ],
                                                       "next_back_kv",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| leaf_edge |) ]
@@ -8705,6 +9111,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "next_back_leaf_edge",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8732,6 +9139,7 @@ Module collections.
                                                       "alloc::collections::btree::node::marker::KV"
                                                   ],
                                                 "into_kv",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| kv |) ]
@@ -8888,7 +9296,7 @@ Module collections.
                         ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
@@ -8932,6 +9340,7 @@ Module collections.
                                                           ]
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8975,6 +9384,7 @@ Module collections.
                                                               ]
                                                           ],
                                                         "ok",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9001,6 +9411,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "next_kv",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| leaf_edge |) ]
@@ -9036,6 +9447,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::KV"
                                                         ],
                                                       "next_leaf_edge",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9066,7 +9478,14 @@ Module collections.
                                                               ]
                                                           ]
                                                         |),
-                                                        [ kv ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.ConstPointer,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, kv |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |);
@@ -9100,6 +9519,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "into_kv_valmut",
+                      [],
                       []
                     |),
                     [ M.read (| kv |) ]
@@ -9230,7 +9650,7 @@ Module collections.
                         ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
@@ -9274,6 +9694,7 @@ Module collections.
                                                           ]
                                                       ],
                                                     "unwrap",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9317,6 +9738,7 @@ Module collections.
                                                               ]
                                                           ],
                                                         "ok",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9343,6 +9765,7 @@ Module collections.
                                                                   "alloc::collections::btree::node::marker::Edge"
                                                               ],
                                                             "next_back_kv",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| leaf_edge |) ]
@@ -9378,6 +9801,7 @@ Module collections.
                                                             "alloc::collections::btree::node::marker::KV"
                                                         ],
                                                       "next_back_leaf_edge",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -9408,7 +9832,14 @@ Module collections.
                                                               ]
                                                           ]
                                                         |),
-                                                        [ kv ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.ConstPointer,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, kv |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |);
@@ -9442,6 +9873,7 @@ Module collections.
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
                       "into_kv_valmut",
+                      [],
                       []
                     |),
                     [ M.read (| kv |) ]
@@ -9565,6 +9997,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "force",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9599,6 +10032,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "right_edge",
+                              [],
                               []
                             |),
                             [ M.read (| leaf_kv |) ]
@@ -9633,6 +10067,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "right_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| internal_kv |) ]
@@ -9651,6 +10086,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "first_leaf_edge",
+                              [],
                               []
                             |),
                             [
@@ -9673,6 +10109,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "descend",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| next_internal_edge |) ]
@@ -9738,6 +10175,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::KV"
                           ],
                         "force",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -9772,6 +10210,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::KV"
                                 ],
                               "left_edge",
+                              [],
                               []
                             |),
                             [ M.read (| leaf_kv |) ]
@@ -9806,6 +10245,7 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::KV"
                                   ],
                                 "left_edge",
+                                [],
                                 []
                               |),
                               [ M.read (| internal_kv |) ]
@@ -9824,6 +10264,7 @@ Module collections.
                                   Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                                 ],
                               "last_leaf_edge",
+                              [],
                               []
                             |),
                             [
@@ -9846,6 +10287,7 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Edge"
                                     ],
                                   "descend",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| next_internal_edge |) ]

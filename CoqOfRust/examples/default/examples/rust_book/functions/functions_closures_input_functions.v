@@ -15,8 +15,16 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::ops::function::Fn", F, [ Ty.tuple [] ], "call", [] |),
-              [ f; Value.Tuple [] ]
+              M.get_trait_method (|
+                "core::ops::function::Fn",
+                F,
+                [],
+                [ Ty.tuple [] ],
+                "call",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, f |); Value.Tuple [] ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -43,9 +51,26 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "I'm a function!
-" |) ] |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "I'm a function!
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -95,13 +120,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "I'm a closure!
-" |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ M.read (| Value.String "I'm a closure!
+" |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)

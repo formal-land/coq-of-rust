@@ -886,7 +886,7 @@ fn compile_function_body(
                 args: vec![],
                 body: body_without_bindings,
                 is_for_match: false,
-                is_internal: true,
+                form: LambdaForm::Function,
             })],
             kind: CallKind::Effectful,
         })

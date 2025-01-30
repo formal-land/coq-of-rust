@@ -14,7 +14,8 @@ Module str.
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           let width := M.alloc (| width |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "u32")
             (BinOp.bit_and
               (M.read (| byte |))
               (BinOp.Wrap.shr (| Value.Integer IntegerKind.U8 127, M.read (| width |) |)))))
@@ -37,7 +38,8 @@ Module str.
           let byte := M.alloc (| byte |) in
           BinOp.bit_or
             (BinOp.Wrap.shl (| M.read (| ch |), Value.Integer IntegerKind.I32 6 |))
-            (M.rust_cast
+            (M.cast
+              (Ty.path "u32")
               (BinOp.bit_and
                 (M.read (| byte |))
                 (M.read (| M.get_constant (| "core::str::validations::CONT_MASK" |) |))))))
@@ -57,7 +59,10 @@ Module str.
       | [], [], [ byte ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
-          BinOp.lt (| M.rust_cast (M.read (| byte |)), Value.Integer IntegerKind.I8 (-64) |)))
+          BinOp.lt (|
+            M.cast (Ty.path "i8") (M.read (| byte |)),
+            Value.Integer IntegerKind.I8 (-64)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -111,81 +116,94 @@ Module str.
               (M.read (|
                 let~ x :=
                   M.copy (|
-                    M.read (|
-                      M.match_operator (|
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                              [],
-                              "branch",
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  I,
-                                  [],
-                                  "next",
+                    M.deref (|
+                      M.read (|
+                        M.match_operator (|
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
                                   []
-                                |),
-                                [ M.read (| bytes |) ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "u32" ],
-                                          [
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    I,
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
-                                              [ Ty.path "core::convert::Infallible" ]
-                                          ],
-                                          "from_residual",
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
+                                              [ Ty.path "u32" ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "core::convert::Infallible" ]
+                                            ],
+                                            "from_residual",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| residual |) ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
-                        ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| γ0_0 |) in
+                                val))
+                          ]
+                        |)
                       |)
                     |)
                   |) in
@@ -208,7 +226,7 @@ Module str.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::option::Option::Some"
-                                    [ M.rust_cast (M.read (| x |)) ]
+                                    [ M.cast (Ty.path "u32") (M.read (| x |)) ]
                                 |)
                               |)
                             |)
@@ -225,27 +243,32 @@ Module str.
                   |) in
                 let~ y :=
                   M.copy (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                        "unwrap_unchecked",
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
-                            I,
-                            [],
-                            "next",
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
                             []
-                          |),
-                          [ M.read (| bytes |) ]
-                        |)
-                      ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                          "unwrap_unchecked",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              I,
+                              [],
+                              [],
+                              "next",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |) ]
+                          |)
+                        ]
+                      |)
                     |)
                   |) in
                 let~ ch :=
@@ -270,27 +293,37 @@ Module str.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ z :=
                             M.copy (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                  "unwrap_unchecked",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      I,
-                                      [],
-                                      "next",
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
                                       []
-                                    |),
-                                    [ M.read (| bytes |) ]
-                                  |)
-                                ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                    "unwrap_unchecked",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        I,
+                                        [],
+                                        [],
+                                        "next",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ y_z :=
@@ -302,7 +335,8 @@ Module str.
                                   []
                                 |),
                                 [
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.bit_and
                                       (M.read (| y |))
                                       (M.read (|
@@ -342,27 +376,37 @@ Module str.
                                     |) in
                                   let~ w :=
                                     M.copy (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                          "unwrap_unchecked",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
-                                              I,
-                                              [],
-                                              "next",
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
                                               []
-                                            |),
-                                            [ M.read (| bytes |) ]
-                                          |)
-                                        ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                            "unwrap_unchecked",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                I,
+                                                [],
+                                                [],
+                                                "next",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| bytes |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |) in
                                   let~ _ :=
@@ -448,81 +492,94 @@ Module str.
                 let~ w :=
                   M.copy (|
                     M.match_operator (|
-                      M.read (|
-                        M.match_operator (|
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::try_trait::Try",
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                [],
-                                "branch",
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::iter::traits::double_ended::DoubleEndedIterator",
-                                    I,
-                                    [],
-                                    "next_back",
+                      M.deref (|
+                        M.read (|
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
                                     []
-                                  |),
-                                  [ M.read (| bytes |) ]
-                                |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::ops::control_flow::ControlFlow::Break",
-                                    0
-                                  |) in
-                                let residual := M.copy (| γ0_0 |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      M.return_ (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::FromResidual",
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "u32" ],
-                                            [
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  [],
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::double_ended::DoubleEndedIterator",
+                                      I,
+                                      [],
+                                      [],
+                                      "next_back",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| bytes |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
-                                                [ Ty.path "core::convert::Infallible" ]
-                                            ],
-                                            "from_residual",
-                                            []
-                                          |),
-                                          [ M.read (| residual |) ]
+                                                [ Ty.path "u32" ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::ops::control_flow::ControlFlow::Continue",
-                                    0
-                                  |) in
-                                let val := M.copy (| γ0_0 |) in
-                                val))
-                          ]
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
                         |)
                       |),
                       [
@@ -544,7 +601,7 @@ Module str.
                                   M.return_ (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
-                                      [ M.rust_cast (M.read (| next_byte |)) ]
+                                      [ M.cast (Ty.path "u32") (M.read (| next_byte |)) ]
                                   |)
                                 |)
                               |)
@@ -559,27 +616,32 @@ Module str.
                 let~ ch := M.copy (| Value.DeclaredButUndefined |) in
                 let~ z :=
                   M.copy (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                        "unwrap_unchecked",
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::double_ended::DoubleEndedIterator",
-                            I,
-                            [],
-                            "next_back",
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
                             []
-                          |),
-                          [ M.read (| bytes |) ]
-                        |)
-                      ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                          "unwrap_unchecked",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::double_ended::DoubleEndedIterator",
+                              I,
+                              [],
+                              [],
+                              "next_back",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |) ]
+                          |)
+                        ]
+                      |)
                     |)
                   |) in
                 let~ _ :=
@@ -612,27 +674,37 @@ Module str.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ y :=
                             M.copy (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                  "unwrap_unchecked",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                      I,
-                                      [],
-                                      "next_back",
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
                                       []
-                                    |),
-                                    [ M.read (| bytes |) ]
-                                  |)
-                                ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                    "unwrap_unchecked",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                        I,
+                                        [],
+                                        [],
+                                        "next_back",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           let~ _ :=
@@ -672,27 +744,37 @@ Module str.
                                       |) in
                                     let~ x :=
                                       M.copy (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                            "unwrap_unchecked",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::double_ended::DoubleEndedIterator",
-                                                I,
-                                                [],
-                                                "next_back",
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
                                                 []
-                                              |),
-                                              [ M.read (| bytes |) ]
-                                            |)
-                                          ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                              "unwrap_unchecked",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::double_ended::DoubleEndedIterator",
+                                                  I,
+                                                  [],
+                                                  [],
+                                                  "next_back",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| bytes |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |) in
                                     let~ _ :=
@@ -761,7 +843,7 @@ Module str.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 128 ]
             |)
           |))).
@@ -921,9 +1003,10 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ usize_bytes :=
@@ -970,6 +1053,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
+                        [],
                         []
                       |),
                       [
@@ -977,9 +1061,10 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |);
                         M.read (| usize_bytes |)
                       ]
@@ -1006,7 +1091,10 @@ Module str.
                               let~ old_offset := M.copy (| index |) in
                               let~ first :=
                                 M.copy (|
-                                  M.SubPointer.get_array_field (| M.read (| v |), index |)
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (| M.read (| v |) |),
+                                    index
+                                  |)
                                 |) in
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -1057,7 +1145,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -1127,7 +1216,7 @@ Module str.
                                                                         ]
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| v |),
+                                                                      M.deref (| M.read (| v |) |),
                                                                       index
                                                                     |)
                                                                   |)),
@@ -1244,7 +1333,7 @@ Module str.
                                                                 ]
                                                               |) in
                                                             M.SubPointer.get_array_field (|
-                                                              M.read (| v |),
+                                                              M.deref (| M.read (| v |) |),
                                                               index
                                                             |)
                                                           |)
@@ -1323,19 +1412,16 @@ Module str.
                                                                     |) in
                                                                   Value.Tuple []))
                                                             ],
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [] =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)))
-                                                                  | _ =>
-                                                                    M.impossible
-                                                                      "wrong number of arguments"
-                                                                  end))
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
+                                                                end)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -1378,7 +1464,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -1448,7 +1535,7 @@ Module str.
                                                                         ]
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| v |),
+                                                                      M.deref (| M.read (| v |) |),
                                                                       index
                                                                     |)
                                                                   |)),
@@ -1565,7 +1652,7 @@ Module str.
                                                                 ]
                                                               |) in
                                                             M.SubPointer.get_array_field (|
-                                                              M.read (| v |),
+                                                              M.deref (| M.read (| v |) |),
                                                               index
                                                             |)
                                                           |)
@@ -1631,19 +1718,16 @@ Module str.
                                                                     |) in
                                                                   Value.Tuple []))
                                                             ],
-                                                            M.closure
-                                                              (fun γ =>
-                                                                ltac:(M.monadic
-                                                                  match γ with
-                                                                  | [] =>
-                                                                    ltac:(M.monadic
-                                                                      (M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |)))
-                                                                  | _ =>
-                                                                    M.impossible
-                                                                      "wrong number of arguments"
-                                                                  end))
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                match γ with
+                                                                | [] =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
+                                                                end)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -1687,7 +1771,8 @@ Module str.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.ge (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "i8")
                                                                     (M.read (|
                                                                       let~ _ :=
                                                                         let β := index in
@@ -1757,7 +1842,9 @@ Module str.
                                                                           ]
                                                                         |) in
                                                                       M.SubPointer.get_array_field (|
-                                                                        M.read (| v |),
+                                                                        M.deref (|
+                                                                          M.read (| v |)
+                                                                        |),
                                                                         index
                                                                       |)
                                                                     |)),
@@ -1811,7 +1898,8 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.ge (|
-                                                                M.rust_cast
+                                                                M.cast
+                                                                  (Ty.path "i8")
                                                                   (M.read (|
                                                                     let~ _ :=
                                                                       let β := index in
@@ -1881,7 +1969,7 @@ Module str.
                                                                         ]
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| v |),
+                                                                      M.deref (| M.read (| v |) |),
                                                                       index
                                                                     |)
                                                                   |)),
@@ -1985,6 +2073,7 @@ Module str.
                                                               M.get_associated_function (|
                                                                 Ty.path "usize",
                                                                 "wrapping_sub",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2012,9 +2101,15 @@ Module str.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "as_ptr",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| v |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| v |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -2041,7 +2136,11 @@ Module str.
                                                             let~ _ :=
                                                               let~ block :=
                                                                 M.alloc (|
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ Ty.path "usize" ])
                                                                     (M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.apply
@@ -2049,6 +2148,7 @@ Module str.
                                                                           []
                                                                           [ Ty.path "u8" ],
                                                                         "add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2067,7 +2167,9 @@ Module str.
                                                                     |),
                                                                     [
                                                                       M.read (|
-                                                                        M.read (| block |)
+                                                                        M.deref (|
+                                                                          M.read (| block |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -2082,21 +2184,24 @@ Module str.
                                                                     |),
                                                                     [
                                                                       M.read (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "*const")
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*const")
+                                                                                []
+                                                                                [ Ty.path "usize" ],
+                                                                              "add",
+                                                                              [],
                                                                               []
-                                                                              [ Ty.path "usize" ],
-                                                                            "add",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (| block |);
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
-                                                                          ]
+                                                                            |),
+                                                                            [
+                                                                              M.read (| block |);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     ]
@@ -2180,7 +2285,9 @@ Module str.
                                                                     (BinOp.lt (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| v |),
+                                                                          M.deref (|
+                                                                            M.read (| v |)
+                                                                          |),
                                                                           index
                                                                         |)
                                                                       |),
@@ -2268,266 +2375,274 @@ Module str.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.alloc (|
-              Value.Array
-                [
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 1;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 2;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 3;
-                  Value.Integer IntegerKind.U8 4;
-                  Value.Integer IntegerKind.U8 4;
-                  Value.Integer IntegerKind.U8 4;
-                  Value.Integer IntegerKind.U8 4;
-                  Value.Integer IntegerKind.U8 4;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0;
-                  Value.Integer IntegerKind.U8 0
-                ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ]
+                  |)
+                |)
+              |)
             |)
           |))).
     
@@ -2541,11 +2656,14 @@ Module str.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
-          M.rust_cast
+          M.cast
+            (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_array_field (|
-                M.read (| M.get_constant (| "core::str::validations::UTF8_CHAR_WIDTH" |) |),
-                M.alloc (| M.rust_cast (M.read (| b |)) |)
+                M.deref (|
+                  M.read (| M.get_constant (| "core::str::validations::UTF8_CHAR_WIDTH" |) |)
+                |),
+                M.alloc (| M.cast (Ty.path "usize") (M.read (| b |)) |)
               |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"

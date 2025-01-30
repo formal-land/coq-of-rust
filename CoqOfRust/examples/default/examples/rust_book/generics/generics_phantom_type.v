@@ -36,17 +36,23 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "generics_phantom_type::PhantomTuple",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "generics_phantom_type::PhantomTuple",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "generics_phantom_type::PhantomTuple",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "generics_phantom_type::PhantomTuple",
+                  0
+                |)
               |)
             ]
           |),
@@ -55,20 +61,28 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [],
                 [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_phantom_type::PhantomTuple",
-                  1
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_phantom_type::PhantomTuple",
+                    1
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "generics_phantom_type::PhantomTuple",
-                  1
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "generics_phantom_type::PhantomTuple",
+                    1
+                  |)
                 |)
               ]
             |)))
@@ -121,17 +135,23 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "generics_phantom_type::PhantomStruct",
-                "first"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "generics_phantom_type::PhantomStruct",
+                  "first"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "generics_phantom_type::PhantomStruct",
-                "first"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "generics_phantom_type::PhantomStruct",
+                  "first"
+                |)
               |)
             ]
           |),
@@ -140,20 +160,28 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
+                [],
                 [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ] ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "generics_phantom_type::PhantomStruct",
-                  "phantom"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_phantom_type::PhantomStruct",
+                    "phantom"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "generics_phantom_type::PhantomStruct",
-                  "phantom"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "generics_phantom_type::PhantomStruct",
+                    "phantom"
+                  |)
                 |)
               ]
             |)))

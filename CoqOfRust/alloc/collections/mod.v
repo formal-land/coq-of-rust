@@ -28,14 +28,24 @@ Module collections.
                     "core::clone::Clone",
                     Ty.path "alloc::collections::TryReserveErrorKind",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::TryReserveError",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::TryReserveError",
+                            "kind"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -76,20 +86,28 @@ Module collections.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "alloc::collections::TryReserveErrorKind",
+              [],
               [ Ty.path "alloc::collections::TryReserveErrorKind" ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::collections::TryReserveError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::collections::TryReserveError",
+                  "kind"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "alloc::collections::TryReserveError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "alloc::collections::TryReserveError",
+                  "kind"
+                |)
               |)
             ]
           |)))
@@ -149,17 +167,32 @@ Module collections.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TryReserveError" |);
-              M.read (| Value.String "kind" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::TryReserveError",
-                  "kind"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TryReserveError" |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::TryReserveError",
+                          "kind"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -193,14 +226,19 @@ Module collections.
               "core::clone::Clone",
               Ty.path "alloc::collections::TryReserveErrorKind",
               [],
+              [],
               "clone",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::collections::TryReserveError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::collections::TryReserveError",
+                  "kind"
+                |)
               |)
             ]
           |)))
@@ -287,10 +325,13 @@ Module collections.
                                 "core::clone::Clone",
                                 Ty.path "core::alloc::layout::Layout",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |));
                           ("non_exhaustive",
                             M.call_closure (|
@@ -298,10 +339,13 @@ Module collections.
                                 "core::clone::Clone",
                                 Ty.tuple [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_1 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
+                              ]
                             |))
                         ]
                     |)))
@@ -349,7 +393,7 @@ Module collections.
                     [],
                     [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -360,7 +404,7 @@ Module collections.
                     [],
                     [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -414,6 +458,7 @@ Module collections.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "core::alloc::layout::Layout" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -421,20 +466,29 @@ Module collections.
                                         [ Ty.path "core::alloc::layout::Layout" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ __self_1; __arg1_1 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                    ]
                                   |)))
                               |)
                             |)));
@@ -521,9 +575,16 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CapacityOverflow" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CapacityOverflow" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -548,15 +609,28 @@ Module collections.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field2_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "AllocError" |);
-                          M.read (| Value.String "layout" |);
-                          M.read (| __self_0 |);
-                          M.read (| Value.String "non_exhaustive" |);
-                          __self_1
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "AllocError" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "layout" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "non_exhaustive" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                          |)
                         ]
                       |)
                     |)))
@@ -673,7 +747,9 @@ Module collections.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -681,9 +757,15 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
-                            [ M.read (| fmt |); M.read (| Value.String "memory allocation failed" |)
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "memory allocation failed" |) |)
+                              |)
                             ]
                           |)
                         ]
@@ -710,6 +792,7 @@ Module collections.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -720,6 +803,7 @@ Module collections.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -744,7 +828,7 @@ Module collections.
                   M.copy (|
                     M.match_operator (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::collections::TryReserveError",
                         "kind"
                       |),
@@ -766,8 +850,13 @@ Module collections.
                                 "alloc::collections::TryReserveErrorKind::AllocError"
                               |) in
                             M.alloc (|
-                              M.read (|
-                                Value.String " because the memory allocator returned an error"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    Value.String " because the memory allocator returned an error"
+                                  |)
+                                |)
                               |)
                             |)))
                       ]
@@ -775,8 +864,16 @@ Module collections.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                    [ M.read (| fmt |); M.read (| reason |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| reason |) |) |)
+                    ]
                   |)
                 |)
               |)))

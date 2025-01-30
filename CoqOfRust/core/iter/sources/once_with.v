@@ -50,14 +50,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ F ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::once_with::OnceWith",
+                                "gen"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -107,13 +117,17 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::once_with::OnceWith",
-                                    "gen"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::once_with::OnceWith",
+                                      "gen"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -125,9 +139,16 @@ Module iter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(Some(_))" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "OnceWith(Some(_))" |) |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -137,9 +158,16 @@ Module iter.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "OnceWith(None)" |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "OnceWith(None)" |) |)
+                              |)
+                            ]
                           |)
                         |)))
                   ]
@@ -188,7 +216,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -196,13 +226,17 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                     "take",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::sources::once_with::OnceWith",
-                                      "gen"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::sources::once_with::OnceWith",
+                                        "gen"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -227,6 +261,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -234,6 +269,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -263,8 +299,10 @@ Module iter.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [] ]
@@ -297,24 +335,33 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
-                        "iter",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
-                        |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ F ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::once_with::OnceWith",
+                              "gen"
+                            |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -361,10 +408,12 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -398,24 +447,33 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ F ],
-                        "iter",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once_with::OnceWith",
-                          "gen"
-                        |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ F ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::once_with::OnceWith",
+                              "gen"
+                            |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]

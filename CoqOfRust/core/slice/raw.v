@@ -54,7 +54,9 @@ Module slice.
                               []
                             |),
                             [
-                              M.rust_cast (M.read (| data |));
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                (M.read (| data |));
                               M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
@@ -72,9 +74,19 @@ Module slice.
                 ]
               |) in
             M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
-                [ M.read (| data |); M.read (| len |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
+                        [ M.read (| data |); M.read (| len |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -109,52 +121,86 @@ Module slice.
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                              []
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "core::ub_checks::check_language_ub",
+                                        [],
+                                        []
+                                      |),
+                                      []
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::slice::raw::from_raw_parts_mut.precondition_check",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                        (M.read (| data |));
+                                      M.call_closure (|
+                                        M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                        []
+                                      |);
+                                      M.call_closure (|
+                                        M.get_function (| "core::mem::align_of", [], [ T ] |),
+                                        []
+                                      |);
+                                      M.read (| len |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_function (|
+                                  "core::ptr::slice_from_raw_parts_mut",
+                                  [],
+                                  [ T ]
+                                |),
+                                [ M.read (| data |); M.read (| len |) ]
+                              |)
                             |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_function (|
-                              "core::slice::raw::from_raw_parts_mut.precondition_check",
-                              [],
-                              []
-                            |),
-                            [
-                              M.rust_cast (M.read (| data |));
-                              M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                []
-                              |);
-                              M.call_closure (|
-                                M.get_function (| "core::mem::align_of", [], [ T ] |),
-                                []
-                              |);
-                              M.read (| len |)
-                            ]
                           |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
-                [ M.read (| data |); M.read (| len |) ]
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -174,9 +220,14 @@ Module slice.
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          M.call_closure (|
-            M.get_function (| "core::array::from_ref", [], [ T ] |),
-            [ M.read (| s |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_function (| "core::array::from_ref", [], [ T ] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -193,9 +244,19 @@ Module slice.
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          M.call_closure (|
-            M.get_function (| "core::array::from_mut", [], [ T ] |),
-            [ M.read (| s |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_function (| "core::array::from_mut", [], [ T ] |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -213,32 +274,46 @@ Module slice.
       | [], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
-              |);
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "sub_ptr", [] |),
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      range,
-                      "core::ops::range::Range",
-                      "end"
-                    |)
-                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       range,
                       "core::ops::range::Range",
                       "start"
                     |)
+                  |);
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      "sub_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          range,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          range,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -256,34 +331,58 @@ Module slice.
       | [], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
-              |);
-              M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      range,
-                      "core::ops::range::Range",
-                      "end"
-                    |)
-                  |);
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        range,
-                        "core::ops::range::Range",
-                        "start"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              range,
+                              "core::ops::range::Range",
+                              "start"
+                            |)
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              "sub_ptr",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  range,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
+                              |);
+                              (* MutToConstPointer *)
+                              M.pointer_coercion
+                                (M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    range,
+                                    "core::ops::range::Range",
+                                    "start"
+                                  |)
+                                |))
+                            ]
+                          |)
+                        ]
                       |)
-                    |))
-                ]
+                    |)
+                  |)
+                |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

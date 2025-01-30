@@ -36,7 +36,9 @@ Definition combine_vecs_explicit_return_type
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
             ],
           [],
+          [],
           "cycle",
+          [],
           []
         |),
         [
@@ -48,7 +50,9 @@ Definition combine_vecs_explicit_return_type
                 []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "chain",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -65,7 +69,9 @@ Definition combine_vecs_explicit_return_type
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| v |) ]
@@ -78,7 +84,9 @@ Definition combine_vecs_explicit_return_type
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| u |) ]
@@ -123,7 +131,9 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
             ],
           [],
+          [],
           "cycle",
+          [],
           []
         |),
         [
@@ -135,7 +145,9 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "chain",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -152,7 +164,9 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| v |) ]
@@ -165,7 +179,9 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| u |) ]
@@ -207,6 +223,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -224,6 +241,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -247,6 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -264,6 +283,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -289,21 +309,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.I32 1 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.I32 1 ]
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
-                        [],
-                        "next",
-                        []
-                      |),
-                      [ v3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.associated,
+                          [],
+                          [],
+                          "next",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, v3 |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -331,6 +359,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "i32" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -338,9 +367,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -371,8 +410,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -390,21 +445,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.I32 2 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.I32 2 ]
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
-                        [],
-                        "next",
-                        []
-                      |),
-                      [ v3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.associated,
+                          [],
+                          [],
+                          "next",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, v3 |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -432,6 +495,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "i32" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -439,9 +503,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -472,8 +546,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -491,21 +581,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.I32 3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.I32 3 ]
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
-                        [],
-                        "next",
-                        []
-                      |),
-                      [ v3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.associated,
+                          [],
+                          [],
+                          "next",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, v3 |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -533,6 +631,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "i32" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -540,9 +639,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -573,8 +682,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -592,21 +717,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.I32 4 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.I32 4 ]
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
-                        [],
-                        "next",
-                        []
-                      |),
-                      [ v3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.associated,
+                          [],
+                          [],
+                          "next",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, v3 |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -634,6 +767,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "i32" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -641,9 +775,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -674,8 +818,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -693,21 +853,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.I32 5 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.I32 5 ]
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
-                        [],
-                        "next",
-                        []
-                      |),
-                      [ v3 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.associated,
+                          [],
+                          [],
+                          "next",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, v3 |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -735,6 +903,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "i32" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -742,9 +911,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "i32" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -775,8 +954,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -796,9 +991,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "all done
-" |) ] |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "all done
+" |) ] |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)

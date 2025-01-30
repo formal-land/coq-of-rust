@@ -35,8 +35,8 @@ Module clone.
                     [
                       M.read (| dst |);
                       M.call_closure (|
-                        M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                        [ M.read (| src |) ]
+                        M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                       |)
                     ]
                   |)
@@ -84,8 +84,13 @@ Module clone.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
-                    [ M.read (| src |) ]
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -102,18 +107,22 @@ Module clone.
                             M.alloc (|
                               Value.Tuple
                                 [
-                                  len;
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "*mut")
+                                  M.borrow (| Pointer.Kind.Ref, len |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ M.read (| dst |) ]
+                                        |),
+                                        [ M.read (| dst |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -135,8 +144,12 @@ Module clone.
                                               (M.alloc (|
                                                 UnOp.not (|
                                                   BinOp.eq (|
-                                                    M.read (| M.read (| left_val |) |),
-                                                    M.read (| M.read (| right_val |) |)
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |),
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -163,8 +176,24 @@ Module clone.
                                                     |),
                                                     [
                                                       M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
                                                         [
@@ -172,17 +201,26 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "clone_to_uninit() source and destination must have equal lengths"
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -202,16 +240,45 @@ Module clone.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ uninit_ref := M.alloc (| M.rust_cast (M.read (| dst |)) |) in
+              let~ uninit_ref :=
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ])
+                            (M.read (| dst |))
+                        |)
+                      |)
+                    |)
+                  |)
+                |) in
               let~ initializing :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::clone::uninit::InitializingSlice") [] [ T ],
                       "from_fully_uninit",
+                      [],
                       []
                     |),
-                    [ M.read (| uninit_ref |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| uninit_ref |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -223,7 +290,9 @@ Module clone.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| src |) ]
@@ -243,10 +312,17 @@ Module clone.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -275,19 +351,27 @@ Module clone.
                                                   []
                                                   [ T ],
                                                 "push",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                initializing;
+                                                M.borrow (| Pointer.Kind.MutRef, initializing |);
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::clone::Clone",
                                                     T,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| element_ref |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| element_ref |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -352,7 +436,11 @@ Module clone.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
-                    [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
+                    [
+                      M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| src |) |) |);
+                      M.read (| dst |);
+                      Value.Integer IntegerKind.Usize 1
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -388,8 +476,13 @@ Module clone.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
-                    [ M.read (| src |) ]
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -406,18 +499,22 @@ Module clone.
                             M.alloc (|
                               Value.Tuple
                                 [
-                                  len;
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "*mut")
+                                  M.borrow (| Pointer.Kind.Ref, len |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ M.read (| dst |) ]
+                                        |),
+                                        [ M.read (| dst |) ]
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -439,8 +536,12 @@ Module clone.
                                               (M.alloc (|
                                                 UnOp.not (|
                                                   BinOp.eq (|
-                                                    M.read (| M.read (| left_val |) |),
-                                                    M.read (| M.read (| right_val |) |)
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |),
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -467,8 +568,24 @@ Module clone.
                                                     |),
                                                     [
                                                       M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
                                                         [
@@ -476,17 +593,26 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "clone_to_uninit() source and destination must have equal lengths"
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -515,14 +641,16 @@ Module clone.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "as_ptr",
+                          [],
                           []
                         |),
-                        [ M.read (| src |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| dst |) ]
@@ -592,7 +720,9 @@ Module clone.
             (let data := M.alloc (| data |) in
             Value.StructRecord
               "core::clone::uninit::InitializingSlice"
-              [ ("data", M.read (| data |)); ("initialized_len", Value.Integer IntegerKind.Usize 0)
+              [
+                ("data", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |));
+                ("initialized_len", Value.Integer IntegerKind.Usize 0)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -621,21 +751,32 @@ Module clone.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "write",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_array_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::clone::uninit::InitializingSlice",
-                            "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_array_field (|
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::clone::uninit::InitializingSlice",
+                                    "data"
+                                  |)
+                                |)
+                              |),
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::clone::uninit::InitializingSlice",
+                                "initialized_len"
+                              |)
+                            |)
                           |)
-                        |),
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::clone::uninit::InitializingSlice",
-                          "initialized_len"
                         |)
                       |);
                       M.read (| value |)
@@ -645,7 +786,7 @@ Module clone.
               let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::clone::uninit::InitializingSlice",
                     "initialized_len"
                   |) in
@@ -698,21 +839,27 @@ Module clone.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "slice_as_mut_ptr",
+                          [],
                           []
                         |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::clone::uninit::InitializingSlice",
-                              "data"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::clone::uninit::InitializingSlice",
+                                  "data"
+                                |)
+                              |)
                             |)
                           |)
                         ]
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::clone::uninit::InitializingSlice",
                           "initialized_len"
                         |)

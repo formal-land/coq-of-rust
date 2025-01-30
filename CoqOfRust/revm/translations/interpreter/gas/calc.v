@@ -72,6 +72,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -95,6 +96,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -111,7 +113,8 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "i64")
                                     (BinOp.Wrap.add (|
                                       BinOp.Wrap.sub (|
                                         M.read (|
@@ -152,9 +155,15 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_context_interface::host::SStoreResult",
                                       "is_new_eq_present",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| vals |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| vals |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -176,9 +185,15 @@ Module gas.
                                                 Ty.path
                                                   "revm_context_interface::host::SStoreResult",
                                                 "is_original_eq_present",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| vals |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| vals |) |)
+                                                |)
+                                              ]
                                             |),
                                             ltac:(M.monadic
                                               (M.call_closure (|
@@ -186,9 +201,15 @@ Module gas.
                                                   Ty.path
                                                     "revm_context_interface::host::SStoreResult",
                                                   "is_new_zero",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| vals |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| vals |) |)
+                                                  |)
+                                                ]
                                               |)))
                                           |)
                                         |)) in
@@ -216,9 +237,15 @@ Module gas.
                                                           Ty.path
                                                             "revm_context_interface::host::SStoreResult",
                                                           "is_original_zero",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| vals |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| vals |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)
                                                   |)) in
@@ -240,9 +267,15 @@ Module gas.
                                                                 Ty.path
                                                                   "revm_context_interface::host::SStoreResult",
                                                                 "is_present_zero",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| vals |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| vals |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -275,9 +308,17 @@ Module gas.
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
                                                                         "is_new_zero",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [ M.read (| vals |) ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| vals |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -321,9 +362,15 @@ Module gas.
                                                         Ty.path
                                                           "revm_context_interface::host::SStoreResult",
                                                         "is_original_eq_new",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ M.read (| vals |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| vals |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -345,6 +392,7 @@ Module gas.
                                                                   Ty.path
                                                                     "revm_specification::hardfork::SpecId",
                                                                   "is_enabled_in",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -429,9 +477,17 @@ Module gas.
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
                                                                         "is_original_zero",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [ M.read (| vals |) ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| vals |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -445,7 +501,8 @@ Module gas.
                                                                   β,
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| β |),
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "i64")
                                                                       (BinOp.Wrap.sub (|
                                                                         M.read (|
                                                                           M.get_constant (|
@@ -465,7 +522,8 @@ Module gas.
                                                                   β,
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| β |),
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "i64")
                                                                       (BinOp.Wrap.sub (|
                                                                         M.read (|
                                                                           gas_sstore_reset
@@ -503,9 +561,15 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_present_zero",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     ltac:(M.monadic
@@ -513,9 +577,15 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_new_zero",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -549,7 +619,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant (| "revm_interpreter::gas::constants::CREATE" |) |);
                   M.read (|
@@ -646,19 +716,25 @@ Module gas.
                                       BinOp.eq (|
                                         M.read (|
                                           M.SubPointer.get_array_field (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "as_limbs",
                                                   [
                                                     Value.Integer IntegerKind.Usize 256;
                                                     Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [],
-                                                "as_limbs",
-                                                []
-                                              |),
-                                              [ value ]
+                                                  ],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                              |)
                                             |),
                                             i
                                           |)
@@ -689,29 +765,37 @@ Module gas.
                                     β,
                                     BinOp.Wrap.sub (|
                                       M.read (| β |),
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u64")
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "leading_zeros",
+                                            [],
                                             []
                                           |),
                                           [
                                             M.read (|
                                               M.SubPointer.get_array_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        [],
+                                                      "as_limbs",
                                                       [
                                                         Value.Integer IntegerKind.Usize 256;
                                                         Value.Integer IntegerKind.Usize 4
-                                                      ]
-                                                      [],
-                                                    "as_limbs",
-                                                    []
-                                                  |),
-                                                  [ value ]
+                                                      ],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                                  |)
                                                 |),
                                                 i
                                               |)
@@ -845,9 +929,13 @@ Module gas.
                                     ]
                                     [],
                                   "is_zero",
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ],
                                   []
                                 |),
-                                [ power ]
+                                [ M.borrow (| Pointer.Kind.Ref, power |) ]
                               |)
                             |)) in
                         let _ :=
@@ -875,6 +963,10 @@ Module gas.
                                   ]
                                   [],
                                 "from",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -891,6 +983,7 @@ Module gas.
                                                   M.get_associated_function (|
                                                     Ty.path "revm_specification::hardfork::SpecId",
                                                     "is_enabled_in",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -936,7 +1029,9 @@ Module gas.
                                           []
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -950,6 +1045,10 @@ Module gas.
                                           ]
                                           [],
                                         "checked_add",
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ],
                                         []
                                       |),
                                       [
@@ -963,6 +1062,10 @@ Module gas.
                                               ]
                                               [],
                                             "from",
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ],
                                             [ Ty.path "u64" ]
                                           |),
                                           [
@@ -992,7 +1095,9 @@ Module gas.
                                                         []
                                                     ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1006,6 +1111,10 @@ Module gas.
                                                         ]
                                                         [],
                                                       "checked_mul",
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ],
                                                       []
                                                     |),
                                                     [
@@ -1020,6 +1129,10 @@ Module gas.
                                                             ]
                                                             [],
                                                           "from",
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ],
                                                           [ Ty.path "u64" ]
                                                         |),
                                                         [
@@ -1065,6 +1178,7 @@ Module gas.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.path "u64" ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -1075,6 +1189,7 @@ Module gas.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -1122,6 +1237,7 @@ Module gas.
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -1129,6 +1245,7 @@ Module gas.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1164,6 +1281,7 @@ Module gas.
                                     [ Ty.path "u64" ]
                                 ],
                               "ok",
+                              [],
                               []
                             |),
                             [
@@ -1171,6 +1289,7 @@ Module gas.
                                 M.get_trait_method (|
                                   "core::convert::TryFrom",
                                   Ty.path "u64",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
@@ -1181,6 +1300,7 @@ Module gas.
                                       []
                                   ],
                                   "try_from",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| gas |) ]
@@ -1258,6 +1378,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1294,6 +1415,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1344,7 +1466,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| base_cost |);
                   M.read (|
@@ -1406,13 +1528,13 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                          M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [
                             M.read (|
                               M.get_constant (| "revm_interpreter::gas::constants::LOG" |)
@@ -1424,6 +1546,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "checked_mul",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1492,7 +1615,7 @@ Module gas.
                   |);
                   BinOp.Wrap.mul (|
                     M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |),
-                    M.rust_cast (M.read (| n |))
+                    M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 ]
               |)))
@@ -1515,7 +1638,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant (| "revm_interpreter::gas::constants::KECCAK256" |) |);
                   M.read (|
@@ -1576,10 +1699,11 @@ Module gas.
           (let len := M.alloc (| len |) in
           let multiple := M.alloc (| multiple |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
+            M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
             [
               M.read (| multiple |);
-              M.rust_cast
+              M.cast
+                (Ty.path "u64")
                 (M.call_closure (|
                   M.get_function (|
                     "revm_interpreter::interpreter::shared_memory::num_words",
@@ -1680,6 +1804,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -1721,6 +1846,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1750,6 +1876,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_specification::hardfork::SpecId",
                                               "is_enabled_in",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1819,6 +1946,7 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
+                              [],
                               []
                             |),
                             [
@@ -1837,7 +1965,7 @@ Module gas.
                             ],
                             []
                           |),
-                          [ M.read (| vals |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -1884,6 +2012,7 @@ Module gas.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -1906,7 +2035,7 @@ Module gas.
                                   ],
                                   []
                                 |),
-                                [ M.read (| vals |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                               |)
                             |)));
                         fun γ =>
@@ -1918,7 +2047,7 @@ Module gas.
                                   [],
                                   []
                                 |),
-                                [ M.read (| vals |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                               |)
                             |)))
                       ]
@@ -1965,9 +2094,10 @@ Module gas.
                             M.get_associated_function (|
                               Ty.path "revm_context_interface::host::SStoreResult",
                               "is_new_eq_present",
+                              [],
                               []
                             |),
-                            [ M.read (| vals |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1989,18 +2119,30 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_context_interface::host::SStoreResult",
                                         "is_original_eq_present",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| vals |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| vals |) |)
+                                        |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_original_zero",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| vals |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -2021,9 +2163,15 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_context_interface::host::SStoreResult",
                                               "is_original_eq_present",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| vals |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| vals |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2080,9 +2228,10 @@ Module gas.
                               M.get_associated_function (|
                                 Ty.path "revm_context_interface::host::SStoreResult",
                                 "is_present_zero",
+                                [],
                                 []
                               |),
-                              [ M.read (| vals |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                             |),
                             ltac:(M.monadic
                               (UnOp.not (|
@@ -2090,9 +2239,11 @@ Module gas.
                                   M.get_associated_function (|
                                     Ty.path "revm_context_interface::host::SStoreResult",
                                     "is_new_zero",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| vals |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |)
+                                  ]
                                 |)
                               |)))
                           |)
@@ -2163,6 +2314,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2239,6 +2391,7 @@ Module gas.
                                   M.get_associated_function (|
                                     Ty.path "revm_specification::hardfork::SpecId",
                                     "is_enabled_in",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2272,6 +2425,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2310,6 +2464,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2408,6 +2563,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -2452,6 +2608,7 @@ Module gas.
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2524,6 +2681,7 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         "is_enabled_in",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2735,13 +2893,13 @@ Module gas.
         ltac:(M.monadic
           (let num_words := M.alloc (| num_words |) in
           M.read (|
-            let~ num_words := M.alloc (| M.rust_cast (M.read (| num_words |)) |) in
+            let~ num_words := M.alloc (| M.cast (Ty.path "u64") (M.read (| num_words |)) |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
+                M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                    M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (| M.get_constant (| "revm_interpreter::gas::constants::MEMORY" |) |);
                       M.read (| num_words |)
@@ -2749,7 +2907,7 @@ Module gas.
                   |);
                   BinOp.Wrap.div (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                      M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                       [ M.read (| num_words |); M.read (| num_words |) ]
                     |),
                     Value.Integer IntegerKind.U64 512
@@ -2831,7 +2989,8 @@ Module gas.
             let~ initial_gas := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
             let~ zero_data_len :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u64")
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -2853,7 +3012,9 @@ Module gas.
                             (Ty.path "bool")
                         ],
                       [],
+                      [],
                       "count",
+                      [],
                       []
                     |),
                     [
@@ -2862,7 +3023,9 @@ Module gas.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           [],
+                          [],
                           "filter",
+                          [],
                           [
                             Ty.function
                               [
@@ -2882,9 +3045,10 @@ Module gas.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "iter",
+                              [],
                               []
                             |),
-                            [ M.read (| input |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |);
                           M.closure
                             (fun γ =>
@@ -2899,7 +3063,11 @@ Module gas.
                                           ltac:(M.monadic
                                             (let v := M.copy (| γ |) in
                                             BinOp.eq (|
-                                              M.read (| M.read (| M.read (| v |) |) |),
+                                              M.read (|
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| v |) |) |)
+                                                |)
+                                              |),
                                               Value.Integer IntegerKind.U8 0
                                             |)))
                                       ]
@@ -2914,14 +3082,16 @@ Module gas.
             let~ non_zero_data_len :=
               M.alloc (|
                 BinOp.Wrap.sub (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u64")
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| input |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                     |)),
                   M.read (| zero_data_len |)
                 |)
@@ -2961,6 +3131,7 @@ Module gas.
                                       M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         "is_enabled_in",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3005,10 +3176,17 @@ Module gas.
                               "revm_context_interface::transaction::access_list::AccessListTrait",
                               AccessListT,
                               [],
+                              [],
                               "num_account_storages",
+                              [],
                               []
                             |),
-                            [ M.read (| access_list |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| access_list |) |)
+                              |)
+                            ]
                           |)
                         |),
                         [
@@ -3025,7 +3203,7 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
-                                      M.rust_cast (M.read (| account_num |)),
+                                      M.cast (Ty.path "u64") (M.read (| account_num |)),
                                       M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
@@ -3041,7 +3219,7 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
-                                      M.rust_cast (M.read (| storage_num |)),
+                                      M.cast (Ty.path "u64") (M.read (| storage_num |)),
                                       M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
@@ -3083,6 +3261,7 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_specification::hardfork::SpecId",
                                               "is_enabled_in",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3125,6 +3304,7 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3154,9 +3334,11 @@ Module gas.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| input |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
+                                ]
                               |)
                             ]
                           |)
@@ -3178,6 +3360,7 @@ Module gas.
                               M.get_associated_function (|
                                 Ty.path "revm_specification::hardfork::SpecId",
                                 "is_enabled_in",
+                                [],
                                 []
                               |),
                               [

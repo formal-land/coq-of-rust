@@ -1652,7 +1652,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1677,7 +1677,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1702,7 +1702,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1727,7 +1727,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1752,7 +1752,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1777,7 +1777,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1802,7 +1802,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1827,7 +1827,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1852,7 +1852,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1877,7 +1877,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1902,7 +1902,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1927,7 +1927,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1952,7 +1952,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1977,7 +1977,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2002,7 +2002,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2027,7 +2027,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2052,7 +2052,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2077,7 +2077,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2102,7 +2102,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2127,7 +2127,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2152,7 +2152,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2177,7 +2177,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2202,7 +2202,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2227,7 +2227,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2252,7 +2252,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2277,7 +2277,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2302,7 +2302,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2327,7 +2327,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2352,7 +2352,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2377,7 +2377,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2402,7 +2402,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2427,7 +2427,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2452,7 +2452,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2477,7 +2477,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2502,7 +2502,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2527,7 +2527,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2552,7 +2552,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2577,7 +2577,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2602,7 +2602,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2627,7 +2627,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2652,7 +2652,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2677,7 +2677,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2702,7 +2702,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2727,7 +2727,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2752,7 +2752,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2777,7 +2777,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2802,7 +2802,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2827,7 +2827,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2852,7 +2852,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2877,7 +2877,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2902,7 +2902,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2927,7 +2927,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2952,7 +2952,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2977,7 +2977,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3002,7 +3002,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3027,7 +3027,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3052,7 +3052,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3077,7 +3077,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3102,7 +3102,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3127,7 +3127,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3152,7 +3152,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3177,7 +3177,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.read (| small |))))
+            M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3202,7 +3202,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.cast (Ty.path "f32") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3227,7 +3227,7 @@ Module convert.
         | [], [], [ small ] =>
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
-            M.rust_cast (M.rust_cast (M.read (| small |)))))
+            M.cast (Ty.path "f64") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3270,7 +3270,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3285,7 +3287,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3333,7 +3335,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3348,7 +3352,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3396,7 +3400,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3411,7 +3417,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3459,7 +3465,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3474,7 +3482,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3522,7 +3530,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3537,7 +3547,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3585,7 +3595,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3600,7 +3612,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3648,7 +3660,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3663,7 +3677,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3711,7 +3725,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3726,7 +3742,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3774,7 +3790,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3789,7 +3807,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3837,7 +3855,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3852,7 +3872,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3893,9 +3913,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3921,7 +3945,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -3962,9 +3986,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3990,7 +4018,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4031,9 +4059,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4059,7 +4091,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4100,9 +4132,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4128,7 +4164,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4169,9 +4205,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4197,7 +4237,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4238,9 +4278,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4266,7 +4310,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4307,9 +4351,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4335,7 +4383,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4376,9 +4424,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4404,7 +4456,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4445,9 +4497,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4473,7 +4529,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4514,9 +4570,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4542,7 +4602,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4590,7 +4650,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u8")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4605,7 +4667,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4653,7 +4715,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4668,7 +4732,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4716,7 +4780,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u16")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4731,7 +4797,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4779,7 +4845,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4794,7 +4862,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4842,7 +4910,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4857,7 +4927,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4905,7 +4975,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u32")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4920,7 +4992,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -4968,7 +5040,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4983,7 +5057,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5031,7 +5105,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5046,7 +5122,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5094,7 +5170,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5109,7 +5187,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5157,7 +5235,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u64")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5172,7 +5252,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5220,7 +5300,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5235,7 +5317,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5283,7 +5365,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5298,7 +5382,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5346,7 +5430,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5361,7 +5447,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5409,7 +5495,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5424,7 +5512,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5472,7 +5560,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "u128")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5487,7 +5577,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "i128") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5539,7 +5629,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5599,7 +5689,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5659,7 +5749,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5719,7 +5809,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5779,7 +5869,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5828,9 +5918,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -5856,7 +5950,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -5908,7 +6002,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -5968,7 +6062,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6028,7 +6122,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6088,7 +6182,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6137,9 +6231,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6165,7 +6263,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6206,9 +6304,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6234,7 +6336,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6286,7 +6388,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6346,7 +6448,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6406,7 +6508,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6455,9 +6557,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6483,7 +6589,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6524,9 +6630,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6552,7 +6662,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6593,9 +6703,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6621,7 +6735,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6673,7 +6787,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6733,7 +6847,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6782,9 +6896,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6810,7 +6928,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6851,9 +6969,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6879,7 +7001,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6920,9 +7042,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6948,7 +7074,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -6989,9 +7115,13 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               let~ min :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                |) in
               let~ max :=
-                M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                M.alloc (|
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -7017,7 +7147,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -7069,7 +7199,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7125,7 +7255,9 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast
+                                (Ty.path "usize")
+                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7140,7 +7272,7 @@ Module convert.
                       (M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                       |)))
                 ]
               |)
@@ -7192,7 +7324,7 @@ Module convert.
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
-                          [ M.rust_cast (M.read (| u |)) ]
+                          [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7249,7 +7381,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7268,7 +7402,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7316,7 +7450,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7335,7 +7471,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7383,7 +7519,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7402,7 +7540,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7435,7 +7573,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "u64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7464,7 +7604,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "u128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7508,7 +7650,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7527,7 +7671,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7575,7 +7719,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7594,7 +7740,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7642,7 +7788,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7661,7 +7809,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7709,7 +7857,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -7728,7 +7878,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i64") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7761,7 +7911,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7798,9 +7950,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7830,7 +7986,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7871,9 +8027,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7903,7 +8063,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -7944,9 +8104,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7976,7 +8140,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8029,7 +8193,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u64") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8093,7 +8257,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "u128") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8145,9 +8309,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8177,7 +8345,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i8") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8218,9 +8386,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8250,7 +8422,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i16") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8291,9 +8463,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8323,7 +8499,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "i32") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8356,7 +8532,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i64") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8385,7 +8563,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "i128") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8414,7 +8594,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8443,7 +8625,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "usize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8487,7 +8671,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -8506,7 +8692,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8559,7 +8745,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8623,7 +8809,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8687,7 +8873,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8751,7 +8937,7 @@ Module convert.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -8803,9 +8989,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8835,7 +9025,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "usize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -8868,7 +9058,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8897,7 +9089,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -8941,7 +9135,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -8960,7 +9156,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -9008,7 +9204,9 @@ Module convert.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (| u |),
-                                M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
                               |)
                             |)) in
                         let _ :=
@@ -9027,7 +9225,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -9060,7 +9258,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -9089,7 +9289,9 @@ Module convert.
           | [], [], [ value ] =>
             ltac:(M.monadic
               (let value := M.alloc (| value |) in
-              Value.StructTuple "core::result::Result::Ok" [ M.rust_cast (M.read (| value |)) ]))
+              Value.StructTuple
+                "core::result::Result::Ok"
+                [ M.cast (Ty.path "isize") (M.read (| value |)) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -9126,9 +9328,13 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 let~ min :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MIN" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  |) in
                 let~ max :=
-                  M.alloc (| M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)) |) in
+                  M.alloc (|
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -9158,7 +9364,7 @@ Module convert.
                         (M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [ M.rust_cast (M.read (| u |)) ]
+                            [ M.cast (Ty.path "isize") (M.read (| u |)) ]
                         |)))
                   ]
                 |)
@@ -9195,6 +9401,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9202,8 +9409,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u16",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9211,6 +9420,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9250,6 +9460,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9257,8 +9468,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u32",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9266,6 +9479,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9305,6 +9519,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9312,8 +9527,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9321,6 +9538,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9360,6 +9578,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9367,8 +9586,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9376,6 +9597,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9415,6 +9637,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9422,8 +9645,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9431,6 +9656,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9470,6 +9696,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9477,8 +9704,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u32",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9486,6 +9715,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9525,6 +9755,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9532,8 +9763,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9541,6 +9774,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9580,6 +9814,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9587,8 +9822,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9596,6 +9833,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9635,6 +9873,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9642,8 +9881,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9651,6 +9892,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9690,6 +9932,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9697,8 +9940,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
+                    [],
                     [ Ty.path "u32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9706,6 +9951,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9745,6 +9991,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9752,8 +9999,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
+                    [],
                     [ Ty.path "u32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9761,6 +10010,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9800,6 +10050,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9807,8 +10058,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
+                    [],
                     [ Ty.path "u64" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9816,6 +10069,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9855,6 +10109,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9862,8 +10117,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i16",
+                    [],
                     [ Ty.path "i8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9871,6 +10128,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9910,6 +10168,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9917,8 +10176,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
+                    [],
                     [ Ty.path "i8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9926,6 +10187,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -9965,6 +10227,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -9972,8 +10235,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "i8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -9981,6 +10246,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10020,6 +10286,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10027,8 +10294,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "i8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10036,6 +10305,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10075,6 +10345,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10082,8 +10353,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
+                    [],
                     [ Ty.path "i8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10091,6 +10364,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10130,6 +10404,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10137,8 +10412,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
+                    [],
                     [ Ty.path "i16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10146,6 +10423,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10185,6 +10463,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10192,8 +10471,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "i16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10201,6 +10482,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10240,6 +10522,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10247,8 +10530,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "i16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10256,6 +10541,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10295,6 +10581,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10302,8 +10589,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
+                    [],
                     [ Ty.path "i16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10311,6 +10600,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10350,6 +10640,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10357,8 +10648,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "i32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10366,6 +10659,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10405,6 +10699,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10412,8 +10707,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "i32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10421,6 +10718,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10460,6 +10758,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10467,8 +10766,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "i64" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10476,6 +10777,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10515,6 +10817,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10522,8 +10825,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i16",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10531,6 +10836,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10570,6 +10876,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10577,8 +10884,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10586,6 +10895,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10625,6 +10935,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10632,8 +10943,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10641,6 +10954,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10680,6 +10994,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10687,8 +11002,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10696,6 +11013,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10735,6 +11053,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10742,8 +11061,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
+                    [],
                     [ Ty.path "u8" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10751,6 +11072,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10790,6 +11112,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10797,8 +11120,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10806,6 +11131,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10845,6 +11171,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10852,8 +11179,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10861,6 +11190,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10900,6 +11230,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10907,8 +11238,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "u16" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10916,6 +11249,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -10955,6 +11289,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -10962,8 +11297,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
+                    [],
                     [ Ty.path "u32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -10971,6 +11308,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -11010,6 +11348,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -11017,8 +11356,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "u32" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -11026,6 +11367,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -11065,6 +11407,7 @@ Module convert.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -11072,8 +11415,10 @@ Module convert.
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
+                    [],
                     [ Ty.path "u64" ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -11081,6 +11426,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
+                        [],
                         []
                       |),
                       [ M.read (| small |) ]
@@ -11125,6 +11471,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11132,6 +11479,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11175,6 +11523,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11182,6 +11531,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11225,6 +11575,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11232,6 +11583,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11275,6 +11627,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11282,6 +11635,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11325,6 +11679,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11332,6 +11687,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11375,6 +11731,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11382,6 +11739,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11425,6 +11783,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11432,6 +11791,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11475,6 +11835,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11482,6 +11843,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11525,6 +11887,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11532,6 +11895,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11575,6 +11939,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11582,6 +11947,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11625,6 +11991,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11632,6 +11999,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11675,6 +12043,7 @@ Module convert.
                   []
                   [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -11682,6 +12051,7 @@ Module convert.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -11728,6 +12098,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -11742,7 +12113,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11750,8 +12123,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11762,6 +12137,7 @@ Module convert.
                                             []
                                             [ Ty.path "u16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -11798,6 +12174,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -11808,6 +12185,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -11873,6 +12251,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -11887,7 +12266,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -11895,8 +12276,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -11907,6 +12290,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -11943,6 +12327,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -11953,6 +12338,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12018,6 +12404,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12032,7 +12419,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12040,8 +12429,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12052,6 +12443,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12088,6 +12480,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12098,6 +12491,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12163,6 +12557,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12178,7 +12573,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12186,8 +12583,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12198,6 +12597,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12234,6 +12634,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12244,6 +12645,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12309,6 +12711,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12323,7 +12726,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12331,8 +12736,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12343,6 +12750,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12379,6 +12787,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12389,6 +12798,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12454,6 +12864,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12468,7 +12879,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12476,8 +12889,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12488,6 +12903,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12524,6 +12940,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12534,6 +12951,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12599,6 +13017,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12613,7 +13032,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12621,8 +13042,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12633,6 +13056,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12669,6 +13093,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12679,6 +13104,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12744,6 +13170,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12759,7 +13186,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12767,8 +13196,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12779,6 +13210,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12815,6 +13247,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12825,6 +13258,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -12890,6 +13324,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -12904,7 +13339,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -12912,8 +13349,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -12924,6 +13363,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -12960,6 +13400,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -12970,6 +13411,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13035,6 +13477,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13049,7 +13492,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13057,8 +13502,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13069,6 +13516,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13105,6 +13553,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13115,6 +13564,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13180,6 +13630,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13194,7 +13645,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13202,8 +13655,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13214,6 +13669,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13250,6 +13706,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13260,6 +13717,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13325,6 +13783,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13339,7 +13798,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13347,8 +13808,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13359,6 +13822,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13395,6 +13859,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13405,6 +13870,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13470,6 +13936,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13485,7 +13952,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13493,8 +13962,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13505,6 +13976,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13541,6 +14013,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13551,6 +14024,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13616,6 +14090,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13630,7 +14105,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13638,8 +14115,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13650,6 +14129,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13686,6 +14166,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13696,6 +14177,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13761,6 +14243,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13775,7 +14258,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13783,8 +14268,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13795,6 +14282,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13831,6 +14319,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13841,6 +14330,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -13906,6 +14396,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -13920,7 +14411,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -13928,8 +14421,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -13940,6 +14435,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -13976,6 +14472,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -13986,6 +14483,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14051,6 +14549,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14065,7 +14564,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14073,8 +14574,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14085,6 +14588,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14121,6 +14625,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14131,6 +14636,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14196,6 +14702,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14210,7 +14717,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14218,8 +14727,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14230,6 +14741,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14266,6 +14778,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14276,6 +14789,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14341,6 +14855,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14355,7 +14870,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14363,8 +14880,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14375,6 +14894,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14411,6 +14931,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14421,6 +14942,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14486,6 +15008,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14500,7 +15023,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14508,8 +15033,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14520,6 +15047,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14556,6 +15084,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14566,6 +15095,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14631,6 +15161,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14645,7 +15176,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14653,8 +15186,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14665,6 +15200,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14701,6 +15237,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14711,6 +15248,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14776,6 +15314,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14791,7 +15330,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14799,8 +15340,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14811,6 +15354,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14847,6 +15391,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -14857,6 +15402,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -14922,6 +15468,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -14936,7 +15483,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -14944,8 +15493,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -14956,6 +15507,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -14992,6 +15544,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15002,6 +15555,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15067,6 +15621,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15081,7 +15636,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15089,8 +15646,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15101,6 +15660,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15137,6 +15697,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15147,6 +15708,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15212,6 +15774,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15226,7 +15789,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15234,8 +15799,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15246,6 +15813,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15282,6 +15850,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15292,6 +15861,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15357,6 +15927,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15372,7 +15943,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15380,8 +15953,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15392,6 +15967,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15428,6 +16004,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15438,6 +16015,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15503,6 +16081,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15517,7 +16096,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15525,8 +16106,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15537,6 +16120,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15573,6 +16157,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15583,6 +16168,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15648,6 +16234,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15662,7 +16249,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15670,8 +16259,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15682,6 +16273,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15718,6 +16310,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15728,6 +16321,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15793,6 +16387,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15807,7 +16402,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15815,8 +16412,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15827,6 +16426,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -15863,6 +16463,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -15873,6 +16474,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -15938,6 +16540,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -15952,7 +16555,9 @@ Module convert.
                                     []
                                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -15960,8 +16565,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -15972,6 +16579,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16008,6 +16616,7 @@ Module convert.
                                                     [ Ty.path "i64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16018,6 +16627,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16083,6 +16693,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16098,7 +16709,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16106,8 +16719,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16118,6 +16733,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16154,6 +16770,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16164,6 +16781,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16229,6 +16847,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16243,7 +16862,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16251,8 +16872,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16263,6 +16886,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16299,6 +16923,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16309,6 +16934,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16374,6 +17000,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16388,7 +17015,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16396,8 +17025,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16408,6 +17039,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16444,6 +17076,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16454,6 +17087,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16519,6 +17153,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16533,7 +17168,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16541,8 +17178,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16553,6 +17192,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16589,6 +17229,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16599,6 +17240,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16664,6 +17306,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16678,7 +17321,9 @@ Module convert.
                                     []
                                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16686,8 +17331,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16698,6 +17345,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16734,6 +17382,7 @@ Module convert.
                                                     [ Ty.path "i64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16744,6 +17393,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16809,6 +17459,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16823,7 +17474,9 @@ Module convert.
                                     []
                                     [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16831,8 +17484,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16843,6 +17498,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -16879,6 +17535,7 @@ Module convert.
                                                     [ Ty.path "i128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -16889,6 +17546,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -16954,6 +17612,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -16968,7 +17627,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -16976,8 +17637,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "u8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -16988,6 +17651,7 @@ Module convert.
                                             []
                                             [ Ty.path "u8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17024,6 +17688,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17034,6 +17699,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17099,6 +17765,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17113,7 +17780,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17121,8 +17790,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17133,6 +17804,7 @@ Module convert.
                                             []
                                             [ Ty.path "u16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17169,6 +17841,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17179,6 +17852,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17244,6 +17918,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17258,7 +17933,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17266,8 +17943,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17278,6 +17957,7 @@ Module convert.
                                             []
                                             [ Ty.path "u16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17314,6 +17994,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17324,6 +18005,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17389,6 +18071,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17404,7 +18087,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17412,8 +18097,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17424,6 +18111,7 @@ Module convert.
                                             []
                                             [ Ty.path "u16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17460,6 +18148,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17470,6 +18159,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17535,6 +18225,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17549,7 +18240,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17557,8 +18250,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17569,6 +18264,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17605,6 +18301,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17615,6 +18312,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17680,6 +18378,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17694,7 +18393,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17702,8 +18403,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17714,6 +18417,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17750,6 +18454,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17760,6 +18465,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17825,6 +18531,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17839,7 +18546,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17847,8 +18556,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -17859,6 +18570,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -17895,6 +18607,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -17905,6 +18618,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -17970,6 +18684,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -17985,7 +18700,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -17993,8 +18710,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18005,6 +18724,7 @@ Module convert.
                                             []
                                             [ Ty.path "u32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18041,6 +18761,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18051,6 +18772,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18116,6 +18838,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18130,7 +18853,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18138,8 +18863,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18150,6 +18877,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18186,6 +18914,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18196,6 +18925,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18261,6 +18991,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18275,7 +19006,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18283,8 +19016,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18295,6 +19030,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18331,6 +19067,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18341,6 +19078,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18406,6 +19144,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18420,7 +19159,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18428,8 +19169,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18440,6 +19183,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18476,6 +19220,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18486,6 +19231,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18551,6 +19297,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18565,7 +19312,9 @@ Module convert.
                                     []
                                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18573,8 +19322,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18585,6 +19336,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18621,6 +19373,7 @@ Module convert.
                                                     [ Ty.path "i64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18631,6 +19384,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18696,6 +19450,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18711,7 +19466,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18719,8 +19476,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "u64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18731,6 +19490,7 @@ Module convert.
                                             []
                                             [ Ty.path "u64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18767,6 +19527,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18777,6 +19538,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18842,6 +19604,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -18856,7 +19619,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -18864,8 +19629,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -18876,6 +19643,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -18912,6 +19680,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -18922,6 +19691,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -18987,6 +19757,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19001,7 +19772,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19009,8 +19782,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19021,6 +19796,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19057,6 +19833,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19067,6 +19844,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19132,6 +19910,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19146,7 +19925,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19154,8 +19935,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19166,6 +19949,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19202,6 +19986,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19212,6 +19997,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19277,6 +20063,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19291,7 +20078,9 @@ Module convert.
                                     []
                                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19299,8 +20088,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19311,6 +20102,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19347,6 +20139,7 @@ Module convert.
                                                     [ Ty.path "i64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19357,6 +20150,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19422,6 +20216,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19436,7 +20231,9 @@ Module convert.
                                     []
                                     [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19444,8 +20241,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19456,6 +20255,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19492,6 +20292,7 @@ Module convert.
                                                     [ Ty.path "i128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19502,6 +20303,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19567,6 +20369,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19582,7 +20385,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19590,8 +20395,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "u128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19602,6 +20409,7 @@ Module convert.
                                             []
                                             [ Ty.path "u128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19638,6 +20446,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19648,6 +20457,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19713,6 +20523,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19727,7 +20538,9 @@ Module convert.
                                     []
                                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19735,8 +20548,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19747,6 +20562,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19783,6 +20599,7 @@ Module convert.
                                                     [ Ty.path "i8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19793,6 +20610,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -19858,6 +20676,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -19872,7 +20691,9 @@ Module convert.
                                     []
                                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -19880,8 +20701,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -19892,6 +20715,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -19928,6 +20752,7 @@ Module convert.
                                                     [ Ty.path "i16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -19938,6 +20763,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20003,6 +20829,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20017,7 +20844,9 @@ Module convert.
                                     []
                                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20025,8 +20854,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20037,6 +20868,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20073,6 +20905,7 @@ Module convert.
                                                     [ Ty.path "i32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20083,6 +20916,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20148,6 +20982,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20162,7 +20997,9 @@ Module convert.
                                     []
                                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20170,8 +21007,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20182,6 +21021,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20218,6 +21058,7 @@ Module convert.
                                                     [ Ty.path "i64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20228,6 +21069,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20293,6 +21135,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20307,7 +21150,9 @@ Module convert.
                                     []
                                     [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20315,8 +21160,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20327,6 +21174,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20363,6 +21211,7 @@ Module convert.
                                                     [ Ty.path "i128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20373,6 +21222,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20438,6 +21288,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20453,7 +21304,9 @@ Module convert.
                                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20461,8 +21314,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
+                                      [],
                                       [ Ty.path "usize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20473,6 +21328,7 @@ Module convert.
                                             []
                                             [ Ty.path "usize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20509,6 +21365,7 @@ Module convert.
                                                     [ Ty.path "isize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20519,6 +21376,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20584,6 +21442,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20598,7 +21457,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20606,8 +21467,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20618,6 +21481,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20654,6 +21518,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20664,6 +21529,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20729,6 +21595,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20743,7 +21610,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20751,8 +21620,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20763,6 +21634,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20799,6 +21671,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20809,6 +21682,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -20874,6 +21748,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -20888,7 +21763,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -20896,8 +21773,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -20908,6 +21787,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -20944,6 +21824,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -20954,6 +21835,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21019,6 +21901,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21033,7 +21916,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21041,8 +21926,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21053,6 +21940,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21089,6 +21977,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21099,6 +21988,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21164,6 +22054,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21178,7 +22069,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21186,8 +22079,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21198,6 +22093,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21234,6 +22130,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21244,6 +22141,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21309,6 +22207,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21324,7 +22223,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21332,8 +22233,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "i8" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21344,6 +22247,7 @@ Module convert.
                                             []
                                             [ Ty.path "i8" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21380,6 +22284,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21390,6 +22295,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21455,6 +22361,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21469,7 +22376,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21477,8 +22386,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21489,6 +22400,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21525,6 +22437,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21535,6 +22448,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21600,6 +22514,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21614,7 +22529,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21622,8 +22539,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21634,6 +22553,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21670,6 +22590,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21680,6 +22601,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21745,6 +22667,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21759,7 +22682,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21767,8 +22692,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21779,6 +22706,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21815,6 +22743,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21825,6 +22754,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -21890,6 +22820,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -21904,7 +22835,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -21912,8 +22845,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -21924,6 +22859,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -21960,6 +22896,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -21970,6 +22907,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22035,6 +22973,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22049,7 +22988,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22057,8 +22998,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22069,6 +23012,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22105,6 +23049,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22115,6 +23060,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22180,6 +23126,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22195,7 +23142,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22203,8 +23152,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "i16" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22215,6 +23166,7 @@ Module convert.
                                             []
                                             [ Ty.path "i16" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22251,6 +23203,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22261,6 +23214,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22326,6 +23280,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22340,7 +23295,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22348,8 +23305,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22360,6 +23319,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22396,6 +23356,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22406,6 +23367,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22471,6 +23433,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22485,7 +23448,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22493,8 +23458,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22505,6 +23472,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22541,6 +23509,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22551,6 +23520,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22616,6 +23586,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22630,7 +23601,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22638,8 +23611,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22650,6 +23625,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22686,6 +23662,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22696,6 +23673,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22761,6 +23739,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22775,7 +23754,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22783,8 +23764,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22795,6 +23778,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22831,6 +23815,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22841,6 +23826,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -22906,6 +23892,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -22920,7 +23907,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -22928,8 +23917,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -22940,6 +23931,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -22976,6 +23968,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -22986,6 +23979,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23051,6 +24045,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23066,7 +24061,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23074,8 +24071,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "i32" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23086,6 +24085,7 @@ Module convert.
                                             []
                                             [ Ty.path "i32" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23122,6 +24122,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23132,6 +24133,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23197,6 +24199,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23211,7 +24214,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23219,8 +24224,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23231,6 +24238,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23267,6 +24275,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23277,6 +24286,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23342,6 +24352,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23356,7 +24367,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23364,8 +24377,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23376,6 +24391,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23412,6 +24428,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23422,6 +24439,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23487,6 +24505,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23501,7 +24520,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23509,8 +24530,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23521,6 +24544,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23557,6 +24581,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23567,6 +24592,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23632,6 +24658,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23646,7 +24673,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23654,8 +24683,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23666,6 +24697,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23702,6 +24734,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23712,6 +24745,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23777,6 +24811,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23791,7 +24826,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23799,8 +24836,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23811,6 +24850,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23847,6 +24887,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -23857,6 +24898,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -23922,6 +24964,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -23937,7 +24980,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -23945,8 +24990,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "i64" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -23957,6 +25004,7 @@ Module convert.
                                             []
                                             [ Ty.path "i64" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -23993,6 +25041,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24003,6 +25052,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24068,6 +25118,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24082,7 +25133,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24090,8 +25143,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24102,6 +25157,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24138,6 +25194,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24148,6 +25205,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24213,6 +25271,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24227,7 +25286,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24235,8 +25296,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24247,6 +25310,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24283,6 +25347,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24293,6 +25358,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24358,6 +25424,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24372,7 +25439,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24380,8 +25449,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24392,6 +25463,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24428,6 +25500,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24438,6 +25511,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24503,6 +25577,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24517,7 +25592,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24525,8 +25602,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24537,6 +25616,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24573,6 +25653,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24583,6 +25664,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24648,6 +25730,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24662,7 +25745,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24670,8 +25755,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24682,6 +25769,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24718,6 +25806,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24728,6 +25817,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24793,6 +25883,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24808,7 +25899,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24816,8 +25909,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "i128" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24828,6 +25923,7 @@ Module convert.
                                             []
                                             [ Ty.path "i128" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -24864,6 +25960,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -24874,6 +25971,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -24939,6 +26037,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -24953,7 +26052,9 @@ Module convert.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -24961,8 +26062,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -24973,6 +26076,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25009,6 +26113,7 @@ Module convert.
                                                     [ Ty.path "u8" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25019,6 +26124,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -25084,6 +26190,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -25098,7 +26205,9 @@ Module convert.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -25106,8 +26215,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -25118,6 +26229,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25154,6 +26266,7 @@ Module convert.
                                                     [ Ty.path "u16" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25164,6 +26277,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -25229,6 +26343,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -25243,7 +26358,9 @@ Module convert.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -25251,8 +26368,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -25263,6 +26382,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25299,6 +26419,7 @@ Module convert.
                                                     [ Ty.path "u32" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25309,6 +26430,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -25374,6 +26496,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -25388,7 +26511,9 @@ Module convert.
                                     []
                                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -25396,8 +26521,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -25408,6 +26535,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25444,6 +26572,7 @@ Module convert.
                                                     [ Ty.path "u64" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25454,6 +26583,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -25519,6 +26649,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -25533,7 +26664,9 @@ Module convert.
                                     []
                                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -25541,8 +26674,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -25553,6 +26688,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25589,6 +26725,7 @@ Module convert.
                                                     [ Ty.path "u128" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25599,6 +26736,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -25664,6 +26802,7 @@ Module convert.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
+                        [],
                         []
                       |),
                       [
@@ -25679,7 +26818,9 @@ Module convert.
                                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -25687,8 +26828,10 @@ Module convert.
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
+                                      [],
                                       [ Ty.path "isize" ],
                                       "try_from",
+                                      [],
                                       []
                                     |),
                                     [
@@ -25699,6 +26842,7 @@ Module convert.
                                             []
                                             [ Ty.path "isize" ],
                                           "get",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| value |) ]
@@ -25735,6 +26879,7 @@ Module convert.
                                                     [ Ty.path "usize" ];
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -25745,6 +26890,7 @@ Module convert.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]

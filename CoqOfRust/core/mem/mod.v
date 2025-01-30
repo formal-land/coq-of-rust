@@ -19,6 +19,7 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| t |) ]
@@ -79,7 +80,7 @@ Module mem.
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::size_of_val", [], [ T ] |),
-          [ M.read (| val |) ]
+          [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| val |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -134,7 +135,7 @@ Module mem.
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::min_align_of_val", [], [ T ] |),
-          [ M.read (| val |) ]
+          [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| val |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -169,7 +170,7 @@ Module mem.
         (let val := M.alloc (| val |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::min_align_of_val", [], [ T ] |),
-          [ M.read (| val |) ]
+          [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| val |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -237,6 +238,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [
@@ -244,6 +246,7 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "zeroed",
+                    [],
                     []
                   |),
                   []
@@ -292,6 +295,7 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -311,6 +315,7 @@ Module mem.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "write_bytes",
+                            [],
                             []
                           |),
                           [
@@ -318,9 +323,10 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
-                              [ val ]
+                              [ M.borrow (| Pointer.Kind.MutRef, val |) ]
                             |);
                             Value.Integer IntegerKind.U8 1;
                             Value.Integer IntegerKind.Usize 1
@@ -336,6 +342,7 @@ Module mem.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [ M.read (| val |) ]
@@ -362,7 +369,10 @@ Module mem.
         let y := M.alloc (| y |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::typed_swap", [], [ T ] |),
-          [ M.read (| x |); M.read (| y |) ]
+          [
+            M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| x |) |) |);
+            M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| y |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -382,9 +392,9 @@ Module mem.
         M.call_closure (|
           M.get_function (| "core::mem::replace", [], [ T ] |),
           [
-            M.read (| dest |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |);
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+              M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
               []
             |)
           ]
@@ -421,14 +431,17 @@ Module mem.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read", [], [ T ] |),
-                [ M.read (| dest |) ]
+                [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| dest |) |) |) ]
               |)
             |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::write", [], [ T ] |),
-                [ M.read (| dest |); M.read (| src |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| dest |) |) |);
+                  M.read (| src |)
+                ]
               |)
             |) in
           result
@@ -460,7 +473,7 @@ Module mem.
     | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        M.read (| M.read (| x |) |)))
+        M.read (| M.deref (| M.read (| x |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -524,17 +537,26 @@ Module mem.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "cannot transmute_copy if Dst is larger than Src"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "cannot transmute_copy if Dst is larger than Src"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -568,7 +590,19 @@ Module mem.
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::read_unaligned", [], [ Dst ] |),
-                      [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
+                      [
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Dst ])
+                          (M.read (|
+                            M.use
+                              (M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.ConstPointer,
+                                  M.deref (| M.read (| src |) |)
+                                |)
+                              |))
+                          |))
+                      ]
                     |)
                   |)));
               fun γ =>
@@ -576,7 +610,19 @@ Module mem.
                   (M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::read", [], [ Dst ] |),
-                      [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
+                      [
+                        M.cast
+                          (Ty.apply (Ty.path "*const") [] [ Dst ])
+                          (M.read (|
+                            M.use
+                              (M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.ConstPointer,
+                                  M.deref (| M.read (| src |) |)
+                                |)
+                              |))
+                          |))
+                      ]
                     |)
                   |)))
             ]
@@ -621,7 +667,7 @@ Module mem.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -653,20 +699,28 @@ Module mem.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
+              [],
               [ Ty.associated ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::mem::Discriminant",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::mem::Discriminant",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| rhs |),
-                "core::mem::Discriminant",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| rhs |) |),
+                  "core::mem::Discriminant",
+                  0
+                |)
               |)
             ]
           |)))
@@ -709,14 +763,25 @@ Module mem.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.associated,
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::mem::Discriminant",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::mem::Discriminant",
+                        0
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -750,31 +815,60 @@ Module mem.
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::builders::DebugTuple", "finish", [] |),
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugTuple",
+              "finish",
+              [],
+              []
+            |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::builders::DebugTuple",
-                  "field",
-                  []
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_tuple",
-                        []
-                      |),
-                      [ M.read (| fmt |); M.read (| Value.String "Discriminant" |) ]
-                    |)
-                  |);
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::mem::Discriminant",
-                    0
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugTuple",
+                      "field",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Formatter",
+                              "debug_tuple",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Discriminant" |) |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::mem::Discriminant",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -805,7 +899,7 @@ Module mem.
           [
             M.call_closure (|
               M.get_function (| "core::intrinsics::discriminant_value", [], [ T ] |),
-              [ M.read (| v |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
             |)
           ]))
     | _, _, _ => M.impossible "wrong number of arguments"

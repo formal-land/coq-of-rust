@@ -28,6 +28,7 @@ Module fmt.
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
             "map_or_else",
+            [],
             [
               Ty.path "alloc::string::String";
               Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String");
@@ -36,8 +37,8 @@ Module fmt.
           |),
           [
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
-              [ args ]
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, args |) ]
             |);
             M.closure
               (fun γ =>
@@ -58,7 +59,15 @@ Module fmt.
                       |)))
                   | _ => M.impossible "wrong number of arguments"
                   end));
-            M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
+            M.get_trait_method (|
+              "alloc::borrow::ToOwned",
+              Ty.path "str",
+              [],
+              [],
+              "to_owned",
+              [],
+              []
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -89,9 +98,10 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "estimated_capacity",
+                    [],
                     []
                   |),
-                  [ args ]
+                  [ M.borrow (| Pointer.Kind.Ref, args |) ]
                 |)
               |) in
             let~ output :=
@@ -100,6 +110,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ M.read (| capacity |) ]
@@ -114,6 +125,7 @@ Module fmt.
                       []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
@@ -122,14 +134,21 @@ Module fmt.
                         "core::fmt::Write",
                         Ty.path "alloc::string::String",
                         [],
+                        [],
                         "write_fmt",
+                        [],
                         []
                       |),
-                      [ output; M.read (| args |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, output |); M.read (| args |) ]
                     |);
-                    M.read (|
-                      Value.String
-                        "a formatting trait implementation returned an error when the underlying stream did not"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          Value.String
+                            "a formatting trait implementation returned an error when the underlying stream did not"
+                        |)
+                      |)
                     |)
                   ]
                 |)

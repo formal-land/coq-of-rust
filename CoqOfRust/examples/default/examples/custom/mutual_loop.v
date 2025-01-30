@@ -36,7 +36,7 @@ Module Impl_mutual_loop_LoopA.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [] |),
+          M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -80,7 +80,7 @@ Module Impl_mutual_loop_LoopB.
           [
             ("ident",
               M.call_closure (|
-                M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [] |),
+                M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
                 []
               |))
           ]))
@@ -105,15 +105,15 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
         let~ la :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [] |),
+              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
               []
             |)
           |) in
         let~ lb :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [] |),
-              [ la ]
+              M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, la |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

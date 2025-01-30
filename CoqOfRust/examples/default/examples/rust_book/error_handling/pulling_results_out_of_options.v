@@ -18,6 +18,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ],
           "map",
+          [],
           [
             Ty.apply
               (Ty.path "core::result::Result")
@@ -39,21 +40,32 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "first",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ vec ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, vec |) ]
+                  |)
+                |)
               |)
             ]
           |);
@@ -76,6 +88,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   []
                                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                 "map",
+                                [],
                                 [
                                   Ty.path "i32";
                                   Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
@@ -86,9 +99,15 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "parse",
+                                    [],
                                     [ Ty.path "i32" ]
                                   |),
-                                  [ M.read (| M.read (| first |) |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.closure
                                   (fun γ =>
@@ -150,6 +169,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -167,6 +187,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -174,8 +195,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "42" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]
@@ -193,6 +220,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -204,6 +232,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -221,6 +250,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -228,8 +258,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "tofu" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]
@@ -245,49 +281,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "The first doubled is " |);
-                            M.read (| Value.String "
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                                    ]
+                                  M.read (| Value.String "The first doubled is " |);
+                                  M.read (| Value.String "
+" |)
                                 ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "pulling_results_out_of_options::double_first",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| numbers |) ]
-                                  |)
-                                |)
-                              ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
+                                          ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "pulling_results_out_of_options::double_first",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| numbers |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -302,49 +371,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "The first doubled is " |);
-                            M.read (| Value.String "
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                                    ]
+                                  M.read (| Value.String "The first doubled is " |);
+                                  M.read (| Value.String "
+" |)
                                 ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "pulling_results_out_of_options::double_first",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| empty |) ]
-                                  |)
-                                |)
-                              ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
+                                          ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "pulling_results_out_of_options::double_first",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| empty |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -359,49 +461,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "The first doubled is " |);
-                            M.read (| Value.String "
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                                    ]
+                                  M.read (| Value.String "The first doubled is " |);
+                                  M.read (| Value.String "
+" |)
                                 ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "pulling_results_out_of_options::double_first",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| strings |) ]
-                                  |)
-                                |)
-                              ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "i32";
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ]
+                                          ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "pulling_results_out_of_options::double_first",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| strings |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

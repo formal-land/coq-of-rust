@@ -38,7 +38,9 @@ Module locals_safety.
                               Ty.path "move_binary_format::errors::PartialVMError"
                             ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -47,9 +49,16 @@ Module locals_safety.
                               Ty.path
                                 "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                               "new",
+                              [],
                               []
                             |),
-                            [ M.read (| module |); M.read (| function_context |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_context |) |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -78,6 +87,7 @@ Module locals_safety.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -88,6 +98,7 @@ Module locals_safety.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -115,18 +126,23 @@ Module locals_safety.
                     "move_bytecode_verifier::absint::AbstractInterpreter",
                     Ty.path "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis",
                     [],
+                    [],
                     "analyze_function",
+                    [],
                     [ impl_Meter__plus___Sized ]
                   |),
                   [
-                    M.alloc (|
-                      Value.StructTuple
-                        "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
-                        []
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.alloc (|
+                        Value.StructTuple
+                          "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
+                          []
+                      |)
                     |);
                     M.read (| initial_state |);
-                    M.read (| function_context |);
-                    M.read (| meter |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| function_context |) |) |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
                   ]
                 |)
               |)
@@ -294,7 +310,9 @@ Module locals_safety.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -303,11 +321,13 @@ Module locals_safety.
                             "move_bytecode_verifier_meter::Meter",
                             impl_Meter__plus___Sized,
                             [],
+                            [],
                             "add",
+                            [],
                             []
                           |),
                           [
-                            M.read (| meter |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
                               M.get_constant (|
@@ -343,6 +363,7 @@ Module locals_safety.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -353,6 +374,7 @@ Module locals_safety.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -394,9 +416,13 @@ Module locals_safety.
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 "local_state",
+                                [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -422,73 +448,81 @@ Module locals_safety.
                                           |) in
                                         Value.Tuple []))
                                   ],
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [] =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.alloc (|
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::file_format::AbilitySet",
-                                                      "has_drop",
-                                                      []
-                                                    |),
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [] =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.alloc (|
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet",
+                                                    "has_drop",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                        "local_abilities",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| state |) |)
+                                                        |);
+                                                        M.read (| M.deref (| M.read (| idx |) |) |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |) in
+                                          let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                          "local_abilities",
+                                                          "error",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| state |);
-                                                          M.read (| M.read (| idx |) |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
+                                                            [];
+                                                          M.read (| offset |)
                                                         ]
                                                       |)
                                                     ]
-                                                  |)
-                                                |)
-                                              |) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                            "error",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| state |);
-                                                            Value.StructTuple
-                                                              "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
-                                                              [];
-                                                            M.read (| offset |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
                                                 |)
                                               |)
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                            |)
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -498,9 +532,16 @@ Module locals_safety.
                                       Ty.path
                                         "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                       "set_available",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| state |) |)
+                                      |);
+                                      M.read (| M.deref (| M.read (| idx |) |) |)
+                                    ]
                                   |)
                                 |)))
                           ]
@@ -522,9 +563,13 @@ Module locals_safety.
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 "local_state",
+                                [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -550,41 +595,44 @@ Module locals_safety.
                                           |) in
                                         Value.Tuple []))
                                   ],
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [] =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                            "error",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| state |);
-                                                            Value.StructTuple
-                                                              "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
-                                                              [];
-                                                            M.read (| offset |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [] =>
+                                        ltac:(M.monadic
+                                          (M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                          "error",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
+                                                            [];
+                                                          M.read (| offset |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                 |)
                                               |)
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                            |)
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -599,9 +647,16 @@ Module locals_safety.
                                       Ty.path
                                         "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                       "set_unavailable",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| state |) |)
+                                      |);
+                                      M.read (| M.deref (| M.read (| idx |) |) |)
+                                    ]
                                   |)
                                 |)))
                           ]
@@ -623,9 +678,13 @@ Module locals_safety.
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 "local_state",
+                                [],
                                 []
                               |),
-                              [ M.read (| state |); M.read (| M.read (| idx |) |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |);
+                                M.read (| M.deref (| M.read (| idx |) |) |)
+                              ]
                             |)
                           |),
                           [
@@ -651,41 +710,44 @@ Module locals_safety.
                                           |) in
                                         Value.Tuple []))
                                   ],
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [] =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                            "error",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| state |);
-                                                            Value.StructTuple
-                                                              "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
-                                                              [];
-                                                            M.read (| offset |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |)
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [] =>
+                                        ltac:(M.monadic
+                                          (M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                          "error",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| state |) |)
+                                                          |);
+                                                          Value.StructTuple
+                                                            "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
+                                                            [];
+                                                          M.read (| offset |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                 |)
                                               |)
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
+                                            |)
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -725,95 +787,106 @@ Module locals_safety.
                                 let idx := M.alloc (| γ1_0 |) in
                                 Value.Tuple [ idx ]))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [ idx ] =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                            "local_state",
-                                            []
-                                          |),
-                                          [ M.read (| state |); M.read (| M.read (| idx |) |) ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.find_or_pattern (|
-                                              γ,
-                                              [
-                                                fun γ =>
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [ idx ] =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                          "local_state",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| state |) |)
+                                          |);
+                                          M.read (| M.deref (| M.read (| idx |) |) |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.find_or_pattern (|
+                                            γ,
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+                                                    |) in
+                                                  Value.Tuple []));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
+                                                    |) in
+                                                  Value.Tuple []))
+                                            ],
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                match γ with
+                                                | [] =>
                                                   ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
-                                                      |) in
-                                                    Value.Tuple []));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
-                                                      |) in
-                                                    Value.Tuple []))
-                                              ],
-                                              M.closure
-                                                (fun γ =>
-                                                  ltac:(M.monadic
-                                                    match γ with
-                                                    | [] =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                Value.StructTuple
-                                                                  "core::result::Result::Err"
+                                                    (M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::result::Result::Err"
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                                    "error",
+                                                                    [],
+                                                                    []
+                                                                  |),
                                                                   [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                                        "error",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (| state |);
-                                                                        Value.StructTuple
-                                                                          "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
-                                                                          [];
-                                                                        M.read (| offset |)
-                                                                      ]
-                                                                    |)
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| state |)
+                                                                      |)
+                                                                    |);
+                                                                    Value.StructTuple
+                                                                      "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
+                                                                      [];
+                                                                    M.read (| offset |)
                                                                   ]
-                                                              |)
-                                                            |)
+                                                                |)
+                                                              ]
                                                           |)
-                                                        |)))
-                                                    | _ => M.impossible "wrong number of arguments"
-                                                    end))
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                                                        |)
+                                                      |)
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
+                                                end)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -830,9 +903,10 @@ Module locals_safety.
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 "local_states",
+                                [],
                                 []
                               |),
-                              [ M.read (| state |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -849,7 +923,9 @@ Module locals_safety.
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -858,11 +934,16 @@ Module locals_safety.
                                       "move_bytecode_verifier_meter::Meter",
                                       impl_Meter__plus___Sized,
                                       [],
+                                      [],
                                       "add_items",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| meter |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| meter |) |)
+                                      |);
                                       Value.StructTuple
                                         "move_bytecode_verifier_meter::Scope::Function"
                                         [];
@@ -882,9 +963,15 @@ Module locals_safety.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| local_states |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| local_states |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -916,6 +1003,7 @@ Module locals_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -927,6 +1015,7 @@ Module locals_safety.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -954,9 +1043,10 @@ Module locals_safety.
                                 Ty.path
                                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 "all_local_abilities",
+                                [],
                                 []
                               |),
-                              [ M.read (| state |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -981,9 +1071,15 @@ Module locals_safety.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| local_states |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| local_states |) |)
+                                                |)
+                                              ]
                                             |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -996,9 +1092,15 @@ Module locals_safety.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| all_local_abilities |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| all_local_abilities |) |)
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)
@@ -1047,7 +1149,9 @@ Module locals_safety.
                                         [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1062,7 +1166,9 @@ Module locals_safety.
                                             "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                         ],
                                       [],
+                                      [],
                                       "zip",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1090,25 +1196,38 @@ Module locals_safety.
                                                 "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.path
-                                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| local_states |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| local_states |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -1150,10 +1269,19 @@ Module locals_safety.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -1208,72 +1336,80 @@ Module locals_safety.
                                                                   |) in
                                                                 Value.Tuple []))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
-                                                                      M.alloc (|
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::AbilitySet",
-                                                                              "has_drop",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.read (|
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.alloc (|
+                                                                      UnOp.not (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::AbilitySet",
+                                                                            "has_drop",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              M.deref (|
                                                                                 M.read (|
                                                                                   local_abilities
                                                                                 |)
                                                                               |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |) in
-                                                                    let _ :=
-                                                                      M.is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            Value.StructTuple
-                                                                              "core::result::Result::Err"
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                                                                                    "error",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      state
-                                                                                    |);
-                                                                                    Value.StructTuple
-                                                                                      "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
-                                                                                      [];
-                                                                                    M.read (|
-                                                                                      offset
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                          |)
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                    |) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          Value.StructTuple
+                                                                            "core::result::Result::Err"
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                                                                  "error",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        state
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  Value.StructTuple
+                                                                                    "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
+                                                                                    [];
+                                                                                  M.read (|
+                                                                                    offset
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -1967,13 +2103,12 @@ Module locals_safety.
                                   |) in
                                 Value.Tuple []))
                           ],
-                          M.closure
-                            (fun γ =>
-                              ltac:(M.monadic
-                                match γ with
-                                | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                | _ => M.impossible "wrong number of arguments"
-                                end))
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
                         |)))
                   ]
                 |) in
@@ -2032,7 +2167,12 @@ Module locals_safety.
               [],
               [ impl_Meter__plus___Sized ]
             |),
-            [ M.read (| state |); M.read (| bytecode |); M.read (| index |); M.read (| meter |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytecode |) |) |);
+              M.read (| index |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

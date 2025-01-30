@@ -16,22 +16,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-              [ M.read (| Value.String "12" |) ]
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "12" |) |) |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
-              [ M.read (| Value.String "true" |) ]
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "bool" ] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "true" |) |) |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),
-              [ M.read (| Value.String "unparsable" |) ]
+              M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "unparsable" |) |)
+                |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

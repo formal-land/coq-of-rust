@@ -674,7 +674,7 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -742,7 +742,7 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -753,7 +753,7 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -788,7 +788,7 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -799,13 +799,22 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                  [ __self_discr; __arg1_discr ]
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -839,7 +848,7 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -850,7 +859,7 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -858,11 +867,22 @@ Module ascii.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "u8",
+                    [],
                     [ Ty.path "u8" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
-                  [ __self_discr; __arg1_discr ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -896,13 +916,27 @@ Module ascii.
                       [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                  [ __self_discr; M.read (| state |) ]
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u8",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -955,6 +989,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "from_u8_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| b |) ]
@@ -1032,6 +1067,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "digit_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| d |) ]
@@ -1094,6 +1130,7 @@ Module ascii.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.digit_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| d |) ]
@@ -1106,7 +1143,7 @@ Module ascii.
               let~ byte :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
+                    M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
                     [ M.read (| UnsupportedLiteral |); M.read (| d |) ]
                   |)
                 |) in
@@ -1115,6 +1152,7 @@ Module ascii.
                   M.get_associated_function (|
                     Ty.path "core::ascii::ascii_char::AsciiChar",
                     "from_u8_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| byte |) ]
@@ -1137,7 +1175,7 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| self |))))
+            M.cast (Ty.path "u8") (M.read (| self |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1153,7 +1191,7 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast (M.rust_cast (M.read (| self |)))))
+            M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| self |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1169,22 +1207,33 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                "as_str",
-                []
-              |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_function (|
-                    "core::slice::raw::from_ref",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                    "as_str",
                     [],
-                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    []
                   |),
-                  [ M.read (| self |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_ref",
+                            [],
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1205,7 +1254,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.read (| M.use (M.alloc (| M.rust_cast (M.read (| chr |)) |)) |)))
+            M.read (| M.use (M.alloc (| M.cast (Ty.path "u8") (M.read (| chr |)) |)) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1230,7 +1279,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u16") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1255,7 +1304,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u32") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1280,7 +1329,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u64") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1305,7 +1354,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "u128") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1330,7 +1379,7 @@ Module ascii.
         | [], [], [ chr ] =>
           ltac:(M.monadic
             (let chr := M.alloc (| chr |) in
-            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+            M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1361,9 +1410,20 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ ascii_ptr := M.alloc (| M.read (| self |) |) in
-              let~ str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
-              M.alloc (| M.read (| str_ptr |) |)
+              let~ ascii_ptr :=
+                M.alloc (|
+                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                |) in
+              let~ str_ptr :=
+                M.alloc (|
+                  M.cast (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ]) (M.read (| ascii_ptr |))
+                |) in
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| str_ptr |) |) |) |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1380,18 +1440,32 @@ Module ascii.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                    "as_str",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                            "as_str",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1414,17 +1488,23 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::ascii::ascii_char::AsciiChar",
-                    "as_str",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::ascii::ascii_char::AsciiChar",
+                        "as_str",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1488,7 +1568,7 @@ Module ascii.
                           M.is_struct_tuple (| γ, "core::ascii::ascii_char::AsciiChar::Null" |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
                           |)
                         |)));
@@ -1502,7 +1582,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
                           |)
                         |)));
@@ -1516,7 +1596,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
                           |)
                         |)));
@@ -1530,7 +1610,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
                           |)
                         |)));
@@ -1544,7 +1624,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [
                               Value.StructTuple
                                 "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
@@ -1562,7 +1642,7 @@ Module ascii.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
                             [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" []
                             ]
                           |)
@@ -1572,16 +1652,25 @@ Module ascii.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u8", "is_ascii_control", [] |),
+                              M.get_associated_function (|
+                                Ty.path "u8",
+                                "is_ascii_control",
+                                [],
+                                []
+                              |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ascii::ascii_char::AsciiChar",
-                                      "to_u8",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| self |) |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::ascii::ascii_char::AsciiChar",
+                                        "to_u8",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                    |)
                                   |)
                                 |)
                               ]
@@ -1595,9 +1684,10 @@ Module ascii.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "to_u8",
+                                [],
                                 []
                               |),
-                              [ M.read (| M.read (| self |) |) ]
+                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
                             |)
                           |) in
                         let~ hi :=
@@ -1609,8 +1699,10 @@ Module ascii.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1632,8 +1724,10 @@ Module ascii.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "usize",
+                                    [],
                                     [ Ty.path "u8" ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1676,7 +1770,7 @@ Module ascii.
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
                                     [];
-                                  M.read (| M.read (| self |) |);
+                                  M.read (| M.deref (| M.read (| self |) |) |);
                                   Value.StructTuple
                                     "core::ascii::ascii_char::AsciiChar::Apostrophe"
                                     [];
@@ -1701,44 +1795,58 @@ Module ascii.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
                           [
-                            M.read (| f |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                "as_str",
-                                []
-                              |),
-                              [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 6 ]
+                                      (Ty.path "slice")
+                                      []
                                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::RangeTo")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ],
-                                    "index",
+                                    "as_str",
+                                    [],
                                     []
                                   |),
                                   [
-                                    buf;
-                                    Value.StructRecord
-                                      "core::ops::range::RangeTo"
-                                      [ ("end_", M.read (| len |)) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 6 ]
+                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeTo")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, buf |);
+                                            Value.StructRecord
+                                              "core::ops::range::RangeTo"
+                                              [ ("end_", M.read (| len |)) ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
-                              ]
+                              |)
                             |)
                           ]
                         |)

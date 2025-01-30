@@ -56,10 +56,12 @@ Module vec.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
-                            [ iterator ]
+                            [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                           |)
                         |),
                         [
@@ -77,6 +79,7 @@ Module vec.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -101,10 +104,12 @@ Module vec.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "size_hint",
+                                      [],
                                       []
                                     |),
-                                    [ iterator ]
+                                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                                   |)
                                 |),
                                 [
@@ -131,6 +136,7 @@ Module vec.
                                                 M.get_associated_function (|
                                                   Ty.path "usize",
                                                   "saturating_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -150,6 +156,7 @@ Module vec.
                                                 []
                                                 [ T; Ty.path "alloc::alloc::Global" ],
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| initial_capacity |) ]
@@ -168,9 +175,10 @@ Module vec.
                                                       []
                                                       [ T; Ty.path "alloc::alloc::Global" ],
                                                     "as_mut_ptr",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ vector ]
+                                                  [ M.borrow (| Pointer.Kind.MutRef, vector |) ]
                                                 |);
                                                 M.read (| element |)
                                               ]
@@ -185,9 +193,13 @@ Module vec.
                                                   []
                                                   [ T; Ty.path "alloc::alloc::Global" ],
                                                 "set_len",
+                                                [],
                                                 []
                                               |),
-                                              [ vector; Value.Integer IntegerKind.Usize 1 ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, vector |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |) in
@@ -206,11 +218,19 @@ Module vec.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [ T; I ],
                           "spec_extend",
+                          [],
                           []
                         |),
-                        [ vector; M.read (| iterator |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, vector |) |)
+                          |);
+                          M.read (| iterator |)
+                        ]
                       |)
                     |) in
                   vector
@@ -263,10 +283,12 @@ Module vec.
                           "core::iter::traits::iterator::Iterator",
                           I,
                           [],
+                          [],
                           "size_hint",
+                          [],
                           []
                         |),
-                        [ iterator ]
+                        [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                       |)
                     |),
                     [
@@ -289,6 +311,7 @@ Module vec.
                                   []
                                   [ T; Ty.path "alloc::alloc::Global" ],
                                 "with_capacity",
+                                [],
                                 []
                               |),
                               [ M.read (| upper |) ]
@@ -305,12 +328,21 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "capacity overflow" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -327,11 +359,13 @@ Module vec.
                     M.get_trait_method (|
                       "alloc::vec::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ T; I ],
                       "spec_extend",
+                      [],
                       []
                     |),
-                    [ vector; M.read (| iterator |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, vector |); M.read (| iterator |) ]
                   |)
                 |) in
               vector

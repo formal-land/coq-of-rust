@@ -28,12 +28,20 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::rev::Rev",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::rev::Rev",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -66,17 +74,29 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Rev" |);
-                  M.read (| Value.String "iter" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::rev::Rev",
-                      "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Rev" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::rev::Rev",
+                              "iter"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -140,14 +160,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -170,14 +195,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -206,14 +236,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -238,14 +273,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "nth_back",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -276,14 +316,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)
@@ -313,7 +358,9 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "rfold",
+                  [],
                   [ Acc; F ]
                 |),
                 [
@@ -351,14 +398,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "rfind",
+                  [],
                   [ P ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| predicate |)
                 ]
@@ -405,14 +457,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -441,14 +498,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -469,12 +531,23 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  I,
+                  [],
+                  [],
+                  "nth",
+                  [],
+                  []
+                |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| n |)
                 ]
@@ -505,14 +578,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ B; F; R ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| init |);
                   M.read (| f |)
@@ -542,7 +620,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [
@@ -580,14 +660,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "find",
+                  [],
                   [ P ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |);
                   M.read (| predicate |)
                 ]
@@ -632,14 +717,19 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -662,14 +752,19 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "is_empty",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::rev::Rev",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -731,11 +826,12 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ],
                   "new",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", I, [], "default", [] |),
+                    M.get_trait_method (| "core::default::Default", I, [], [], "default", [], [] |),
                     []
                   |)
                 ]

@@ -43,14 +43,24 @@ Module metadata.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::metadata::Metadata",
-                      "key"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::metadata::Metadata",
+                            "key"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -63,14 +73,24 @@ Module metadata.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::metadata::Metadata",
-                      "value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::metadata::Metadata",
+                            "value"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -115,6 +135,7 @@ Module metadata.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -122,18 +143,25 @@ Module metadata.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::metadata::Metadata",
-                  "key"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::metadata::Metadata",
+                    "key"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_core_types::metadata::Metadata",
-                  "key"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_core_types::metadata::Metadata",
+                    "key"
+                  |)
                 |)
               ]
             |),
@@ -145,6 +173,7 @@ Module metadata.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -152,18 +181,25 @@ Module metadata.
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::metadata::Metadata",
-                    "value"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::metadata::Metadata",
+                      "value"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::metadata::Metadata",
-                    "value"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::metadata::Metadata",
+                      "value"
+                    |)
                   |)
                 ]
               |)))
@@ -231,23 +267,43 @@ Module metadata.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Metadata" |);
-              M.read (| Value.String "key" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::metadata::Metadata",
-                "key"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Metadata" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "key" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::metadata::Metadata",
+                      "key"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "value" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::metadata::Metadata",
-                  "value"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::metadata::Metadata",
+                          "value"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -286,7 +342,9 @@ Module metadata.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -294,7 +352,7 @@ Module metadata.
                               M.read (| Value.String "Metadata" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -344,7 +402,9 @@ Module metadata.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -353,12 +413,23 @@ Module metadata.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "key" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::metadata::Metadata",
-                              "key"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::metadata::Metadata",
+                                    "key"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -404,7 +475,9 @@ Module metadata.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -413,12 +486,23 @@ Module metadata.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "value" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::metadata::Metadata",
-                              "value"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::metadata::Metadata",
+                                    "value"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -462,7 +546,9 @@ Module metadata.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -494,7 +580,9 @@ Module metadata.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::metadata::_'1::deserialize::__Visitor" ]
               |),
               [

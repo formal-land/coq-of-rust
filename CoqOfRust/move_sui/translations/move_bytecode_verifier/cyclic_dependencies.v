@@ -23,6 +23,7 @@ Module cyclic_dependencies.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -37,7 +38,10 @@ Module cyclic_dependencies.
                 [],
                 [ D ]
               |),
-              [ M.read (| module |); M.read (| imm_deps |) ]
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                M.read (| imm_deps |)
+              ]
             |);
             M.closure
               (fun γ =>
@@ -55,6 +59,7 @@ Module cyclic_dependencies.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -66,9 +71,15 @@ Module cyclic_dependencies.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -140,9 +151,10 @@ Module cyclic_dependencies.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_id",
+                      [],
                       []
                     |),
-                    [ M.read (| module |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                   |)
                 |) in
               let~ visited :=
@@ -157,6 +169,7 @@ Module cyclic_dependencies.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -177,7 +190,9 @@ Module cyclic_dependencies.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -185,9 +200,10 @@ Module cyclic_dependencies.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "immediate_dependencies",
+                              [],
                               []
                             |),
-                            [ M.read (| module |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                           |)
                         ]
                       |)
@@ -212,10 +228,17 @@ Module cyclic_dependencies.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -256,7 +279,9 @@ Module cyclic_dependencies.
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -266,7 +291,44 @@ Module cyclic_dependencies.
                                                                 [],
                                                                 []
                                                               |),
-                                                              [ self_id; dep; visited; imm_deps ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      self_id
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      dep
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      visited
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      imm_deps
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -297,6 +359,7 @@ Module cyclic_dependencies.
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -310,6 +373,7 @@ Module cyclic_dependencies.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -347,6 +411,7 @@ Module cyclic_dependencies.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
                                                                 "new",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -433,6 +498,7 @@ Module cyclic_dependencies.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -440,9 +506,13 @@ Module cyclic_dependencies.
                                         [ Ty.path "move_core_types::language_storage::ModuleId" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ cursor; target ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, cursor |);
+                                    M.borrow (| Pointer.Kind.Ref, target |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -479,19 +549,30 @@ Module cyclic_dependencies.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "insert",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| visited |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| visited |) |)
+                                      |);
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::clone::Clone",
                                           Ty.path "move_core_types::language_storage::ModuleId",
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| cursor |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| cursor |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -513,7 +594,9 @@ Module cyclic_dependencies.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -539,7 +622,9 @@ Module cyclic_dependencies.
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -547,6 +632,7 @@ Module cyclic_dependencies.
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   D,
+                                                  [],
                                                   [
                                                     Ty.tuple
                                                       [
@@ -560,11 +646,21 @@ Module cyclic_dependencies.
                                                       ]
                                                   ],
                                                   "call",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.read (| deps |);
-                                                  Value.Tuple [ M.read (| cursor |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| deps |) |)
+                                                  |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| cursor |) |)
+                                                      |)
+                                                    ]
                                                 ]
                                               |)
                                             ]
@@ -595,6 +691,7 @@ Module cyclic_dependencies.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
@@ -606,6 +703,7 @@ Module cyclic_dependencies.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -651,10 +749,19 @@ Module cyclic_dependencies.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -699,7 +806,9 @@ Module cyclic_dependencies.
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "branch",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -710,10 +819,33 @@ Module cyclic_dependencies.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (| target |);
-                                                                          dep;
-                                                                          M.read (| visited |);
-                                                                          M.read (| deps |)
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| target |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                dep
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.deref (|
+                                                                              M.read (| visited |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| deps |)
+                                                                            |)
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     ]
@@ -747,6 +879,7 @@ Module cyclic_dependencies.
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -760,6 +893,7 @@ Module cyclic_dependencies.
                                                                                       ]
                                                                                   ],
                                                                                   "from_residual",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [

@@ -32,7 +32,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i8";
                     Ty.function [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ] (Ty.path "i8")
@@ -101,7 +103,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i8";
                     Ty.function [ Ty.tuple [ Ty.path "i8"; Ty.path "i8" ] ] (Ty.path "i8")
@@ -170,7 +174,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i8";
                     Ty.function
@@ -203,8 +209,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i8",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -250,7 +258,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i8";
                     Ty.function
@@ -283,8 +293,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i8",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -330,7 +342,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i16";
                     Ty.function [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ] (Ty.path "i16")
@@ -399,7 +413,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i16";
                     Ty.function [ Ty.tuple [ Ty.path "i16"; Ty.path "i16" ] ] (Ty.path "i16")
@@ -468,7 +484,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i16";
                     Ty.function
@@ -501,8 +519,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i16",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -548,7 +568,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i16";
                     Ty.function
@@ -581,8 +603,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i16",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -628,7 +652,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i32";
                     Ty.function [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ] (Ty.path "i32")
@@ -697,7 +723,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i32";
                     Ty.function [ Ty.tuple [ Ty.path "i32"; Ty.path "i32" ] ] (Ty.path "i32")
@@ -766,7 +794,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i32";
                     Ty.function
@@ -799,8 +829,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -846,7 +878,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i32";
                     Ty.function
@@ -879,8 +913,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -926,7 +962,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i64";
                     Ty.function [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ] (Ty.path "i64")
@@ -995,7 +1033,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i64";
                     Ty.function [ Ty.tuple [ Ty.path "i64"; Ty.path "i64" ] ] (Ty.path "i64")
@@ -1064,7 +1104,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i64";
                     Ty.function
@@ -1097,8 +1139,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1144,7 +1188,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i64";
                     Ty.function
@@ -1177,8 +1223,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1224,7 +1272,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i128";
                     Ty.function [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ] (Ty.path "i128")
@@ -1293,7 +1343,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i128";
                     Ty.function [ Ty.tuple [ Ty.path "i128"; Ty.path "i128" ] ] (Ty.path "i128")
@@ -1362,7 +1414,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i128";
                     Ty.function
@@ -1395,8 +1449,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i128",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1442,7 +1498,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "i128";
                     Ty.function
@@ -1475,8 +1533,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i128",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1522,7 +1582,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "isize";
                     Ty.function [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ] (Ty.path "isize")
@@ -1591,7 +1653,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "isize";
                     Ty.function [ Ty.tuple [ Ty.path "isize"; Ty.path "isize" ] ] (Ty.path "isize")
@@ -1660,7 +1724,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "isize";
                     Ty.function
@@ -1694,8 +1760,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "isize",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1741,7 +1809,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "isize";
                     Ty.function
@@ -1775,8 +1845,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "isize",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -1822,7 +1894,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u8";
                     Ty.function [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ] (Ty.path "u8")
@@ -1891,7 +1965,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u8";
                     Ty.function [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ] (Ty.path "u8")
@@ -1960,7 +2036,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u8";
                     Ty.function
@@ -1993,8 +2071,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u8",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2040,7 +2120,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u8";
                     Ty.function
@@ -2073,8 +2155,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u8",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2120,7 +2204,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u16";
                     Ty.function [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ] (Ty.path "u16")
@@ -2189,7 +2275,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u16";
                     Ty.function [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ] (Ty.path "u16")
@@ -2258,7 +2346,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u16";
                     Ty.function
@@ -2291,8 +2381,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u16",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2338,7 +2430,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u16";
                     Ty.function
@@ -2371,8 +2465,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u16",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2418,7 +2514,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u32";
                     Ty.function [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ] (Ty.path "u32")
@@ -2487,7 +2585,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u32";
                     Ty.function [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ] (Ty.path "u32")
@@ -2556,7 +2656,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u32";
                     Ty.function
@@ -2589,8 +2691,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2636,7 +2740,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u32";
                     Ty.function
@@ -2669,8 +2775,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2716,7 +2824,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u64";
                     Ty.function [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ] (Ty.path "u64")
@@ -2785,7 +2895,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u64";
                     Ty.function [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ] (Ty.path "u64")
@@ -2854,7 +2966,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u64";
                     Ty.function
@@ -2887,8 +3001,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -2934,7 +3050,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u64";
                     Ty.function
@@ -2967,8 +3085,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3014,7 +3134,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u128";
                     Ty.function [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ] (Ty.path "u128")
@@ -3083,7 +3205,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u128";
                     Ty.function [ Ty.tuple [ Ty.path "u128"; Ty.path "u128" ] ] (Ty.path "u128")
@@ -3152,7 +3276,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u128";
                     Ty.function
@@ -3185,8 +3311,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u128",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3232,7 +3360,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "u128";
                     Ty.function
@@ -3265,8 +3395,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u128",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3312,7 +3444,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "usize";
                     Ty.function [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] (Ty.path "usize")
@@ -3381,7 +3515,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "usize";
                     Ty.function [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] (Ty.path "usize")
@@ -3450,7 +3586,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "usize";
                     Ty.function
@@ -3484,8 +3622,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "usize",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3531,7 +3671,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "usize";
                     Ty.function
@@ -3565,8 +3707,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "usize",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3613,7 +3757,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
@@ -3657,6 +3803,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -3664,6 +3811,7 @@ Module iter.
                                                     [ Ty.path "i8" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3710,7 +3858,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
@@ -3754,6 +3904,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -3761,6 +3912,7 @@ Module iter.
                                                     [ Ty.path "i8" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3807,7 +3959,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
@@ -3859,6 +4013,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -3871,6 +4026,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -3924,7 +4080,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ];
                     Ty.function
@@ -3976,6 +4134,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -3988,6 +4147,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4041,7 +4201,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
@@ -4085,6 +4247,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -4092,6 +4255,7 @@ Module iter.
                                                     [ Ty.path "i16" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4138,7 +4302,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
@@ -4182,6 +4348,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -4189,6 +4356,7 @@ Module iter.
                                                     [ Ty.path "i16" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4235,7 +4403,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
@@ -4287,6 +4457,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -4299,6 +4470,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4352,7 +4524,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ];
                     Ty.function
@@ -4404,6 +4578,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -4416,6 +4591,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4469,7 +4645,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
@@ -4513,6 +4691,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -4520,6 +4699,7 @@ Module iter.
                                                     [ Ty.path "i32" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4566,7 +4746,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
@@ -4610,6 +4792,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -4617,6 +4800,7 @@ Module iter.
                                                     [ Ty.path "i32" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4663,7 +4847,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
@@ -4715,6 +4901,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -4727,6 +4914,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4780,7 +4968,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ];
                     Ty.function
@@ -4832,6 +5022,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -4844,6 +5035,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4897,7 +5089,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
@@ -4941,6 +5135,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -4948,6 +5143,7 @@ Module iter.
                                                     [ Ty.path "i64" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -4994,7 +5190,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
@@ -5038,6 +5236,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -5045,6 +5244,7 @@ Module iter.
                                                     [ Ty.path "i64" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5091,7 +5291,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
@@ -5143,6 +5345,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5155,6 +5358,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5208,7 +5412,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ];
                     Ty.function
@@ -5260,6 +5466,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5272,6 +5479,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5325,7 +5533,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
@@ -5372,6 +5582,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -5379,6 +5590,7 @@ Module iter.
                                                     [ Ty.path "i128" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5425,7 +5637,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
@@ -5472,6 +5686,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -5479,6 +5694,7 @@ Module iter.
                                                     [ Ty.path "i128" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5525,7 +5741,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
@@ -5580,6 +5798,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5592,6 +5811,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5645,7 +5865,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ];
                     Ty.function
@@ -5700,6 +5922,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "i128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5712,6 +5935,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5765,7 +5989,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
@@ -5815,6 +6041,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "isize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -5822,6 +6049,7 @@ Module iter.
                                                     [ Ty.path "isize" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5868,7 +6096,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
@@ -5918,6 +6148,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "isize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -5925,6 +6156,7 @@ Module iter.
                                                     [ Ty.path "isize" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -5971,7 +6203,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
@@ -6026,6 +6260,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "isize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -6038,6 +6273,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6091,7 +6327,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ];
                     Ty.function
@@ -6146,6 +6384,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "isize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -6158,6 +6397,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6211,7 +6451,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
@@ -6255,6 +6497,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -6262,6 +6505,7 @@ Module iter.
                                                     [ Ty.path "u8" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6308,7 +6552,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
@@ -6352,6 +6598,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -6359,6 +6606,7 @@ Module iter.
                                                     [ Ty.path "u8" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6405,7 +6653,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
@@ -6457,6 +6707,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -6469,6 +6720,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6522,7 +6774,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ];
                     Ty.function
@@ -6574,6 +6828,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -6586,6 +6841,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6639,7 +6895,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
@@ -6683,6 +6941,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -6690,6 +6949,7 @@ Module iter.
                                                     [ Ty.path "u16" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6736,7 +6996,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
@@ -6780,6 +7042,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -6787,6 +7050,7 @@ Module iter.
                                                     [ Ty.path "u16" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6833,7 +7097,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
@@ -6885,6 +7151,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -6897,6 +7164,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -6950,7 +7218,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ];
                     Ty.function
@@ -7002,6 +7272,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u16" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -7014,6 +7285,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7067,7 +7339,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
@@ -7111,6 +7385,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -7118,6 +7393,7 @@ Module iter.
                                                     [ Ty.path "u32" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7164,7 +7440,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
@@ -7208,6 +7486,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -7215,6 +7494,7 @@ Module iter.
                                                     [ Ty.path "u32" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7261,7 +7541,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
@@ -7313,6 +7595,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -7325,6 +7608,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7378,7 +7662,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ];
                     Ty.function
@@ -7430,6 +7716,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u32" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -7442,6 +7729,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7495,7 +7783,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
@@ -7539,6 +7829,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -7546,6 +7837,7 @@ Module iter.
                                                     [ Ty.path "u64" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7592,7 +7884,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
@@ -7636,6 +7930,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -7643,6 +7938,7 @@ Module iter.
                                                     [ Ty.path "u64" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7689,7 +7985,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
@@ -7741,6 +8039,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -7753,6 +8052,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7806,7 +8106,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ];
                     Ty.function
@@ -7858,6 +8160,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u64" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -7870,6 +8173,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -7923,7 +8227,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
@@ -7970,6 +8276,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -7977,6 +8284,7 @@ Module iter.
                                                     [ Ty.path "u128" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8023,7 +8331,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
@@ -8070,6 +8380,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -8077,6 +8388,7 @@ Module iter.
                                                     [ Ty.path "u128" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8123,7 +8435,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
@@ -8178,6 +8492,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -8190,6 +8505,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8243,7 +8559,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ];
                     Ty.function
@@ -8298,6 +8616,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "u128" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -8310,6 +8629,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8363,7 +8683,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
@@ -8413,6 +8735,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "usize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -8420,6 +8743,7 @@ Module iter.
                                                     [ Ty.path "usize" ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8466,7 +8790,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
@@ -8516,6 +8842,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "usize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::num::wrapping::Wrapping")
@@ -8523,6 +8850,7 @@ Module iter.
                                                     [ Ty.path "usize" ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8569,7 +8897,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
@@ -8624,6 +8954,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "usize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -8636,6 +8967,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8689,7 +9021,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ];
                     Ty.function
@@ -8744,6 +9078,7 @@ Module iter.
                                                   (Ty.path "core::num::wrapping::Wrapping")
                                                   []
                                                   [ Ty.path "usize" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -8756,6 +9091,7 @@ Module iter.
                                                     ]
                                                 ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -8808,7 +9144,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f32";
                     Ty.function [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ] (Ty.path "f32")
@@ -8877,7 +9215,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f32";
                     Ty.function [ Ty.tuple [ Ty.path "f32"; Ty.path "f32" ] ] (Ty.path "f32")
@@ -8946,7 +9286,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f32";
                     Ty.function
@@ -8979,8 +9321,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "f32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -9026,7 +9370,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f32";
                     Ty.function
@@ -9059,8 +9405,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "f32",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -9106,7 +9454,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f64";
                     Ty.function [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ] (Ty.path "f64")
@@ -9175,7 +9525,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f64";
                     Ty.function [ Ty.tuple [ Ty.path "f64"; Ty.path "f64" ] ] (Ty.path "f64")
@@ -9244,7 +9596,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f64";
                     Ty.function
@@ -9277,8 +9631,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "f64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -9324,7 +9680,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "fold",
+                  [],
                   [
                     Ty.path "f64";
                     Ty.function
@@ -9357,8 +9715,10 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "f64",
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ],
                                                 "mul",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| a |); M.read (| b |) ]
@@ -9459,7 +9819,9 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible"; E ]
                                           ],
                                         [],
+                                        [],
                                         "sum",
+                                        [],
                                         [ T ]
                                       |),
                                       [ M.read (| i |) ]
@@ -9565,7 +9927,9 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible"; E ]
                                           ],
                                         [],
+                                        [],
                                         "product",
+                                        [],
                                         [ T ]
                                       |),
                                       [ M.read (| i |) ]
@@ -9665,7 +10029,9 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                         [],
+                                        [],
                                         "sum",
+                                        [],
                                         [ T ]
                                       |),
                                       [ M.read (| i |) ]
@@ -9765,7 +10131,9 @@ Module iter.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                         [],
+                                        [],
                                         "product",
+                                        [],
                                         [ T ]
                                       |),
                                       [ M.read (| i |) ]

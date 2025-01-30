@@ -28,10 +28,12 @@ Module random.
                   "core::random::Random",
                   Ty.path "u8",
                   [],
+                  [],
                   "random",
+                  [],
                   [ impl_RandomSource__plus___Sized ]
                 |),
-                [ M.read (| source |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |) ]
               |))
               (Value.Integer IntegerKind.U8 1),
             Value.Integer IntegerKind.U8 1
@@ -66,7 +68,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |) ]
                 |)
               |) in
@@ -77,15 +79,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -120,7 +130,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |) ]
                 |)
               |) in
@@ -131,15 +141,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -174,7 +192,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |) ]
                 |)
               |) in
@@ -185,15 +203,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -228,7 +254,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |) ]
                 |)
               |) in
@@ -239,15 +265,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -282,7 +316,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |) ]
                 |)
               |) in
@@ -293,15 +327,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -336,7 +378,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |) ]
                 |)
               |) in
@@ -347,15 +389,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -390,7 +440,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |) ]
                 |)
               |) in
@@ -401,15 +451,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -444,7 +502,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |) ]
                 |)
               |) in
@@ -455,15 +513,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -498,7 +564,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |) ]
                 |)
               |) in
@@ -509,15 +575,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -552,7 +626,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |) ]
                 |)
               |) in
@@ -563,15 +637,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -606,7 +688,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |) ]
                 |)
               |) in
@@ -617,15 +699,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)
@@ -660,7 +750,7 @@ Module random.
             let~ bytes :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [] |),
+                  M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
                   [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |) ]
                 |)
               |) in
@@ -671,15 +761,23 @@ Module random.
                     "core::random::RandomSource",
                     impl_RandomSource__plus___Sized,
                     [],
+                    [],
                     "fill_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| source |); bytes ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             |)

@@ -38,19 +38,27 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
               "eq",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_associated_types_solution::Container",
-                  0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "generics_associated_types_solution::Container",
+                      0
+                    |)
+                  |)
                 |)
               |);
-              number_1
+              M.borrow (| Pointer.Kind.Ref, number_1 |)
             ]
           |),
           ltac:(M.monadic
@@ -58,19 +66,27 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "generics_associated_types_solution::Container",
-                    1
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_associated_types_solution::Container",
+                        1
+                      |)
+                    |)
                   |)
                 |);
-                number_2
+                M.borrow (| Pointer.Kind.Ref, number_2 |)
               ]
             |)))
         |)))
@@ -89,7 +105,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "generics_associated_types_solution::Container",
             0
           |)
@@ -109,7 +125,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "generics_associated_types_solution::Container",
             1
           |)
@@ -129,7 +145,7 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "generics_associated_types_solution::Container",
             0
           |)
@@ -169,20 +185,24 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             "generics_associated_types_solution::Contains",
             C,
             [],
+            [],
             "last",
+            [],
             []
           |),
-          [ M.read (| container |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
         |),
         M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_solution::Contains",
             C,
             [],
+            [],
             "first",
+            [],
             []
           |),
-          [ M.read (| container |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
         |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -202,8 +222,16 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       M.call_closure (|
-        M.get_trait_method (| "generics_associated_types_solution::Contains", C, [], "a", [] |),
-        [ M.read (| container |) ]
+        M.get_trait_method (|
+          "generics_associated_types_solution::Contains",
+          C,
+          [],
+          [],
+          "a",
+          [],
+          []
+        |),
+        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -249,59 +277,128 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Does container contain " |);
-                            M.read (| Value.String " and " |);
-                            M.read (| Value.String ": " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Does container contain " |);
+                                  M.read (| Value.String " and " |);
+                                  M.read (| Value.String ": " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ M.alloc (| number_1 |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ M.alloc (| number_2 |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "bool" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "generics_associated_types_solution::Contains",
-                                      Ty.path "generics_associated_types_solution::Container",
-                                      [],
-                                      "contains",
-                                      []
-                                    |),
-                                    [ container; number_1; number_2 ]
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| M.borrow (| Pointer.Kind.Ref, number_1 |) |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| M.borrow (| Pointer.Kind.Ref, number_2 |) |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "bool" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "generics_associated_types_solution::Contains",
+                                                  Ty.path
+                                                    "generics_associated_types_solution::Container",
+                                                  [],
+                                                  [],
+                                                  "contains",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.Ref, container |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, number_1 |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, number_2 |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -316,41 +413,74 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "First number: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "First number: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "generics_associated_types_solution::Contains",
-                                      Ty.path "generics_associated_types_solution::Container",
-                                      [],
-                                      "first",
-                                      []
-                                    |),
-                                    [ container ]
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "generics_associated_types_solution::Contains",
+                                                  Ty.path
+                                                    "generics_associated_types_solution::Container",
+                                                  [],
+                                                  [],
+                                                  "first",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, container |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -365,39 +495,74 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Last number: " |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Last number: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "generics_associated_types_solution::Contains",
-                                      Ty.path "generics_associated_types_solution::Container",
-                                      [],
-                                      "last",
-                                      []
-                                    |),
-                                    [ container ]
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "generics_associated_types_solution::Contains",
+                                                  Ty.path
+                                                    "generics_associated_types_solution::Container",
+                                                  [],
+                                                  [],
+                                                  "last",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, container |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -412,39 +577,79 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "The difference is: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "The difference is: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "generics_associated_types_solution::difference",
-                                      [],
-                                      [ Ty.path "generics_associated_types_solution::Container" ]
-                                    |),
-                                    [ container ]
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "generics_associated_types_solution::difference",
+                                                  [],
+                                                  [
+                                                    Ty.path
+                                                      "generics_associated_types_solution::Container"
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, container |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

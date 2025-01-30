@@ -19,8 +19,20 @@ Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
         [
           fun γ =>
             ltac:(M.monadic
-              (M.read (|
-                M.get_constant (| "scoping_rules_lifetimes_reference_lifetime_static::NUM" |)
+              (M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.get_constant (|
+                          "scoping_rules_lifetimes_reference_lifetime_static::NUM"
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)))
         ]
       |)))
@@ -68,28 +80,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "static_string: " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "static_string: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [ static_string ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (| Pointer.Kind.Ref, static_string |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -108,7 +149,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [],
                   []
                 |),
-                [ lifetime_num ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, lifetime_num |) |)
+                  |)
+                ]
               |)
             |) in
           let~ _ :=
@@ -118,28 +164,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "coerced_static: " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "coerced_static: " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [ coerced_static ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (| Pointer.Kind.Ref, coerced_static |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -155,34 +230,66 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "NUM: " |);
-                            M.read (| Value.String " stays accessible!
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "NUM: " |);
+                                  M.read (| Value.String " stays accessible!
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.read (|
-                                  M.get_constant (|
-                                    "scoping_rules_lifetimes_reference_lifetime_static::NUM"
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.get_constant (|
+                                                  "scoping_rules_lifetimes_reference_lifetime_static::NUM"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

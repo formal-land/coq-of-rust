@@ -58,25 +58,43 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "next"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::successors::Successors",
+                                "next"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
                   ("succ",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "succ"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::successors::Successors",
+                                "succ"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -125,7 +143,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -133,13 +153,17 @@ Module iter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                     "take",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::sources::successors::Successors",
-                                      "next"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::sources::successors::Successors",
+                                        "next"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -164,6 +188,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -171,6 +196,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -195,7 +221,7 @@ Module iter.
                     let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::sources::successors::Successors",
                           "next"
                         |),
@@ -203,17 +229,28 @@ Module iter.
                           M.get_trait_method (|
                             "core::ops::function::FnMut",
                             F,
+                            [],
                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                             "call_mut",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::sources::successors::Successors",
-                              "succ"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::successors::Successors",
+                                "succ"
+                              |)
                             |);
-                            Value.Tuple [ item ]
+                            Value.Tuple
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, item |) |)
+                                |)
+                              ]
                           ]
                         |)
                       |) in
@@ -254,13 +291,17 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::successors::Successors",
-                                    "next"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::sources::successors::Successors",
+                                      "next"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -338,33 +379,61 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_struct",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "Successors" |) ]
-                        |)
-                      |);
-                      M.read (| Value.String "next" |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::successors::Successors",
-                        "next"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugStruct",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_struct",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "Successors" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "next" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::sources::successors::Successors",
+                                  "next"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))

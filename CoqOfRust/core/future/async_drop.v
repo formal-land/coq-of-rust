@@ -21,6 +21,7 @@ Module future.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| value |) ]
@@ -70,17 +71,28 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Formatter",
-                      "debug_struct",
-                      []
-                    |),
-                    [ M.read (| f |); M.read (| Value.String "AsyncDropOwning" |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "AsyncDropOwning" |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -144,6 +156,7 @@ Module future.
                             ]
                         ],
                       "get_unchecked_mut",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -168,6 +181,7 @@ Module future.
                             ]
                         ],
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -183,6 +197,7 @@ Module future.
                                 [ T ]
                             ],
                           "get_or_insert_with",
+                          [],
                           [
                             Ty.function
                               [ Ty.tuple [] ]
@@ -193,10 +208,13 @@ Module future.
                           ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| this |),
-                            "core::future::async_drop::AsyncDropOwning",
-                            "dtor"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| this |) |),
+                              "core::future::async_drop::AsyncDropOwning",
+                              "dtor"
+                            |)
                           |);
                           M.closure
                             (fun γ =>
@@ -224,13 +242,17 @@ Module future.
                                                       []
                                                       [ T ],
                                                     "as_mut_ptr",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| this |),
-                                                      "core::future::async_drop::AsyncDropOwning",
-                                                      "value"
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| this |) |),
+                                                        "core::future::async_drop::AsyncDropOwning",
+                                                        "value"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -251,10 +273,15 @@ Module future.
                     "core::future::future::Future",
                     Ty.apply (Ty.path "core::future::async_drop::AsyncDropInPlace") [] [ T ],
                     [],
+                    [],
                     "poll",
+                    [],
                     []
                   |),
-                  [ M.read (| dtor |); M.read (| cx |) ]
+                  [
+                    M.read (| dtor |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -350,17 +377,28 @@ Module future.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Formatter",
-                      "debug_struct",
-                      []
-                    |),
-                    [ M.read (| f |); M.read (| Value.String "AsyncDropInPlace" |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "AsyncDropInPlace" |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -402,7 +440,9 @@ Module future.
                 "core::future::future::Future",
                 Ty.associated,
                 [],
+                [],
                 "poll",
+                [],
                 []
               |),
               [
@@ -413,37 +453,44 @@ Module future.
                       []
                       [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "core::pin::Pin")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                    (Ty.path "&mut")
                                     []
-                                    [ T ]
-                                ]
-                            ],
-                          "get_unchecked_mut",
-                          []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                        []
+                                        [ T ]
+                                    ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
                         |),
-                        [ M.read (| self |) ]
-                      |),
-                      "core::future::async_drop::AsyncDropInPlace",
-                      0
+                        "core::future::async_drop::AsyncDropInPlace",
+                        0
+                      |)
                     |)
                   ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -503,7 +550,9 @@ Module future.
                                         "core::future::into_future::IntoFuture",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "into_future",
+                                        [],
                                         []
                                       |),
                                       [
@@ -512,7 +561,9 @@ Module future.
                                             "core::future::async_drop::AsyncDrop",
                                             T,
                                             [],
+                                            [],
                                             "async_drop",
+                                            [],
                                             []
                                           |),
                                           [
@@ -523,9 +574,20 @@ Module future.
                                                   []
                                                   [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                                 "new_unchecked",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| ptr |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| ptr |) |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -546,7 +608,9 @@ Module future.
                                                       "core::future::future::Future",
                                                       Ty.associated,
                                                       [],
+                                                      [],
                                                       "poll",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -562,17 +626,33 @@ Module future.
                                                                 [ Ty.associated ]
                                                             ],
                                                           "new_unchecked",
-                                                          []
-                                                        |),
-                                                        [ __awaitee ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::future::get_context",
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| _task_context |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                __awaitee
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::future::get_context",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.read (| _task_context |) ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -664,7 +744,17 @@ Module future.
                                       [],
                                       [ T ]
                                     |),
-                                    [ M.read (| ptr |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| ptr |) |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
                                 |))
                             |)))
@@ -753,6 +843,7 @@ Module future.
                                   [ Ty.apply (Ty.path "core::future::async_drop::Fuse") [] [ T ] ]
                               ],
                             "get_unchecked_mut",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -765,10 +856,13 @@ Module future.
                           ltac:(M.monadic
                             (let γ :=
                               M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| this |),
-                                  "core::future::async_drop::Fuse",
-                                  "inner"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| this |) |),
+                                    "core::future::async_drop::Fuse",
+                                    "inner"
+                                  |)
                                 |)
                               |) in
                             let γ := M.read (| γ |) in
@@ -787,7 +881,9 @@ Module future.
                                       "core::future::future::Future",
                                       T,
                                       [],
+                                      [],
                                       "poll",
+                                      [],
                                       []
                                     |),
                                     [
@@ -798,11 +894,15 @@ Module future.
                                             []
                                             [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                           "new_unchecked",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| inner |) ]
                                       |);
-                                      M.read (| cx |)
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| cx |) |)
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -838,7 +938,7 @@ Module future.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| this |),
+                                  M.deref (| M.read (| this |) |),
                                   "core::future::async_drop::Fuse",
                                   "inner"
                                 |),
@@ -903,6 +1003,7 @@ Module future.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -917,6 +1018,7 @@ Module future.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         "as_mut_ptr",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| s |) ]
@@ -933,7 +1035,9 @@ Module future.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -963,10 +1067,19 @@ Module future.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |),
                                                   [
@@ -998,7 +1111,9 @@ Module future.
                                                                 "core::future::into_future::IntoFuture",
                                                                 Ty.associated,
                                                                 [],
+                                                                [],
                                                                 "into_future",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1016,6 +1131,7 @@ Module future.
                                                                           []
                                                                           [ T ],
                                                                         "add",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1042,7 +1158,9 @@ Module future.
                                                                               "core::future::future::Future",
                                                                               Ty.associated,
                                                                               [],
+                                                                              [],
                                                                               "poll",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1062,21 +1180,37 @@ Module future.
                                                                                         ]
                                                                                     ],
                                                                                   "new_unchecked",
-                                                                                  []
-                                                                                |),
-                                                                                [ __awaitee ]
-                                                                              |);
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::future::get_context",
                                                                                   [],
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    _task_context
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.MutRef,
+                                                                                        __awaitee
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
+                                                                              |);
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_function (|
+                                                                                      "core::future::get_context",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        _task_context
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -1186,7 +1320,9 @@ Module future.
                                           "core::future::into_future::IntoFuture",
                                           F,
                                           [],
+                                          [],
                                           "into_future",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| first |) ]
@@ -1206,7 +1342,9 @@ Module future.
                                                         "core::future::future::Future",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "poll",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1222,17 +1360,33 @@ Module future.
                                                                   [ Ty.associated ]
                                                               ],
                                                             "new_unchecked",
-                                                            []
-                                                          |),
-                                                          [ __awaitee ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::future::get_context",
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| _task_context |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  __awaitee
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::future::get_context",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| _task_context |) ]
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1281,7 +1435,9 @@ Module future.
                                           "core::future::into_future::IntoFuture",
                                           G,
                                           [],
+                                          [],
                                           "into_future",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| last |) ]
@@ -1301,7 +1457,9 @@ Module future.
                                                         "core::future::future::Future",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "poll",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1317,17 +1475,33 @@ Module future.
                                                                   [ Ty.associated ]
                                                               ],
                                                             "new_unchecked",
-                                                            []
-                                                          |),
-                                                          [ __awaitee ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::future::get_context",
                                                             [],
                                                             []
                                                           |),
-                                                          [ M.read (| _task_context |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  __awaitee
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::future::get_context",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| _task_context |) ]
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1419,7 +1593,9 @@ Module future.
                                           []
                                           [ T ],
                                         [],
+                                        [],
                                         "into_future",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1452,7 +1628,9 @@ Module future.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "poll",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1474,17 +1652,33 @@ Module future.
                                                                 ]
                                                             ],
                                                           "new_unchecked",
-                                                          []
-                                                        |),
-                                                        [ __awaitee ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::future::get_context",
                                                           [],
                                                           []
                                                         |),
-                                                        [ M.read (| _task_context |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                __awaitee
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::future::get_context",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.read (| _task_context |) ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1594,22 +1788,37 @@ Module future.
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.associated,
+                                                  [],
                                                   [ Ty.associated ],
                                                   "eq",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::intrinsics::discriminant_value",
-                                                        [],
-                                                        [ T ]
-                                                      |),
-                                                      [ M.read (| this |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::intrinsics::discriminant_value",
+                                                          [],
+                                                          [ T ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| this |) |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  discr
+                                                  M.borrow (| Pointer.Kind.Ref, discr |)
                                                 ]
                                               |)
                                             |)) in
@@ -1632,7 +1841,9 @@ Module future.
                                                 "core::future::into_future::IntoFuture",
                                                 M_,
                                                 [],
+                                                [],
                                                 "into_future",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| matched |) ]
@@ -1652,7 +1863,9 @@ Module future.
                                                               "core::future::future::Future",
                                                               Ty.associated,
                                                               [],
+                                                              [],
                                                               "poll",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1668,17 +1881,33 @@ Module future.
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   "new_unchecked",
-                                                                  []
-                                                                |),
-                                                                [ __awaitee ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::future::get_context",
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| _task_context |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        __awaitee
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "core::future::get_context",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| _task_context |) ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -1735,7 +1964,9 @@ Module future.
                                                 "core::future::into_future::IntoFuture",
                                                 O,
                                                 [],
+                                                [],
                                                 "into_future",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| other |) ]
@@ -1755,7 +1986,9 @@ Module future.
                                                               "core::future::future::Future",
                                                               Ty.associated,
                                                               [],
+                                                              [],
                                                               "poll",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1771,17 +2004,33 @@ Module future.
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   "new_unchecked",
-                                                                  []
-                                                                |),
-                                                                [ __awaitee ]
-                                                              |);
-                                                              M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::future::get_context",
                                                                   [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| _task_context |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        __awaitee
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "core::future::get_context",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| _task_context |) ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -1903,7 +2152,7 @@ Module future.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

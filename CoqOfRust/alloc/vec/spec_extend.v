@@ -30,9 +30,13 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_desugared",
+                [],
                 [ I ]
               |),
-              [ M.read (| self |); M.read (| iter |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| iter |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -70,9 +74,13 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_trusted",
+                [],
                 [ I ]
               |),
-              [ M.read (| self |); M.read (| iterator |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| iterator |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -117,23 +125,30 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "append_elements",
+                        [],
                         []
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.read (|
                           M.use
                             (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ],
-                                  "as_slice",
-                                  []
-                                |),
-                                [ iterator ]
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [ T; Ty.path "alloc::alloc::Global" ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
+                                  |)
+                                |)
                               |)
                             |))
                         |)
@@ -150,9 +165,10 @@ Module vec.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "forget_remaining_elements",
+                      [],
                       []
                     |),
-                    [ iterator ]
+                    [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -201,18 +217,22 @@ Module vec.
               M.get_trait_method (|
                 "alloc::vec::spec_extend::SpecExtend",
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                [],
                 [ T; Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ] ],
                 "spec_extend",
+                [],
                 []
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "cloned",
+                    [],
                     [ T ]
                   |),
                   [ M.read (| iterator |) ]
@@ -259,9 +279,10 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "as_slice",
+                      [],
                       []
                     |),
-                    [ iterator ]
+                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                   |)
                 |) in
               let~ _ :=
@@ -270,9 +291,13 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append_elements",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| slice |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| slice |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

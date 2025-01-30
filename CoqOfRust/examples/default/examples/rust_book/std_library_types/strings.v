@@ -56,25 +56,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Pangram: " |); M.read (| Value.String "
-" |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ pangram ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Pangram: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, pangram |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -89,9 +119,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Words in reverse
-" |) ] |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Words in reverse
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -109,7 +156,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "core::str::iter::SplitWhitespace" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -118,13 +167,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::SplitWhitespace",
                         [],
+                        [],
                         "rev",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
-                          [ M.read (| pangram |) ]
+                          M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pangram |) |) |) ]
                         |)
                       ]
                     |)
@@ -148,10 +199,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "core::str::iter::SplitWhitespace" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -179,34 +237,62 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "> " |);
-                                                      M.read (| Value.String "
-" |)
-                                                    ]
-                                                |);
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "str" ]
+                                                            M.read (| Value.String "> " |);
+                                                            M.read (| Value.String "
+" |)
                                                           ]
-                                                        |),
-                                                        [ word ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "str" ]
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      word
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -228,7 +314,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "collect",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -238,8 +326,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "chars", [] |),
-                  [ M.read (| pangram |) ]
+                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pangram |) |) |) ]
                 |)
               ]
             |)
@@ -250,21 +338,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "char" ],
                 "sort",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::DerefMut",
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    "deref_mut",
-                    []
-                  |),
-                  [ chars ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::DerefMut",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [],
+                        "deref_mut",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, chars |) ]
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -278,15 +374,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                 "dedup",
+                [],
                 []
               |),
-              [ chars ]
+              [ M.borrow (| Pointer.Kind.MutRef, chars |) ]
             |)
           |) in
         let~ string :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
               []
             |)
           |) in
@@ -302,7 +399,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| chars |) ]
@@ -325,10 +424,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "char"; Ty.path "alloc::alloc::Global" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -352,9 +458,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push",
+                                          [],
                                           []
                                         |),
-                                        [ string; M.read (| c |) ]
+                                        [ M.borrow (| Pointer.Kind.MutRef, string |); M.read (| c |)
+                                        ]
                                       |)
                                     |) in
                                   let~ _ :=
@@ -363,9 +471,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
-                                        [ string; M.read (| Value.String ", " |) ]
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, string |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String ", " |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
@@ -376,28 +491,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)) in
         let~ chars_to_trim :=
-          M.alloc (| M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |) |) in
+          M.alloc (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |)
+                |)
+              |)
+            |)
+          |) in
         let~ trimmed_str :=
           M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.path "str",
-                "trim_matches",
-                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ]
-              |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.path "alloc::string::String",
+                  M.get_associated_function (|
+                    Ty.path "str",
+                    "trim_matches",
                     [],
-                    "deref",
-                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]
+                    ]
                   |),
-                  [ string ]
-                |);
-                M.read (| chars_to_trim |)
-              ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloc::string::String",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, string |) ]
+                        |)
+                      |)
+                    |);
+                    M.read (| chars_to_trim |)
+                  ]
+                |)
+              |)
             |)
           |) in
         let~ _ :=
@@ -407,28 +546,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Used characters: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Used characters: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ trimmed_str ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, trimmed_str |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -442,8 +608,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
+                [],
                 []
               |),
               [ M.read (| Value.String "I like dogs" |) ]
@@ -455,21 +623,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "str",
                 "replace",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.path "alloc::string::String",
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [ alice ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.path "alloc::string::String",
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, alice |) ]
+                    |)
+                  |)
                 |);
                 M.read (| Value.String "dog" |);
-                M.read (| Value.String "cat" |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "cat" |) |) |)
               ]
             |)
           |) in
@@ -480,26 +656,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Alice says: " |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Alice says: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [ alice ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, alice |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -514,25 +719,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Bob says: " |); M.read (| Value.String "
-" |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [ bob ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Bob says: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, bob |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

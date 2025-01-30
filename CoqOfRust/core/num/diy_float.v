@@ -39,7 +39,7 @@ Module num.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -69,23 +69,43 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Fp" |);
-                M.read (| Value.String "f" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::num::diy_float::Fp",
-                  "f"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Fp" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "f" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::num::diy_float::Fp",
+                        "f"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "e" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::diy_float::Fp",
-                    "e"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "e" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::diy_float::Fp",
+                            "e"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -133,7 +153,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
@@ -146,7 +166,7 @@ Module num.
                   BinOp.bit_and
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
@@ -158,7 +178,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
@@ -171,7 +191,7 @@ Module num.
                   BinOp.bit_and
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::num::diy_float::Fp",
                         "f"
                       |)
@@ -221,14 +241,14 @@ Module num.
                     BinOp.Wrap.add (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::diy_float::Fp",
                           "e"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::num::diy_float::Fp",
                           "e"
                         |)
@@ -289,7 +309,7 @@ Module num.
               let~ f :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::diy_float::Fp",
                     "f"
                   |)
@@ -297,7 +317,7 @@ Module num.
               let~ e :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::num::diy_float::Fp",
                     "e"
                   |)
@@ -614,7 +634,7 @@ Module num.
                   BinOp.Wrap.sub (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::diy_float::Fp",
                         "e"
                       |)
@@ -648,31 +668,37 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ edelta := M.alloc (| M.rust_cast (M.read (| edelta |)) |) in
+              let~ edelta := M.alloc (| M.cast (Ty.path "usize") (M.read (| edelta |)) |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     Value.Tuple
                       [
-                        M.alloc (|
-                          BinOp.Wrap.shr (|
-                            BinOp.Wrap.shl (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::num::diy_float::Fp",
-                                  "f"
-                                |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            BinOp.Wrap.shr (|
+                              BinOp.Wrap.shl (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::num::diy_float::Fp",
+                                    "f"
+                                  |)
+                                |),
+                                M.read (| edelta |)
                               |),
                               M.read (| edelta |)
-                            |),
-                            M.read (| edelta |)
+                            |)
                           |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::num::diy_float::Fp",
-                          "f"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::diy_float::Fp",
+                            "f"
+                          |)
                         |)
                       ]
                   |),
@@ -693,8 +719,8 @@ Module num.
                                     (M.alloc (|
                                       UnOp.not (|
                                         BinOp.eq (|
-                                          M.read (| M.read (| left_val |) |),
-                                          M.read (| M.read (| right_val |) |)
+                                          M.read (| M.deref (| M.read (| left_val |) |) |),
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
                                         |)
                                       |)
                                     |)) in
@@ -719,8 +745,24 @@ Module num.
                                           |),
                                           [
                                             M.read (| kind |);
-                                            M.read (| left_val |);
-                                            M.read (| right_val |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| left_val |) |)
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| right_val |) |)
+                                                |)
+                                              |)
+                                            |);
                                             Value.StructTuple "core::option::Option::None" []
                                           ]
                                         |)
@@ -741,7 +783,7 @@ Module num.
                       BinOp.Wrap.shl (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::num::diy_float::Fp",
                             "f"
                           |)

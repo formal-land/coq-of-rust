@@ -36,8 +36,11 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "FooBar" |) ]
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FooBar" |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -69,8 +72,11 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "BarFoo" |) ]
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "BarFoo" |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -113,12 +119,22 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "> Foo.add(Bar) was called
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "> Foo.add(Bar) was called
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -169,12 +185,22 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "> Bar.add(Foo) was called
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "> Bar.add(Foo) was called
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -213,42 +239,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Foo + Bar = " |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Foo + Bar = " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "operator_overloading::FooBar" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::arith::Add",
-                                      Ty.path "operator_overloading::Foo",
-                                      [ Ty.path "operator_overloading::Bar" ],
-                                      "add",
-                                      []
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "operator_overloading::FooBar" ]
                                     |),
                                     [
-                                      Value.StructTuple "operator_overloading::Foo" [];
-                                      Value.StructTuple "operator_overloading::Bar" []
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::arith::Add",
+                                                  Ty.path "operator_overloading::Foo",
+                                                  [],
+                                                  [ Ty.path "operator_overloading::Bar" ],
+                                                  "add",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.StructTuple "operator_overloading::Foo" [];
+                                                  Value.StructTuple "operator_overloading::Bar" []
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -263,42 +323,76 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Bar + Foo = " |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Bar + Foo = " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "operator_overloading::BarFoo" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::arith::Add",
-                                      Ty.path "operator_overloading::Bar",
-                                      [ Ty.path "operator_overloading::Foo" ],
-                                      "add",
-                                      []
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "operator_overloading::BarFoo" ]
                                     |),
                                     [
-                                      Value.StructTuple "operator_overloading::Bar" [];
-                                      Value.StructTuple "operator_overloading::Foo" []
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::arith::Add",
+                                                  Ty.path "operator_overloading::Bar",
+                                                  [],
+                                                  [ Ty.path "operator_overloading::Foo" ],
+                                                  "add",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.StructTuple "operator_overloading::Bar" [];
+                                                  Value.StructTuple "operator_overloading::Foo" []
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

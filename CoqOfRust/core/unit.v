@@ -20,7 +20,9 @@ Module unit_.
               "core::iter::traits::iterator::Iterator",
               Ty.associated,
               [],
+              [],
               "for_each",
+              [],
               [ Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple []) ]
             |),
             [
@@ -29,7 +31,9 @@ Module unit_.
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]

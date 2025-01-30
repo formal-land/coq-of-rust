@@ -39,14 +39,24 @@ Module interpreter.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "target_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::input::InputsImpl",
+                              "target_address"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -56,14 +66,24 @@ Module interpreter.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "caller_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::input::InputsImpl",
+                              "caller_address"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -73,14 +93,24 @@ Module interpreter.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "input"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::input::InputsImpl",
+                              "input"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -93,14 +123,24 @@ Module interpreter.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "call_value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::input::InputsImpl",
+                              "call_value"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -130,35 +170,83 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "InputsImpl" |);
-                M.read (| Value.String "target_address" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::input::InputsImpl",
-                  "target_address"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "InputsImpl" |) |)
                 |);
-                M.read (| Value.String "caller_address" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::input::InputsImpl",
-                  "caller_address"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "target_address" |) |)
                 |);
-                M.read (| Value.String "input" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::input::InputsImpl",
-                  "input"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::input::InputsImpl",
+                        "target_address"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "call_value" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter::input::InputsImpl",
-                    "call_value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "caller_address" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::input::InputsImpl",
+                        "caller_address"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "input" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::input::InputsImpl",
+                        "input"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "call_value" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "call_value"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -191,7 +279,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -202,7 +292,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -213,7 +305,9 @@ Module interpreter.
                       "core::default::Default",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -227,7 +321,9 @@ Module interpreter.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -272,20 +368,28 @@ Module interpreter.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bits::address::Address",
+                      [],
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "target_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::input::InputsImpl",
+                          "target_address"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "target_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::interpreter::input::InputsImpl",
+                          "target_address"
+                        |)
                       |)
                     ]
                   |),
@@ -294,20 +398,28 @@ Module interpreter.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloy_primitives::bits::address::Address",
+                        [],
                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter::input::InputsImpl",
-                          "caller_address"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "caller_address"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "revm_interpreter::interpreter::input::InputsImpl",
-                          "caller_address"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "caller_address"
+                          |)
                         |)
                       ]
                     |)))
@@ -317,20 +429,28 @@ Module interpreter.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bytes_::Bytes",
+                      [],
                       [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "input"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::input::InputsImpl",
+                          "input"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "revm_interpreter::interpreter::input::InputsImpl",
-                        "input"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::interpreter::input::InputsImpl",
+                          "input"
+                        |)
                       |)
                     ]
                   |)))
@@ -343,6 +463,7 @@ Module interpreter.
                       (Ty.path "ruint::Uint")
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "ruint::Uint")
@@ -350,18 +471,25 @@ Module interpreter.
                         []
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::input::InputsImpl",
-                      "call_value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::input::InputsImpl",
+                        "call_value"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "revm_interpreter::interpreter::input::InputsImpl",
-                      "call_value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter::input::InputsImpl",
+                        "call_value"
+                      |)
                     |)
                   ]
                 |)))
@@ -437,7 +565,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::input::InputsImpl",
                 "target_address"
               |)
@@ -457,7 +585,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::input::InputsImpl",
                 "caller_address"
               |)
@@ -475,32 +603,54 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::Deref",
-                Ty.path "bytes::bytes::Bytes",
-                [],
-                "deref",
-                []
-              |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.path "alloy_primitives::bytes_::Bytes",
+                    Ty.path "bytes::bytes::Bytes",
+                    [],
                     [],
                     "deref",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::input::InputsImpl",
-                      "input"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_interpreter::interpreter::input::InputsImpl",
+                                    "input"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -517,7 +667,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::input::InputsImpl",
                 "call_value"
               |)

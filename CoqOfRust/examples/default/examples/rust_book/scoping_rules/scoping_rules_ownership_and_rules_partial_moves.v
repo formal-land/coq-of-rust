@@ -43,8 +43,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_trait_method (|
                       "core::convert::From",
                       Ty.path "alloc::string::String",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "from",
+                      [],
                       []
                     |),
                     [ M.read (| Value.String "Alice" |) ]
@@ -57,6 +59,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.U8 20 ]
@@ -92,39 +95,63 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "The person's age is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
+                                          M.read (| Value.String "The person's age is " |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
                                             [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, age |) |)
+                                              |)
                                             ]
+                                          |)
                                         ]
-                                      |),
-                                      [ age ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -142,82 +169,131 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "The person's name is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [ name ]
-                                    |)
-                                  ]
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              []
-                            |),
-                            [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "The person's age from person struct is "
-                                    |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          M.read (| Value.String "The person's name is " |);
+                                          M.read (| Value.String "
+" |)
                                         ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          person,
-                                          "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                                          "age"
-                                        |)
-                                      ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let~ _ :=
+                  let~ _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String "The person's age from person struct is "
+                                          |);
+                                          M.read (| Value.String "
+" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      person,
+                                                      "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                                                      "age"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -266,23 +342,43 @@ Module main.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Person" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Person" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                      "name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "age" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                  "age"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "age" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                          "age"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]

@@ -38,9 +38,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -50,17 +50,32 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
-                      M.alloc (| M.read (| Value.String "CordonBleu" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "CordonBleu" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Steak" |) in
-                      M.alloc (| M.read (| Value.String "Steak" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Steak" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
-                      M.alloc (| M.read (| Value.String "Sushi" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Sushi" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -114,9 +129,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -125,17 +140,32 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Monday" |) in
-                      M.alloc (| M.read (| Value.String "Monday" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Monday" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Tuesday" |) in
-                      M.alloc (| M.read (| Value.String "Tuesday" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Tuesday" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Wednesday" |) in
-                      M.alloc (| M.read (| Value.String "Wednesday" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Wednesday" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -303,6 +333,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
         M.get_associated_function (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
           "and_then",
+          [],
           [
             Ty.path "combinators_and_then::Food";
             Ty.function
@@ -363,38 +394,67 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Yay! On " |);
-                                  M.read (| Value.String " we get to eat " |);
-                                  M.read (| Value.String ".
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "Yay! On " |);
+                                        M.read (| Value.String " we get to eat " |);
+                                        M.read (| Value.String ".
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [ Ty.path "combinators_and_then::Day" ]
-                                    |),
-                                    [ day ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [ Ty.path "combinators_and_then::Food" ]
-                                    |),
-                                    [ food ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [],
+                                            [ Ty.path "combinators_and_then::Day" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, day |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [],
+                                            [ Ty.path "combinators_and_then::Food" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, food |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -414,29 +474,52 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Oh no. We don't get to eat on " |);
-                                  M.read (| Value.String "?
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "Oh no. We don't get to eat on " |);
+                                        M.read (| Value.String "?
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [ Ty.path "combinators_and_then::Day" ]
-                                    |),
-                                    [ day ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [],
+                                            [ Ty.path "combinators_and_then::Day" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, day |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)

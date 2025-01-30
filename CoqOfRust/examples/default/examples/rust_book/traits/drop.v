@@ -30,32 +30,64 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "> Dropping " |); M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "> Dropping " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "drop::Droppable",
-                                    "name"
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "drop::Droppable",
+                                                "name"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -140,10 +172,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
-                        [ M.alloc (| Value.Array [ M.read (| Value.String "Exiting block B
-" |) ] |)
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Exiting block B
+" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
@@ -161,12 +205,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "Just exited block B
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "Just exited block B
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -184,10 +237,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
-                      [ M.alloc (| Value.Array [ M.read (| Value.String "Exiting block A
-" |) ] |) ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "Exiting block A
+" |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
                   ]
                 |)
@@ -201,9 +267,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Just exited block A
-" |) ] |)
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Just exited block A
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -224,11 +306,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "end of the main function
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "end of the main function
 " |) ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

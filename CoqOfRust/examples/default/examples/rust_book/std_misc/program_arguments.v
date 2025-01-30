@@ -26,7 +26,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "std::env::Args",
                 [],
+                [],
                 "collect",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -44,43 +46,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "My path is " |); M.read (| Value.String ".
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "My path is " |);
+                                  M.read (| Value.String ".
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "alloc::string::String";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [ Ty.path "usize" ],
-                                    "index",
-                                    []
-                                  |),
-                                  [ args; Value.Integer IntegerKind.Usize 0 ]
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::index::Index",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path "alloc::string::String";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [ Ty.path "usize" ],
+                                                  "index",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.Ref, args |);
+                                                  Value.Integer IntegerKind.Usize 0
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -95,96 +136,146 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "I got " |);
-                            M.read (| Value.String " arguments: " |);
-                            M.read (| Value.String ".
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  BinOp.Wrap.sub (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.path "alloc::string::String";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ args ]
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |)
-                                |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.path "alloc::string::String" ]
-                                    ]
+                                  M.read (| Value.String "I got " |);
+                                  M.read (| Value.String " arguments: " |);
+                                  M.read (| Value.String ".
+" |)
                                 ]
-                              |),
-                              [
-                                M.alloc (|
+                            |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path "alloc::string::String";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              BinOp.Wrap.sub (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path "alloc::string::String";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    "len",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, args |) ]
+                                                |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
                                       [
                                         Ty.apply
-                                          (Ty.path "core::ops::range::RangeFrom")
+                                          (Ty.path "&")
                                           []
-                                          [ Ty.path "usize" ]
-                                      ],
-                                      "index",
-                                      []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [ Ty.path "alloc::string::String" ]
+                                          ]
+                                      ]
                                     |),
                                     [
-                                      args;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeFrom"
-                                        [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::Index",
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "alloc::string::String";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeFrom")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (| Pointer.Kind.Ref, args |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            Value.Integer IntegerKind.Usize 1)
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

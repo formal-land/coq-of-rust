@@ -22,7 +22,7 @@ Module collections.
                 [ T; Ty.tuple []; Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ]
               |),
               [
-                M.read (| v |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -41,8 +41,10 @@ Module collections.
                                         M.get_trait_method (|
                                           "core::ops::function::FnOnce",
                                           impl_FnOnce_T__arrow_T,
+                                          [],
                                           [ Ty.tuple [ T ] ],
                                           "call_once",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
@@ -93,7 +95,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::read", [], [ T ] |),
-                    [ M.read (| v |) ]
+                    [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| v |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -102,8 +104,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       impl_FnOnce_T__arrow__T__R_,
+                      [],
                       [ Ty.tuple [ T ] ],
                       "call_once",
+                      [],
                       []
                     |),
                     [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
@@ -121,7 +125,13 @@ Module collections.
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (| "core::ptr::write", [], [ T ] |),
-                              [ M.read (| v |); M.read (| new_value |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutPointer,
+                                  M.deref (| M.read (| v |) |)
+                                |);
+                                M.read (| new_value |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |) in

@@ -20,7 +20,9 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+        M.never_to_any (|
+          M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -41,7 +43,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -79,7 +81,9 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
-        M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+        M.never_to_any (|
+          M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -100,7 +104,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -143,21 +147,41 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field2_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Length" |);
-            M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
-              "generics_phantom_type_test_case_unit_clarification::Length",
-              0
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Length" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_phantom_type_test_case_unit_clarification::Length",
+                    0
+                  |)
+                |)
+              |)
             |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "generics_phantom_type_test_case_unit_clarification::Length",
-                1
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_phantom_type_test_case_unit_clarification::Length",
+                        1
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -189,12 +213,20 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::clone::Clone", Ty.path "f64", [], "clone", [] |),
+              M.get_trait_method (| "core::clone::Clone", Ty.path "f64", [], [], "clone", [], [] |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_phantom_type_test_case_unit_clarification::Length",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_phantom_type_test_case_unit_clarification::Length",
+                        0
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |);
@@ -203,14 +235,24 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
                 "core::clone::Clone",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ Unit ],
                 [],
+                [],
                 "clone",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_phantom_type_test_case_unit_clarification::Length",
-                  1
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_phantom_type_test_case_unit_clarification::Length",
+                        1
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -344,6 +386,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                   []
                   [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
@@ -351,6 +394,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
                 ],
                 "add",
+                [],
                 []
               |),
               [ M.read (| one_foot |); M.read (| one_foot |) ]
@@ -365,6 +409,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                   []
                   [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
@@ -372,6 +417,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
                 ],
                 "add",
+                [],
                 []
               |),
               [ M.read (| one_meter |); M.read (| one_meter |) ]
@@ -384,34 +430,64 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "one foot + one_foot = " |);
-                            M.read (| Value.String " in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "one foot + one_foot = " |);
+                                  M.read (| Value.String " in
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "f64" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_tuple_field (|
-                                  two_feet,
-                                  "generics_phantom_type_test_case_unit_clarification::Length",
-                                  0
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "f64" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              two_feet,
+                                              "generics_phantom_type_test_case_unit_clarification::Length",
+                                              0
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -426,34 +502,64 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "one meter + one_meter = " |);
-                            M.read (| Value.String " mm
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "one meter + one_meter = " |);
+                                  M.read (| Value.String " mm
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "f64" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_tuple_field (|
-                                  two_meters,
-                                  "generics_phantom_type_test_case_unit_clarification::Length",
-                                  0
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "f64" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              two_meters,
+                                              "generics_phantom_type_test_case_unit_clarification::Length",
+                                              0
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

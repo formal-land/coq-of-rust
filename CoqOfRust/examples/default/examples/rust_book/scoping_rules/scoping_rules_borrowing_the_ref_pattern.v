@@ -21,7 +21,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -111,7 +111,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let ref_c1 := M.alloc (| γ |) in
-                let~ ref_c2 := M.alloc (| c |) in
+                let~ ref_c2 := M.alloc (| M.borrow (| Pointer.Kind.Ref, c |) |) in
                 let~ _ :=
                   let~ _ :=
                     M.alloc (|
@@ -122,36 +122,66 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "ref_c1 equals ref_c2: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "ref_c1 equals ref_c2: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "bool" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          BinOp.eq (|
-                                            M.read (| M.read (| ref_c1 |) |),
-                                            M.read (| M.read (| ref_c2 |) |)
-                                          |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "bool" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      BinOp.eq (|
+                                                        M.read (|
+                                                          M.deref (| M.read (| ref_c1 |) |)
+                                                        |),
+                                                        M.read (|
+                                                          M.deref (| M.read (| ref_c2 |) |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -188,7 +218,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "y"
                               |) in
                             let ref_to_x := M.alloc (| γ0_0 |) in
-                            M.read (| ref_to_x |)))
+                            M.deref (| M.read (| ref_to_x |) |)))
                       ]
                     |)
                   |) in
@@ -214,7 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           let mut_ref_to_y := M.alloc (| γ0_1 |) in
                           let~ _ :=
                             M.write (|
-                              M.read (| mut_ref_to_y |),
+                              M.deref (| M.read (| mut_ref_to_y |) |),
                               Value.Integer IntegerKind.I32 1
                             |) in
                           M.alloc (| Value.Tuple [] |)))
@@ -230,50 +260,85 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "point is (" |);
-                                    M.read (| Value.String ", " |);
-                                    M.read (| Value.String ")
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "point is (" |);
+                                          M.read (| Value.String ", " |);
+                                          M.read (| Value.String ")
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          point,
-                                          "scoping_rules_borrowing_the_ref_pattern::Point",
-                                          "x"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          point,
-                                          "scoping_rules_borrowing_the_ref_pattern::Point",
-                                          "y"
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      point,
+                                                      "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                      "x"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      point,
+                                                      "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                      "y"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -291,50 +356,85 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "mutable_point is (" |);
-                                    M.read (| Value.String ", " |);
-                                    M.read (| Value.String ")
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "mutable_point is (" |);
+                                          M.read (| Value.String ", " |);
+                                          M.read (| Value.String ")
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          mutable_point,
-                                          "scoping_rules_borrowing_the_ref_pattern::Point",
-                                          "x"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          mutable_point,
-                                          "scoping_rules_borrowing_the_ref_pattern::Point",
-                                          "y"
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      mutable_point,
+                                                      "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                      "x"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      mutable_point,
+                                                      "scoping_rules_borrowing_the_ref_pattern::Point",
+                                                      "y"
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -353,6 +453,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.U32 5 ]
@@ -370,7 +471,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let last := M.alloc (| γ0_1 |) in
                           let~ _ :=
-                            M.write (| M.read (| last |), Value.Integer IntegerKind.U32 2 |) in
+                            M.write (|
+                              M.deref (| M.read (| last |) |),
+                              Value.Integer IntegerKind.U32 2
+                            |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
@@ -384,38 +488,66 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "tuple is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
-                                              Ty.path "u32"
-                                            ]
+                                          M.read (| Value.String "tuple is " |);
+                                          M.read (| Value.String "
+" |)
                                         ]
-                                      |),
-                                      [ mutable_tuple ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.path "u32";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path "u32"
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.Ref, mutable_tuple |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)

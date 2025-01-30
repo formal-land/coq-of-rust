@@ -49,7 +49,7 @@ Module Impl_trait_incrementer_Incrementer.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "trait_incrementer::Incrementer",
                 "value"
               |) in
@@ -76,8 +76,16 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
-          [ M.read (| self |); Value.Integer IntegerKind.U64 1 ]
+          M.get_associated_function (|
+            Ty.path "trait_incrementer::Incrementer",
+            "inc_by",
+            [],
+            []
+          |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+            Value.Integer IntegerKind.U64 1
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -94,7 +102,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "trait_incrementer::Incrementer",
             "value"
           |)
@@ -127,7 +135,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "trait_incrementer::Incrementer",
                 "value"
               |),

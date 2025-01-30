@@ -38,7 +38,7 @@ Module Impl_polymorphic_constants_Foo_N_A.
           [
             ("data",
               M.call_closure (|
-                M.get_trait_method (| "core::convert::Into", A, [ B ], "into", [] |),
+                M.get_trait_method (| "core::convert::Into", A, [], [ B ], "into", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -92,6 +92,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Value.Integer IntegerKind.Usize 3 ]
                   [ Ty.path "i32" ],
                 "convert",
+                [ Value.Integer IntegerKind.Usize 3 ],
                 [ Ty.path "f64" ]
               |),
               [ M.read (| foo |) ]
@@ -102,12 +103,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    bar,
-                    "polymorphic_constants::Foo",
-                    "data"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      bar,
+                      "polymorphic_constants::Foo",
+                      "data"
+                    |)
                   |);
-                  UnsupportedLiteral
+                  M.borrow (| Pointer.Kind.Ref, UnsupportedLiteral |)
                 ]
             |),
             [
@@ -127,8 +131,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)
                               |)) in
@@ -150,8 +154,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -169,12 +189,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    bar,
-                    "polymorphic_constants::Foo",
-                    "array"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      bar,
+                      "polymorphic_constants::Foo",
+                      "array"
+                    |)
                   |);
-                  M.alloc (| Value.Array [] |)
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
                 ]
             |),
             [
@@ -200,6 +223,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         (Ty.path "array")
                                         [ Value.Integer IntegerKind.Usize 0 ]
                                         [ Ty.path "f64" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "array")
@@ -207,9 +231,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "f64" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -240,8 +274,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

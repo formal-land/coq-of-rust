@@ -43,16 +43,21 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -90,6 +95,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -97,18 +103,30 @@ Module collections.
                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -165,6 +183,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -172,18 +191,30 @@ Module collections.
                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
                   ],
                   "partial_cmp",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -223,19 +254,32 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "cmp",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)))
@@ -278,14 +322,19 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |)
                       ]
                     |))
@@ -321,19 +370,32 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "clone_from",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| source |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| source |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -391,48 +453,79 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "Iter" |) ]
-                        |)
-                      |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::clone::Clone",
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::map::Keys")
-                              []
-                              [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
-                            [],
-                            "clone",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::set::Iter",
-                              "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "Iter" |) |)
+                                  |)
+                                ]
+                              |)
                             |)
-                          ]
-                        |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::Keys")
+                                        []
+                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
+                                        ],
+                                      [],
+                                      [],
+                                      "clone",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::set::Iter",
+                                          "iter"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -479,17 +572,32 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "IntoIter" |);
-                  M.read (| Value.String "iter" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::set::IntoIter",
-                      "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "IntoIter" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::IntoIter",
+                              "iter"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -537,17 +645,29 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Range" |);
-                  M.read (| Value.String "iter" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::set::Range",
-                      "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Range" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::Range",
+                              "iter"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -678,40 +798,80 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugStruct",
-                                  "field",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "debug_struct",
-                                            []
-                                          |),
-                                          [ M.read (| f |); M.read (| Value.String "Stitch" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::builders::DebugStruct",
+                                              "field",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::Formatter",
+                                                      "debug_struct",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| f |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Stitch" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "self_iter" |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      M.read (| Value.String "self_iter" |);
-                                      M.read (| self_iter |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| Value.String "other_iter" |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| other_iter |) |)
+                                      |)
                                     ]
-                                  |);
-                                  M.read (| Value.String "other_iter" |);
-                                  M.read (| other_iter |)
-                                ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -738,40 +898,80 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugStruct",
-                                  "field",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "debug_struct",
-                                            []
-                                          |),
-                                          [ M.read (| f |); M.read (| Value.String "Search" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::builders::DebugStruct",
+                                              "field",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::Formatter",
+                                                      "debug_struct",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| f |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Search" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "self_iter" |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      M.read (| Value.String "self_iter" |);
-                                      M.read (| self_iter |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| Value.String "other_iter" |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| other_set |) |)
+                                      |)
                                     ]
-                                  |);
-                                  M.read (| Value.String "other_iter" |);
-                                  M.read (| other_set |)
-                                ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -791,28 +991,48 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugTuple",
-                                  "field",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "debug_tuple",
-                                        []
-                                      |),
-                                      [ M.read (| f |); M.read (| Value.String "Iterate" |) ]
-                                    |)
-                                  |);
-                                  M.read (| x |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::builders::DebugTuple",
+                                      "field",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Formatter",
+                                              "debug_tuple",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| f |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "Iterate" |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -852,32 +1072,57 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "Difference" |) ]
-                        |)
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Difference",
-                        "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "Difference" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::Difference",
+                                  "inner"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -927,32 +1172,57 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "SymmetricDifference" |) ]
-                        |)
-                      |);
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::SymmetricDifference",
-                        0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "SymmetricDifference" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::SymmetricDifference",
+                                  0
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -1077,40 +1347,77 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugStruct",
-                                  "field",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "debug_struct",
-                                            []
-                                          |),
-                                          [ M.read (| f |); M.read (| Value.String "Stitch" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::builders::DebugStruct",
+                                              "field",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::Formatter",
+                                                      "debug_struct",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| f |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Stitch" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "a" |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| a |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      M.read (| Value.String "a" |);
-                                      M.read (| a |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| Value.String "b" |) |)
+                                      |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
                                     ]
-                                  |);
-                                  M.read (| Value.String "b" |);
-                                  M.read (| b |)
-                                ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1137,40 +1444,80 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugStruct",
-                                  "field",
-                                  []
-                                |),
-                                [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::builders::DebugStruct",
                                       "field",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "debug_struct",
-                                            []
-                                          |),
-                                          [ M.read (| f |); M.read (| Value.String "Search" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::builders::DebugStruct",
+                                              "field",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::Formatter",
+                                                      "debug_struct",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| f |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Search" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "small_iter" |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| small_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
-                                      M.read (| Value.String "small_iter" |);
-                                      M.read (| small_iter |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| Value.String "large_set" |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| large_set |) |)
+                                      |)
                                     ]
-                                  |);
-                                  M.read (| Value.String "large_set" |);
-                                  M.read (| large_set |)
-                                ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1190,28 +1537,48 @@ Module collections.
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "finish",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::builders::DebugTuple",
-                                  "field",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "debug_tuple",
-                                        []
-                                      |),
-                                      [ M.read (| f |); M.read (| Value.String "Answer" |) ]
-                                    |)
-                                  |);
-                                  M.read (| x |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::builders::DebugTuple",
+                                      "field",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Formatter",
+                                              "debug_tuple",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| f |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| Value.String "Answer" |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -1251,32 +1618,57 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "Intersection" |) ]
-                        |)
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Intersection",
-                        "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "Intersection" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::Intersection",
+                                  "inner"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -1326,32 +1718,57 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "Union" |) ]
-                        |)
-                      |);
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Union",
-                        0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "Union" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::Union",
+                                  0
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -1402,6 +1819,7 @@ Module collections.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -1441,6 +1859,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "new_in",
+                        [],
                         []
                       |),
                       [ M.read (| alloc |) ]
@@ -1481,13 +1900,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "range",
+                        [],
                         [ K; R ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
                         M.read (| range |)
                       ]
@@ -1573,9 +1996,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1584,9 +2013,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 |) in
@@ -1630,9 +2065,15 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "iter",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ])
                                         ]
@@ -1667,9 +2108,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -1679,9 +2126,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                         |) in
@@ -1726,9 +2179,15 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "iter",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| self |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ])
                                                 ]
@@ -1760,12 +2219,20 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| self_min |);
-                                                          M.read (| other_max |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_min |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| other_max |) |)
+                                                          |)
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -1773,12 +2240,20 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| self_max |);
-                                                          M.read (| other_min |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_max |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| other_min |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -1826,34 +2301,41 @@ Module collections.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "alloc::collections::btree::set::DifferenceInner::Iterate"
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::set::BTreeSet")
-                                                                              []
-                                                                              [ T; A ],
-                                                                            "iter",
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::set::BTreeSet")
                                                                             []
-                                                                          |),
-                                                                          [ M.read (| self |) ]
-                                                                        |)
-                                                                      ]
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                                            [ T; A ],
+                                                                          "iter",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -1876,9 +2358,15 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "iter",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| self |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let~ _ :=
@@ -1892,10 +2380,17 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ self_iter ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                self_iter
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -1924,9 +2419,15 @@ Module collections.
                                                                 []
                                                                 [ T; A ],
                                                               "iter",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| self |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let~ _ :=
@@ -1940,10 +2441,17 @@ Module collections.
                                                                 []
                                                                 [ T ],
                                                               [],
+                                                              [],
                                                               "next_back",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ self_iter ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                self_iter
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -1964,9 +2472,15 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| self |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |)
+                                                              ]
                                                             |),
                                                             BinOp.Wrap.div (|
                                                               M.call_closure (|
@@ -1977,9 +2491,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| other |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| other |) |)
+                                                                  |)
+                                                                ]
                                                               |),
                                                               M.read (|
                                                                 M.get_constant (|
@@ -2007,11 +2527,21 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| self |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
                                                               |));
-                                                            ("other_set", M.read (| other |))
+                                                            ("other_set",
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| other |) |)
+                                                              |))
                                                           ]
                                                       |)));
                                                   fun γ =>
@@ -2029,9 +2559,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| self |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
                                                               |));
                                                             ("other_iter",
                                                               M.call_closure (|
@@ -2043,7 +2579,9 @@ Module collections.
                                                                     []
                                                                     [ T ],
                                                                   [],
+                                                                  [],
                                                                   "peekable",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2055,9 +2593,17 @@ Module collections.
                                                                         []
                                                                         [ T; A ],
                                                                       "iter",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ M.read (| other |) ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| other |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |))
@@ -2114,6 +2660,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -2121,17 +2668,19 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
-                        [ M.read (| other |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                       |)
                     ]
                   |)
@@ -2208,9 +2757,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2219,9 +2774,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 |) in
@@ -2289,9 +2850,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2301,9 +2868,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                         |) in
@@ -2373,12 +2946,20 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| self_min |);
-                                                          M.read (| other_max |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_min |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| other_max |) |)
+                                                          |)
                                                         ]
                                                       |);
                                                       M.call_closure (|
@@ -2386,12 +2967,20 @@ Module collections.
                                                           "core::cmp::Ord",
                                                           T,
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| self_max |);
-                                                          M.read (| other_min |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_max |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| other_min |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -2439,25 +3028,24 @@ Module collections.
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [] =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Value.StructTuple
-                                                                      "alloc::collections::btree::set::IntersectionInner::Answer"
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
-                                                                      ]
-                                                                  |)))
-                                                              | _ =>
-                                                                M.impossible
-                                                                  "wrong number of arguments"
-                                                              end))
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [] =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  Value.StructTuple
+                                                                    "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                                    [
+                                                                      Value.StructTuple
+                                                                        "core::option::Option::None"
+                                                                        []
+                                                                    ]
+                                                                |)))
+                                                            | _ =>
+                                                              M.impossible
+                                                                "wrong number of arguments"
+                                                            end)
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -2476,7 +3064,14 @@ Module collections.
                                                           [
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
-                                                              [ M.read (| self_min |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| self_min |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                           ]
                                                       |)));
                                                   fun γ =>
@@ -2496,7 +3091,14 @@ Module collections.
                                                           [
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
-                                                              [ M.read (| self_max |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| self_max |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                           ]
                                                       |)));
                                                   fun γ =>
@@ -2512,9 +3114,15 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| self |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| self |) |)
+                                                                |)
+                                                              ]
                                                             |),
                                                             BinOp.Wrap.div (|
                                                               M.call_closure (|
@@ -2525,9 +3133,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| other |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| other |) |)
+                                                                  |)
+                                                                ]
                                                               |),
                                                               M.read (|
                                                                 M.get_constant (|
@@ -2555,11 +3169,21 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| self |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
                                                               |));
-                                                            ("large_set", M.read (| other |))
+                                                            ("large_set",
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| other |) |)
+                                                              |))
                                                           ]
                                                       |)));
                                                   fun γ =>
@@ -2575,9 +3199,15 @@ Module collections.
                                                                   []
                                                                   [ T; A ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| other |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| other |) |)
+                                                                |)
+                                                              ]
                                                             |),
                                                             BinOp.Wrap.div (|
                                                               M.call_closure (|
@@ -2588,9 +3218,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "len",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| self |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
                                                               |),
                                                               M.read (|
                                                                 M.get_constant (|
@@ -2618,11 +3254,21 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| other |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| other |) |)
+                                                                  |)
+                                                                ]
                                                               |));
-                                                            ("large_set", M.read (| self |))
+                                                            ("large_set",
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
+                                                              |))
                                                           ]
                                                       |)));
                                                   fun γ =>
@@ -2640,9 +3286,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| self |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |)
+                                                                ]
                                                               |));
                                                             ("b",
                                                               M.call_closure (|
@@ -2653,9 +3305,15 @@ Module collections.
                                                                     []
                                                                     [ T; A ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| other |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| other |) |)
+                                                                  |)
+                                                                ]
                                                               |))
                                                           ]
                                                       |)))
@@ -2702,6 +3360,7 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -2709,17 +3368,19 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "iter",
+                          [],
                           []
                         |),
-                        [ M.read (| other |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                       |)
                     ]
                   |)
@@ -2752,13 +3413,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "clear",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |)
                 ]
               |)))
@@ -2797,15 +3462,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "contains_key",
+                  [],
                   [ Q ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |);
-                  M.read (| value |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -2838,17 +3507,27 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ Q ],
                   "get",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| value |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -2882,36 +3561,49 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   "is_none",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::set::Intersection")
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::Intersection")
+                            []
+                            [ T; A ],
+                          [],
+                          [],
+                          "next",
+                          [],
                           []
-                          [ T; A ],
-                        [],
-                        "next",
-                        []
-                      |),
-                      [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                []
-                                [ T; A ],
-                              "intersection",
-                              []
-                            |),
-                            [ M.read (| self |); M.read (| other |) ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                    []
+                                    [ T; A ],
+                                  "intersection",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
-                        |)
-                      ]
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -3014,9 +3706,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |),
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -3025,9 +3723,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| other |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)
                                   |)) in
@@ -3059,9 +3763,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "first",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -3070,9 +3780,15 @@ Module collections.
                                             []
                                             [ T; A ],
                                           "last",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 |) in
@@ -3127,9 +3843,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "first",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |);
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -3139,9 +3861,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "last",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| other |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                         |) in
@@ -3190,9 +3918,15 @@ Module collections.
                                               []
                                               [ T; A ],
                                             "iter",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |) in
                                     let~ _ :=
@@ -3203,10 +3937,21 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self_min |); M.read (| other_min |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_min |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| other_min |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -3240,10 +3985,13 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ self_iter ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, self_iter |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -3265,10 +4013,21 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self_max |); M.read (| other_max |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_max |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| other_max |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -3302,10 +4061,13 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next_back",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ self_iter ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, self_iter |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -3338,10 +4100,13 @@ Module collections.
                                                             []
                                                             [ T ],
                                                           [],
+                                                          [],
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ self_iter ]
+                                                        [ M.borrow (| Pointer.Kind.Ref, self_iter |)
+                                                        ]
                                                       |),
                                                       BinOp.Wrap.div (|
                                                         M.call_closure (|
@@ -3352,9 +4117,15 @@ Module collections.
                                                               []
                                                               [ T; A ],
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| other |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| other |) |)
+                                                            |)
+                                                          ]
                                                         |),
                                                         M.read (|
                                                           M.get_constant (|
@@ -3381,7 +4152,9 @@ Module collections.
                                                           []
                                                           [ T ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self_iter |) ]
@@ -3405,10 +4178,22 @@ Module collections.
                                                                         []
                                                                         [ T ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ iter ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            iter
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |),
                                                                 [
@@ -3454,14 +4239,25 @@ Module collections.
                                                                                             [ T; A
                                                                                             ],
                                                                                           "contains",
+                                                                                          [],
                                                                                           [ T ]
                                                                                         |),
                                                                                         [
-                                                                                          M.read (|
-                                                                                            other
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                other
+                                                                                              |)
+                                                                                            |)
                                                                                           |);
-                                                                                          M.read (|
-                                                                                            next
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                next
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |)
@@ -3507,9 +4303,15 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| other |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| other |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -3523,10 +4325,13 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ other_iter ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, other_iter |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ _ :=
@@ -3540,10 +4345,13 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next_back",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ other_iter ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, other_iter |)
+                                                    ]
                                                   |)
                                                 |) in
                                               let~ self_next :=
@@ -3557,10 +4365,13 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ self_iter ]
+                                                    [ M.borrow (| Pointer.Kind.MutRef, self_iter |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.loop (|
@@ -3592,6 +4403,7 @@ Module collections.
                                                                         [ T ]
                                                                     ],
                                                                   "map_or",
+                                                                  [],
                                                                   [
                                                                     Ty.path "core::cmp::Ordering";
                                                                     Ty.function
@@ -3618,10 +4430,17 @@ Module collections.
                                                                         []
                                                                         [ T ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ other_iter ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        other_iter
+                                                                      |)
+                                                                    ]
                                                                   |);
                                                                   Value.StructTuple
                                                                     "core::cmp::Ordering::Less"
@@ -3646,15 +4465,27 @@ Module collections.
                                                                                         "core::cmp::Ord",
                                                                                         T,
                                                                                         [],
+                                                                                        [],
                                                                                         "cmp",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          self1
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self1
+                                                                                            |)
+                                                                                          |)
                                                                                         |);
-                                                                                        M.read (|
-                                                                                          other1
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              other1
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |)))
@@ -3702,10 +4533,17 @@ Module collections.
                                                                           []
                                                                           [ T ],
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [ self_iter ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          self_iter
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)));
                                                               fun γ =>
@@ -3776,9 +4614,13 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "is_subset",
+                  [],
                   []
                 |),
-                [ M.read (| other |); M.read (| self |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3817,6 +4659,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -3844,13 +4687,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "first_key_value",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::BTreeSet",
-                        "map"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
                       |)
                     ]
                   |);
@@ -3912,6 +4759,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -3939,13 +4787,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "last_key_value",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::BTreeSet",
-                        "map"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
                       |)
                     ]
                   |);
@@ -4003,6 +4855,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -4022,13 +4875,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "pop_first",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::BTreeSet",
-                        "map"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
                       |)
                     ]
                   |);
@@ -4084,6 +4941,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -4103,13 +4961,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "pop_last",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::BTreeSet",
-                        "map"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
                       |)
                     ]
                   |);
@@ -4161,37 +5023,47 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "is_none",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::map::BTreeMap")
-                          []
-                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
-                        "insert",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
-                        |);
-                        M.read (| value |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::default::Default",
-                            Ty.path "alloc::collections::btree::set_val::SetValZST",
-                            [],
-                            "default",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::BTreeMap")
                             []
-                          |),
+                            [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                          "insert",
+                          [],
                           []
-                        |)
-                      ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::BTreeSet",
+                              "map"
+                            |)
+                          |);
+                          M.read (| value |);
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::default::Default",
+                              Ty.path "alloc::collections::btree::set_val::SetValZST",
+                              [],
+                              [],
+                              "default",
+                              [],
+                              []
+                            |),
+                            []
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -4225,15 +5097,25 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ T ],
                   "replace",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |);
                   M.read (| value |)
                 ]
@@ -4268,27 +5150,35 @@ Module collections.
                     []
                     [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "is_some",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::map::BTreeMap")
-                          []
-                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
-                        "remove",
-                        [ Q ]
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
-                        |);
-                        M.read (| value |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::BTreeMap")
+                            []
+                            [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                          "remove",
+                          [],
+                          [ Q ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::BTreeSet",
+                              "map"
+                            |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -4323,17 +5213,27 @@ Module collections.
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  [],
                   [ Q ],
                   "take",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| value |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -4376,7 +5276,9 @@ Module collections.
                             A
                           ],
                         [],
+                        [],
                         "for_each",
+                        [],
                         [ Ty.function [ T ] (Ty.tuple []) ]
                       |),
                       [
@@ -4387,6 +5289,7 @@ Module collections.
                               []
                               [ T; A ],
                             "extract_if",
+                            [],
                             [
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
@@ -4394,7 +5297,7 @@ Module collections.
                             ]
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
@@ -4412,12 +5315,23 @@ Module collections.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                     ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ f; Value.Tuple [ M.read (| v |) ] ]
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| v |) |)
+                                                        |)
+                                                      ]
+                                                  ]
                                                 |)
                                               |)))
                                         ]
@@ -4465,18 +5379,30 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "append",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -4522,15 +5448,19 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "split_off",
+                        [],
                         [ Q ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
-                        M.read (| value |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
                       ]
                     |))
                 ]))
@@ -4573,13 +5503,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "extract_if_inner",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |)
                       ]
                     |)
@@ -4632,13 +5566,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "keys",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |)
                       ]
                     |))
@@ -4668,13 +5606,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::BTreeSet",
-                    "map"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
+                    |)
                   |)
                 ]
               |)))
@@ -4706,9 +5648,10 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |),
                 Value.Integer IntegerKind.Usize 0
               |)))
@@ -4751,13 +5694,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "lower_bound",
+                        [],
                         [ Q ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
                         M.read (| bound |)
                       ]
@@ -4802,13 +5749,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "lower_bound_mut",
+                        [],
                         [ Q ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
                         M.read (| bound |)
                       ]
@@ -4853,13 +5804,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "upper_bound",
+                        [],
                         [ Q ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
                         M.read (| bound |)
                       ]
@@ -4904,13 +5859,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "upper_bound_mut",
+                        [],
                         [ Q ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
                         |);
                         M.read (| bound |)
                       ]
@@ -4949,7 +5908,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                           Ty.function
@@ -4981,7 +5942,9 @@ Module collections.
                                                   Ty.path
                                                     "alloc::collections::btree::set_val::SetValZST",
                                                   [],
+                                                  [],
                                                   "default",
+                                                  [],
                                                   []
                                                 |),
                                                 []
@@ -5003,6 +5966,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "bulk_build_from_sorted_iter",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::map::Map")
@@ -5069,7 +6033,9 @@ Module collections.
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "collect",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -5083,7 +6049,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 I,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |) ]
@@ -5107,9 +6075,10 @@ Module collections.
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
                                         "is_empty",
+                                        [],
                                         []
                                       |),
-                                      [ inputs ]
+                                      [ M.borrow (| Pointer.Kind.Ref, inputs |) ]
                                     |)
                                   |)) in
                               let _ :=
@@ -5128,6 +6097,7 @@ Module collections.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -5145,21 +6115,29 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "sort",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ T; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                "deref_mut",
-                                []
-                              |),
-                              [ inputs ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ T; Ty.path "alloc::alloc::Global" ],
+                                    [],
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, inputs |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -5172,6 +6150,7 @@ Module collections.
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
                           "from_sorted_iter",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -5188,7 +6167,9 @@ Module collections.
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| inputs |) ]
@@ -5279,6 +6260,7 @@ Module collections.
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ],
                                           "new",
+                                          [],
                                           []
                                         |),
                                         []
@@ -5296,9 +6278,10 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "sort",
+                            [],
                             []
                           |),
-                          [ arr ]
+                          [ M.borrow (| Pointer.Kind.MutRef, arr |) ]
                         |)
                       |) in
                     let~ iter :=
@@ -5308,7 +6291,9 @@ Module collections.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
@@ -5324,7 +6309,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "array") [ N ] [ T ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| arr |) ]
@@ -5350,7 +6337,9 @@ Module collections.
                                                       Ty.path
                                                         "alloc::collections::btree::set_val::SetValZST",
                                                       [],
+                                                      [],
                                                       "default",
+                                                      [],
                                                       []
                                                     |),
                                                     []
@@ -5376,6 +6365,7 @@ Module collections.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "bulk_build_from_sorted_iter",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
@@ -5451,7 +6441,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5516,9 +6508,10 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "iter",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -5574,107 +6567,146 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple",
-                            []
-                          |),
-                          [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
-                        |)
-                      |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply (Ty.path "&") [] [ T ];
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                                  ]
-                              ],
-                            "map",
-                            [
-                              Ty.apply (Ty.path "&") [] [ T ];
-                              Ty.function
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugTuple",
+                          "field",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_tuple",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "ExtractIf" |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
                                         [
-                                          Ty.apply (Ty.path "&") [] [ T ];
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [] [ T ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "alloc::collections::btree::set_val::SetValZST"
+                                                ]
+                                            ]
+                                        ],
+                                      "map",
+                                      [],
+                                      [
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "alloc::collections::btree::set_val::SetValZST"
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.apply (Ty.path "&") [] [ T ])
+                                      ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
                                           Ty.apply
-                                            (Ty.path "&")
+                                            (Ty.path
+                                              "alloc::collections::btree::map::ExtractIfInner")
                                             []
                                             [
+                                              T;
                                               Ty.path
                                                 "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ])
-                            ]
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::map::ExtractIfInner")
-                                  []
-                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
-                                "peek",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::btree::set::ExtractIf",
-                                  "inner"
-                                |)
-                              ]
-                            |);
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        M.alloc (| α0 |),
+                                            ],
+                                          "peek",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                              let k := M.copy (| γ0_0 |) in
-                                              M.read (| k |)))
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::btree::set::ExtractIf",
+                                              "inner"
+                                            |)
+                                          |)
                                         ]
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
-                          ]
-                        |)
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ0_0 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ0_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                        let k := M.copy (| γ0_0 |) in
+                                                        M.read (| k |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -5713,10 +6745,13 @@ Module collections.
               M.read (|
                 let~ pred :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::set::ExtractIf",
-                      "pred"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::set::ExtractIf",
+                        "pred"
+                      |)
                     |)
                   |) in
                 let~ mapped_pred :=
@@ -5743,11 +6778,24 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| pred |); Value.Tuple [ M.read (| k |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| pred |) |)
+                                                  |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| k |) |)
+                                                      |)
+                                                    ]
                                                 ]
                                               |)))
                                         ]
@@ -5765,6 +6813,7 @@ Module collections.
                         []
                         [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                       "map",
+                      [],
                       [
                         T;
                         Ty.function
@@ -5786,6 +6835,7 @@ Module collections.
                             []
                             [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                           "next",
+                          [],
                           [
                             Ty.function
                               [
@@ -5803,19 +6853,36 @@ Module collections.
                           ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::set::ExtractIf",
-                            "inner"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::ExtractIf",
+                              "inner"
+                            |)
                           |);
-                          mapped_pred;
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.borrow (| Pointer.Kind.MutRef, mapped_pred |) |)
+                          |);
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::set::ExtractIf",
-                                "alloc"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::ExtractIf",
+                                  "alloc"
+                                |)
                               |)
                             ]
                           |)
@@ -5870,13 +6937,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::ExtractIf",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::ExtractIf",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -5936,7 +7007,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.associated,
                         [],
+                        [],
                         "for_each",
+                        [],
                         [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
                       |),
                       [
@@ -5945,7 +7018,9 @@ Module collections.
                             "core::iter::traits::collect::IntoIterator",
                             Iter,
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -5973,9 +7048,16 @@ Module collections.
                                                       []
                                                       [ T; A ],
                                                     "insert",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |); M.read (| elem |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.read (| elem |)
+                                                  ]
                                                 |)
                                               |) in
                                             M.alloc (| Value.Tuple [] |)
@@ -6016,9 +7098,13 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                         "insert",
+                        [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| elem |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| elem |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -6062,8 +7148,10 @@ Module collections.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
+                        [],
                         [ T ],
                         "extend",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6072,13 +7160,15 @@ Module collections.
                         ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "cloned",
+                            [],
                             [ T ]
                           |),
                           [
@@ -6087,7 +7177,9 @@ Module collections.
                                 "core::iter::traits::collect::IntoIterator",
                                 I,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| iter |) ]
@@ -6136,9 +7228,13 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "insert",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| elem |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.read (| elem |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)
@@ -6185,6 +7281,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -6231,6 +7328,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6245,7 +7343,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Difference") [] [ T; A ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6253,9 +7353,13 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "difference",
+                          [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| rhs |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
+                        ]
                       |)
                     ]
                   |);
@@ -6263,6 +7367,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6271,18 +7376,23 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::set::BTreeSet",
-                              "map"
-                            |),
-                            "alloc::collections::btree::map::BTreeMap",
-                            "alloc"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |),
+                              "alloc::collections::btree::map::BTreeMap",
+                              "alloc"
+                            |)
                           |)
                         ]
                       |)
@@ -6340,6 +7450,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6361,7 +7472,9 @@ Module collections.
                         []
                         [ T ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6369,9 +7482,13 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "symmetric_difference",
+                          [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| rhs |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
+                        ]
                       |)
                     ]
                   |);
@@ -6379,6 +7496,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6387,18 +7505,23 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::set::BTreeSet",
-                              "map"
-                            |),
-                            "alloc::collections::btree::map::BTreeMap",
-                            "alloc"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |),
+                              "alloc::collections::btree::map::BTreeMap",
+                              "alloc"
+                            |)
                           |)
                         ]
                       |)
@@ -6459,6 +7582,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6477,7 +7601,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Intersection") [] [ T; A ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6485,9 +7611,13 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "intersection",
+                          [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| rhs |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
+                        ]
                       |)
                     ]
                   |);
@@ -6495,6 +7625,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6503,18 +7634,23 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::set::BTreeSet",
-                              "map"
-                            |),
-                            "alloc::collections::btree::map::BTreeMap",
-                            "alloc"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |),
+                              "alloc::collections::btree::map::BTreeMap",
+                              "alloc"
+                            |)
                           |)
                         ]
                       |)
@@ -6575,6 +7711,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   "from_sorted_iter",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6588,7 +7725,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "alloc::collections::btree::set::Union") [] [ T ],
                       [],
+                      [],
                       "cloned",
+                      [],
                       [ T ]
                     |),
                     [
@@ -6596,9 +7735,13 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "union",
+                          [],
                           []
                         |),
-                        [ M.read (| self |); M.read (| rhs |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
+                        ]
                       |)
                     ]
                   |);
@@ -6606,6 +7749,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                       "into_inner",
+                      [],
                       []
                     |),
                     [
@@ -6614,18 +7758,23 @@ Module collections.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::set::BTreeSet",
-                              "map"
-                            |),
-                            "alloc::collections::btree::map::BTreeMap",
-                            "alloc"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::set::BTreeSet",
+                                "map"
+                              |),
+                              "alloc::collections::btree::map::BTreeMap",
+                              "alloc"
+                            |)
                           |)
                         ]
                       |)
@@ -6676,38 +7825,53 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugSet",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugSet",
-                      "entries",
-                      [
-                        Ty.apply (Ty.path "&") [] [ T ];
-                        Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ]
-                      ]
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_set",
-                            []
-                          |),
-                          [ M.read (| f |) ]
-                        |)
-                      |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
-                          "iter",
-                          []
+                          Ty.path "core::fmt::builders::DebugSet",
+                          "entries",
+                          [],
+                          [
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ]
+                          ]
                         |),
-                        [ M.read (| self |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_set",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                []
+                                [ T; A ],
+                              "iter",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -6750,14 +7914,19 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Iter",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Iter",
+                            "iter"
+                          |)
                         |)
                       ]
                     |))
@@ -6800,14 +7969,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::Iter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::Iter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -6833,14 +8007,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::Iter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::Iter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -6863,10 +8042,12 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -6890,10 +8071,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -6917,10 +8100,12 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -6965,14 +8150,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::Iter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::Iter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -7011,14 +8201,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::Iter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::Iter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -7072,6 +8267,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -7092,14 +8288,19 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::IntoIter",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::IntoIter",
+                          "iter"
+                        |)
                       |)
                     ]
                   |);
@@ -7151,14 +8352,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::IntoIter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::IntoIter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -7205,7 +8411,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7250,6 +8458,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -7270,14 +8479,19 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::IntoIter",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::IntoIter",
+                          "iter"
+                        |)
                       |)
                     ]
                   |);
@@ -7337,14 +8551,19 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::IntoIter",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::IntoIter",
+                      "iter"
+                    |)
                   |)
                 ]
               |)))
@@ -7399,7 +8618,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7444,14 +8665,19 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Range",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Range",
+                            "iter"
+                          |)
                         |)
                       ]
                     |))
@@ -7502,6 +8728,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -7530,14 +8757,19 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Range",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Range",
+                          "iter"
+                        |)
                       |)
                     ]
                   |);
@@ -7581,10 +8813,12 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7608,10 +8842,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7635,10 +8871,12 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7690,6 +8928,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -7718,14 +8957,19 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       [],
+                      [],
                       "next_back",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Range",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Range",
+                          "iter"
+                        |)
                       |)
                     ]
                   |);
@@ -7801,7 +9045,9 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -7852,10 +9098,13 @@ Module collections.
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::set::Difference",
-                            "inner"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::Difference",
+                              "inner"
+                            |)
                           |)
                         |),
                         [
@@ -7889,10 +9138,17 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self_iter |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self_iter |) |)
+                                          |)
+                                        ]
                                       |));
                                     ("other_iter",
                                       M.call_closure (|
@@ -7908,10 +9164,17 @@ Module collections.
                                                 [ T ]
                                             ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| other_iter |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other_iter |) |)
+                                          |)
+                                        ]
                                       |))
                                   ]
                               |)));
@@ -7945,12 +9208,25 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self_iter |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self_iter |) |)
+                                          |)
+                                        ]
                                       |));
-                                    ("other_set", M.read (| M.read (| other_set |) |))
+                                    ("other_set",
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (| M.deref (| M.read (| other_set |) |) |)
+                                        |)
+                                      |))
                                   ]
                               |)));
                           fun γ =>
@@ -7975,10 +9251,17 @@ Module collections.
                                           []
                                           [ T ],
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| iter |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                               |)))
@@ -8044,10 +9327,13 @@ Module collections.
                   (M.read (|
                     M.match_operator (|
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Difference",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Difference",
+                            "inner"
+                          |)
                         |)
                       |),
                       [
@@ -8080,7 +9366,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -8092,10 +9380,17 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| self_iter |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self_iter |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -8121,6 +9416,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -8128,6 +9424,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -8168,6 +9465,7 @@ Module collections.
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                 ],
                                               "map_or",
+                                              [],
                                               [
                                                 Ty.path "core::cmp::Ordering";
                                                 Ty.function
@@ -8198,9 +9496,15 @@ Module collections.
                                                         [ T ]
                                                     ],
                                                   "peek",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| other_iter |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| other_iter |) |)
+                                                  |)
+                                                ]
                                               |);
                                               Value.StructTuple "core::cmp::Ordering::Less" [];
                                               M.closure
@@ -8220,13 +9524,27 @@ Module collections.
                                                                     "core::cmp::Ord",
                                                                     T,
                                                                     [],
+                                                                    [],
                                                                     "cmp",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| self_next |);
-                                                                    M.read (|
-                                                                      M.read (| other_next |)
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self_next |)
+                                                                      |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (| other_next |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)))
@@ -8251,7 +9569,12 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
-                                                        [ M.read (| self_next |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_next |) |)
+                                                          |)
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
@@ -8266,95 +9589,119 @@ Module collections.
                                               let~ _ :=
                                                 M.write (|
                                                   self_next,
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.match_operator (|
+                                                          M.alloc (|
                                                             M.call_closure (|
                                                               M.get_trait_method (|
-                                                                "core::iter::traits::iterator::Iterator",
+                                                                "core::ops::try_trait::Try",
                                                                 Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::set::Iter")
+                                                                  (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ T ],
+                                                                  [ Ty.apply (Ty.path "&") [] [ T ]
+                                                                  ],
                                                                 [],
-                                                                "next",
+                                                                [],
+                                                                "branch",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| self_iter |) ]
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::iter::traits::iterator::Iterator",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::set::Iter")
+                                                                      []
+                                                                      [ T ],
+                                                                    [],
+                                                                    [],
+                                                                    "next",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.deref (|
+                                                                        M.read (| self_iter |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::option::Option")
-                                                                          []
-                                                                          [
+                                                          |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                                    0
+                                                                  |) in
+                                                                let residual := M.copy (| γ0_0 |) in
+                                                                M.alloc (|
+                                                                  M.never_to_any (|
+                                                                    M.read (|
+                                                                      M.return_ (|
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
-                                                                              (Ty.path "&")
+                                                                              (Ty.path
+                                                                                "core::option::Option")
                                                                               []
-                                                                              [ T ]
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::option::Option")
-                                                                            []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [ T ]
+                                                                              ],
+                                                                            [],
                                                                             [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::option::Option")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible"
+                                                                                ]
+                                                                            ],
+                                                                            "from_residual",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| residual |) ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            M.alloc (| M.read (| val |) |)))
-                                                      ]
+                                                                |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ0_0 :=
+                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                    γ,
+                                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                                    0
+                                                                  |) in
+                                                                let val := M.copy (| γ0_0 |) in
+                                                                M.alloc (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| val |) |)
+                                                                  |)
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |) in
@@ -8375,10 +9722,17 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| other_iter |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| other_iter |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -8406,10 +9760,17 @@ Module collections.
                                                             [ T ]
                                                         ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| other_iter |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| other_iter |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
@@ -8453,7 +9814,9 @@ Module collections.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -8466,10 +9829,17 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| self_iter |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self_iter |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -8495,6 +9865,7 @@ Module collections.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -8505,6 +9876,7 @@ Module collections.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -8543,11 +9915,31 @@ Module collections.
                                                             []
                                                             [ T; A ],
                                                           "contains",
+                                                          [],
                                                           [ T ]
                                                         |),
                                                         [
-                                                          M.read (| M.read (| other_set |) |);
-                                                          M.read (| self_next |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.deref (| M.read (| other_set |) |)
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    self_next
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |)
@@ -8563,7 +9955,12 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
-                                                        [ M.read (| self_next |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self_next |) |)
+                                                          |)
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
@@ -8594,10 +9991,17 @@ Module collections.
                                     []
                                     [ T ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| iter |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| iter |) |)
+                                  |)
+                                ]
                               |)
                             |)))
                       ]
@@ -8634,10 +10038,13 @@ Module collections.
                 M.match_operator (|
                   M.match_operator (|
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Difference",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Difference",
+                          "inner"
+                        |)
                       |)
                     |),
                     [
@@ -8669,10 +10076,17 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self_iter |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self_iter |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -8687,10 +10101,17 @@ Module collections.
                                           [ T ]
                                       ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| other_iter |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| other_iter |) |)
+                                    |)
+                                  ]
                                 |)
                               ]
                           |)));
@@ -8722,10 +10143,17 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self_iter |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self_iter |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -8734,9 +10162,17 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| M.read (| other_set |) |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (| M.deref (| M.read (| other_set |) |) |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                           |)));
@@ -8761,10 +10197,13 @@ Module collections.
                                       []
                                       [ T ],
                                     [],
+                                    [],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| iter |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| iter |) |) |)
+                                  ]
                                 |);
                                 Value.Integer IntegerKind.Usize 0
                               ]
@@ -8785,6 +10224,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| self_len |); M.read (| other_len |) ]
@@ -8816,10 +10256,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Difference") [] [ T; A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -8878,14 +10320,19 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::SymmetricDifference",
-                        0
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::SymmetricDifference",
+                          0
+                        |)
                       |)
                     ]
                   |)
@@ -8946,6 +10393,7 @@ Module collections.
                                         [ T ]
                                     ],
                                   "nexts",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -8962,16 +10410,21 @@ Module collections.
                                   ]
                                 |),
                                 [
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::set::SymmetricDifference",
-                                    0
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::set::SymmetricDifference",
+                                      0
+                                    |)
                                   |);
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.apply (Ty.path "&") [] [ T ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |)
                                 ]
@@ -8999,20 +10452,26 @@ Module collections.
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                     "is_none",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                                          "and",
-                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                        |),
-                                                        [ M.read (| a_next |); M.read (| b_next |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                            "and",
+                                                            [],
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                          |),
+                                                          [ M.read (| a_next |); M.read (| b_next |)
+                                                          ]
+                                                        |)
                                                       |)
                                                     |)
                                                   ]
@@ -9034,6 +10493,7 @@ Module collections.
                                                         []
                                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                       "or",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| a_next |); M.read (| b_next |) ]
@@ -9079,13 +10539,17 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "lens",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::SymmetricDifference",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::SymmetricDifference",
+                            0
+                          |)
                         |)
                       ]
                     |)
@@ -9128,10 +10592,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::SymmetricDifference") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -9196,10 +10662,13 @@ Module collections.
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::btree::set::Intersection",
-                            "inner"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::btree::set::Intersection",
+                              "inner"
+                            |)
                           |)
                         |),
                         [
@@ -9233,10 +10702,17 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| a |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| a |) |)
+                                          |)
+                                        ]
                                       |));
                                     ("b",
                                       M.call_closure (|
@@ -9247,10 +10723,17 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| b |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| b |) |)
+                                          |)
+                                        ]
                                       |))
                                   ]
                               |)));
@@ -9284,12 +10767,25 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "clone",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| small_iter |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| small_iter |) |)
+                                          |)
+                                        ]
                                       |));
-                                    ("large_set", M.read (| M.read (| large_set |) |))
+                                    ("large_set",
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (| M.deref (| M.read (| large_set |) |) |)
+                                        |)
+                                      |))
                                   ]
                               |)));
                           fun γ =>
@@ -9305,7 +10801,7 @@ Module collections.
                               M.alloc (|
                                 Value.StructTuple
                                   "alloc::collections::btree::set::IntersectionInner::Answer"
-                                  [ M.read (| M.read (| answer |) |) ]
+                                  [ M.read (| M.deref (| M.read (| answer |) |) |) ]
                               |)))
                         ]
                       |)
@@ -9365,10 +10861,13 @@ Module collections.
                   (M.read (|
                     M.match_operator (|
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Intersection",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Intersection",
+                            "inner"
+                          |)
                         |)
                       |),
                       [
@@ -9401,7 +10900,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9413,10 +10914,17 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| a |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| a |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -9442,6 +10950,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -9449,6 +10958,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -9482,7 +10992,9 @@ Module collections.
                                           []
                                           [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -9494,10 +11006,17 @@ Module collections.
                                               []
                                               [ T ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| b |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| b |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -9523,6 +11042,7 @@ Module collections.
                                                       (Ty.path "core::option::Option")
                                                       []
                                                       [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -9530,6 +11050,7 @@ Module collections.
                                                         [ Ty.path "core::convert::Infallible" ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -9563,10 +11084,21 @@ Module collections.
                                               "core::cmp::Ord",
                                               T,
                                               [],
+                                              [],
                                               "cmp",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| a_next |); M.read (| b_next |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| a_next |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| b_next |) |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -9579,95 +11111,116 @@ Module collections.
                                                 |) in
                                               M.write (|
                                                 a_next,
-                                                M.read (|
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.match_operator (|
+                                                        M.alloc (|
                                                           M.call_closure (|
                                                             M.get_trait_method (|
-                                                              "core::iter::traits::iterator::Iterator",
+                                                              "core::ops::try_trait::Try",
                                                               Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::collections::btree::set::Iter")
+                                                                (Ty.path "core::option::Option")
                                                                 []
-                                                                [ T ],
+                                                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                               [],
-                                                              "next",
+                                                              [],
+                                                              "branch",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| a |) ]
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::iter::traits::iterator::Iterator",
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::set::Iter")
+                                                                    []
+                                                                    [ T ],
+                                                                  [],
+                                                                  [],
+                                                                  "next",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (| M.read (| a |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::option::Option")
-                                                                        []
-                                                                        [
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
                                                                           Ty.apply
-                                                                            (Ty.path "&")
+                                                                            (Ty.path
+                                                                              "core::option::Option")
                                                                             []
-                                                                            [ T ]
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::option::Option")
-                                                                          []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ T ]
+                                                                            ],
+                                                                          [],
                                                                           [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          M.alloc (| M.read (| val |) |)))
-                                                    ]
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| val |) |)
+                                                                |)
+                                                              |)))
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)));
@@ -9680,95 +11233,116 @@ Module collections.
                                                 |) in
                                               M.write (|
                                                 b_next,
-                                                M.read (|
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.match_operator (|
+                                                        M.alloc (|
                                                           M.call_closure (|
                                                             M.get_trait_method (|
-                                                              "core::iter::traits::iterator::Iterator",
+                                                              "core::ops::try_trait::Try",
                                                               Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::collections::btree::set::Iter")
+                                                                (Ty.path "core::option::Option")
                                                                 []
-                                                                [ T ],
+                                                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                               [],
-                                                              "next",
+                                                              [],
+                                                              "branch",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| b |) ]
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::iter::traits::iterator::Iterator",
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::set::Iter")
+                                                                    []
+                                                                    [ T ],
+                                                                  [],
+                                                                  [],
+                                                                  "next",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (| M.read (| b |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::option::Option")
-                                                                        []
-                                                                        [
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
                                                                           Ty.apply
-                                                                            (Ty.path "&")
+                                                                            (Ty.path
+                                                                              "core::option::Option")
                                                                             []
-                                                                            [ T ]
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::option::Option")
-                                                                          []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ T ]
+                                                                            ],
+                                                                          [],
                                                                           [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          M.alloc (| M.read (| val |) |)))
-                                                    ]
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| val |) |)
+                                                                |)
+                                                              |)))
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)));
@@ -9785,7 +11359,12 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
-                                                        [ M.read (| a_next |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| a_next |) |)
+                                                          |)
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
@@ -9830,7 +11409,9 @@ Module collections.
                                                     []
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                   [],
+                                                  [],
                                                   "branch",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -9843,10 +11424,17 @@ Module collections.
                                                         []
                                                         [ T ],
                                                       [],
+                                                      [],
                                                       "next",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| small_iter |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| small_iter |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)
@@ -9872,6 +11460,7 @@ Module collections.
                                                                 (Ty.path "core::option::Option")
                                                                 []
                                                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -9882,6 +11471,7 @@ Module collections.
                                                                   ]
                                                               ],
                                                               "from_residual",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| residual |) ]
@@ -9919,11 +11509,31 @@ Module collections.
                                                           []
                                                           [ T; A ],
                                                         "contains",
+                                                        [],
                                                         [ T ]
                                                       |),
                                                       [
-                                                        M.read (| M.read (| large_set |) |);
-                                                        M.read (| small_next |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.deref (| M.read (| large_set |) |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  small_next
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)
                                                   |)) in
@@ -9938,7 +11548,12 @@ Module collections.
                                                     M.return_ (|
                                                       Value.StructTuple
                                                         "core::option::Option::Some"
-                                                        [ M.read (| small_next |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| small_next |) |)
+                                                          |)
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
@@ -9968,9 +11583,15 @@ Module collections.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "take",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| answer |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| answer |) |)
+                                  |)
+                                ]
                               |)
                             |)))
                       ]
@@ -10004,10 +11625,13 @@ Module collections.
               M.read (|
                 M.match_operator (|
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::btree::set::Intersection",
-                      "inner"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::btree::set::Intersection",
+                        "inner"
+                      |)
                     |)
                   |),
                   [
@@ -10046,10 +11670,17 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| a |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| a |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -10059,10 +11690,17 @@ Module collections.
                                             []
                                             [ T ],
                                           [],
+                                          [],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| b |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| b |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -10094,10 +11732,17 @@ Module collections.
                                         []
                                         [ T ],
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| small_iter |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| small_iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                             ]
@@ -10167,10 +11812,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Intersection") [] [ T; A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10229,14 +11876,19 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Union",
-                        0
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Union",
+                          0
+                        |)
                       |)
                     ]
                   |)
@@ -10282,6 +11934,7 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "nexts",
+                        [],
                         [
                           Ty.function
                             [
@@ -10292,16 +11945,21 @@ Module collections.
                         ]
                       |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Union",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Union",
+                            0
+                          |)
                         |);
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.apply (Ty.path "&") [] [ T ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |)
                       ]
@@ -10322,6 +11980,7 @@ Module collections.
                                 []
                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                               "or",
+                              [],
                               []
                             |),
                             [ M.read (| a_next |); M.read (| b_next |) ]
@@ -10356,13 +12015,17 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                         "lens",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Union",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::Union",
+                            0
+                          |)
                         |)
                       ]
                     |)
@@ -10408,10 +12071,12 @@ Module collections.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "alloc::collections::btree::set::Union") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10482,14 +12147,24 @@ Module collections.
                           []
                           [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Cursor",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::btree::set::Cursor",
+                                "inner"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -10523,8 +12198,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cursor" |) |) |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10570,8 +12248,14 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "CursorMut" |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10617,8 +12301,14 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                [ M.read (| f |); M.read (| Value.String "CursorMutKey" |) ]
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "CursorMutKey" |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -10663,6 +12353,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10690,13 +12381,17 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Cursor",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Cursor",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -10755,6 +12450,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10782,13 +12478,17 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Cursor",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Cursor",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -10847,6 +12547,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10874,13 +12575,17 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Cursor",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Cursor",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -10939,6 +12644,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ K ];
                     Ty.function
@@ -10966,13 +12672,17 @@ Module collections.
                         []
                         [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Cursor",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::Cursor",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11036,6 +12746,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11063,13 +12774,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11128,6 +12843,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11155,13 +12871,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11225,6 +12945,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11252,13 +12973,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11322,6 +13047,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&") [] [ T ];
                     Ty.function
@@ -11349,13 +13075,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11414,13 +13144,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "as_cursor",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::CursorMut",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::CursorMut",
+                            "inner"
+                          |)
                         |)
                       ]
                     |))
@@ -11459,6 +13193,7 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "with_mutable_key",
+                        [],
                         []
                       |),
                       [
@@ -11502,13 +13237,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMut",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMut",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -11545,13 +13284,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMut",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMut",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -11588,13 +13331,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMut",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMut",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -11631,13 +13378,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMut",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMut",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -11673,6 +13424,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -11692,13 +13444,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11753,6 +13509,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -11772,13 +13529,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMut",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11842,6 +13603,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -11869,13 +13631,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -11934,6 +13700,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -11961,13 +13728,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -12031,6 +13802,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -12058,13 +13830,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -12128,6 +13904,7 @@ Module collections.
                         ]
                     ],
                   "map",
+                  [],
                   [
                     Ty.apply (Ty.path "&mut") [] [ T ];
                     Ty.function
@@ -12155,13 +13932,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "peek_prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -12220,13 +14001,17 @@ Module collections.
                           []
                           [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                         "as_cursor",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::CursorMutKey",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::CursorMutKey",
+                            "inner"
+                          |)
                         |)
                       ]
                     |))
@@ -12261,13 +14046,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMutKey",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMutKey",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -12304,13 +14093,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before_unchecked",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMutKey",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMutKey",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -12347,13 +14140,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_after",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMutKey",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMutKey",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -12390,13 +14187,17 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                   "insert_before",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::btree::set::CursorMutKey",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::CursorMutKey",
+                      "inner"
+                    |)
                   |);
                   M.read (| value |);
                   Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
@@ -12432,6 +14233,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -12451,13 +14253,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);
@@ -12512,6 +14318,7 @@ Module collections.
                     []
                     [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
                   "map",
+                  [],
                   [
                     T;
                     Ty.function
@@ -12531,13 +14338,17 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
                       "remove_prev",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::CursorMutKey",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
                       |)
                     ]
                   |);

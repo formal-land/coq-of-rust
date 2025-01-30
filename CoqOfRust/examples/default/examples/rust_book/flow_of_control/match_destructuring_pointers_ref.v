@@ -58,7 +58,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ reference := M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 4 |) |) in
+        let~ reference :=
+          M.alloc (|
+            M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 4 |) |)
+          |) in
         let~ _ :=
           M.match_operator (|
             reference,
@@ -76,29 +79,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Got a value via destructuring: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String "Got a value via destructuring: "
+                                          |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ val ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, val |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -110,7 +138,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :=
           M.match_operator (|
-            M.read (| reference |),
+            M.deref (| M.read (| reference |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -124,29 +152,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Got a value via dereferencing: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String "Got a value via dereferencing: "
+                                          |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ val ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, val |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -181,31 +234,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String "Got a reference to a value: "
-                                            |);
-                                            M.read (| Value.String "
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "Got a reference to a value: "
+                                                  |);
+                                                  M.read (| Value.String "
 " |)
-                                          ]
-                                      |);
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_debug",
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                              |),
-                                              [ r ]
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_debug",
+                                                      [],
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, r |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -222,7 +301,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         (let m := M.alloc (| γ |) in
                         let~ _ :=
-                          let β := M.read (| m |) in
+                          let β := M.deref (| M.read (| m |) |) in
                           M.write (|
                             β,
                             BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 10 |)
@@ -237,29 +316,61 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "We added 10. `mut_value`: " |);
-                                            M.read (| Value.String "
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "We added 10. `mut_value`: "
+                                                  |);
+                                                  M.read (| Value.String "
 " |)
-                                          ]
-                                      |);
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_debug",
-                                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ] ]
-                                              |),
-                                              [ m ]
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_debug",
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&mut")
+                                                          []
+                                                          [ Ty.path "i32" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, m |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)

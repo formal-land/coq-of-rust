@@ -15,7 +15,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ raw_p := M.alloc (| M.alloc (| Value.Integer IntegerKind.U32 10 |) |) in
+        let~ raw_p :=
+          M.alloc (|
+            M.borrow (|
+              Pointer.Kind.ConstPointer,
+              M.deref (|
+                M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U32 10 |) |)
+              |)
+            |)
+          |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
@@ -27,7 +35,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       (M.alloc (|
                         UnOp.not (|
                           BinOp.eq (|
-                            M.read (| M.read (| raw_p |) |),
+                            M.read (| M.deref (| M.read (| raw_p |) |) |),
                             Value.Integer IntegerKind.U32 10
                           |)
                         |)

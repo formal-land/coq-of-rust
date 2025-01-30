@@ -64,16 +64,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "Find the sum of all the squared odd numbers under 1000
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      "Find the sum of all the squared odd numbers under 1000
 "
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -92,7 +106,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -119,10 +135,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "u32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -218,28 +241,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "imperative style: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "imperative style: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "u32" ]
-                              |),
-                              [ acc ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, acc |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -276,7 +326,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "bool")
                   ],
                 [],
+                [],
                 "sum",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -299,7 +351,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (Ty.path "bool")
                       ],
                     [],
+                    [],
                     "filter",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
@@ -318,7 +372,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
                           ],
                         [],
+                        [],
                         "take_while",
+                        [],
                         [
                           Ty.function
                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
@@ -331,7 +387,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "u32";
                               Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
@@ -420,28 +478,60 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "functional style: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "functional style: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "u32" ]
-                              |),
-                              [ sum_of_squared_odd_numbers ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            sum_of_squared_odd_numbers
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

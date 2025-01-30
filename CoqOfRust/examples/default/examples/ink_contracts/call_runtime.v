@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
           "call_runtime::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -48,7 +56,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -204,8 +212,14 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "CallRuntimeFailed" |) ]
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "CallRuntimeFailed" |) |)
+            |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -389,7 +403,7 @@ Module Impl_call_runtime_RuntimeCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [] |),
+          M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -411,7 +425,9 @@ Module Impl_call_runtime_RuntimeCaller.
             "core::default::Default",
             Ty.path "call_runtime::RuntimeCaller",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -449,6 +465,7 @@ Module Impl_call_runtime_RuntimeCaller.
               []
               [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
             "map_err",
+            [],
             [
               Ty.path "call_runtime::RuntimeError";
               Ty.function
@@ -461,53 +478,70 @@ Module Impl_call_runtime_RuntimeCaller.
               M.get_associated_function (|
                 Ty.path "call_runtime::Env",
                 "call_runtime",
+                [],
                 [ Ty.path "call_runtime::RuntimeCall" ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "call_runtime::RuntimeCaller",
-                      "env",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "call_runtime::RuntimeCaller",
+                        "env",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  Value.StructTuple
-                    "call_runtime::RuntimeCall::Balances"
-                    [
-                      Value.StructRecord
-                        "call_runtime::BalancesCall::Transfer"
-                        [
-                          ("dest",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::convert::Into",
-                                Ty.path "call_runtime::AccountId",
-                                [
-                                  Ty.apply
-                                    (Ty.path "call_runtime::MultiAddress")
-                                    []
-                                    [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
-                                ],
-                                "into",
-                                []
-                              |),
-                              [ M.read (| receiver |) ]
-                            |));
-                          ("value", M.read (| value |))
-                        ]
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.StructTuple
+                          "call_runtime::RuntimeCall::Balances"
+                          [
+                            Value.StructRecord
+                              "call_runtime::BalancesCall::Transfer"
+                              [
+                                ("dest",
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::convert::Into",
+                                      Ty.path "call_runtime::AccountId",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "call_runtime::MultiAddress")
+                                          []
+                                          [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]
+                                      ],
+                                      "into",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| receiver |) ]
+                                  |));
+                                ("value", M.read (| value |))
+                              ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |);
             M.get_trait_method (|
               "core::convert::Into",
               Ty.path "call_runtime::EnvError",
+              [],
               [ Ty.path "call_runtime::RuntimeError" ],
               "into",
+              [],
               []
             |)
           ]
@@ -535,6 +569,7 @@ Module Impl_call_runtime_RuntimeCaller.
               []
               [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
             "map_err",
+            [],
             [
               Ty.path "call_runtime::RuntimeError";
               Ty.function
@@ -547,27 +582,37 @@ Module Impl_call_runtime_RuntimeCaller.
               M.get_associated_function (|
                 Ty.path "call_runtime::Env",
                 "call_runtime",
+                [],
                 [ Ty.tuple [] ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "call_runtime::RuntimeCaller",
-                      "env",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "call_runtime::RuntimeCaller",
+                        "env",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (| Value.Tuple [] |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Tuple [] |) |) |)
+                |)
               ]
             |);
             M.get_trait_method (|
               "core::convert::Into",
               Ty.path "call_runtime::EnvError",
+              [],
               [ Ty.path "call_runtime::RuntimeError" ],
               "into",
+              [],
               []
             |)
           ]

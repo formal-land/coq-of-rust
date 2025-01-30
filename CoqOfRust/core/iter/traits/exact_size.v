@@ -19,10 +19,12 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Self,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   [
@@ -37,11 +39,14 @@ Module iter.
                             M.alloc (|
                               Value.Tuple
                                 [
-                                  upper;
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| lower |) ]
+                                  M.borrow (| Pointer.Kind.Ref, upper |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| lower |) ]
+                                    |)
                                   |)
                                 ]
                             |),
@@ -68,6 +73,7 @@ Module iter.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.path "usize" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -75,9 +81,18 @@ Module iter.
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "eq",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| left_val |); M.read (| right_val |)
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
@@ -114,8 +129,24 @@ Module iter.
                                                     |),
                                                     [
                                                       M.read (| kind |);
-                                                      M.read (| left_val |);
-                                                      M.read (| right_val |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        |)
+                                                      |);
                                                       Value.StructTuple
                                                         "core::option::Option::None"
                                                         []
@@ -155,10 +186,12 @@ Module iter.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Self,
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |),
                 Value.Integer IntegerKind.Usize 0
               |)))
@@ -191,10 +224,17 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -215,10 +255,17 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
                   [],
+                  [],
                   "is_empty",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

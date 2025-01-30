@@ -136,7 +136,8 @@ Module num.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "usize")
                                                       (M.read (|
                                                         M.SubPointer.get_array_field (|
                                                           M.get_constant (|
@@ -165,6 +166,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [ Value.Integer IntegerKind.I32 0 ]
@@ -176,6 +178,7 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
+                          [],
                           []
                         |),
                         [
@@ -191,7 +194,7 @@ Module num.
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::num::dec2flt::decimal::parse_decimal", [], [] |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -298,7 +301,8 @@ Module num.
                                   |) in
                                 let~ n :=
                                   M.alloc (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           d,
@@ -315,11 +319,16 @@ Module num.
                                         Ty.function
                                           [ Ty.tuple [ Ty.path "usize" ] ]
                                           (Ty.path "usize"),
+                                        [],
                                         [ Ty.tuple [ Ty.path "usize" ] ],
                                         "call",
+                                        [],
                                         []
                                       |),
-                                      [ get_shift; Value.Tuple [ M.read (| n |) ] ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, get_shift |);
+                                        Value.Tuple [ M.read (| n |) ]
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -328,9 +337,10 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
+                                        [],
                                         []
                                       |),
-                                      [ d; M.read (| shift |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -378,7 +388,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| shift |))
+                                      M.cast (Ty.path "i32") (M.read (| shift |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -501,19 +511,17 @@ Module num.
                                                               |) in
                                                             Value.Tuple []))
                                                       ],
-                                                      M.closure
-                                                        (fun γ =>
-                                                          ltac:(M.monadic
-                                                            match γ with
-                                                            | [] =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 2
-                                                                |)))
-                                                            | _ =>
-                                                              M.impossible
-                                                                "wrong number of arguments"
-                                                            end))
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          match γ with
+                                                          | [] =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                Value.Integer IntegerKind.Usize 2
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
+                                                          end)
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -531,15 +539,18 @@ Module num.
                                                   Ty.function
                                                     [ Ty.tuple [ Ty.path "usize" ] ]
                                                     (Ty.path "usize"),
+                                                  [],
                                                   [ Ty.tuple [ Ty.path "usize" ] ],
                                                   "call",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  get_shift;
+                                                  M.borrow (| Pointer.Kind.Ref, get_shift |);
                                                   Value.Tuple
                                                     [
-                                                      M.rust_cast
+                                                      M.cast
+                                                        (Ty.path "usize")
                                                         (UnOp.neg (|
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
@@ -562,9 +573,10 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "left_shift",
+                                        [],
                                         []
                                       |),
-                                      [ d; M.read (| shift |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -610,7 +622,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.sub (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| shift |))
+                                      M.cast (Ty.path "i32") (M.read (| shift |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -666,7 +678,8 @@ Module num.
                                   |) in
                                 let~ n :=
                                   M.alloc (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (BinOp.Wrap.sub (|
                                         BinOp.Wrap.add (|
                                           M.read (|
@@ -721,9 +734,10 @@ Module num.
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
+                                        [],
                                         []
                                       |),
-                                      [ d; M.read (| n |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| n |) ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -732,7 +746,7 @@ Module num.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast (M.read (| n |))
+                                      M.cast (Ty.path "i32") (M.read (| n |))
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -791,10 +805,11 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "left_shift",
+                          [],
                           []
                         |),
                         [
-                          d;
+                          M.borrow (| Pointer.Kind.MutRef, d |);
                           BinOp.Wrap.add (|
                             M.read (|
                               M.get_constant (|
@@ -812,9 +827,10 @@ Module num.
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "round",
+                          [],
                           []
                         |),
-                        [ d ]
+                        [ M.borrow (| Pointer.Kind.Ref, d |) ]
                       |)
                     |) in
                   let~ _ :=
@@ -849,9 +865,13 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "core::num::dec2flt::decimal::Decimal",
                                     "right_shift",
+                                    [],
                                     []
                                   |),
-                                  [ d; Value.Integer IntegerKind.Usize 1 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, d |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               |) in
                             let~ _ :=
@@ -867,9 +887,10 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "core::num::dec2flt::decimal::Decimal",
                                     "round",
+                                    [],
                                     []
                                   |),
-                                  [ d ]
+                                  [ M.borrow (| Pointer.Kind.Ref, d |) ]
                                 |)
                               |) in
                             M.match_operator (|

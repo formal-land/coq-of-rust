@@ -40,155 +40,379 @@ Module binary_config.
             [
               ("module_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "module_handles"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "module_handles"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("struct_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "struct_handles"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "struct_handles"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("function_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "function_handles"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "function_handles"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("function_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "function_instantiations"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "function_instantiations"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("signatures",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "signatures"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "signatures"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("constant_pool",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "constant_pool"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "constant_pool"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("identifiers",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "identifiers"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "identifiers"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("address_identifiers",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "address_identifiers"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "address_identifiers"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("struct_defs",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "struct_defs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "struct_defs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("struct_def_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "struct_def_instantiations"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "struct_def_instantiations"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("function_defs",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "function_defs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "function_defs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("field_handles",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "field_handles"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "field_handles"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("field_instantiations",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "field_instantiations"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "field_instantiations"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("friend_decls",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::TableConfig",
-                      "friend_decls"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::TableConfig",
+                            "friend_decls"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -217,104 +441,274 @@ Module binary_config.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "module_handles" |);
-                      M.read (| Value.String "struct_handles" |);
-                      M.read (| Value.String "function_handles" |);
-                      M.read (| Value.String "function_instantiations" |);
-                      M.read (| Value.String "signatures" |);
-                      M.read (| Value.String "constant_pool" |);
-                      M.read (| Value.String "identifiers" |);
-                      M.read (| Value.String "address_identifiers" |);
-                      M.read (| Value.String "struct_defs" |);
-                      M.read (| Value.String "struct_def_instantiations" |);
-                      M.read (| Value.String "function_defs" |);
-                      M.read (| Value.String "field_handles" |);
-                      M.read (| Value.String "field_instantiations" |);
-                      M.read (| Value.String "friend_decls" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "module_handles" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "signatures" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_defs" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "module_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "struct_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "function_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "function_instantiations"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "signatures"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "constant_pool"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "identifiers"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "address_identifiers"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "struct_defs"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "struct_def_instantiations"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "function_defs"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "field_handles"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::binary_config::TableConfig",
-                        "field_instantiations"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::binary_config::TableConfig",
-                          "friend_decls"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "module_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "struct_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "function_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "function_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "signatures"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "constant_pool"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "identifiers"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "address_identifiers"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "struct_defs"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "struct_def_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "function_defs"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "field_handles"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::binary_config::TableConfig",
+                                    "field_instantiations"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::binary_config::TableConfig",
+                                        "friend_decls"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -322,13 +716,17 @@ Module binary_config.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "TableConfig" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "TableConfig" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -422,23 +820,55 @@ Module binary_config.
             [
               ("max_binary_format_version",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::BinaryConfig",
-                      "max_binary_format_version"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::BinaryConfig",
+                            "max_binary_format_version"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("check_no_extraneous_bytes",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::BinaryConfig",
-                      "check_no_extraneous_bytes"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::BinaryConfig",
+                            "check_no_extraneous_bytes"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -448,14 +878,24 @@ Module binary_config.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::binary_config::BinaryConfig",
-                      "table_config"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::binary_config::BinaryConfig",
+                            "table_config"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -485,29 +925,69 @@ Module binary_config.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "BinaryConfig" |);
-              M.read (| Value.String "max_binary_format_version" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::binary_config::BinaryConfig",
-                "max_binary_format_version"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "BinaryConfig" |) |)
               |);
-              M.read (| Value.String "check_no_extraneous_bytes" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::binary_config::BinaryConfig",
-                "check_no_extraneous_bytes"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "max_binary_format_version" |) |)
               |);
-              M.read (| Value.String "table_config" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::binary_config::BinaryConfig",
-                  "table_config"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::binary_config::BinaryConfig",
+                      "max_binary_format_version"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "check_no_extraneous_bytes" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::binary_config::BinaryConfig",
+                      "check_no_extraneous_bytes"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "table_config" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::binary_config::BinaryConfig",
+                          "table_config"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -583,6 +1063,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []
@@ -624,6 +1105,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []
@@ -661,6 +1143,7 @@ Module binary_config.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::binary_config::TableConfig",
                     "legacy",
+                    [],
                     []
                   |),
                   []

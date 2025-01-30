@@ -216,10 +216,13 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::account_address::AccountAddress",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |));
                           ("module",
                             M.call_closure (|
@@ -227,10 +230,13 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_1 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
+                              ]
                             |));
                           ("name",
                             M.call_closure (|
@@ -238,10 +244,13 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_2 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |)
+                              ]
                             |));
                           ("type_arguments",
                             M.call_closure (|
@@ -255,10 +264,13 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_3 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |)
+                              ]
                             |))
                         ]
                     |)));
@@ -287,10 +299,12 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -313,10 +327,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -345,10 +361,12 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -377,10 +395,12 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -446,9 +466,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bool" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bool" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -461,9 +488,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -476,9 +510,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -491,9 +532,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -506,9 +554,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -521,9 +576,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Signer" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Signer" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -562,19 +624,38 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field4_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "Struct" |);
-                          M.read (| Value.String "address" |);
-                          M.read (| __self_0 |);
-                          M.read (| Value.String "module" |);
-                          M.read (| __self_1 |);
-                          M.read (| Value.String "name" |);
-                          M.read (| __self_2 |);
-                          M.read (| Value.String "type_arguments" |);
-                          __self_3
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Struct" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "address" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "module" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "name" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "type_arguments" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_3 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -593,9 +674,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Vector" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -613,9 +705,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "TypeParameter" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "TypeParameter" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -633,9 +736,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Reference" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Reference" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -653,9 +767,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MutableReference" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MutableReference" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -668,9 +793,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -683,9 +815,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -698,9 +837,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -736,7 +882,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -747,14 +893,23 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_discr; __arg1_discr ]
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -833,10 +988,21 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_core_types::account_address::AccountAddress",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -851,10 +1017,21 @@ Module normalized.
                                             "core::cmp::Ord",
                                             Ty.path "move_core_types::identifier::Identifier",
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| __self_1 |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| __arg1_1 |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -873,10 +1050,21 @@ Module normalized.
                                                     Ty.path
                                                       "move_core_types::identifier::Identifier",
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| __self_2 |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| __arg1_2 |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |),
                                               [
@@ -900,12 +1088,20 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| __self_3 |);
-                                                          M.read (| __arg1_3 |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| __self_3 |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| __arg1_3 |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |)));
@@ -959,10 +1155,21 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -991,10 +1198,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1029,10 +1247,21 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1067,10 +1296,21 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1115,7 +1355,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -1126,7 +1366,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -1200,11 +1440,16 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_core_types::account_address::AccountAddress",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |),
                       [
@@ -1223,11 +1468,22 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_core_types::identifier::Identifier",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_1 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_1 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -1247,11 +1503,22 @@ Module normalized.
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "move_core_types::identifier::Identifier",
+                                            [],
                                             [ Ty.path "move_core_types::identifier::Identifier" ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| __self_2 |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| __arg1_2 |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -1280,6 +1547,7 @@ Module normalized.
                                                         "move_binary_format::normalized::Type";
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -1291,9 +1559,19 @@ Module normalized.
                                                       ]
                                                   ],
                                                   "partial_cmp",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| __self_3 |); M.read (| __arg1_3 |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| __self_3 |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| __arg1_3 |) |)
+                                                  |)
+                                                ]
                                               |)
                                             |)));
                                         fun γ =>
@@ -1345,6 +1623,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1355,9 +1634,13 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1385,11 +1668,16 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
+                          [],
                           [ Ty.path "u16" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1423,6 +1711,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1433,9 +1722,13 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1469,6 +1762,7 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -1479,9 +1773,13 @@ Module normalized.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1491,11 +1789,22 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ __self_discr; __arg1_discr ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -1619,7 +1928,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -1630,7 +1939,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -1717,6 +2026,7 @@ Module normalized.
                                             Ty.path
                                               "move_core_types::account_address::AccountAddress"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -1727,9 +2037,13 @@ Module normalized.
                                             ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
-                                      [ __self_0; __arg1_0 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -1739,6 +2053,7 @@ Module normalized.
                                             (Ty.path "&")
                                             []
                                             [ Ty.path "move_core_types::identifier::Identifier" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1746,9 +2061,13 @@ Module normalized.
                                               [ Ty.path "move_core_types::identifier::Identifier" ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ __self_1; __arg1_1 ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                          M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                        ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
@@ -1759,6 +2078,7 @@ Module normalized.
                                           (Ty.path "&")
                                           []
                                           [ Ty.path "move_core_types::identifier::Identifier" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "&")
@@ -1766,9 +2086,13 @@ Module normalized.
                                             [ Ty.path "move_core_types::identifier::Identifier" ]
                                         ],
                                         "eq",
+                                        [],
                                         []
                                       |),
-                                      [ __self_2; __arg1_2 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, __self_2 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
+                                      ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -1787,6 +2111,7 @@ Module normalized.
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -1802,9 +2127,13 @@ Module normalized.
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ __self_3; __arg1_3 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_3 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_3 |)
+                                    ]
                                   |)))
                               |)
                             |)));
@@ -1844,6 +2173,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1859,9 +2189,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1889,11 +2223,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1932,6 +2271,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -1947,9 +2287,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1988,6 +2332,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2003,9 +2348,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -2041,7 +2390,7 @@ Module normalized.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -2056,7 +2405,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2077,7 +2428,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2101,7 +2454,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2125,7 +2480,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2149,7 +2506,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2173,7 +2532,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2223,7 +2584,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_struct_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2289,13 +2652,23 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   |),
                                   [
-                                    __serde_state;
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
                                     M.read (| Value.String "address" |);
-                                    M.read (| address |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| address |) |)
+                                    |)
                                   ]
                                 |)
                               |),
@@ -2340,13 +2713,23 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ]
                                   |),
                                   [
-                                    __serde_state;
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
                                     M.read (| Value.String "module" |);
-                                    M.read (| module |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| module |) |)
+                                    |)
                                   ]
                                 |)
                               |),
@@ -2391,13 +2774,20 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_core_types::identifier::Identifier" ]
                                   |),
                                   [
-                                    __serde_state;
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
                                     M.read (| Value.String "name" |);
-                                    M.read (| name |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
                                   ]
                                 |)
                               |),
@@ -2442,7 +2832,9 @@ Module normalized.
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2454,9 +2846,17 @@ Module normalized.
                                     ]
                                   |),
                                   [
-                                    __serde_state;
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
                                     M.read (| Value.String "type_arguments" |);
-                                    M.read (| type_arguments |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| type_arguments |) |)
+                                    |)
                                   ]
                                 |)
                               |),
@@ -2499,7 +2899,9 @@ Module normalized.
                                 "serde::ser::SerializeStructVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -2520,7 +2922,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2536,7 +2940,7 @@ Module normalized.
                                 M.read (| Value.String "Type" |);
                                 Value.Integer IntegerKind.U32 7;
                                 M.read (| Value.String "vector" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -2555,7 +2959,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -2563,7 +2969,7 @@ Module normalized.
                                 M.read (| Value.String "Type" |);
                                 Value.Integer IntegerKind.U32 8;
                                 M.read (| Value.String "TypeParameter" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -2582,7 +2988,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2598,7 +3006,7 @@ Module normalized.
                                 M.read (| Value.String "Type" |);
                                 Value.Integer IntegerKind.U32 9;
                                 M.read (| Value.String "Reference" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -2617,7 +3025,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -2633,7 +3043,7 @@ Module normalized.
                                 M.read (| Value.String "Type" |);
                                 Value.Integer IntegerKind.U32 10;
                                 M.read (| Value.String "MutableReference" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -2650,7 +3060,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2674,7 +3086,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2698,7 +3112,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -2737,7 +3153,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -2786,7 +3204,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -2794,7 +3214,7 @@ Module normalized.
                               M.read (| Value.String "Field" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -2844,16 +3264,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Field",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Field",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2899,16 +3332,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::normalized::Type" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Field",
-                              "type_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Field",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2952,7 +3398,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -2984,7 +3432,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -3033,7 +3483,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3041,7 +3493,7 @@ Module normalized.
                               M.read (| Value.String "Constant" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -3091,16 +3543,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::normalized::Type" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Constant",
-                              "type_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Constant",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3146,7 +3611,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3155,12 +3622,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "data" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Constant",
-                              "data"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Constant",
+                                    "data"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3204,7 +3682,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -3236,7 +3716,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'5::deserialize::__Visitor" ]
               |),
               [
@@ -3285,7 +3767,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3294,7 +3778,7 @@ Module normalized.
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast (Value.Bool false),
+                                    M.cast (Ty.path "usize") (Value.Bool false),
                                     Value.Integer IntegerKind.Usize 1
                                   |),
                                   Value.Integer IntegerKind.Usize 1
@@ -3346,16 +3830,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::file_format::AbilitySet" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "abilities" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Struct",
-                              "abilities"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "abilities"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3401,7 +3898,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3413,12 +3912,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_parameters" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Struct",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3464,7 +3974,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3476,12 +3988,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "fields" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Struct",
-                              "fields"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "fields"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3525,7 +4048,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -3557,7 +4082,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'7::deserialize::__Visitor" ]
               |),
               [
@@ -3606,7 +4133,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -3618,7 +4147,7 @@ Module normalized.
                                     BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
                                         BinOp.Wrap.add (|
-                                          M.rust_cast (Value.Bool false),
+                                          M.cast (Ty.path "usize") (Value.Bool false),
                                           Value.Integer IntegerKind.Usize 1
                                         |),
                                         Value.Integer IntegerKind.Usize 1
@@ -3676,16 +4205,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_binary_format::file_format::Visibility" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "visibility" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "visibility"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "visibility"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3731,16 +4273,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "bool" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "is_entry" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "is_entry"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3786,7 +4341,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3798,12 +4355,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "type_parameters" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3849,7 +4417,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3861,12 +4431,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "parameters" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3912,7 +4493,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3924,12 +4507,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "return_" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "return_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "return_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -3975,7 +4569,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3987,12 +4583,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "code" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "code"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4036,7 +4643,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4068,7 +4677,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'9::deserialize::__Visitor" ]
               |),
               [
@@ -4117,7 +4728,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -4125,7 +4738,7 @@ Module normalized.
                               M.read (| Value.String "FieldRef" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -4175,16 +4788,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "struct_name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::FieldRef",
-                              "struct_name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::FieldRef",
+                                    "struct_name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4230,16 +4856,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "u16" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "field_index" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::FieldRef",
-                              "field_index"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::FieldRef",
+                                    "field_index"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4283,7 +4922,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4315,7 +4956,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'11::deserialize::__Visitor" ]
               |),
               [
@@ -4364,7 +5007,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -4372,7 +5017,7 @@ Module normalized.
                               M.read (| Value.String "FunctionRef" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -4422,16 +5067,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::language_storage::ModuleId" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "module_id" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::FunctionRef",
-                              "module_id"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::FunctionRef",
+                                    "module_id"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4477,16 +5135,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "function_ident" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::FunctionRef",
-                              "function_ident"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::FunctionRef",
+                                    "function_ident"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -4530,7 +5201,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -4562,7 +5235,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'13::deserialize::__Visitor" ]
               |),
               [
@@ -4603,7 +5278,7 @@ Module normalized.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -4618,7 +5293,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4642,7 +5319,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4668,7 +5347,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4676,7 +5357,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 2;
                                 M.read (| Value.String "BrTrue" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4695,7 +5376,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4703,7 +5386,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 3;
                                 M.read (| Value.String "BrFalse" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4722,7 +5405,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -4730,7 +5415,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 4;
                                 M.read (| Value.String "Branch" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4749,7 +5434,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -4757,7 +5444,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 5;
                                 M.read (| Value.String "LdU8" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4776,7 +5463,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u64" ]
                               |),
                               [
@@ -4784,7 +5473,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 6;
                                 M.read (| Value.String "LdU64" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4803,7 +5492,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u128" ]
                               |),
                               [
@@ -4811,7 +5502,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 7;
                                 M.read (| Value.String "LdU128" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4828,7 +5519,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4852,7 +5545,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4876,7 +5571,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4902,7 +5599,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Constant" ]
                               |),
                               [
@@ -4910,7 +5609,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 11;
                                 M.read (| Value.String "LdConst" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -4927,7 +5626,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4951,7 +5652,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -4977,7 +5680,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -4985,7 +5690,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 14;
                                 M.read (| Value.String "CopyLoc" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5004,7 +5709,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5012,7 +5719,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 15;
                                 M.read (| Value.String "MoveLoc" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5031,7 +5738,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5039,7 +5748,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 16;
                                 M.read (| Value.String "StLoc" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5058,7 +5767,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FunctionRef" ]
                               |),
                               [
@@ -5066,7 +5777,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 17;
                                 M.read (| Value.String "Call" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5085,7 +5796,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5105,7 +5818,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 18;
                                 M.read (| Value.String "CallGeneric" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5124,7 +5837,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -5132,7 +5847,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 19;
                                 M.read (| Value.String "Pack" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5151,7 +5866,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5171,7 +5888,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 20;
                                 M.read (| Value.String "PackGeneric" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5190,7 +5907,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -5198,7 +5917,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 21;
                                 M.read (| Value.String "Unpack" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5217,7 +5936,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5237,7 +5958,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 22;
                                 M.read (| Value.String "UnpackGeneric" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5254,7 +5975,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5278,7 +6001,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5302,7 +6027,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5328,7 +6055,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5336,7 +6065,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 26;
                                 M.read (| Value.String "MutBorrowLoc" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5355,7 +6084,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5363,7 +6094,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 27;
                                 M.read (| Value.String "ImmBorrowLoc" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5382,7 +6113,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FieldRef" ]
                               |),
                               [
@@ -5390,7 +6123,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 28;
                                 M.read (| Value.String "MutBorrowField" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5409,7 +6142,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5429,7 +6164,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 29;
                                 M.read (| Value.String "MutBorrowFieldGeneric" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5448,7 +6183,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::FieldRef" ]
                               |),
                               [
@@ -5456,7 +6193,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 30;
                                 M.read (| Value.String "ImmBorrowField" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5475,7 +6212,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -5495,7 +6234,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 31;
                                 M.read (| Value.String "ImmBorrowFieldGeneric" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -5512,7 +6251,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5536,7 +6277,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5560,7 +6303,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5584,7 +6329,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5608,7 +6355,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5632,7 +6381,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5656,7 +6407,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5680,7 +6433,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5704,7 +6459,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5728,7 +6485,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5752,7 +6511,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5776,7 +6537,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5800,7 +6563,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5824,7 +6589,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5848,7 +6615,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5872,7 +6641,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5896,7 +6667,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5920,7 +6693,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5944,7 +6719,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5968,7 +6745,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -5992,7 +6771,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6028,7 +6809,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_tuple_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6088,10 +6871,23 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ]
                                   |),
-                                  [ __serde_state; M.read (| __field0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __field0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -6135,10 +6931,23 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "u64" ]
                                   |),
-                                  [ __serde_state; M.read (| __field1 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __field1 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -6180,7 +6989,9 @@ Module normalized.
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -6201,7 +7012,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6209,7 +7022,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 54;
                                 M.read (| Value.String "VecLen" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6228,7 +7041,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6236,7 +7051,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 55;
                                 M.read (| Value.String "VecImmBorrow" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6255,7 +7070,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6263,7 +7080,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 56;
                                 M.read (| Value.String "VecMutBorrow" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6282,7 +7099,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6290,7 +7109,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 57;
                                 M.read (| Value.String "VecPushBack" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6309,7 +7128,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6317,7 +7138,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 58;
                                 M.read (| Value.String "VecPopBack" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6346,7 +7167,9 @@ Module normalized.
                                       "serde::ser::Serializer",
                                       __S,
                                       [],
+                                      [],
                                       "serialize_tuple_variant",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6406,10 +7229,23 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ]
                                   |),
-                                  [ __serde_state; M.read (| __field0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __field0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -6453,10 +7289,23 @@ Module normalized.
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "serialize_field",
+                                    [],
                                     [ Ty.path "u64" ]
                                   |),
-                                  [ __serde_state; M.read (| __field1 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.MutRef, __serde_state |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __field1 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -6498,7 +7347,9 @@ Module normalized.
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
                                 [],
+                                [],
                                 "end",
+                                [],
                                 []
                               |),
                               [ M.read (| __serde_state |) ]
@@ -6519,7 +7370,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_binary_format::normalized::Type" ]
                               |),
                               [
@@ -6527,7 +7380,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 60;
                                 M.read (| Value.String "VecSwap" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6546,7 +7399,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u16" ]
                               |),
                               [
@@ -6554,7 +7409,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 61;
                                 M.read (| Value.String "LdU16" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6573,7 +7428,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "u32" ]
                               |),
                               [
@@ -6581,7 +7438,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 62;
                                 M.read (| Value.String "LdU32" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6600,7 +7457,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::u256::U256" ]
                               |),
                               [
@@ -6608,7 +7467,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 63;
                                 M.read (| Value.String "LdU256" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6625,7 +7484,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6649,7 +7510,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6673,7 +7536,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_unit_variant",
+                                [],
                                 []
                               |),
                               [
@@ -6699,7 +7564,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6707,7 +7574,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 67;
                                 M.read (| Value.String "MutBorrowGlobalDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6726,7 +7593,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6746,7 +7615,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 68;
                                 M.read (| Value.String "MutBorrowGlobalGenericDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6765,7 +7634,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6773,7 +7644,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 69;
                                 M.read (| Value.String "ImmBorrowGlobalDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6792,7 +7663,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6812,7 +7685,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 70;
                                 M.read (| Value.String "ImmBorrowGlobalGenericDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6831,7 +7704,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6839,7 +7714,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 71;
                                 M.read (| Value.String "ExistsDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6858,7 +7733,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6878,7 +7755,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 72;
                                 M.read (| Value.String "ExistsGenericDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6897,7 +7774,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6905,7 +7784,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 73;
                                 M.read (| Value.String "MoveFromDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6924,7 +7803,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -6944,7 +7825,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 74;
                                 M.read (| Value.String "MoveFromGenericDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6963,7 +7844,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [ Ty.path "move_core_types::identifier::Identifier" ]
                               |),
                               [
@@ -6971,7 +7854,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 75;
                                 M.read (| Value.String "MoveToDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)));
@@ -6990,7 +7873,9 @@ Module normalized.
                                 "serde::ser::Serializer",
                                 __S,
                                 [],
+                                [],
                                 "serialize_newtype_variant",
+                                [],
                                 [
                                   Ty.tuple
                                     [
@@ -7010,7 +7895,7 @@ Module normalized.
                                 M.read (| Value.String "Bytecode" |);
                                 Value.Integer IntegerKind.U32 76;
                                 M.read (| Value.String "MoveToGenericDeprecated" |);
-                                M.read (| __field0 |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                               ]
                             |)
                           |)))
@@ -7042,7 +7927,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'15::deserialize::__Visitor" ]
               |),
               [
@@ -7091,7 +7978,9 @@ Module normalized.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -7105,7 +7994,7 @@ Module normalized.
                                         BinOp.Wrap.add (|
                                           BinOp.Wrap.add (|
                                             BinOp.Wrap.add (|
-                                              M.rust_cast (Value.Bool false),
+                                              M.cast (Ty.path "usize") (Value.Bool false),
                                               Value.Integer IntegerKind.Usize 1
                                             |),
                                             Value.Integer IntegerKind.Usize 1
@@ -7167,16 +8056,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "u32" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "file_format_version" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "file_format_version"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "file_format_version"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7222,16 +8124,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::account_address::AccountAddress" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "address" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "address"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "address"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7277,16 +8192,29 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7332,7 +8260,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7344,12 +8274,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "dependencies" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "dependencies"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "dependencies"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7395,7 +8336,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7407,12 +8350,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "friends" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "friends"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "friends"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7458,7 +8412,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -7471,12 +8427,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "structs" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "structs"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "structs"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7522,7 +8489,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -7535,12 +8504,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "functions" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "functions"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "functions"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7586,7 +8566,9 @@ Module normalized.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -7598,12 +8580,23 @@ Module normalized.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "constants" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "constants"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "constants"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -7647,7 +8640,9 @@ Module normalized.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -7679,7 +8674,9 @@ Module normalized.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_binary_format::normalized::_'17::deserialize::__Visitor" ]
               |),
               [
@@ -7739,14 +8736,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Field",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Field",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -7756,14 +8763,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Field",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Field",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -7793,23 +8810,43 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Field" |);
-              M.read (| Value.String "name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::Field",
-                "name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Field" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Field",
+                      "name"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "type_" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Field",
-                  "type_"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Field",
+                          "type_"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -7889,20 +8926,28 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
+                [],
                 [ Ty.path "move_core_types::identifier::Identifier" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Field",
-                  "name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::normalized::Field",
+                    "name"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_binary_format::normalized::Field",
-                  "name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_binary_format::normalized::Field",
+                    "name"
+                  |)
                 |)
               ]
             |),
@@ -7911,20 +8956,28 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::normalized::Type",
+                  [],
                   [ Ty.path "move_binary_format::normalized::Type" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Field",
-                    "type_"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Field",
+                      "type_"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Field",
-                    "type_"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Field",
+                      "type_"
+                    |)
                   |)
                 ]
               |)))
@@ -7960,19 +9013,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Field",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Field",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Field",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Field",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7987,19 +9058,37 @@ Module normalized.
                           "core::cmp::Ord",
                           Ty.path "move_binary_format::normalized::Type",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Field",
-                            "type_"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::Field",
+                                  "type_"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::Field",
-                            "type_"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::Field",
+                                  "type_"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -8039,20 +9128,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
+                    [],
                     [ Ty.path "move_core_types::identifier::Identifier" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Field",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Field",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Field",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Field",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8072,20 +9179,38 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_binary_format::normalized::Type",
+                          [],
                           [ Ty.path "move_binary_format::normalized::Type" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Field",
-                            "type_"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::Field",
+                                  "type_"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::Field",
-                            "type_"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::Field",
+                                  "type_"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -8142,14 +9267,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Constant",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -8162,14 +9297,24 @@ Module normalized.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Constant",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Constant",
+                            "data"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -8199,23 +9344,43 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Constant" |);
-              M.read (| Value.String "type_" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::Constant",
-                "type_"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Constant" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Constant",
+                      "type_"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "data" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Constant",
-                  "data"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Constant",
+                          "data"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -8295,20 +9460,28 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_binary_format::normalized::Type",
+                [],
                 [ Ty.path "move_binary_format::normalized::Type" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Constant",
-                  "type_"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::normalized::Constant",
+                    "type_"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_binary_format::normalized::Constant",
-                  "type_"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_binary_format::normalized::Constant",
+                    "type_"
+                  |)
                 |)
               ]
             |),
@@ -8320,6 +9493,7 @@ Module normalized.
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -8327,18 +9501,25 @@ Module normalized.
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Constant",
-                    "data"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Constant",
+                      "data"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Constant",
-                    "data"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Constant",
+                      "data"
+                    |)
                   |)
                 ]
               |)))
@@ -8374,19 +9555,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::normalized::Type",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Constant",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Constant",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8404,19 +9603,37 @@ Module normalized.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Constant",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::Constant",
+                                  "data"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::Constant",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::Constant",
+                                  "data"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -8456,20 +9673,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::normalized::Type",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Constant",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Constant",
-                      "type_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8492,6 +9727,7 @@ Module normalized.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -8499,18 +9735,35 @@ Module normalized.
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Constant",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::Constant",
+                                  "data"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::Constant",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::Constant",
+                                  "data"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -8575,14 +9828,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::AbilitySet",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "abilities"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Struct",
+                            "abilities"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -8598,14 +9861,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "type_parameters"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Struct",
+                            "type_parameters"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -8621,14 +9894,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "fields"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Struct",
+                            "fields"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -8658,29 +9941,60 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Struct" |);
-              M.read (| Value.String "abilities" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::Struct",
-                "abilities"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Struct" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "abilities" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Struct",
+                      "abilities"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "type_parameters" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::Struct",
-                "type_parameters"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "type_parameters" |) |)
               |);
-              M.read (| Value.String "fields" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Struct",
-                  "fields"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Struct",
+                      "type_parameters"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "fields" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Struct",
+                          "fields"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -8768,20 +10082,28 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::file_format::AbilitySet",
+                  [],
                   [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Struct",
-                    "abilities"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Struct",
+                      "abilities"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Struct",
-                    "abilities"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Struct",
+                      "abilities"
+                    |)
                   |)
                 ]
               |),
@@ -8796,6 +10118,7 @@ Module normalized.
                         Ty.path "move_binary_format::file_format::StructTypeParameter";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -8806,18 +10129,25 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "type_parameters"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::normalized::Struct",
+                        "type_parameters"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Struct",
-                      "type_parameters"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_binary_format::normalized::Struct",
+                        "type_parameters"
+                      |)
                     |)
                   ]
                 |)))
@@ -8833,6 +10163,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Field";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -8843,18 +10174,25 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Struct",
-                    "fields"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Struct",
+                      "fields"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Struct",
-                    "fields"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Struct",
+                      "fields"
+                    |)
                   |)
                 ]
               |)))
@@ -8890,19 +10228,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::AbilitySet",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "abilities"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Struct",
+                            "abilities"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Struct",
-                      "abilities"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Struct",
+                            "abilities"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8924,19 +10280,37 @@ Module normalized.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Struct",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::normalized::Struct",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -8957,19 +10331,37 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::normalized::Struct",
-                                    "fields"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Struct",
+                                          "fields"
+                                        |)
+                                      |)
+                                    |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| other |),
-                                    "move_binary_format::normalized::Struct",
-                                    "fields"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_binary_format::normalized::Struct",
+                                          "fields"
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9015,20 +10407,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::AbilitySet",
+                    [],
                     [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Struct",
-                      "abilities"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Struct",
+                            "abilities"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Struct",
-                      "abilities"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Struct",
+                            "abilities"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -9055,6 +10465,7 @@ Module normalized.
                                 Ty.path "move_binary_format::file_format::StructTypeParameter";
                                 Ty.path "alloc::alloc::Global"
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -9065,18 +10476,35 @@ Module normalized.
                                 ]
                             ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Struct",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::normalized::Struct",
-                              "type_parameters"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::normalized::Struct",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -9102,6 +10530,7 @@ Module normalized.
                                       Ty.path "move_binary_format::normalized::Field";
                                       Ty.path "alloc::alloc::Global"
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -9112,18 +10541,35 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_binary_format::normalized::Struct",
-                                    "fields"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Struct",
+                                          "fields"
+                                        |)
+                                      |)
+                                    |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| other |),
-                                    "move_binary_format::normalized::Struct",
-                                    "fields"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_binary_format::normalized::Struct",
+                                          "fields"
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -9206,25 +10652,51 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::Visibility",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "visibility"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("is_entry",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "is_entry"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "is_entry"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -9240,14 +10712,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "type_parameters"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "type_parameters"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -9263,14 +10745,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "parameters"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "parameters"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -9286,14 +10778,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "return_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "return_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -9309,14 +10811,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "code"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "code"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -9345,56 +10857,138 @@ Module normalized.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "visibility" |);
-                      M.read (| Value.String "is_entry" |);
-                      M.read (| Value.String "type_parameters" |);
-                      M.read (| Value.String "parameters" |);
-                      M.read (| Value.String "return_" |);
-                      M.read (| Value.String "code" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "visibility" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "is_entry" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "type_parameters" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "parameters" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "return_" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "code" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "visibility"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "is_entry"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "type_parameters"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "parameters"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "return_"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::normalized::Function",
-                          "code"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "visibility"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "type_parameters"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "parameters"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "return_"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::normalized::Function",
+                                        "code"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -9402,13 +10996,17 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Function" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Function" |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -9442,19 +11040,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::Visibility",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "visibility"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Function",
-                      "visibility"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -9466,17 +11082,41 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], "cmp", [] |),
+                          M.get_trait_method (|
+                            "core::cmp::Ord",
+                            Ty.path "bool",
+                            [],
+                            [],
+                            "cmp",
+                            [],
+                            []
+                          |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "is_entry"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::normalized::Function",
-                              "is_entry"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -9498,19 +11138,37 @@ Module normalized.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_binary_format::normalized::Function",
-                                      "type_parameters"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::normalized::Function",
+                                            "type_parameters"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "move_binary_format::normalized::Function",
-                                      "type_parameters"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "move_binary_format::normalized::Function",
+                                            "type_parameters"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -9533,19 +11191,37 @@ Module normalized.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_binary_format::normalized::Function",
-                                              "parameters"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::normalized::Function",
+                                                    "parameters"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "move_binary_format::normalized::Function",
-                                              "parameters"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "move_binary_format::normalized::Function",
+                                                    "parameters"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -9572,19 +11248,37 @@ Module normalized.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_binary_format::normalized::Function",
-                                                      "return_"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_binary_format::normalized::Function",
+                                                            "return_"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| other |),
-                                                      "move_binary_format::normalized::Function",
-                                                      "return_"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| other |) |),
+                                                            "move_binary_format::normalized::Function",
+                                                            "return_"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -9610,19 +11304,37 @@ Module normalized.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           [],
+                                                          [],
                                                           "cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "move_binary_format::normalized::Function",
-                                                            "code"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_binary_format::normalized::Function",
+                                                                  "code"
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |);
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| other |),
-                                                            "move_binary_format::normalized::Function",
-                                                            "code"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| other |) |),
+                                                                  "move_binary_format::normalized::Function",
+                                                                  "code"
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -9686,20 +11398,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::Visibility",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "visibility"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Function",
-                      "visibility"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -9720,20 +11450,38 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "bool",
+                            [],
                             [ Ty.path "bool" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "is_entry"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::normalized::Function",
-                              "is_entry"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::normalized::Function",
+                                    "is_entry"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -9760,6 +11508,7 @@ Module normalized.
                                         Ty.path "move_binary_format::file_format::AbilitySet";
                                         Ty.path "alloc::alloc::Global"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -9770,18 +11519,35 @@ Module normalized.
                                         ]
                                     ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_binary_format::normalized::Function",
-                                      "type_parameters"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::normalized::Function",
+                                            "type_parameters"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "move_binary_format::normalized::Function",
-                                      "type_parameters"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "move_binary_format::normalized::Function",
+                                            "type_parameters"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -9809,6 +11575,7 @@ Module normalized.
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.path "alloc::alloc::Global"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -9819,18 +11586,35 @@ Module normalized.
                                                 ]
                                             ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_binary_format::normalized::Function",
-                                              "parameters"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::normalized::Function",
+                                                    "parameters"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "move_binary_format::normalized::Function",
-                                              "parameters"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "move_binary_format::normalized::Function",
+                                                    "parameters"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -9862,6 +11646,7 @@ Module normalized.
                                                           "move_binary_format::normalized::Type";
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
@@ -9873,18 +11658,35 @@ Module normalized.
                                                         ]
                                                     ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_binary_format::normalized::Function",
-                                                      "return_"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_binary_format::normalized::Function",
+                                                            "return_"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| other |),
-                                                      "move_binary_format::normalized::Function",
-                                                      "return_"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| other |) |),
+                                                            "move_binary_format::normalized::Function",
+                                                            "return_"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -9915,6 +11717,7 @@ Module normalized.
                                                                 "move_binary_format::normalized::Bytecode";
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
@@ -9926,18 +11729,35 @@ Module normalized.
                                                               ]
                                                           ],
                                                           "partial_cmp",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "move_binary_format::normalized::Function",
-                                                            "code"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "move_binary_format::normalized::Function",
+                                                                  "code"
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |);
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| other |),
-                                                            "move_binary_format::normalized::Function",
-                                                            "code"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| other |) |),
+                                                                  "move_binary_format::normalized::Function",
+                                                                  "code"
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -10084,20 +11904,28 @@ Module normalized.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_binary_format::file_format::Visibility",
+                        [],
                         [ Ty.path "move_binary_format::file_format::Visibility" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::normalized::Function",
-                          "visibility"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_binary_format::normalized::Function",
-                          "visibility"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Function",
+                            "visibility"
+                          |)
                         |)
                       ]
                     |),
@@ -10105,14 +11933,14 @@ Module normalized.
                       (BinOp.eq (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "move_binary_format::normalized::Function",
                             "is_entry"
                           |)
                         |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
+                            M.deref (| M.read (| other |) |),
                             "move_binary_format::normalized::Function",
                             "is_entry"
                           |)
@@ -10130,6 +11958,7 @@ Module normalized.
                             Ty.path "move_binary_format::file_format::AbilitySet";
                             Ty.path "alloc::alloc::Global"
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -10140,18 +11969,25 @@ Module normalized.
                             ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::normalized::Function",
-                          "type_parameters"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Function",
+                            "type_parameters"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_binary_format::normalized::Function",
-                          "type_parameters"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Function",
+                            "type_parameters"
+                          |)
                         |)
                       ]
                     |)))
@@ -10167,6 +12003,7 @@ Module normalized.
                           Ty.path "move_binary_format::normalized::Type";
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -10177,18 +12014,25 @@ Module normalized.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Function",
-                        "parameters"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Function",
+                          "parameters"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_binary_format::normalized::Function",
-                        "parameters"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_binary_format::normalized::Function",
+                          "parameters"
+                        |)
                       |)
                     ]
                   |)))
@@ -10204,6 +12048,7 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Type";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -10214,18 +12059,25 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Function",
-                      "return_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::normalized::Function",
+                        "return_"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Function",
-                      "return_"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_binary_format::normalized::Function",
+                        "return_"
+                      |)
                     |)
                   ]
                 |)))
@@ -10241,6 +12093,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Bytecode";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -10251,18 +12104,25 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Function",
-                    "code"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Function",
+                      "code"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Function",
-                    "code"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Function",
+                      "code"
+                    |)
                   |)
                 ]
               |)))
@@ -10310,25 +12170,51 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FieldRef",
-                      "struct_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "struct_name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
               ("field_index",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u16",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FieldRef",
-                      "field_index"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "field_index"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -10358,23 +12244,49 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "FieldRef" |);
-              M.read (| Value.String "struct_name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::FieldRef",
-                "struct_name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FieldRef" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "struct_name" |) |)
               |);
-              M.read (| Value.String "field_index" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::FieldRef",
-                  "field_index"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::FieldRef",
+                      "struct_name"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "field_index" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::FieldRef",
+                          "field_index"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -10408,19 +12320,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FieldRef",
-                      "struct_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "struct_name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::FieldRef",
-                      "struct_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "struct_name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10431,17 +12361,41 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], "cmp", [] |),
+                        M.get_trait_method (|
+                          "core::cmp::Ord",
+                          Ty.path "u16",
+                          [],
+                          [],
+                          "cmp",
+                          [],
+                          []
+                        |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::FieldRef",
-                            "field_index"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::FieldRef",
+                                  "field_index"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::FieldRef",
-                            "field_index"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::FieldRef",
+                                  "field_index"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -10481,20 +12435,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
+                    [],
                     [ Ty.path "move_core_types::identifier::Identifier" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FieldRef",
-                      "struct_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "struct_name"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::FieldRef",
-                      "struct_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::FieldRef",
+                            "struct_name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10514,20 +12486,38 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
+                          [],
                           [ Ty.path "u16" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::FieldRef",
-                            "field_index"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::FieldRef",
+                                  "field_index"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::FieldRef",
-                            "field_index"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::FieldRef",
+                                  "field_index"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -10614,20 +12604,28 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
+                [],
                 [ Ty.path "move_core_types::identifier::Identifier" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::FieldRef",
-                  "struct_name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::normalized::FieldRef",
+                    "struct_name"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_binary_format::normalized::FieldRef",
-                  "struct_name"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_binary_format::normalized::FieldRef",
+                    "struct_name"
+                  |)
                 |)
               ]
             |),
@@ -10635,14 +12633,14 @@ Module normalized.
               (BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "move_binary_format::normalized::FieldRef",
                     "field_index"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "move_binary_format::normalized::FieldRef",
                     "field_index"
                   |)
@@ -10692,14 +12690,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "module_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "module_id"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -10709,14 +12717,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "function_ident"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "function_ident"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -10746,23 +12764,49 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "FunctionRef" |);
-              M.read (| Value.String "module_id" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::normalized::FunctionRef",
-                "module_id"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "FunctionRef" |) |)
               |);
-              M.read (| Value.String "function_ident" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::FunctionRef",
-                  "function_ident"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "module_id" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::FunctionRef",
+                      "module_id"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "function_ident" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::FunctionRef",
+                          "function_ident"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -10796,19 +12840,37 @@ Module normalized.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::language_storage::ModuleId",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "module_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "module_id"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "module_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "module_id"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10823,19 +12885,37 @@ Module normalized.
                           "core::cmp::Ord",
                           Ty.path "move_core_types::identifier::Identifier",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::FunctionRef",
-                            "function_ident"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::FunctionRef",
+                                  "function_ident"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::FunctionRef",
-                            "function_ident"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::FunctionRef",
+                                  "function_ident"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -10875,20 +12955,38 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::language_storage::ModuleId",
+                    [],
                     [ Ty.path "move_core_types::language_storage::ModuleId" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "module_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "module_id"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::FunctionRef",
-                      "module_id"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::FunctionRef",
+                            "module_id"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10908,20 +13006,38 @@ Module normalized.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::identifier::Identifier",
+                          [],
                           [ Ty.path "move_core_types::identifier::Identifier" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::FunctionRef",
-                            "function_ident"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::FunctionRef",
+                                  "function_ident"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::FunctionRef",
-                            "function_ident"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::FunctionRef",
+                                  "function_ident"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -11008,20 +13124,28 @@ Module normalized.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::language_storage::ModuleId",
+                [],
                 [ Ty.path "move_core_types::language_storage::ModuleId" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::FunctionRef",
-                  "module_id"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::normalized::FunctionRef",
+                    "module_id"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_binary_format::normalized::FunctionRef",
-                  "module_id"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_binary_format::normalized::FunctionRef",
+                    "module_id"
+                  |)
                 |)
               ]
             |),
@@ -11030,20 +13154,28 @@ Module normalized.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::identifier::Identifier",
+                  [],
                   [ Ty.path "move_core_types::identifier::Identifier" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::FunctionRef",
-                    "function_ident"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::FunctionRef",
+                      "function_ident"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::FunctionRef",
-                    "function_ident"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::FunctionRef",
+                      "function_ident"
+                    |)
                   |)
                 ]
               |)))
@@ -11645,10 +13777,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11671,10 +13805,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11697,10 +13833,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11723,10 +13861,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11749,10 +13889,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11775,10 +13917,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11834,10 +13978,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Constant",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11882,10 +14028,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11908,10 +14056,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11934,10 +14084,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11960,10 +14112,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FunctionRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -11996,10 +14150,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12022,10 +14178,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12058,10 +14216,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12084,10 +14244,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12120,10 +14282,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12179,10 +14343,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12205,10 +14371,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12231,10 +14399,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12267,10 +14437,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12293,10 +14465,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12329,10 +14503,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12539,20 +14715,24 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |);
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_1 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12575,10 +14755,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12601,10 +14783,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12627,10 +14811,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12653,10 +14839,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12679,10 +14867,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12712,20 +14902,24 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |);
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_1 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12748,10 +14942,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12774,10 +14970,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12800,10 +14998,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12826,10 +15026,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12885,10 +15087,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12921,10 +15125,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12947,10 +15153,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -12983,10 +15191,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13009,10 +15219,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13045,10 +15257,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13071,10 +15285,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13107,10 +15323,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13133,10 +15351,12 @@ Module normalized.
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -13169,10 +15389,12 @@ Module normalized.
                                     ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -13214,9 +15436,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Pop" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Pop" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13229,9 +15458,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Ret" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Ret" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13249,9 +15485,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BrTrue" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BrTrue" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13269,9 +15516,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BrFalse" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BrFalse" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13289,9 +15547,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Branch" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Branch" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13309,9 +15578,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU8" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU8" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13329,9 +15609,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU64" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU64" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13349,9 +15640,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU128" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU128" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13367,9 +15669,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU8" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU8" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13385,9 +15694,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU64" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU64" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13403,9 +15719,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU128" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU128" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13423,9 +15746,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdConst" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdConst" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13441,9 +15775,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdTrue" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdTrue" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13459,9 +15800,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdFalse" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdFalse" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13479,9 +15827,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CopyLoc" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CopyLoc" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13499,9 +15858,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MoveLoc" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MoveLoc" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13519,9 +15889,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "StLoc" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "StLoc" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13539,9 +15920,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Call" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13559,9 +15951,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CallGeneric" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CallGeneric" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13579,9 +15982,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Pack" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Pack" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13599,9 +16013,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "PackGeneric" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PackGeneric" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13619,9 +16044,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Unpack" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Unpack" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13639,9 +16075,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "UnpackGeneric" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "UnpackGeneric" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13657,9 +16104,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ReadRef" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ReadRef" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13675,9 +16129,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "WriteRef" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "WriteRef" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13693,9 +16154,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "FreezeRef" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FreezeRef" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13713,9 +16181,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MutBorrowLoc" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MutBorrowLoc" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13733,9 +16212,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ImmBorrowLoc" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ImmBorrowLoc" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13753,9 +16243,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MutBorrowField" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MutBorrowField" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13773,12 +16274,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "MutBorrowFieldGeneric" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MutBorrowFieldGeneric" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -13797,9 +16305,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ImmBorrowField" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ImmBorrowField" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13817,12 +16336,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "ImmBorrowFieldGeneric" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ImmBorrowFieldGeneric" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -13836,9 +16362,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Add" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Add" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13851,9 +16384,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Sub" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Sub" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13866,9 +16406,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Mul" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Mul" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13881,9 +16428,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Mod" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Mod" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13896,9 +16450,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Div" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Div" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13914,9 +16475,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BitOr" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BitOr" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13932,9 +16500,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "BitAnd" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "BitAnd" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13947,9 +16522,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Xor" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Xor" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13962,9 +16544,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Or" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Or" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13977,9 +16566,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "And" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "And" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -13992,9 +16588,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Not" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Not" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14007,9 +16610,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Eq" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Eq" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14022,9 +16632,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Neq" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Neq" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14037,9 +16654,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Lt" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Lt" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14052,9 +16676,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Gt" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Gt" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14067,9 +16698,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Le" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Le" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14082,9 +16720,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Ge" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Ge" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14100,9 +16745,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Abort" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Abort" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14115,9 +16767,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Nop" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Nop" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14130,9 +16789,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Shl" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Shl" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14145,9 +16811,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Shr" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Shr" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14172,13 +16845,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "VecPack" |);
-                          M.read (| __self_0 |);
-                          __self_1
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecPack" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14197,9 +16877,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecLen" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecLen" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14217,9 +16908,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecImmBorrow" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecImmBorrow" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14237,9 +16939,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecMutBorrow" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecMutBorrow" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14257,9 +16970,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecPushBack" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecPushBack" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14277,9 +17001,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecPopBack" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecPopBack" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14304,13 +17039,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "VecUnpack" |);
-                          M.read (| __self_0 |);
-                          __self_1
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecUnpack" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14329,9 +17071,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "VecSwap" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VecSwap" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14349,9 +17102,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU16" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU16" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14369,9 +17133,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU32" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU32" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14389,9 +17164,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "LdU256" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "LdU256" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14407,9 +17193,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU16" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU16" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14425,9 +17218,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU32" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU32" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14443,9 +17243,16 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "CastU256" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CastU256" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14463,12 +17270,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "MutBorrowGlobalDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MutBorrowGlobalDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14487,12 +17301,21 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "MutBorrowGlobalGenericDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "MutBorrowGlobalGenericDeprecated" |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14511,12 +17334,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "ImmBorrowGlobalDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ImmBorrowGlobalDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14535,12 +17365,21 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "ImmBorrowGlobalGenericDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (| Value.String "ImmBorrowGlobalGenericDeprecated" |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14559,9 +17398,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ExistsDeprecated" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ExistsDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14579,12 +17429,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "ExistsGenericDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ExistsGenericDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14603,9 +17460,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MoveFromDeprecated" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MoveFromDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14623,12 +17491,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "MoveFromGenericDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MoveFromGenericDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -14647,9 +17522,20 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "MoveToDeprecated" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MoveToDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -14667,12 +17553,19 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "MoveToGenericDeprecated" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MoveToGenericDeprecated" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)))
@@ -14709,7 +17602,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -14720,14 +17613,23 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_discr; __arg1_discr ]
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -14763,10 +17665,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14795,10 +17708,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14827,10 +17751,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14859,10 +17794,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14891,10 +17837,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14923,10 +17880,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u128",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14955,10 +17923,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Constant",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -14987,10 +17966,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15019,10 +18009,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15051,10 +18052,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15083,10 +18095,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15125,10 +18148,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15157,10 +18191,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15199,10 +18244,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15231,10 +18287,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15273,10 +18340,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15305,10 +18383,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15337,10 +18426,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15369,10 +18469,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15411,10 +18522,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15443,10 +18565,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15485,10 +18618,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15532,10 +18676,21 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -15549,10 +18704,21 @@ Module normalized.
                                           "core::cmp::Ord",
                                           Ty.path "u64",
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __self_1 |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __arg1_1 |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)));
                                 fun γ =>
@@ -15587,10 +18753,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15619,10 +18796,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15651,10 +18839,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15683,10 +18882,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15715,10 +18925,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15762,10 +18983,21 @@ Module normalized.
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -15779,10 +19011,21 @@ Module normalized.
                                           "core::cmp::Ord",
                                           Ty.path "u64",
                                           [],
+                                          [],
                                           "cmp",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __self_1 |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __arg1_1 |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)));
                                 fun γ =>
@@ -15817,10 +19060,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15849,10 +19103,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15881,10 +19146,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15913,10 +19189,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::u256::U256",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15945,10 +19232,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -15987,10 +19285,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16019,10 +19328,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16061,10 +19381,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16093,10 +19424,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16135,10 +19477,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16167,10 +19520,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16209,10 +19573,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16241,10 +19616,21 @@ Module normalized.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16283,10 +19669,21 @@ Module normalized.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16331,7 +19728,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -16342,7 +19739,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -16351,11 +19748,22 @@ Module normalized.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "isize",
+                    [],
                     [ Ty.path "isize" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
-                  [ __self_discr; __arg1_discr ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -16396,11 +19804,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16428,11 +19847,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16460,11 +19890,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16492,11 +19933,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16524,11 +19976,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u64",
+                                  [],
                                   [ Ty.path "u64" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16556,11 +20019,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u128",
+                                  [],
                                   [ Ty.path "u128" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16588,11 +20062,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Constant",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Constant" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16620,11 +20105,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16652,11 +20148,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16684,11 +20191,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16716,11 +20234,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FunctionRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16758,6 +20287,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16772,9 +20302,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16802,11 +20342,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16844,6 +20395,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16858,9 +20410,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16888,11 +20450,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16930,6 +20503,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -16944,9 +20518,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -16974,11 +20558,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17006,11 +20601,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
+                                  [],
                                   [ Ty.path "u8" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17038,11 +20644,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FieldRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17080,6 +20697,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17094,9 +20712,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17124,11 +20752,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::FieldRef" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17166,6 +20805,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17180,9 +20820,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17225,11 +20875,22 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -17248,11 +20909,22 @@ Module normalized.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u64" ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __self_1 |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __arg1_1 |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)));
                                 fun γ =>
@@ -17286,11 +20958,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17318,11 +21001,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17350,11 +21044,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17382,11 +21087,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17414,11 +21130,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17461,11 +21188,22 @@ Module normalized.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
+                                    [],
                                     [ Ty.path "move_binary_format::normalized::Type" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -17484,11 +21222,22 @@ Module normalized.
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
+                                          [],
                                           [ Ty.path "u64" ],
                                           "partial_cmp",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __self_1 |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| __arg1_1 |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)));
                                 fun γ =>
@@ -17522,11 +21271,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_binary_format::normalized::Type" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17554,11 +21314,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
+                                  [],
                                   [ Ty.path "u16" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17586,11 +21357,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u32",
+                                  [],
                                   [ Ty.path "u32" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17618,11 +21400,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
+                                  [],
                                   [ Ty.path "move_core_types::u256::U256" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17650,11 +21443,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17692,6 +21496,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17706,9 +21511,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17736,11 +21551,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17778,6 +21604,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17792,9 +21619,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17822,11 +21659,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17864,6 +21712,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17878,9 +21727,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17908,11 +21767,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17950,6 +21820,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -17964,9 +21835,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -17994,11 +21875,22 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
+                                  [],
                                   [ Ty.path "move_core_types::identifier::Identifier" ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18036,6 +21928,7 @@ Module normalized.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.tuple
                                       [
@@ -18050,9 +21943,19 @@ Module normalized.
                                       ]
                                   ],
                                   "partial_cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18317,7 +22220,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -18328,7 +22231,7 @@ Module normalized.
                     [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -18364,11 +22267,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18396,11 +22304,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18428,11 +22341,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18460,11 +22378,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18492,11 +22415,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18524,11 +22452,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18559,6 +22492,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Constant" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18566,9 +22500,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Constant" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18596,11 +22534,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18628,11 +22571,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18660,11 +22608,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18695,6 +22648,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FunctionRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18702,9 +22656,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FunctionRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18747,6 +22705,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18766,9 +22725,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18799,6 +22762,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18806,9 +22770,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18851,6 +22819,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18870,9 +22839,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18903,6 +22876,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18910,9 +22884,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -18955,6 +22933,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -18974,9 +22953,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19004,11 +22987,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19036,11 +23024,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19071,6 +23064,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19078,9 +23072,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FieldRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19123,6 +23121,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19142,9 +23141,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19175,6 +23178,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19182,9 +23186,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::FieldRef" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19227,6 +23235,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19246,9 +23255,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19294,6 +23307,7 @@ Module normalized.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -19301,20 +23315,29 @@ Module normalized.
                                         [ Ty.path "move_binary_format::normalized::Type" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ __self_1; __arg1_1 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                    ]
                                   |)))
                               |)
                             |)));
@@ -19346,6 +23369,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19353,9 +23377,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19386,6 +23414,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19393,9 +23422,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19426,6 +23459,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19433,9 +23467,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19466,6 +23504,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19473,9 +23512,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19506,6 +23549,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19513,9 +23557,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19561,6 +23609,7 @@ Module normalized.
                                       (Ty.path "&")
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -19568,20 +23617,29 @@ Module normalized.
                                         [ Ty.path "move_binary_format::normalized::Type" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [],
                                       [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ __self_1; __arg1_1 ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                    ]
                                   |)))
                               |)
                             |)));
@@ -19613,6 +23671,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19620,9 +23679,13 @@ Module normalized.
                                       [ Ty.path "move_binary_format::normalized::Type" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19650,11 +23713,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19682,11 +23750,16 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19717,6 +23790,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19724,9 +23798,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19757,6 +23835,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19764,9 +23843,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19809,6 +23892,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19828,9 +23912,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19861,6 +23949,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19868,9 +23957,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19913,6 +24006,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19932,9 +24026,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -19965,6 +24063,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -19972,9 +24071,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -20017,6 +24120,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20036,9 +24140,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -20069,6 +24177,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20076,9 +24185,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -20121,6 +24234,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20140,9 +24254,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -20173,6 +24291,7 @@ Module normalized.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20180,9 +24299,13 @@ Module normalized.
                                       [ Ty.path "move_core_types::identifier::Identifier" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -20225,6 +24348,7 @@ Module normalized.
                                             ]
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -20244,9 +24368,13 @@ Module normalized.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -20294,14 +24422,23 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
+                    [],
                     []
                   |),
                   [
-                    M.read (| m |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| constant |),
-                      "move_binary_format::file_format::Constant",
-                      "type_"
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| constant |) |),
+                            "move_binary_format::file_format::Constant",
+                            "type_"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20314,14 +24451,19 @@ Module normalized.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| constant |),
-                      "move_binary_format::file_format::Constant",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| constant |) |),
+                        "move_binary_format::file_format::Constant",
+                        "data"
+                      |)
                     |)
                   ]
                 |))
@@ -20399,12 +24541,28 @@ Module normalized.
             [
               ("file_format_version",
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", Ty.path "u32", [], "clone", [] |),
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "clone",
+                    [],
+                    []
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "file_format_version"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "file_format_version"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20414,14 +24572,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "address"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "address"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20431,14 +24599,24 @@ Module normalized.
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20454,14 +24632,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "dependencies"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "dependencies"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20477,14 +24665,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "friends"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "friends"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20501,14 +24699,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "structs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "structs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20525,14 +24733,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "functions"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "functions"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -20548,14 +24766,24 @@ Module normalized.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "constants"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "constants"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -20584,68 +24812,172 @@ Module normalized.
           M.read (|
             let~ names :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.read (| Value.String "file_format_version" |);
-                      M.read (| Value.String "address" |);
-                      M.read (| Value.String "name" |);
-                      M.read (| Value.String "dependencies" |);
-                      M.read (| Value.String "friends" |);
-                      M.read (| Value.String "structs" |);
-                      M.read (| Value.String "functions" |);
-                      M.read (| Value.String "constants" |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "file_format_version" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "address" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "name" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "dependencies" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "friends" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "structs" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "functions" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "constants" |) |)
+                            |)
+                          ]
+                      |)
+                    |)
+                  |)
                 |)
               |) in
             let~ values :=
               M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "file_format_version"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "address"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "name"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "dependencies"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "friends"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "structs"
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "functions"
-                      |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.alloc (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::normalized::Module",
-                          "constants"
-                        |)
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "file_format_version"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "address"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "name"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "dependencies"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "friends"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "structs"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::normalized::Module",
+                                    "functions"
+                                  |)
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_binary_format::normalized::Module",
+                                        "constants"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       |)
-                    ]
+                    |)
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -20653,13 +24985,14 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Module" |);
-                  M.read (| names |);
-                  M.read (| values |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Module" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
             |)
@@ -20792,14 +25125,14 @@ Module normalized.
                         BinOp.eq (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "move_binary_format::normalized::Module",
                               "file_format_version"
                             |)
                           |),
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
+                              M.deref (| M.read (| other |) |),
                               "move_binary_format::normalized::Module",
                               "file_format_version"
                             |)
@@ -20810,20 +25143,28 @@ Module normalized.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "move_core_types::account_address::AccountAddress",
+                              [],
                               [ Ty.path "move_core_types::account_address::AccountAddress" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_binary_format::normalized::Module",
-                                "address"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::normalized::Module",
+                                  "address"
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "move_binary_format::normalized::Module",
-                                "address"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_binary_format::normalized::Module",
+                                  "address"
+                                |)
                               |)
                             ]
                           |)))
@@ -20833,20 +25174,28 @@ Module normalized.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.path "move_core_types::identifier::Identifier",
+                            [],
                             [ Ty.path "move_core_types::identifier::Identifier" ],
                             "eq",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_binary_format::normalized::Module",
+                                "name"
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::normalized::Module",
-                              "name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "move_binary_format::normalized::Module",
+                                "name"
+                              |)
                             |)
                           ]
                         |)))
@@ -20862,6 +25211,7 @@ Module normalized.
                               Ty.path "move_core_types::language_storage::ModuleId";
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -20872,18 +25222,25 @@ Module normalized.
                               ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "dependencies"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Module",
+                              "dependencies"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::normalized::Module",
-                            "dependencies"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "move_binary_format::normalized::Module",
+                              "dependencies"
+                            |)
                           |)
                         ]
                       |)))
@@ -20899,6 +25256,7 @@ Module normalized.
                             Ty.path "move_core_types::language_storage::ModuleId";
                             Ty.path "alloc::alloc::Global"
                           ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -20909,18 +25267,25 @@ Module normalized.
                             ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::normalized::Module",
-                          "friends"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::normalized::Module",
+                            "friends"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_binary_format::normalized::Module",
-                          "friends"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::normalized::Module",
+                            "friends"
+                          |)
                         |)
                       ]
                     |)))
@@ -20937,6 +25302,7 @@ Module normalized.
                           Ty.path "move_binary_format::normalized::Struct";
                           Ty.path "alloc::alloc::Global"
                         ],
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -20948,18 +25314,25 @@ Module normalized.
                           ]
                       ],
                       "eq",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Module",
-                        "structs"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Module",
+                          "structs"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_binary_format::normalized::Module",
-                        "structs"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_binary_format::normalized::Module",
+                          "structs"
+                        |)
                       |)
                     ]
                   |)))
@@ -20976,6 +25349,7 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Function";
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -20987,18 +25361,25 @@ Module normalized.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::normalized::Module",
-                      "functions"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::normalized::Module",
+                        "functions"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::normalized::Module",
-                      "functions"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_binary_format::normalized::Module",
+                        "functions"
+                      |)
                     |)
                   ]
                 |)))
@@ -21014,6 +25395,7 @@ Module normalized.
                       Ty.path "move_binary_format::normalized::Constant";
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -21024,18 +25406,25 @@ Module normalized.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Module",
-                    "constants"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Module",
+                      "constants"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::normalized::Module",
-                    "constants"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::Module",
+                      "constants"
+                    |)
                   |)
                 ]
               |)))
@@ -21095,9 +25484,10 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_friends",
+                    [],
                     []
                   |),
-                  [ M.read (| m |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
                 |)
               |) in
             let~ structs :=
@@ -21130,7 +25520,9 @@ Module normalized.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -21151,7 +25543,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -21183,16 +25577,23 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "struct_defs",
-                                []
-                              |),
-                              [ M.read (| m |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "struct_defs",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |);
@@ -21212,9 +25613,19 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Struct",
                                               "new",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| m |); M.read (| d |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| m |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| d |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -21231,9 +25642,10 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_dependencies",
+                    [],
                     []
                   |),
-                  [ M.read (| m |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
                 |)
               |) in
             let~ constants :=
@@ -21262,7 +25674,9 @@ Module normalized.
                           (Ty.path "move_binary_format::normalized::Constant")
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -21282,7 +25696,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::Constant" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.path "move_binary_format::normalized::Constant";
                           Ty.function
@@ -21306,16 +25722,23 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::Constant" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "constant_pool",
-                                []
-                              |),
-                              [ M.read (| m |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "constant_pool",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |);
@@ -21335,9 +25758,19 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Constant",
                                               "new",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| m |); M.read (| constant |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| m |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| constant |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -21378,7 +25811,9 @@ Module normalized.
                             ])
                       ],
                     [],
+                    [],
                     "collect",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -21399,7 +25834,9 @@ Module normalized.
                           []
                           [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -21432,16 +25869,23 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             "iter",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "function_defs",
-                                []
-                              |),
-                              [ M.read (| m |) ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "function_defs",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                                |)
+                              |)
                             |)
                           ]
                         |);
@@ -21461,9 +25905,19 @@ Module normalized.
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Function",
                                               "new",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| m |); M.read (| func_def |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| m |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| func_def |) |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -21483,19 +25937,23 @@ Module normalized.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "version",
+                        [],
                         []
                       |),
-                      [ M.read (| m |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
                     |));
                   ("address",
                     M.read (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_binary_format::file_format::CompiledModule",
-                          "address",
-                          []
-                        |),
-                        [ M.read (| m |) ]
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "address",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                        |)
                       |)
                     |));
                   ("name",
@@ -21504,17 +25962,25 @@ Module normalized.
                         "alloc::borrow::ToOwned",
                         Ty.path "move_core_types::identifier::IdentStr",
                         [],
+                        [],
                         "to_owned",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "move_binary_format::file_format::CompiledModule",
-                            "name",
-                            []
-                          |),
-                          [ M.read (| m |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "move_binary_format::file_format::CompiledModule",
+                                "name",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -21545,12 +26011,13 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::ModuleId",
               "new",
+              [],
               []
             |),
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "move_binary_format::normalized::Module",
                   "address"
                 |)
@@ -21560,14 +26027,19 @@ Module normalized.
                   "core::clone::Clone",
                   Ty.path "move_core_types::identifier::Identifier",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Module",
-                    "name"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::Module",
+                      "name"
+                    |)
                   |)
                 ]
               |)
@@ -21650,9 +26122,13 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "struct_handle_at",
+                            [],
                             []
                           |),
-                          [ M.read (| m |); M.read (| M.read (| shi |) |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (| M.deref (| M.read (| shi |) |) |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -21676,13 +26152,17 @@ Module normalized.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "is_empty",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| s_handle |),
-                                            "move_binary_format::file_format::StructHandle",
-                                            "type_parameters"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| s_handle |) |),
+                                              "move_binary_format::file_format::StructHandle",
+                                              "type_parameters"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -21702,17 +26182,26 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String
-                                                    "A struct with N type parameters should be encoded as StructModuleInstantiation with type_arguments = [TypeParameter(1), ..., TypeParameter(N)]"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String
+                                                          "A struct with N type parameters should be encoded as StructModuleInstantiation with type_arguments = [TypeParameter(1), ..., TypeParameter(N)]"
+                                                      |)
+                                                    ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -21729,13 +26218,14 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "module_handle_at",
+                            [],
                             []
                           |),
                           [
-                            M.read (| m |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| s_handle |),
+                                M.deref (| M.read (| s_handle |) |),
                                 "move_binary_format::file_format::StructHandle",
                                 "module"
                               |)
@@ -21749,22 +26239,25 @@ Module normalized.
                         [
                           ("address",
                             M.read (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "address_identifier_at",
-                                  []
-                                |),
-                                [
-                                  M.read (| m |);
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| m_handle |),
-                                      "move_binary_format::file_format::ModuleHandle",
-                                      "address"
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "address_identifier_at",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| m_handle |) |),
+                                        "move_binary_format::file_format::ModuleHandle",
+                                        "address"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |));
                           ("module",
@@ -21773,26 +26266,37 @@ Module normalized.
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
                                 [],
+                                [],
                                 "to_owned",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "identifier_at",
-                                    []
-                                  |),
-                                  [
-                                    M.read (| m |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| m_handle |),
-                                        "move_binary_format::file_format::ModuleHandle",
-                                        "name"
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "identifier_at",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| m |) |)
+                                        |);
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| m_handle |) |),
+                                            "move_binary_format::file_format::ModuleHandle",
+                                            "name"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |));
@@ -21802,26 +26306,37 @@ Module normalized.
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
                                 [],
+                                [],
                                 "to_owned",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "identifier_at",
-                                    []
-                                  |),
-                                  [
-                                    M.read (| m |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| s_handle |),
-                                        "move_binary_format::file_format::StructHandle",
-                                        "name"
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "identifier_at",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| m |) |)
+                                        |);
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| s_handle |) |),
+                                            "move_binary_format::file_format::StructHandle",
+                                            "name"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |));
@@ -21836,6 +26351,7 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
+                                [],
                                 []
                               |),
                               []
@@ -21853,7 +26369,12 @@ Module normalized.
                       |) in
                     let struct_inst := M.alloc (| γ1_0 |) in
                     M.match_operator (|
-                      M.alloc (| M.read (| M.read (| struct_inst |) |) |),
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| M.deref (| M.read (| struct_inst |) |) |) |)
+                        |)
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -21868,9 +26389,13 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_handle_at",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| m |); M.read (| M.read (| shi |) |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                    M.read (| M.deref (| M.read (| shi |) |) |)
+                                  ]
                                 |)
                               |) in
                             let~ m_handle :=
@@ -21879,13 +26404,14 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "module_handle_at",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.read (| m |);
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| s_handle |),
+                                        M.deref (| M.read (| s_handle |) |),
                                         "move_binary_format::file_format::StructHandle",
                                         "module"
                                       |)
@@ -21899,22 +26425,29 @@ Module normalized.
                                 [
                                   ("address",
                                     M.read (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "address_identifier_at",
-                                          []
-                                        |),
-                                        [
-                                          M.read (| m |);
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| m_handle |),
-                                              "move_binary_format::file_format::ModuleHandle",
-                                              "address"
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "address_identifier_at",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| m |) |)
+                                            |);
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| m_handle |) |),
+                                                "move_binary_format::file_format::ModuleHandle",
+                                                "address"
+                                              |)
                                             |)
-                                          |)
-                                        ]
+                                          ]
+                                        |)
                                       |)
                                     |));
                                   ("module",
@@ -21923,27 +26456,38 @@ Module normalized.
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
                                         [],
+                                        [],
                                         "to_owned",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "identifier_at",
-                                            []
-                                          |),
-                                          [
-                                            M.read (| m |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| m_handle |),
-                                                "move_binary_format::file_format::ModuleHandle",
-                                                "name"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::CompiledModule",
+                                                "identifier_at",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| m |) |)
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| m_handle |) |),
+                                                    "move_binary_format::file_format::ModuleHandle",
+                                                    "name"
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |)
                                       ]
                                     |));
@@ -21953,27 +26497,38 @@ Module normalized.
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
                                         [],
+                                        [],
                                         "to_owned",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "identifier_at",
-                                            []
-                                          |),
-                                          [
-                                            M.read (| m |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| s_handle |),
-                                                "move_binary_format::file_format::StructHandle",
-                                                "name"
-                                              |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::CompiledModule",
+                                                "identifier_at",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| m |) |)
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| s_handle |) |),
+                                                    "move_binary_format::file_format::StructHandle",
+                                                    "name"
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |)
                                       ]
                                     |));
@@ -22008,7 +26563,9 @@ Module normalized.
                                               (Ty.path "move_binary_format::normalized::Type")
                                           ],
                                         [],
+                                        [],
                                         "collect",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -22031,7 +26588,9 @@ Module normalized.
                                                   "move_binary_format::file_format::SignatureToken"
                                               ],
                                             [],
+                                            [],
                                             "map",
+                                            [],
                                             [
                                               Ty.path "move_binary_format::normalized::Type";
                                               Ty.function
@@ -22061,25 +26620,38 @@ Module normalized.
                                                       "move_binary_format::file_format::SignatureToken"
                                                   ],
                                                 "iter",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    [],
-                                                    "deref",
-                                                    []
-                                                  |),
-                                                  [ M.read (| type_actuals |) ]
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| type_actuals |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |);
@@ -22100,9 +26672,19 @@ Module normalized.
                                                                   Ty.path
                                                                     "move_binary_format::normalized::Type",
                                                                   "new",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| m |); M.read (| t |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| m |) |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| t |) |)
+                                                                  |)
+                                                                ]
                                                               |)))
                                                         ]
                                                       |)))
@@ -22237,6 +26819,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22244,9 +26827,16 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| m |); M.read (| M.read (| t |) |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| t |) |) |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -22265,7 +26855,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Type::TypeParameter"
-                        [ M.read (| M.read (| i |) |) ]
+                        [ M.read (| M.deref (| M.read (| i |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -22291,6 +26881,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22298,9 +26889,16 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| m |); M.read (| M.read (| t |) |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| t |) |) |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -22330,6 +26928,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -22337,9 +26936,16 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| m |); M.read (| M.read (| t |) |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| t |) |) |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -22464,7 +27070,9 @@ Module normalized.
                             []
                             [ Ty.path "move_binary_format::normalized::Type" ],
                           [],
+                          [],
                           "all",
+                          [],
                           [
                             Ty.function
                               [
@@ -22480,34 +27088,50 @@ Module normalized.
                           ]
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
-                                "iter",
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "move_binary_format::normalized::Type";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    "deref",
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
                                     []
-                                  |),
-                                  [ M.read (| type_arguments |) ]
-                                |)
-                              ]
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  "iter",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| type_arguments |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
                           M.closure
@@ -22526,9 +27150,15 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "move_binary_format::normalized::Type",
                                                 "is_closed",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| t |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| t |) |)
+                                                |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -22576,24 +27206,29 @@ Module normalized.
                             let t := M.alloc (| γ1_0 |) in
                             Value.Tuple [ t ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ t ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::normalized::Type",
-                                      "is_closed",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| t |) |) ]
-                                  |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ t ] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::normalized::Type",
+                                    "is_closed",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| M.deref (| M.read (| t |) |) |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)))
               ]
             |)
@@ -22670,9 +27305,10 @@ Module normalized.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::normalized::Type",
                                       "is_closed",
+                                      [],
                                       []
                                     |),
-                                    [ self ]
+                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                   |)
                                 |)) in
                             let _ :=
@@ -22704,25 +27340,24 @@ Module normalized.
                                               |) in
                                             Value.Tuple []))
                                       ],
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [] =>
-                                              ltac:(M.monadic
-                                                (M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
-                                                      |)
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [] =>
+                                            ltac:(M.monadic
+                                              (M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (|
+                                                    M.return_ (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
                                                     |)
                                                   |)
-                                                |)))
-                                            | _ => M.impossible "wrong number of arguments"
-                                            end))
+                                                |)
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -22856,6 +27491,7 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22869,6 +27505,7 @@ Module normalized.
                                                         "move_core_types::language_storage::TypeTag"
                                                     ],
                                                   "expect",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -22877,13 +27514,19 @@ Module normalized.
                                                       Ty.path
                                                         "move_binary_format::normalized::Type",
                                                       "into_type_tag",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| M.read (| t |) |) ]
+                                                    [ M.read (| M.deref (| M.read (| t |) |) |) ]
                                                   |);
-                                                  M.read (|
-                                                    Value.String
-                                                      "Invariant violation: vector type argument contains reference"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        Value.String
+                                                          "Invariant violation: vector type argument contains reference"
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -22936,6 +27579,7 @@ Module normalized.
                                                   Ty.path "alloc::alloc::Global"
                                                 ],
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -22974,7 +27618,9 @@ Module normalized.
                                                                 "move_core_types::language_storage::TypeTag")
                                                           ],
                                                         [],
+                                                        [],
                                                         "collect",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
@@ -23000,7 +27646,9 @@ Module normalized.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "map",
+                                                            [],
                                                             [
                                                               Ty.path
                                                                 "move_core_types::language_storage::TypeTag";
@@ -23029,7 +27677,9 @@ Module normalized.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "into_iter",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| type_arguments |) ]
@@ -23058,6 +27708,7 @@ Module normalized.
                                                                                         "move_core_types::language_storage::TypeTag"
                                                                                     ],
                                                                                   "expect",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -23066,14 +27717,20 @@ Module normalized.
                                                                                       Ty.path
                                                                                         "move_binary_format::normalized::Type",
                                                                                       "into_type_tag",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ M.read (| t |)
                                                                                     ]
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Invariant violation: struct type argument contains reference"
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "Invariant violation: struct type argument contains reference"
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |)))
@@ -23162,7 +27819,9 @@ Module normalized.
                             []
                             [ Ty.path "move_core_types::language_storage::TypeTag" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -23170,6 +27829,7 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Type",
                               "into_type_tag",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -23198,6 +27858,7 @@ Module normalized.
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.path "move_core_types::language_storage::StructTag" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -23205,6 +27866,7 @@ Module normalized.
                                           [ Ty.path "core::convert::Infallible" ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -23238,7 +27900,7 @@ Module normalized.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
-                            [ M.read (| M.read (| s |) |) ]
+                            [ M.read (| M.deref (| M.read (| s |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -23379,26 +28041,28 @@ Module normalized.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "move_binary_format::normalized::Type",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
-                                  |)
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::clone::Clone",
+                                    Ty.path "move_binary_format::normalized::Type",
+                                    [],
+                                    [],
+                                    "clone",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -23424,6 +28088,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23431,9 +28096,19 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| M.read (| ty |) |); M.read (| type_args |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| ty |) |) |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| type_args |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -23463,6 +28138,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23470,9 +28146,19 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| M.read (| ty |) |); M.read (| type_args |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| ty |) |) |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| type_args |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -23502,6 +28188,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -23509,9 +28196,19 @@ Module normalized.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| M.read (| t |) |); M.read (| type_args |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| M.deref (| M.read (| t |) |) |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| type_args |) |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -23552,17 +28249,19 @@ Module normalized.
                       Value.StructRecord
                         "move_binary_format::normalized::Type::Struct"
                         [
-                          ("address", M.read (| M.read (| address |) |));
+                          ("address", M.read (| M.deref (| M.read (| address |) |) |));
                           ("module",
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| module |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                             |));
                           ("name",
                             M.call_closure (|
@@ -23570,10 +28269,12 @@ Module normalized.
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| name |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |) ]
                             |));
                           ("type_arguments",
                             M.call_closure (|
@@ -23600,7 +28301,9 @@ Module normalized.
                                       (Ty.path "move_binary_format::normalized::Type")
                                   ],
                                 [],
+                                [],
                                 "collect",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -23620,7 +28323,9 @@ Module normalized.
                                       []
                                       [ Ty.path "move_binary_format::normalized::Type" ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
@@ -23644,24 +28349,37 @@ Module normalized.
                                           []
                                           [ Ty.path "move_binary_format::normalized::Type" ],
                                         "iter",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path "move_binary_format::normalized::Type";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
                                               [
-                                                Ty.path "move_binary_format::normalized::Type";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [ M.read (| type_arguments |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| type_arguments |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -23682,9 +28400,19 @@ Module normalized.
                                                           Ty.path
                                                             "move_binary_format::normalized::Type",
                                                           "subst",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| t |); M.read (| type_args |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| t |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| type_args |) |)
+                                                          |)
+                                                        ]
                                                       |)))
                                                 ]
                                               |)))
@@ -23712,39 +28440,60 @@ Module normalized.
                           "core::clone::Clone",
                           Ty.path "move_binary_format::normalized::Type",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_binary_format::normalized::Type" ]
-                                ],
-                              "expect",
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "slice")
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [ Ty.path "move_binary_format::normalized::Type" ],
-                                  "get",
-                                  [ Ty.path "usize" ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
+                                    ],
+                                  "expect",
+                                  [],
+                                  []
                                 |),
-                                [ M.read (| type_args |); M.rust_cast (M.read (| M.read (| i |) |))
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ],
+                                      "get",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| type_args |) |)
+                                      |);
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (M.read (| M.deref (| M.read (| i |) |) |))
+                                    ]
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (| Value.String "Type parameter index out of bound" |)
+                                    |)
+                                  |)
                                 ]
-                              |);
-                              M.read (| Value.String "Type parameter index out of bound" |)
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -23784,26 +28533,34 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "identifier_at",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| f |),
-                            "move_binary_format::file_format::FieldDefinition",
-                            "name"
-                          |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "identifier_at",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| f |) |),
+                                "move_binary_format::file_format::FieldDefinition",
+                                "name"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |));
@@ -23812,18 +28569,27 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
+                    [],
                     []
                   |),
                   [
-                    M.read (| m |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| f |),
-                        "move_binary_format::file_format::FieldDefinition",
-                        "signature"
-                      |),
-                      "move_binary_format::file_format::TypeSignature",
-                      0
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| f |) |),
+                              "move_binary_format::file_format::FieldDefinition",
+                              "signature"
+                            |),
+                            "move_binary_format::file_format::TypeSignature",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -23871,13 +28637,14 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "struct_handle_at",
+                    [],
                     []
                   |),
                   [
-                    M.read (| m |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| def |),
+                        M.deref (| M.read (| def |) |),
                         "move_binary_format::file_format::StructDefinition",
                         "struct_handle"
                       |)
@@ -23889,10 +28656,13 @@ Module normalized.
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| def |),
-                      "move_binary_format::file_format::StructDefinition",
-                      "field_information"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| def |) |),
+                        "move_binary_format::file_format::StructDefinition",
+                        "field_information"
+                      |)
                     |)
                   |),
                   [
@@ -23915,6 +28685,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             []
@@ -23958,7 +28729,9 @@ Module normalized.
                                     (Ty.path "move_binary_format::normalized::Field")
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -23978,7 +28751,9 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                   [],
+                                  [],
                                   "map",
+                                  [],
                                   [
                                     Ty.path "move_binary_format::normalized::Field";
                                     Ty.function
@@ -24006,25 +28781,38 @@ Module normalized.
                                         [ Ty.path "move_binary_format::file_format::FieldDefinition"
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FieldDefinition";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
                                             [
-                                              Ty.path
-                                                "move_binary_format::file_format::FieldDefinition";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          [],
-                                          "deref",
-                                          []
-                                        |),
-                                        [ M.read (| fields |) ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| fields |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -24045,9 +28833,19 @@ Module normalized.
                                                         Ty.path
                                                           "move_binary_format::normalized::Field",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ M.read (| m |); M.read (| f |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| m |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| f |) |)
+                                                        |)
+                                                      ]
                                                     |)))
                                               ]
                                             |)))
@@ -24068,26 +28866,34 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "identifier_at",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| handle |),
-                            "move_binary_format::file_format::StructHandle",
-                            "name"
-                          |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "identifier_at",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| handle |) |),
+                                "move_binary_format::file_format::StructHandle",
+                                "name"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -24100,7 +28906,7 @@ Module normalized.
                     ("abilities",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| handle |),
+                          M.deref (| M.read (| handle |) |),
                           "move_binary_format::file_format::StructHandle",
                           "abilities"
                         |)
@@ -24117,14 +28923,19 @@ Module normalized.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| handle |),
-                            "move_binary_format::file_format::StructHandle",
-                            "type_parameters"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| handle |) |),
+                              "move_binary_format::file_format::StructHandle",
+                              "type_parameters"
+                            |)
                           |)
                         ]
                       |));
@@ -24153,17 +28964,27 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::Struct",
               "new",
+              [],
               []
             |),
             [
-              M.read (| m |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "move_binary_format::file_format::CompiledModule",
-                  "struct_def_at",
-                  []
-                |),
-                [ M.read (| m |); M.read (| M.read (| idx |) |) ]
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "move_binary_format::file_format::CompiledModule",
+                      "struct_def_at",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                      M.read (| M.deref (| M.read (| idx |) |) |)
+                    ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -24190,7 +29011,9 @@ Module normalized.
                 []
                 [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
               [],
+              [],
               "map",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::AbilitySet" ];
                 Ty.function
@@ -24217,30 +29040,41 @@ Module normalized.
                     []
                     [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                   "iter",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::StructTypeParameter";
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
                         [
-                          Ty.path "move_binary_format::file_format::StructTypeParameter";
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::normalized::Struct",
-                        "type_parameters"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Struct",
+                              "type_parameters"
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |);
@@ -24256,10 +29090,13 @@ Module normalized.
                             fun γ =>
                               ltac:(M.monadic
                                 (let param := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| param |),
-                                  "move_binary_format::file_format::StructTypeParameter",
-                                  "constraints"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| param |) |),
+                                    "move_binary_format::file_format::StructTypeParameter",
+                                    "constraints"
+                                  |)
                                 |)))
                           ]
                         |)))
@@ -24326,13 +29163,14 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "function_handle_at",
+                    [],
                     []
                   |),
                   [
-                    M.read (| m |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| def |),
+                        M.deref (| M.read (| def |) |),
                         "move_binary_format::file_format::FunctionDefinition",
                         "function"
                       |)
@@ -24347,26 +29185,34 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "identifier_at",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| fhandle |),
-                            "move_binary_format::file_format::FunctionHandle",
-                            "name"
-                          |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "identifier_at",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| fhandle |) |),
+                                "move_binary_format::file_format::FunctionHandle",
+                                "name"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -24388,6 +29234,7 @@ Module normalized.
                           ]
                       ],
                     "unwrap_or_default",
+                    [],
                     []
                   |),
                   [
@@ -24403,6 +29250,7 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                           ],
                         "map",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -24438,13 +29286,17 @@ Module normalized.
                               []
                               [ Ty.path "move_binary_format::file_format::CodeUnit" ],
                             "as_ref",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| def |),
-                              "move_binary_format::file_format::FunctionDefinition",
-                              "code"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| def |) |),
+                                "move_binary_format::file_format::FunctionDefinition",
+                                "code"
+                              |)
                             |)
                           ]
                         |);
@@ -24491,7 +29343,9 @@ Module normalized.
                                                       "move_binary_format::normalized::Bytecode")
                                                 ],
                                               [],
+                                              [],
                                               "collect",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -24515,7 +29369,9 @@ Module normalized.
                                                         "move_binary_format::file_format::Bytecode"
                                                     ],
                                                   [],
+                                                  [],
                                                   "map",
+                                                  [],
                                                   [
                                                     Ty.path
                                                       "move_binary_format::normalized::Bytecode";
@@ -24547,31 +29403,42 @@ Module normalized.
                                                             "move_binary_format::file_format::Bytecode"
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.apply
-                                                            (Ty.path "alloc::vec::Vec")
-                                                            []
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Bytecode";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
                                                             [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Bytecode";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ],
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| code |),
-                                                            "move_binary_format::file_format::CodeUnit",
-                                                            "code"
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| code |) |),
+                                                                  "move_binary_format::file_format::CodeUnit",
+                                                                  "code"
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |)
-                                                        ]
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -24593,11 +29460,22 @@ Module normalized.
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Bytecode",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (| m |);
-                                                                        M.read (| bytecode |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| m |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| bytecode |)
+                                                                          |)
+                                                                        |)
                                                                       ]
                                                                     |)))
                                                               ]
@@ -24626,7 +29504,7 @@ Module normalized.
                     ("visibility",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| def |),
+                          M.deref (| M.read (| def |) |),
                           "move_binary_format::file_format::FunctionDefinition",
                           "visibility"
                         |)
@@ -24634,7 +29512,7 @@ Module normalized.
                     ("is_entry",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| def |),
+                          M.deref (| M.read (| def |) |),
                           "move_binary_format::file_format::FunctionDefinition",
                           "is_entry"
                         |)
@@ -24651,14 +29529,19 @@ Module normalized.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| fhandle |),
-                            "move_binary_format::file_format::FunctionHandle",
-                            "type_parameters"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| fhandle |) |),
+                              "move_binary_format::file_format::FunctionHandle",
+                              "type_parameters"
+                            |)
                           |)
                         ]
                       |));
@@ -24688,7 +29571,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -24708,7 +29593,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -24735,47 +29622,65 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path "move_binary_format::file_format::SignatureToken";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "signature_at",
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                          |),
-                                          [
-                                            M.read (| m |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| fhandle |),
-                                                "move_binary_format::file_format::FunctionHandle",
-                                                "parameters"
-                                              |)
-                                            |)
-                                          ]
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
                                         |),
-                                        "move_binary_format::file_format::Signature",
-                                        0
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "signature_at",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| fhandle |) |),
+                                                        "move_binary_format::file_format::FunctionHandle",
+                                                        "parameters"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              "move_binary_format::file_format::Signature",
+                                              0
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |);
@@ -24795,9 +29700,19 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| m |); M.read (| s |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| s |) |)
+                                                    |)
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -24833,7 +29748,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -24853,7 +29770,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -24880,47 +29799,65 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path "move_binary_format::file_format::SignatureToken";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "signature_at",
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                          |),
-                                          [
-                                            M.read (| m |);
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| fhandle |),
-                                                "move_binary_format::file_format::FunctionHandle",
-                                                "return_"
-                                              |)
-                                            |)
-                                          ]
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
                                         |),
-                                        "move_binary_format::file_format::Signature",
-                                        0
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "signature_at",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| fhandle |) |),
+                                                        "move_binary_format::file_format::FunctionHandle",
+                                                        "return_"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              "move_binary_format::file_format::Signature",
+                                              0
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |);
@@ -24940,9 +29877,19 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| m |); M.read (| s |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| s |) |)
+                                                    |)
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -25001,14 +29948,19 @@ Module normalized.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| m |),
-                              "move_binary_format::file_format::CompiledModule",
-                              "function_defs"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| m |) |),
+                                "move_binary_format::file_format::CompiledModule",
+                                "function_defs"
+                              |)
                             |)
                           ]
                         |)
@@ -25033,10 +29985,17 @@ Module normalized.
                                                 "move_binary_format::file_format::FunctionDefinition"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -25077,6 +30036,7 @@ Module normalized.
                                                                 Ty.path
                                                                   "move_core_types::identifier::IdentStr"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -25087,49 +30047,70 @@ Module normalized.
                                                                 ]
                                                             ],
                                                             "eq",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::CompiledModule",
-                                                                  "identifier_at",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| m |);
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::CompiledModule",
-                                                                          "function_handle_at",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| m |);
-                                                                          M.read (|
-                                                                            M.SubPointer.get_struct_record_field (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule",
+                                                                    "identifier_at",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| m |) |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::CompiledModule",
+                                                                              "function_handle_at",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (| m |)
+                                                                                |)
+                                                                              |);
                                                                               M.read (|
-                                                                                func_defs
-                                                                              |),
-                                                                              "move_binary_format::file_format::FunctionDefinition",
-                                                                              "function"
-                                                                            |)
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      func_defs
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                                                  "function"
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
-                                                                        ]
-                                                                      |),
-                                                                      "move_binary_format::file_format::FunctionHandle",
-                                                                      "name"
+                                                                        |),
+                                                                        "move_binary_format::file_format::FunctionHandle",
+                                                                        "name"
+                                                                      |)
                                                                     |)
-                                                                  |)
-                                                                ]
+                                                                  ]
+                                                                |)
                                                               |)
                                                             |);
-                                                            func_name
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              func_name
+                                                            |)
                                                           ]
                                                         |)
                                                       |)) in
@@ -25153,11 +30134,22 @@ Module normalized.
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Function",
                                                                         "new",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (| m |);
-                                                                        M.read (| func_defs |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| m |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| func_defs |)
+                                                                          |)
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   |),
@@ -25332,6 +30324,7 @@ Module normalized.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -25339,11 +30332,13 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::convert::From",
                                   Ty.path "move_binary_format::normalized::Type",
+                                  [],
                                   [ Ty.path "move_core_types::language_storage::TypeTag" ],
                                   "from",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| M.read (| ty |) |) ]
+                                [ M.read (| M.deref (| M.read (| ty |) |) |) ]
                               |)
                             ]
                           |)
@@ -25365,7 +30360,7 @@ Module normalized.
                           ("address",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| s |),
+                                M.deref (| M.read (| s |) |),
                                 "move_core_types::language_storage::StructTag",
                                 "address"
                               |)
@@ -25373,7 +30368,7 @@ Module normalized.
                           ("module",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| s |),
+                                M.deref (| M.read (| s |) |),
                                 "move_core_types::language_storage::StructTag",
                                 "module"
                               |)
@@ -25381,7 +30376,7 @@ Module normalized.
                           ("name",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| s |),
+                                M.deref (| M.read (| s |) |),
                                 "move_core_types::language_storage::StructTag",
                                 "name"
                               |)
@@ -25409,7 +30404,9 @@ Module normalized.
                                       (Ty.path "move_binary_format::normalized::Type")
                                   ],
                                 [],
+                                [],
                                 "collect",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -25432,7 +30429,9 @@ Module normalized.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
@@ -25455,13 +30454,15 @@ Module normalized.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| s |),
+                                            M.deref (| M.read (| s |) |),
                                             "move_core_types::language_storage::StructTag",
                                             "type_params"
                                           |)
@@ -25485,11 +30486,13 @@ Module normalized.
                                                           "core::convert::Into",
                                                           Ty.path
                                                             "move_core_types::language_storage::TypeTag",
+                                                          [],
                                                           [
                                                             Ty.path
                                                               "move_binary_format::normalized::Type"
                                                           ],
                                                           "into",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| ty |) ]
@@ -25545,33 +30548,41 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "struct_name",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| field_handle |),
-                            "move_binary_format::file_format::FieldHandle",
-                            "owner"
-                          |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "struct_name",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| field_handle |) |),
+                                "move_binary_format::file_format::FieldHandle",
+                                "owner"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |));
               ("field_index",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| field_handle |),
+                    M.deref (| M.read (| field_handle |) |),
                     "move_binary_format::file_format::FieldHandle",
                     "field"
                   |)
@@ -25597,17 +30608,27 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FieldRef",
               "new",
+              [],
               []
             |),
             [
-              M.read (| m |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "move_binary_format::file_format::CompiledModule",
-                  "field_handle_at",
-                  []
-                |),
-                [ M.read (| m |); M.read (| M.read (| field_handle_idx |) |) ]
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "move_binary_format::file_format::CompiledModule",
+                      "field_handle_at",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                      M.read (| M.deref (| M.read (| field_handle_idx |) |) |)
+                    ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -25642,26 +30663,33 @@ Module normalized.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "module_id_for_handle",
+                    [],
                     []
                   |),
                   [
-                    M.read (| m |);
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "module_handle_at",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| function_handle |),
-                            "move_binary_format::file_format::FunctionHandle",
-                            "module"
-                          |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "module_handle_at",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| function_handle |) |),
+                                "move_binary_format::file_format::FunctionHandle",
+                                "module"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |));
@@ -25671,26 +30699,34 @@ Module normalized.
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "move_binary_format::file_format::CompiledModule",
-                        "identifier_at",
-                        []
-                      |),
-                      [
-                        M.read (| m |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| function_handle |),
-                            "move_binary_format::file_format::FunctionHandle",
-                            "name"
-                          |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::CompiledModule",
+                            "identifier_at",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| function_handle |) |),
+                                "move_binary_format::file_format::FunctionHandle",
+                                "name"
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |))
@@ -25715,17 +30751,27 @@ Module normalized.
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FunctionRef",
               "new",
+              [],
               []
             |),
             [
-              M.read (| m |);
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "move_binary_format::file_format::CompiledModule",
-                  "function_handle_at",
-                  []
-                |),
-                [ M.read (| m |); M.read (| M.read (| function_handle_idx |) |) ]
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "move_binary_format::file_format::CompiledModule",
+                      "function_handle_at",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                      M.read (| M.deref (| M.read (| function_handle_idx |) |) |)
+                    ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -26190,7 +31236,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrTrue"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26205,7 +31251,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::BrFalse"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26220,7 +31266,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::Branch"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26235,7 +31281,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU8"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26250,7 +31296,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU64"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26265,7 +31311,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU128"
-                        [ M.read (| M.read (| M.read (| x |) |) |) ]
+                        [ M.read (| M.deref (| M.read (| M.deref (| M.read (| x |) |) |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26280,7 +31326,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::CopyLoc"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26295,7 +31341,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MoveLoc"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26310,7 +31356,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::StLoc"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26325,7 +31371,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU16"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26340,7 +31386,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU32"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26355,7 +31401,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::LdU256"
-                        [ M.read (| M.read (| M.read (| x |) |) |) ]
+                        [ M.read (| M.deref (| M.read (| M.deref (| M.read (| x |) |) |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26375,17 +31421,27 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Constant",
                               "new",
+                              [],
                               []
                             |),
                             [
-                              M.read (| m |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "constant_at",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| const_idx |) |) ]
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "constant_at",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| const_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -26409,9 +31465,13 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FunctionRef",
                               "from_idx",
+                              [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| fh_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fh_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26431,9 +31491,13 @@ Module normalized.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "function_instantiation_at",
+                            [],
                             []
                           |),
-                          [ M.read (| m |); M.read (| M.read (| fhi_idx |) |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                            M.read (| M.deref (| M.read (| fhi_idx |) |) |)
+                          ]
                         |)
                       |),
                       [
@@ -26460,9 +31524,13 @@ Module normalized.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "signature_at",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| m |); M.read (| M.read (| type_parameters |) |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                    M.read (| M.deref (| M.read (| type_parameters |) |) |)
+                                  ]
                                 |)
                               |) in
                             M.alloc (|
@@ -26475,9 +31543,19 @@ Module normalized.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::normalized::FunctionRef",
                                           "from_idx",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| m |); M.read (| handle |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| m |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| handle |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -26509,7 +31587,9 @@ Module normalized.
                                                 (Ty.path "move_binary_format::normalized::Type")
                                             ],
                                           [],
+                                          [],
                                           "collect",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
@@ -26532,7 +31612,9 @@ Module normalized.
                                                     "move_binary_format::file_format::SignatureToken"
                                                 ],
                                               [],
+                                              [],
                                               "map",
+                                              [],
                                               [
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.function
@@ -26562,31 +31644,44 @@ Module normalized.
                                                         "move_binary_format::file_format::SignatureToken"
                                                     ],
                                                   "iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "deref",
+                                                          [],
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        M.read (| type_params |),
-                                                        "move_binary_format::file_format::Signature",
-                                                        0
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              M.deref (|
+                                                                M.read (| type_params |)
+                                                              |),
+                                                              "move_binary_format::file_format::Signature",
+                                                              0
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
-                                                    ]
+                                                    |)
                                                   |)
                                                 ]
                                               |);
@@ -26607,9 +31702,18 @@ Module normalized.
                                                                     Ty.path
                                                                       "move_binary_format::normalized::Type",
                                                                     "new",
+                                                                    [],
                                                                     []
                                                                   |),
-                                                                  [ M.read (| m |); M.read (| tok |)
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| m |) |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| tok |) |)
+                                                                    |)
                                                                   ]
                                                                 |)))
                                                           ]
@@ -26644,17 +31748,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -26680,7 +31795,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| s_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26703,17 +31821,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -26739,7 +31868,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26756,7 +31888,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::MutBorrowLoc"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26771,7 +31903,7 @@ Module normalized.
                     M.alloc (|
                       Value.StructTuple
                         "move_binary_format::normalized::Bytecode::ImmBorrowLoc"
-                        [ M.read (| M.read (| x |) |) ]
+                        [ M.read (| M.deref (| M.read (| x |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -26791,9 +31923,13 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
+                              [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| fh_ixd |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fh_ixd |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26817,7 +31953,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| fhi_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fhi_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26839,9 +31978,13 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
+                              [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| fh_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fh_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26865,7 +32008,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| fhi_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fhi_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26888,17 +32034,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -26924,7 +32081,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -26947,17 +32107,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -26983,7 +32154,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27006,17 +32180,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -27042,7 +32227,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27065,17 +32253,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -27101,7 +32300,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27124,17 +32326,28 @@ Module normalized.
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_name",
-                                  []
-                                |),
-                                [ M.read (| m |); M.read (| M.read (| s_idx |) |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_name",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                      M.read (| M.deref (| M.read (| s_idx |) |) |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -27160,7 +32373,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| si_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| si_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27191,9 +32407,12 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |);
-                          M.read (| M.read (| len |) |)
+                          M.read (| M.deref (| M.read (| len |) |) |)
                         ]
                     |)));
                 fun γ =>
@@ -27216,7 +32435,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27240,7 +32462,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27264,7 +32489,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27288,7 +32516,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27312,7 +32543,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -27343,9 +32577,12 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |);
-                          M.read (| M.read (| len |) |)
+                          M.read (| M.deref (| M.read (| len |) |) |)
                         ]
                     |)));
                 fun γ =>
@@ -27368,7 +32605,10 @@ Module normalized.
                               [],
                               []
                             |),
-                            [ M.read (| m |); M.read (| sig_idx |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sig_idx |) |) |)
+                            ]
                           |)
                         ]
                     |)))
@@ -27480,7 +32720,9 @@ Module normalized.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -27488,81 +32730,138 @@ Module normalized.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "write_fmt",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| f |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| f |) |)
+                                      |);
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "0x" |);
-                                                M.read (| Value.String "::" |);
-                                                M.read (| Value.String "::" |)
-                                              ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "0x" |);
+                                                      M.read (| Value.String "::" |);
+                                                      M.read (| Value.String "::" |)
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           |);
-                                          M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_core_types::account_address::AccountAddress",
-                                                          "short_str_lossless",
-                                                          []
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [ Ty.path "alloc::string::String" ]
                                                         |),
-                                                        [ M.read (| address |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_core_types::account_address::AccountAddress",
+                                                                      "short_str_lossless",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| address |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::identifier::Identifier"
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                module
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::identifier::Identifier"
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, name |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::identifier::Identifier"
-                                                        ]
                                                     ]
-                                                  |),
-                                                  [ module ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::identifier::Identifier"
-                                                        ]
-                                                    ]
-                                                  |),
-                                                  [ name ]
                                                 |)
-                                              ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -27592,6 +32891,7 @@ Module normalized.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -27602,6 +32902,7 @@ Module normalized.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -27637,24 +32938,38 @@ Module normalized.
                                             []
                                             [ Ty.path "move_binary_format::normalized::Type" ],
                                           "first",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::normalized::Type";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.path "move_binary_format::normalized::Type";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| type_arguments |) ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| type_arguments |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -27677,7 +32992,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27685,19 +33002,33 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| f |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "<" |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [ M.read (| Value.String "<" |) ]
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -27728,6 +33059,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -27738,6 +33070,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -27769,7 +33102,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27777,40 +33112,74 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| f |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |);
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_display",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::normalized::Type"
-                                                                  ]
-                                                              ]
-                                                            |),
-                                                            [ first_ty ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [ M.read (| Value.String "" |) ]
                                                           |)
-                                                        ]
+                                                        |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::normalized::Type"
+                                                                        ]
+                                                                    ]
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          first_ty
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -27841,6 +33210,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -27851,6 +33221,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -27889,7 +33260,9 @@ Module normalized.
                                                     ]
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
                                             [
@@ -27902,7 +33275,9 @@ Module normalized.
                                                     [ Ty.path "move_binary_format::normalized::Type"
                                                     ],
                                                   [],
+                                                  [],
                                                   "skip",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -27916,25 +33291,40 @@ Module normalized.
                                                             "move_binary_format::normalized::Type"
                                                         ],
                                                       "iter",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.apply
-                                                            (Ty.path "alloc::vec::Vec")
-                                                            []
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
                                                             [
-                                                              Ty.path
-                                                                "move_binary_format::normalized::Type";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ],
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| type_arguments |) ]
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (| type_arguments |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |);
@@ -27971,10 +33361,22 @@ Module normalized.
                                                                   ]
                                                               ],
                                                             [],
+                                                            [],
                                                             "next",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ iter ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  iter
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |),
                                                       [
@@ -28014,7 +33416,9 @@ Module normalized.
                                                                           Ty.path "core::fmt::Error"
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "branch",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -28023,49 +33427,83 @@ Module normalized.
                                                                           Ty.path
                                                                             "core::fmt::Formatter",
                                                                           "write_fmt",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (| f |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.deref (|
+                                                                              M.read (| f |)
+                                                                            |)
+                                                                          |);
                                                                           M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ", "
-                                                                                    |)
-                                                                                  ]
-                                                                              |);
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "core::fmt::rt::Argument",
-                                                                                        "new_display",
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
                                                                                         [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "move_binary_format::normalized::Type"
-                                                                                            ]
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              ", "
+                                                                                          |)
                                                                                         ]
-                                                                                      |),
-                                                                                      [ ty ]
                                                                                     |)
-                                                                                  ]
+                                                                                  |)
+                                                                                |)
+                                                                              |);
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_display",
+                                                                                              [],
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::normalized::Type"
+                                                                                                  ]
+                                                                                              ]
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    ty
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -28101,6 +33539,7 @@ Module normalized.
                                                                                       Ty.path
                                                                                         "core::fmt::Error"
                                                                                     ],
+                                                                                  [],
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -28114,6 +33553,7 @@ Module normalized.
                                                                                       ]
                                                                                   ],
                                                                                   "from_residual",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -28157,7 +33597,9 @@ Module normalized.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -28165,19 +33607,33 @@ Module normalized.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| f |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String ">" |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [ M.read (| Value.String ">" |) ]
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -28208,6 +33664,7 @@ Module normalized.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -28218,6 +33675,7 @@ Module normalized.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -28260,50 +33718,76 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "vector<" |);
-                                        M.read (| Value.String ">" |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::boxed::Box")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::normalized::Type";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
+                                              M.read (| Value.String "vector<" |);
+                                              M.read (| Value.String ">" |)
                                             ]
-                                          |),
-                                          [ ty ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, ty |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -28320,17 +33804,29 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28345,17 +33841,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "u16" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28370,17 +33880,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "u32" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28395,17 +33919,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "u64" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28420,17 +33958,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "u128" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28445,17 +33997,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "u256" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28473,17 +34039,30 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |)
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "address" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -28502,17 +34081,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "signer" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28527,17 +34120,31 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "bool" |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
                             ]
                           |)
@@ -28557,44 +34164,68 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (| Value.Array [ M.read (| Value.String "&" |) ] |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String "&" |) ] |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ]
+                                                |),
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::boxed::Box")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::normalized::Type";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, r |) |)
+                                                  |)
                                                 ]
+                                              |)
                                             ]
-                                          |),
-                                          [ r ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -28616,44 +34247,70 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (| Value.Array [ M.read (| Value.String "&mut " |) ] |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::boxed::Box")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::normalized::Type";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
-                                          |),
-                                          [ r ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "&mut " |) ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, r |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -28675,30 +34332,54 @@ Module normalized.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (| Value.Array [ M.read (| Value.String "T" |) ] |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          |),
-                                          [ i ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Value.Array [ M.read (| Value.String "T" |) ] |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -28752,9 +34433,13 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_instantiation_at",
+                  [],
                   []
                 |),
-                [ M.read (| m |); M.read (| M.read (| si_idx |) |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                  M.read (| M.deref (| M.read (| si_idx |) |) |)
+                ]
               |)
             |),
             [
@@ -28781,17 +34466,27 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::Struct",
                           "new",
+                          [],
                           []
                         |),
                         [
-                          M.read (| m |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_binary_format::file_format::CompiledModule",
-                              "struct_def_at",
-                              []
-                            |),
-                            [ M.read (| m |); M.read (| M.read (| def |) |) ]
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::file_format::CompiledModule",
+                                  "struct_def_at",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.read (| M.deref (| M.read (| def |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -28832,7 +34527,9 @@ Module normalized.
                                         (Ty.path "move_binary_format::normalized::Type")
                                     ],
                                   [],
+                                  [],
                                   "collect",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -28853,7 +34550,9 @@ Module normalized.
                                         [ Ty.path "move_binary_format::file_format::SignatureToken"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path "move_binary_format::normalized::Type";
                                         Ty.function
@@ -28883,42 +34582,63 @@ Module normalized.
                                                 "move_binary_format::file_format::SignatureToken"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::CompiledModule",
-                                                    "signature_at",
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
                                                     []
-                                                  |),
-                                                  [
-                                                    M.read (| m |);
-                                                    M.read (| M.read (| type_parameters |) |)
-                                                  ]
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
                                                 |),
-                                                "move_binary_format::file_format::Signature",
-                                                0
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::file_format::CompiledModule",
+                                                            "signature_at",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| m |) |)
+                                                            |);
+                                                            M.read (|
+                                                              M.deref (|
+                                                                M.read (| type_parameters |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      "move_binary_format::file_format::Signature",
+                                                      0
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -28939,9 +34659,19 @@ Module normalized.
                                                             Ty.path
                                                               "move_binary_format::normalized::Type",
                                                             "new",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| m |); M.read (| tok |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| m |) |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| tok |) |)
+                                                            |)
+                                                          ]
                                                         |)))
                                                   ]
                                                 |)))
@@ -28993,9 +34723,13 @@ Module normalized.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "field_instantiation_at",
+                  [],
                   []
                 |),
-                [ M.read (| m |); M.read (| M.read (| idx |) |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                  M.read (| M.deref (| M.read (| idx |) |) |)
+                ]
               |)
             |),
             [
@@ -29022,17 +34756,27 @@ Module normalized.
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::FieldRef",
                           "new",
+                          [],
                           []
                         |),
                         [
-                          M.read (| m |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_binary_format::file_format::CompiledModule",
-                              "field_handle_at",
-                              []
-                            |),
-                            [ M.read (| m |); M.read (| M.read (| handle |) |) ]
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::file_format::CompiledModule",
+                                  "field_handle_at",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.read (| M.deref (| M.read (| handle |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -29064,7 +34808,9 @@ Module normalized.
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
                           [],
+                          [],
                           "collect",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -29084,7 +34830,9 @@ Module normalized.
                                 []
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               [],
+                              [],
                               "map",
+                              [],
                               [
                                 Ty.path "move_binary_format::normalized::Type";
                                 Ty.function
@@ -29111,41 +34859,61 @@ Module normalized.
                                     []
                                     [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path "move_binary_format::file_format::SignatureToken";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "signature_at",
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                          |),
-                                          [
-                                            M.read (| m |);
-                                            M.read (| M.read (| type_parameters |) |)
-                                          ]
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
                                         |),
-                                        "move_binary_format::file_format::Signature",
-                                        0
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "signature_at",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.deref (| M.read (| type_parameters |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              "move_binary_format::file_format::Signature",
+                                              0
+                                            |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |)
                                   |)
                                 ]
                               |);
@@ -29165,9 +34933,19 @@ Module normalized.
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| m |); M.read (| tok |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| m |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| tok |) |)
+                                                    |)
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -29200,38 +34978,64 @@ Module normalized.
         (let m := M.alloc (| m |) in
         let sig_idx := M.alloc (| sig_idx |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "move_binary_format::normalized::Type", "new", [] |),
+          M.get_associated_function (|
+            Ty.path "move_binary_format::normalized::Type",
+            "new",
+            [],
+            []
+          |),
           [
-            M.read (| m |);
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::index::Index",
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.path "move_binary_format::file_format::SignatureToken";
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [ Ty.path "usize" ],
-                "index",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "move_binary_format::file_format::CompiledModule",
-                      "signature_at",
-                      []
-                    |),
-                    [ M.read (| m |); M.read (| M.read (| sig_idx |) |) ]
-                  |),
-                  "move_binary_format::file_format::Signature",
-                  0
-                |);
-                Value.Integer IntegerKind.Usize 0
-              ]
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        [],
+                        [ Ty.path "usize" ],
+                        "index",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::file_format::CompiledModule",
+                                  "signature_at",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |);
+                                  M.read (| M.deref (| M.read (| sig_idx |) |) |)
+                                ]
+                              |)
+                            |),
+                            "move_binary_format::file_format::Signature",
+                            0
+                          |)
+                        |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
+                    |)
+                  |)
+                |)
+              |)
             |)
           ]
         |)))

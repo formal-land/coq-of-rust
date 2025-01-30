@@ -32,6 +32,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -49,6 +50,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -84,21 +86,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [ haystack ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, haystack |) ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| needle |)
                                 ]
@@ -115,42 +125,100 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "bool" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::Fn",
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
-                                        (Ty.path "bool"),
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ],
-                                      "call",
-                                      []
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "bool" ]
                                     |),
                                     [
-                                      contains;
-                                      Value.Tuple [ M.alloc (| Value.Integer IntegerKind.I32 1 |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::Fn",
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "i32" ]
+                                                        ]
+                                                    ]
+                                                    (Ty.path "bool"),
+                                                  [],
+                                                  [
+                                                    Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
+                                                      ]
+                                                  ],
+                                                  "call",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.Ref, contains |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Integer IntegerKind.I32 1
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -165,42 +233,100 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "bool" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::Fn",
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
-                                        (Ty.path "bool"),
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ],
-                                      "call",
-                                      []
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "bool" ]
                                     |),
                                     [
-                                      contains;
-                                      Value.Tuple [ M.alloc (| Value.Integer IntegerKind.I32 4 |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::Fn",
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "i32" ]
+                                                        ]
+                                                    ]
+                                                    (Ty.path "bool"),
+                                                  [],
+                                                  [
+                                                    Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
+                                                      ]
+                                                  ],
+                                                  "call",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.Ref, contains |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Integer IntegerKind.I32 4
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

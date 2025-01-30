@@ -88,6 +88,7 @@ Module array.
                         M.get_associated_function (|
                           Ty.path "core::ops::index_range::IndexRange",
                           "zero_to",
+                          [],
                           []
                         |),
                         [ M.read (| M.get_constant (| "core::array::iter::N" |) |) ]
@@ -138,7 +139,9 @@ Module array.
                 "core::iter::traits::collect::IntoIterator",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
                 [],
+                [],
                 "into_iter",
+                [],
                 []
               |),
               [ M.read (| array |) ]
@@ -180,6 +183,7 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "new_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -256,6 +260,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                     "new_unchecked",
+                    [ N ],
                     []
                   |),
                   [ M.read (| buffer |); M.read (| initialized |) ]
@@ -300,27 +305,36 @@ Module array.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "get_unchecked",
+                      [],
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::array::iter::IntoIter",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |)
                       |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
                           Ty.path "core::ops::index_range::IndexRange",
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "alive"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::array::iter::IntoIter",
+                              "alive"
+                            |)
                           |)
                         ]
                       |)
@@ -328,13 +342,19 @@ Module array.
                   |)
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                    "slice_assume_init_ref",
-                    []
-                  |),
-                  [ M.read (| slice |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                        "slice_assume_init_ref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -366,51 +386,78 @@ Module array.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              let~ slice :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                      "get_unchecked_mut",
-                      [ Ty.path "core::ops::index_range::IndexRange" ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::array::iter::IntoIter",
-                        "data"
-                      |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::clone::Clone",
-                          Ty.path "core::ops::index_range::IndexRange",
-                          [],
-                          "clone",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "alive"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      let~ slice :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "get_unchecked_mut",
+                              [],
+                              [ Ty.path "core::ops::index_range::IndexRange" ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::array::iter::IntoIter",
+                                  "data"
+                                |)
+                              |);
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  Ty.path "core::ops::index_range::IndexRange",
+                                  [],
+                                  [],
+                                  "clone",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::array::iter::IntoIter",
+                                      "alive"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
                           |)
-                        ]
+                        |) in
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "slice_assume_init_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |)
+                              ]
+                            |)
+                          |)
+                        |)
                       |)
-                    ]
+                    |)
                   |)
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                    "slice_assume_init_mut",
-                    []
-                  |),
-                  [ M.read (| slice |) ]
                 |)
               |)
             |)))
@@ -463,6 +510,7 @@ Module array.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
+                [],
                 [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
               |),
               [
@@ -471,14 +519,19 @@ Module array.
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "core::ops::index_range::IndexRange",
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::array::iter::IntoIter",
-                      "alive"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |)
                     |)
                   ]
                 |);
@@ -501,31 +554,41 @@ Module array.
                                         []
                                         [ T ],
                                       "assume_init_read",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "slice")
                                                 []
-                                                [ T ]
-                                            ],
-                                          "get_unchecked",
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |);
-                                          M.read (| idx |)
-                                        ]
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ]
+                                                ],
+                                              "get_unchecked",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::array::iter::IntoIter",
+                                                  "data"
+                                                |)
+                                              |);
+                                              M.read (| idx |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)))
@@ -564,10 +627,12 @@ Module array.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -612,10 +677,13 @@ Module array.
             M.read (|
               let~ data :=
                 M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::array::iter::IntoIter",
-                    "data"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::array::iter::IntoIter",
+                      "data"
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -627,17 +695,27 @@ Module array.
                       []
                       [ Ty.path "core::ops::index_range::IndexRange" ],
                     [],
+                    [],
                     "fold",
+                    [],
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::array::iter::IntoIter",
-                          "alive"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::array::iter::IntoIter",
+                                "alive"
+                              |)
+                            |)
+                          |)
                         |)
                       ];
                     M.read (| init |);
@@ -663,12 +741,14 @@ Module array.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Fold,
+                                                  [],
                                                   [ Ty.tuple [ Acc; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  fold;
+                                                  M.borrow (| Pointer.Kind.MutRef, fold |);
                                                   Value.Tuple
                                                     [
                                                       M.read (| acc |);
@@ -680,25 +760,38 @@ Module array.
                                                             []
                                                             [ T ],
                                                           "assume_init_read",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "slice")
-                                                                []
-                                                                [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
                                                                   Ty.apply
-                                                                    (Ty.path
-                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    (Ty.path "slice")
                                                                     []
-                                                                    [ T ]
-                                                                ],
-                                                              "get_unchecked",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
+                                                                        [ T ]
+                                                                    ],
+                                                                  "get_unchecked",
+                                                                  [],
+                                                                  [ Ty.path "usize" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| data |) |)
+                                                                  |);
+                                                                  M.read (| idx |)
+                                                                ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -740,10 +833,12 @@ Module array.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.Ref, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -770,10 +865,12 @@ Module array.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -814,13 +911,17 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_prefix",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::array::iter::IntoIter",
-                        "alive"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::array::iter::IntoIter",
+                          "alive"
+                        |)
                       |);
                       M.read (| n |)
                     ]
@@ -834,9 +935,10 @@ Module array.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
-                      [ range_to_drop ]
+                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
                     |)
                   |)
                 |) in
@@ -850,13 +952,17 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
+                        [],
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |)
                         |);
                         M.read (| range_to_drop |)
                       ]
@@ -871,13 +977,20 @@ Module array.
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "slice_assume_init_mut",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "slice_assume_init_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -891,6 +1004,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -915,6 +1029,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remaining |) ]
@@ -948,7 +1063,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -957,6 +1072,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                     "cast",
+                    [],
                     [ T ]
                   |),
                   [
@@ -967,6 +1083,7 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -978,6 +1095,7 @@ Module array.
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -993,13 +1111,17 @@ Module array.
                                       [ T ]
                                   ],
                                 "as_ptr",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::array::iter::IntoIter",
-                                  "data"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::array::iter::IntoIter",
+                                    "data"
+                                  |)
                                 |)
                               ]
                             |);
@@ -1007,13 +1129,17 @@ Module array.
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "start",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::array::iter::IntoIter",
-                                  "alive"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::array::iter::IntoIter",
+                                    "alive"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1086,6 +1212,7 @@ Module array.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
+                [],
                 [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
               |),
               [
@@ -1094,14 +1221,19 @@ Module array.
                     "core::iter::traits::double_ended::DoubleEndedIterator",
                     Ty.path "core::ops::index_range::IndexRange",
                     [],
+                    [],
                     "next_back",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::array::iter::IntoIter",
-                      "alive"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |)
                     |)
                   ]
                 |);
@@ -1124,31 +1256,41 @@ Module array.
                                         []
                                         [ T ],
                                       "assume_init_read",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "slice")
                                                 []
-                                                [ T ]
-                                            ],
-                                          "get_unchecked",
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::array::iter::IntoIter",
-                                            "data"
-                                          |);
-                                          M.read (| idx |)
-                                        ]
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ]
+                                                ],
+                                              "get_unchecked",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::array::iter::IntoIter",
+                                                  "data"
+                                                |)
+                                              |);
+                                              M.read (| idx |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)))
@@ -1192,10 +1334,13 @@ Module array.
             M.read (|
               let~ data :=
                 M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::array::iter::IntoIter",
-                    "data"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      self,
+                      "core::array::iter::IntoIter",
+                      "data"
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -1207,17 +1352,27 @@ Module array.
                       []
                       [ Ty.path "core::ops::index_range::IndexRange" ],
                     [],
+                    [],
                     "rfold",
+                    [],
                     [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
                   |),
                   [
                     Value.StructTuple
                       "core::iter::adapters::by_ref_sized::ByRefSized"
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::array::iter::IntoIter",
-                          "alive"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::array::iter::IntoIter",
+                                "alive"
+                              |)
+                            |)
+                          |)
                         |)
                       ];
                     M.read (| init |);
@@ -1243,12 +1398,14 @@ Module array.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Fold,
+                                                  [],
                                                   [ Ty.tuple [ Acc; T ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  rfold;
+                                                  M.borrow (| Pointer.Kind.MutRef, rfold |);
                                                   Value.Tuple
                                                     [
                                                       M.read (| acc |);
@@ -1260,25 +1417,38 @@ Module array.
                                                             []
                                                             [ T ],
                                                           "assume_init_read",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "slice")
-                                                                []
-                                                                [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
                                                                   Ty.apply
-                                                                    (Ty.path
-                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    (Ty.path "slice")
                                                                     []
-                                                                    [ T ]
-                                                                ],
-                                                              "get_unchecked",
-                                                              [ Ty.path "usize" ]
-                                                            |),
-                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                                        []
+                                                                        [ T ]
+                                                                    ],
+                                                                  "get_unchecked",
+                                                                  [],
+                                                                  [ Ty.path "usize" ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| data |) |)
+                                                                  |);
+                                                                  M.read (| idx |)
+                                                                ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -1334,13 +1504,17 @@ Module array.
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_suffix",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::array::iter::IntoIter",
-                        "alive"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::array::iter::IntoIter",
+                          "alive"
+                        |)
                       |);
                       M.read (| n |)
                     ]
@@ -1354,9 +1528,10 @@ Module array.
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
+                        [],
                         []
                       |),
-                      [ range_to_drop ]
+                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
                     |)
                   |)
                 |) in
@@ -1370,13 +1545,17 @@ Module array.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
+                        [],
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |)
                         |);
                         M.read (| range_to_drop |)
                       ]
@@ -1391,13 +1570,20 @@ Module array.
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "slice_assume_init_mut",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutPointer,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "slice_assume_init_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -1411,6 +1597,7 @@ Module array.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -1435,6 +1622,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remaining |) ]
@@ -1493,13 +1681,19 @@ Module array.
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                    "as_mut_slice",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                        "as_mut_slice",
+                        [ N ],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -1540,13 +1734,17 @@ Module array.
               M.get_associated_function (|
                 Ty.path "core::ops::index_range::IndexRange",
                 "len",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::array::iter::IntoIter",
-                  "alive"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::array::iter::IntoIter",
+                    "alive"
+                  |)
                 |)
               ]
             |)))
@@ -1575,14 +1773,19 @@ Module array.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.path "core::ops::index_range::IndexRange",
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::array::iter::IntoIter",
-                  "alive"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::array::iter::IntoIter",
+                    "alive"
+                  |)
                 |)
               ]
             |)))
@@ -1715,6 +1918,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.path "core::ops::index_range::IndexRange",
                             "zero_to",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 0 ]
@@ -1740,7 +1944,9 @@ Module array.
                                 ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1771,14 +1977,18 @@ Module array.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                                   "as_slice",
+                                  [ N ],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                new,
-                                "core::array::iter::IntoIter",
-                                "data"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  new,
+                                  "core::array::iter::IntoIter",
+                                  "data"
+                                |)
                               |)
                             ]
                           |)
@@ -1813,10 +2023,17 @@ Module array.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -1848,19 +2065,30 @@ Module array.
                                                   []
                                                   [ T ],
                                                 "write",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| dst |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| dst |) |)
+                                                |);
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::clone::Clone",
                                                     T,
                                                     [],
+                                                    [],
                                                     "clone",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| src |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| src |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -1876,6 +2104,7 @@ Module array.
                                               M.get_associated_function (|
                                                 Ty.path "core::ops::index_range::IndexRange",
                                                 "zero_to",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1884,13 +2113,17 @@ Module array.
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        new,
-                                                        "core::array::iter::IntoIter",
-                                                        "alive"
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          new,
+                                                          "core::array::iter::IntoIter",
+                                                          "alive"
+                                                        |)
                                                       |)
                                                     ]
                                                   |),
@@ -1948,37 +2181,64 @@ Module array.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
-                      |)
-                    |);
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                          "as_slice",
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                                    "as_slice",
+                                    [ N ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))

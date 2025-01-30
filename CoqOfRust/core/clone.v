@@ -12,10 +12,10 @@ Module clone.
           let source := M.alloc (| source |) in
           M.read (|
             M.write (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", Self, [], "clone", [] |),
-                [ M.read (| source |) ]
+                M.get_trait_method (| "core::clone::Clone", Self, [], [], "clone", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
               |)
             |)
           |)))
@@ -67,8 +67,16 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_one", [] |),
-            [ M.read (| self |); M.read (| dst |) ]
+            M.get_trait_method (|
+              "core::clone::uninit::CopySpec",
+              T,
+              [],
+              [],
+              "clone_one",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| dst |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -104,8 +112,16 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_slice", [] |),
-            [ M.read (| self |); M.read (| dst |) ]
+            M.get_trait_method (|
+              "core::clone::uninit::CopySpec",
+              T,
+              [],
+              [],
+              "clone_slice",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| dst |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -139,15 +155,24 @@ Module clone.
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               [],
+              [],
               "clone_to_uninit",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.rust_cast (M.read (| dst |))
+              M.cast
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                (M.read (| dst |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -184,19 +209,29 @@ Module clone.
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               [],
+              [],
               "clone_to_uninit",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::ffi::c_str::CStr",
-                  "to_bytes_with_nul",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::ffi::c_str::CStr",
+                      "to_bytes_with_nul",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.rust_cast (M.read (| dst |))
+              M.cast
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                (M.read (| dst |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -224,7 +259,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -249,7 +284,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -274,7 +309,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -299,7 +334,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -324,7 +359,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -349,7 +384,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -374,7 +409,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -399,7 +434,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -424,7 +459,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -449,7 +484,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -474,7 +509,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -499,7 +534,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -524,7 +559,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -549,7 +584,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -574,7 +609,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -599,7 +634,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -624,7 +659,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -649,7 +684,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -674,7 +709,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -700,7 +735,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -727,7 +762,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -754,7 +789,7 @@ Module clone.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

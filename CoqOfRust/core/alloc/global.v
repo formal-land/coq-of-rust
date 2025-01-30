@@ -23,9 +23,10 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size",
+                      [],
                       []
                     |),
-                    [ layout ]
+                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                   |)
                 |) in
               let~ ptr :=
@@ -35,10 +36,15 @@ Module alloc.
                       "core::alloc::global::GlobalAlloc",
                       Self,
                       [],
+                      [],
                       "alloc",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| layout |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| layout |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -55,6 +61,7 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -101,6 +108,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "from_size_align_unchecked",
+                      [],
                       []
                     |),
                     [
@@ -109,9 +117,10 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "align",
+                          [],
                           []
                         |),
-                        [ layout ]
+                        [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                       |)
                     ]
                   |)
@@ -123,10 +132,15 @@ Module alloc.
                       "core::alloc::global::GlobalAlloc",
                       Self,
                       [],
+                      [],
                       "alloc",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| new_layout |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| new_layout |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -143,6 +157,7 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -169,9 +184,10 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "size",
+                                        [],
                                         []
                                       |),
-                                      [ layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                     |);
                                     M.read (| new_size |)
                                   ]
@@ -186,10 +202,16 @@ Module alloc.
                                 "core::alloc::global::GlobalAlloc",
                                 Self,
                                 [],
+                                [],
                                 "dealloc",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));

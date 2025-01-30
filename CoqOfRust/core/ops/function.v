@@ -29,8 +29,14 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                M.get_trait_method (| "core::ops::function::Fn", F, [ A ], "call", [] |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -65,8 +71,14 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                M.get_trait_method (| "core::ops::function::Fn", F, [ A ], "call", [] |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -104,8 +116,11 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                M.get_trait_method (| "core::ops::function::Fn", F, [ A ], "call", [] |),
-                [ M.read (| self |); M.read (| args |) ]
+                M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -144,8 +159,22 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                M.get_trait_method (| "core::ops::function::FnMut", F, [ A ], "call_mut", [] |),
-                [ M.read (| M.read (| self |) |); M.read (| args |) ]
+                M.get_trait_method (|
+                  "core::ops::function::FnMut",
+                  F,
+                  [],
+                  [ A ],
+                  "call_mut",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -183,8 +212,19 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                M.get_trait_method (| "core::ops::function::FnMut", F, [ A ], "call_mut", [] |),
-                [ M.read (| self |); M.read (| args |) ]
+                M.get_trait_method (|
+                  "core::ops::function::FnMut",
+                  F,
+                  [],
+                  [ A ],
+                  "call_mut",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| args |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

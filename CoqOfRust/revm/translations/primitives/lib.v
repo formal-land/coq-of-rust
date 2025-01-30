@@ -12,6 +12,7 @@ Definition value_KECCAK_EMPTY : Value.t :=
               [ Value.Integer IntegerKind.Usize 32 ]
               [],
             "new",
+            [ Value.Integer IntegerKind.Usize 32 ],
             []
           |),
           [ M.read (| M.get_constant (| "revm_primitives::KECCAK_EMPTY::RES" |) |) ]

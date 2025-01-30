@@ -15,10 +15,12 @@ Module ProvidedAndRequired.
               "provided_method::ProvidedAndRequired",
               Self,
               [],
+              [],
               "required",
+              [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -41,7 +43,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -66,7 +68,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.rust_cast (M.read (| M.read (| self |) |))))
+        M.cast (Ty.path "i32") (M.read (| M.deref (| M.read (| self |) |) |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -112,19 +114,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "provided_method::ProvidedAndRequired",
-                        Ty.path "i32",
-                        [],
-                        "provided",
-                        []
-                      |),
-                      [ x ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "provided_method::ProvidedAndRequired",
+                          Ty.path "i32",
+                          [],
+                          [],
+                          "provided",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, x |) ]
+                      |)
                     |)
                   |);
-                  M.alloc (| Value.Integer IntegerKind.I32 47 |)
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 47 |) |)
                 ]
             |),
             [
@@ -144,8 +151,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)
                               |)) in
@@ -167,8 +174,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -187,19 +210,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "provided_method::ProvidedAndRequired",
-                        Ty.path "u32",
-                        [],
-                        "provided",
-                        []
-                      |),
-                      [ y ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "provided_method::ProvidedAndRequired",
+                          Ty.path "u32",
+                          [],
+                          [],
+                          "provided",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, y |) ]
+                      |)
                     |)
                   |);
-                  M.alloc (| Value.Integer IntegerKind.I32 0 |)
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 0 |) |)
                 ]
             |),
             [
@@ -219,8 +247,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)
                               |)) in
@@ -242,8 +270,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

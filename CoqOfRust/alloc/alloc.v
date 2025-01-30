@@ -49,7 +49,7 @@ Module alloc.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -90,8 +90,11 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "Global" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Global" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -125,7 +128,20 @@ Module alloc.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
+                [
+                  M.borrow (|
+                    Pointer.Kind.ConstPointer,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 ]
               |)
             |) in
@@ -134,16 +150,22 @@ Module alloc.
               M.get_function (| "alloc::alloc::__rust_alloc", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-                  [ layout ]
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "size",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "align",
+                    [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |)
               ]
             |)
@@ -170,12 +192,17 @@ Module alloc.
           [
             M.read (| ptr |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-              [ layout ]
+              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
-              [ layout ]
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "align",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |)
           ]
         |)))
@@ -201,12 +228,17 @@ Module alloc.
           [
             M.read (| ptr |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-              [ layout ]
+              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
-              [ layout ]
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "align",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
             |);
             M.read (| new_size |)
           ]
@@ -237,7 +269,20 @@ Module alloc.
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
-                [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
+                [
+                  M.borrow (|
+                    Pointer.Kind.ConstPointer,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 ]
               |)
             |) in
@@ -246,16 +291,22 @@ Module alloc.
               M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [], [] |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-                  [ layout ]
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "size",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "align",
+                    [],
                     []
                   |),
-                  [ layout ]
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                 |)
               ]
             |)
@@ -298,9 +349,10 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
-                      [ layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                     |)
                   |),
                   [
@@ -322,6 +374,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [
@@ -329,9 +382,10 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "dangling",
+                                      [],
                                       []
                                     |),
-                                    [ layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                   |);
                                   Value.Integer IntegerKind.Usize 0
                                 ]
@@ -389,7 +443,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -405,6 +461,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -415,6 +472,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -457,6 +515,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -467,6 +526,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -499,6 +559,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| size |) ]
@@ -596,17 +657,19 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
-                                                [ new_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                               |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
-                                                [ old_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                               |)
                                             |)
                                           |)
@@ -625,17 +688,26 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -656,9 +728,10 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
-                      [ old_layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                     |)
                   |),
                   [
@@ -674,9 +747,14 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "alloc::alloc::Global",
                               "alloc_impl",
+                              [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| new_layout |); M.read (| zeroed |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| new_layout |);
+                              M.read (| zeroed |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -689,17 +767,19 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
-                                [ old_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                               |),
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
-                                [ new_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                               |)
                             |)
                           |) in
@@ -711,9 +791,10 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
+                                [],
                                 []
                               |),
-                              [ new_layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -727,9 +808,10 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
+                                      [],
                                       []
                                     |),
-                                    [ old_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                   |)
                                 |)
                               ]
@@ -747,6 +829,7 @@ Module alloc.
                                       []
                                       [ Ty.path "u8" ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -774,7 +857,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -790,6 +875,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -800,6 +886,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -842,6 +929,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -852,6 +940,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -891,6 +980,7 @@ Module alloc.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "write_bytes",
+                                          [],
                                           []
                                         |),
                                         [
@@ -898,6 +988,7 @@ Module alloc.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
@@ -925,6 +1016,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| new_size |) ]
@@ -952,7 +1044,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -960,10 +1054,14 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "alloc::alloc::Global",
                                         "alloc_impl",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.read (| new_layout |);
                                         M.read (| zeroed |)
                                       ]
@@ -1003,6 +1101,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1013,6 +1112,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1052,6 +1152,7 @@ Module alloc.
                                         []
                                         [ Ty.path "u8" ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |) ]
@@ -1063,6 +1164,7 @@ Module alloc.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -1078,10 +1180,16 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1112,8 +1220,12 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
-            [ M.read (| self |); M.read (| layout |); Value.Bool false ]
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.read (| layout |);
+              Value.Bool false
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1130,8 +1242,12 @@ Module alloc.
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [] |),
-            [ M.read (| self |); M.read (| layout |); Value.Bool true ]
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "alloc_impl", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.read (| layout |);
+              Value.Bool true
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1166,9 +1282,10 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
+                                [],
                                 []
                               |),
-                              [ layout ]
+                              [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                             |),
                             Value.Integer IntegerKind.Usize 0
                           |)
@@ -1182,6 +1299,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -1217,9 +1335,9 @@ Module alloc.
           let old_layout := M.alloc (| old_layout |) in
           let new_layout := M.alloc (| new_layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.read (| ptr |);
               M.read (| old_layout |);
               M.read (| new_layout |);
@@ -1249,9 +1367,9 @@ Module alloc.
           let old_layout := M.alloc (| old_layout |) in
           let new_layout := M.alloc (| new_layout |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [] |),
+            M.get_associated_function (| Ty.path "alloc::alloc::Global", "grow_impl", [], [] |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               M.read (| ptr |);
               M.read (| old_layout |);
               M.read (| new_layout |);
@@ -1339,17 +1457,19 @@ Module alloc.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
-                                                [ new_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                               |),
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
-                                                [ old_layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                               |)
                                             |)
                                           |)
@@ -1368,17 +1488,26 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                            |)
+                                                          ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1399,9 +1528,10 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
+                        [],
                         []
                       |),
-                      [ new_layout ]
+                      [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                     |)
                   |),
                   [
@@ -1419,10 +1549,16 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1436,6 +1572,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1443,9 +1580,10 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "dangling",
+                                      [],
                                       []
                                     |),
-                                    [ new_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                                   |);
                                   Value.Integer IntegerKind.Usize 0
                                 ]
@@ -1462,17 +1600,19 @@ Module alloc.
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
-                                [ old_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                               |),
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "align",
+                                  [],
                                   []
                                 |),
-                                [ new_layout ]
+                                [ M.borrow (| Pointer.Kind.Ref, new_layout |) ]
                               |)
                             |)
                           |) in
@@ -1489,9 +1629,10 @@ Module alloc.
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
+                                      [],
                                       []
                                     |),
-                                    [ old_layout ]
+                                    [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                   |)
                                 |)
                               ]
@@ -1509,6 +1650,7 @@ Module alloc.
                                       []
                                       [ Ty.path "u8" ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
@@ -1536,7 +1678,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1552,6 +1696,7 @@ Module alloc.
                                               [ Ty.path "u8" ]
                                           ],
                                         "ok_or",
+                                        [],
                                         [ Ty.path "core::alloc::AllocError" ]
                                       |),
                                       [
@@ -1562,6 +1707,7 @@ Module alloc.
                                               []
                                               [ Ty.path "u8" ],
                                             "new",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| raw_ptr |) ]
@@ -1604,6 +1750,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1614,6 +1761,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1646,6 +1794,7 @@ Module alloc.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   "slice_from_raw_parts",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |); M.read (| new_size |) ]
@@ -1673,7 +1822,9 @@ Module alloc.
                                         Ty.path "core::alloc::AllocError"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1682,10 +1833,18 @@ Module alloc.
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
                                         [],
+                                        [],
                                         "allocate",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |); M.read (| new_layout |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.read (| new_layout |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1722,6 +1881,7 @@ Module alloc.
                                                       ];
                                                     Ty.path "core::alloc::AllocError"
                                                   ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1732,6 +1892,7 @@ Module alloc.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1771,6 +1932,7 @@ Module alloc.
                                         []
                                         [ Ty.path "u8" ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |) ]
@@ -1782,6 +1944,7 @@ Module alloc.
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
@@ -1797,10 +1960,16 @@ Module alloc.
                                 "core::alloc::Allocator",
                                 Ty.path "alloc::alloc::Global",
                                 [],
+                                [],
                                 "deallocate",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| ptr |);
+                                M.read (| old_layout |)
+                              ]
                             |)
                           |) in
                         M.alloc (|
@@ -1851,6 +2020,7 @@ Module alloc.
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "from_size_align_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| size |); M.read (| align |) ]
@@ -1863,10 +2033,18 @@ Module alloc.
                   "core::alloc::Allocator",
                   Ty.path "alloc::alloc::Global",
                   [],
+                  [],
                   "allocate",
+                  [],
                   []
                 |),
-                [ M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |); M.read (| layout |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (| Value.StructTuple "alloc::alloc::Global" [] |)
+                  |);
+                  M.read (| layout |)
+                ]
               |)
             |),
             [
@@ -1883,6 +2061,7 @@ Module alloc.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| ptr |) ]
@@ -1986,11 +2165,20 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array [ M.read (| Value.String "allocation failed" |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "allocation failed" |) ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -2019,12 +2207,22 @@ Module alloc.
             M.get_function (| "alloc::alloc::__rust_alloc_error_handler", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-                [ layout ]
+                M.get_associated_function (|
+                  Ty.path "core::alloc::layout::Layout",
+                  "size",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
-                [ layout ]
+                M.get_associated_function (|
+                  Ty.path "core::alloc::layout::Layout",
+                  "align",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |)
             ]
           |)))
@@ -2070,9 +2268,11 @@ Module alloc.
                         (M.alloc (|
                           BinOp.ne (|
                             M.read (|
-                              M.read (|
-                                M.get_constant (|
-                                  "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
+                              M.deref (|
+                                M.read (|
+                                  M.get_constant (|
+                                    "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
+                                  |)
                                 |)
                               |)
                             |),
@@ -2088,28 +2288,51 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "memory allocation of " |);
-                                    M.read (| Value.String " bytes failed" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [ size ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "memory allocation of " |);
+                                          M.read (| Value.String " bytes failed" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, size |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -2126,28 +2349,51 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "memory allocation of " |);
-                                    M.read (| Value.String " bytes failed" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [ size ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "memory allocation of " |);
+                                          M.read (| Value.String " bytes failed" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, size |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |);

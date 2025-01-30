@@ -40,7 +40,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "peekable",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -107,14 +109,19 @@ Module collections.
                                         []
                                         [ I ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
+                                          "iter"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -157,13 +164,17 @@ Module collections.
                                         []
                                         [ I ],
                                       "peek",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter",
+                                          "iter"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -209,15 +220,23 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             K,
+                                            [],
                                             [ K ],
                                             "ne",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_tuple_field (| next, 0 |);
-                                            M.SubPointer.get_tuple_field (|
-                                              M.read (| peeked |),
-                                              0
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_tuple_field (| next, 0 |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_tuple_field (|
+                                                M.deref (| M.read (| peeked |) |),
+                                                0
+                                              |)
                                             |)
                                           ]
                                         |)

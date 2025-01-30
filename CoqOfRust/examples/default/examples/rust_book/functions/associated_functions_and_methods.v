@@ -76,7 +76,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "associated_functions_and_methods::Rectangle",
             "p1"
           |)
@@ -105,7 +105,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         M.read (|
           M.match_operator (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
               "p1"
             |),
@@ -128,7 +128,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
                       "p2"
                     |),
@@ -151,7 +151,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           let y2 := M.copy (| γ0_1 |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                              M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                               [
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |),
@@ -186,7 +186,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         M.read (|
           M.match_operator (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "associated_functions_and_methods::Rectangle",
               "p1"
             |),
@@ -209,7 +209,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                   let y1 := M.copy (| γ0_1 |) in
                   M.match_operator (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "associated_functions_and_methods::Rectangle",
                       "p2"
                     |),
@@ -235,11 +235,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               M.read (| UnsupportedLiteral |),
                               BinOp.Wrap.add (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                                   [ BinOp.Wrap.sub (| M.read (| x1 |), M.read (| x2 |) |) ]
                                 |),
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f64", "abs", [] |),
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                                   [ BinOp.Wrap.sub (| M.read (| y1 |), M.read (| y2 |) |) ]
                                 |)
                               |)
@@ -276,7 +276,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "associated_functions_and_methods::Rectangle",
                   "p1"
                 |),
@@ -288,7 +288,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "associated_functions_and_methods::Rectangle",
                   "p2"
                 |),
@@ -300,7 +300,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "associated_functions_and_methods::Rectangle",
                   "p1"
                 |),
@@ -312,7 +312,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "associated_functions_and_methods::Rectangle",
                   "p2"
                 |),
@@ -388,48 +388,83 @@ Module Impl_associated_functions_and_methods_Pair.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Destroying Pair(" |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String ")
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "Destroying Pair(" |);
+                                            M.read (| Value.String ", " |);
+                                            M.read (| Value.String ")
 " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
                                           ]
-                                        |),
-                                        [ first ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
-                                          ]
-                                        |),
-                                        [ second ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, first |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, second |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -498,6 +533,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "origin",
+                      [],
                       []
                     |),
                     []
@@ -507,6 +543,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
@@ -520,39 +557,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Rectangle perimeter: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Rectangle perimeter: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "f64" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "associated_functions_and_methods::Rectangle",
-                                      "perimeter",
-                                      []
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "f64" ]
                                     |),
-                                    [ rectangle ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "associated_functions_and_methods::Rectangle",
+                                                  "perimeter",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, rectangle |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -567,39 +636,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Rectangle area: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Rectangle area: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "f64" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "associated_functions_and_methods::Rectangle",
-                                      "area",
-                                      []
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "f64" ]
                                     |),
-                                    [ rectangle ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "associated_functions_and_methods::Rectangle",
+                                                  "area",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, rectangle |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -617,6 +718,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "origin",
+                      [],
                       []
                     |),
                     []
@@ -626,6 +728,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "associated_functions_and_methods::Point",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
@@ -638,9 +741,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "associated_functions_and_methods::Rectangle",
                 "translate",
+                [],
                 []
               |),
-              [ square; M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, square |);
+                M.read (| UnsupportedLiteral |);
+                M.read (| UnsupportedLiteral |)
+              ]
             |)
           |) in
         let~ pair_ :=
@@ -655,6 +763,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 1 ]
@@ -666,6 +775,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.I32 2 ]
@@ -678,6 +788,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "associated_functions_and_methods::Pair",
                 "destroy",
+                [],
                 []
               |),
               [ M.read (| pair_ |) ]

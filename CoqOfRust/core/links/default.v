@@ -14,10 +14,7 @@ Module Default.
   Definition Run_default (Self : Set) `{Link Self} : Set :=
     {default @
       IsTraitMethod.t "core::default::Default" (Φ Self) [] "default" default *
-      {{
-        default [] [] [] ⇓
-        output_pure Self
-      }}
+      {{ default [] [] [] 🔽 Self }}
     }.
 
   Record Run (Self : Set) `{Link Self} : Set := {
@@ -31,14 +28,11 @@ Module Impl_Default_for_unit.
   Definition run_default : Default.Run_default Self.
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply default.Impl_core_default_Default_for_Tuple_.Implements. }
       { reflexivity. }
     }
-    { cbn.
-      eapply Run.Pure.
-      now instantiate (1 := tt).
-    }
+    { run_symbolic. }
   Defined.
 
   Definition run : Default.Run Self.
@@ -56,13 +50,11 @@ Module Impl_Default_for_bool.
   Definition run_default : Default.Run_default Self.
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply default.Impl_core_default_Default_for_bool.Implements. }
       { reflexivity. }
     }
-    { cbn; eapply Run.Pure.
-      now instantiate (1 := false).
-    }
+    { run_symbolic. }
   Defined.
 
   Definition run : Default.Run Self.
@@ -121,13 +113,11 @@ Module Impl_Default_for_integer.
   Definition run_default (kind : IntegerKind.t) : Default.Run_default (Self kind).
   Proof.
     eexists; split.
-    { eapply IsTraitMethod.Explicit.
+    { eapply IsTraitMethod.Defined.
       { apply implements_of_integer_kind. }
       { reflexivity. }
     }
-    { destruct kind; cbn; eapply Run.Pure;
-        now instantiate (1 := {| Integer.value := _ |}).
-    }
+    { destruct kind; run_symbolic. }
   Defined.
 
   Definition run (kind : IntegerKind.t) : Default.Run (Self kind).

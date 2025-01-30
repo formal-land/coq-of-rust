@@ -181,7 +181,7 @@ Module ptr.
     | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
-        M.rust_cast (M.read (| addr |))))
+        M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| addr |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -206,7 +206,7 @@ Module ptr.
     | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
-        M.rust_cast (M.read (| addr |))))
+        M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| addr |))))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -223,7 +223,7 @@ Module ptr.
     | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
-        M.read (| r |)))
+        M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| r |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -239,7 +239,7 @@ Module ptr.
     | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
-        M.read (| r |)))
+        M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| r |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -326,6 +326,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -341,9 +342,10 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
-                    [ tmp ]
+                    [ M.borrow (| Pointer.Kind.MutRef, tmp |) ]
                   |);
                   Value.Integer IntegerKind.Usize 1
                 ]
@@ -369,9 +371,10 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_ptr",
+                      [],
                       []
                     |),
-                    [ tmp ]
+                    [ M.borrow (| Pointer.Kind.Ref, tmp |) ]
                   |);
                   M.read (| y |);
                   Value.Integer IntegerKind.Usize 1
@@ -472,8 +475,12 @@ Module ptr.
                                 []
                               |),
                               [
-                                M.rust_cast (M.read (| x |));
-                                M.rust_cast (M.read (| y |));
+                                M.cast
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (M.read (| x |));
+                                M.cast
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (M.read (| y |));
                                 M.call_closure (|
                                   M.get_function (| "core::mem::size_of", [], [ T ] |),
                                   []
@@ -521,6 +528,7 @@ Module ptr.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "is_power_of_two",
+                                          [],
                                           []
                                         |),
                                         [
@@ -616,6 +624,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [ M.read (| x |) ]
@@ -627,6 +636,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [ M.read (| y |) ]
@@ -734,6 +744,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [ M.read (| x |) ]
@@ -745,6 +756,7 @@ Module ptr.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "cast",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               [ M.read (| y |) ]
@@ -858,6 +870,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [ M.read (| x |) ]
@@ -869,6 +882,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
+                  [],
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 |),
                 [ M.read (| y |) ]
@@ -895,6 +909,7 @@ Module ptr.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| x |); M.read (| i |) ]
@@ -910,6 +925,7 @@ Module ptr.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| y |); M.read (| i |) ]
@@ -1039,7 +1055,9 @@ Module ptr.
                         M.call_closure (|
                           M.get_function (| "core::ptr::replace.precondition_check", [], [] |),
                           [
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -1054,7 +1072,13 @@ Module ptr.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::mem::replace", [], [ T ] |),
-              [ M.read (| dst |); M.read (| src |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |) |)
+                |);
+                M.read (| src |)
+              ]
             |)
           |)
         |)))
@@ -1132,7 +1156,9 @@ Module ptr.
                         M.call_closure (|
                           M.get_function (| "core::ptr::read.precondition_check", [], [] |),
                           [
-                            M.rust_cast (M.read (| src |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| src |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -1183,6 +1209,7 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit",
+                  [],
                   []
                 |),
                 []
@@ -1193,15 +1220,17 @@ Module ptr.
               M.call_closure (|
                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ Ty.path "u8" ] |),
                 [
-                  M.rust_cast (M.read (| src |));
-                  M.rust_cast
+                  M.cast (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]) (M.read (| src |));
+                  M.cast
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
-                      [ tmp ]
+                      [ M.borrow (| Pointer.Kind.MutRef, tmp |) ]
                     |));
                   M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
@@ -1212,6 +1241,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                 "assume_init",
+                [],
                 []
               |),
               [ M.read (| tmp |) ]
@@ -1277,7 +1307,9 @@ Module ptr.
                         M.call_closure (|
                           M.get_function (| "core::ptr::write.precondition_check", [], [] |),
                           [
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -1325,8 +1357,10 @@ Module ptr.
               M.call_closure (|
                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ Ty.path "u8" ] |),
                 [
-                  M.rust_cast src;
-                  M.rust_cast (M.read (| dst |));
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
+                    (M.borrow (| Pointer.Kind.ConstPointer, src |));
+                  M.cast (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]) (M.read (| dst |));
                   M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
               |)
@@ -1391,7 +1425,9 @@ Module ptr.
                             []
                           |),
                           [
-                            M.rust_cast (M.read (| src |));
+                            M.cast
+                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                              (M.read (| src |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -1462,7 +1498,9 @@ Module ptr.
                             []
                           |),
                           [
-                            M.rust_cast (M.read (| dst |));
+                            M.cast
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                              (M.read (| dst |));
                             M.call_closure (|
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
@@ -2103,7 +2141,8 @@ Module ptr.
               |) in
             let~ inverse :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "usize")
                   (M.read (|
                     M.SubPointer.get_array_field (|
                       M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
@@ -2276,7 +2315,10 @@ Module ptr.
       ltac:(M.monadic
         (let p := M.alloc (| p |) in
         let q := M.alloc (| q |) in
-        BinOp.eq (| M.rust_cast (M.read (| p |)), M.rust_cast (M.read (| q |)) |)))
+        BinOp.eq (|
+          M.cast (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]) (M.read (| p |)),
+          M.cast (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]) (M.read (| q |))
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -2295,11 +2337,11 @@ Module ptr.
         let g := M.alloc (| g |) in
         BinOp.eq (|
           M.call_closure (|
-            M.get_trait_method (| "core::marker::FnPtr", T, [], "addr", [] |),
+            M.get_trait_method (| "core::marker::FnPtr", T, [], [], "addr", [], [] |),
             [ M.read (| f |) ]
           |),
           M.call_closure (|
-            M.get_trait_method (| "core::marker::FnPtr", U, [], "addr", [] |),
+            M.get_trait_method (| "core::marker::FnPtr", U, [], [], "addr", [], [] |),
             [ M.read (| g |) ]
           |)
         |)))
@@ -2328,10 +2370,15 @@ Module ptr.
                   "core::hash::Hash",
                   Ty.apply (Ty.path "*const") [] [ T ],
                   [],
+                  [],
                   "hash",
+                  [],
                   [ S ]
                 |),
-                [ hashee; M.read (| into |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, hashee |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| into |) |) |)
+                ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -2358,12 +2405,12 @@ Module ptr.
           let other := M.alloc (| other |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-              [ M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+              [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |),
             M.call_closure (|
-              M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-              [ M.read (| M.read (| other |) |) ]
+              M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+              [ M.read (| M.deref (| M.read (| other |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2405,21 +2452,34 @@ Module ptr.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+              [],
               [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| other |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                        [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2456,20 +2516,33 @@ Module ptr.
               "core::cmp::Ord",
               Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                  |)
                 |)
               |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| other |) |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                        [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -2502,13 +2575,14 @@ Module ptr.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", HH, [], "write_usize", [] |),
+            M.get_trait_method (| "core::hash::Hasher", HH, [], [], "write_usize", [], [] |),
             [
-              M.read (| state |);
-              M.rust_cast
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+              M.cast
+                (Ty.path "usize")
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |))
             ]
           |)))
@@ -2542,12 +2616,13 @@ Module ptr.
           M.call_closure (|
             M.get_function (| "core::fmt::pointer_fmt_inner", [], [] |),
             [
-              M.rust_cast
+              M.cast
+                (Ty.path "usize")
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |));
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2580,12 +2655,13 @@ Module ptr.
           M.call_closure (|
             M.get_function (| "core::fmt::pointer_fmt_inner", [], [] |),
             [
-              M.rust_cast
+              M.cast
+                (Ty.path "usize")
                 (M.call_closure (|
-                  M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  M.get_trait_method (| "core::marker::FnPtr", F, [], [], "addr", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |));
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

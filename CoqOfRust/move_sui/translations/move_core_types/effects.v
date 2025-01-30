@@ -58,9 +58,20 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "New" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "New" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -78,9 +89,20 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Modify" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Modify" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -92,9 +114,16 @@ Module effects.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Delete" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Delete" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -141,8 +170,16 @@ Module effects.
                         "move_core_types::effects::Op::New"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                            [ M.read (| __self_0 |) ]
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              T,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -161,8 +198,16 @@ Module effects.
                         "move_core_types::effects::Op::Modify"
                         [
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                            [ M.read (| __self_0 |) ]
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              T,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -252,7 +297,7 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -263,7 +308,7 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -299,11 +344,16 @@ Module effects.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -331,11 +381,16 @@ Module effects.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -377,7 +432,7 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -388,14 +443,23 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_discr; __arg1_discr ]
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -427,8 +491,17 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -453,8 +526,17 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -501,7 +583,7 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -512,7 +594,7 @@ Module effects.
                     [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -543,11 +625,16 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -575,11 +662,16 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
+                          [],
                           [ T ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -589,11 +681,22 @@ Module effects.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ __self_discr; __arg1_discr ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -646,7 +749,9 @@ Module effects.
                       |) in
                     let data := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::effects::Op::New" [ M.read (| data |) ]
+                      Value.StructTuple
+                        "move_core_types::effects::Op::New"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -659,7 +764,9 @@ Module effects.
                       |) in
                     let data := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple "move_core_types::effects::Op::Modify" [ M.read (| data |) ]
+                      Value.StructTuple
+                        "move_core_types::effects::Op::Modify"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -718,8 +825,10 @@ Module effects.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ T ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| data |) ] ]
@@ -743,8 +852,10 @@ Module effects.
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
+                              [],
                               [ Ty.tuple [ T ] ],
                               "call_once",
+                              [],
                               []
                             |),
                             [ M.read (| f |); Value.Tuple [ M.read (| data |) ] ]
@@ -809,19 +920,16 @@ Module effects.
                             let data := M.copy (| γ0_0 |) in
                             Value.Tuple [ data ]))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ data ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [ M.read (| data |) ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ data ] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -894,23 +1002,46 @@ Module effects.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "AccountChangeSet" |);
-              M.read (| Value.String "modules" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::effects::AccountChangeSet",
-                "modules"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "AccountChangeSet" |) |)
               |);
-              M.read (| Value.String "resources" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::effects::AccountChangeSet",
-                  "resources"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "modules" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::AccountChangeSet",
+                      "modules"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "resources" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::effects::AccountChangeSet",
+                          "resources"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -959,14 +1090,24 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "modules"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "modules"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -991,14 +1132,24 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "resources"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "resources"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -1093,6 +1244,7 @@ Module effects.
                       ];
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1112,18 +1264,25 @@ Module effects.
                     ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::effects::AccountChangeSet",
-                  "modules"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::effects::AccountChangeSet",
+                    "modules"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "move_core_types::effects::AccountChangeSet",
-                  "modules"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "move_core_types::effects::AccountChangeSet",
+                    "modules"
+                  |)
                 |)
               ]
             |),
@@ -1147,6 +1306,7 @@ Module effects.
                         ];
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1166,18 +1326,25 @@ Module effects.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::AccountChangeSet",
-                    "resources"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::AccountChangeSet",
+                      "resources"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_core_types::effects::AccountChangeSet",
-                    "resources"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::effects::AccountChangeSet",
+                      "resources"
+                    |)
                   |)
                 ]
               |)))
@@ -1226,19 +1393,37 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "modules"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "modules"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "modules"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "modules"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1268,19 +1453,37 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "resources"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_core_types::effects::AccountChangeSet",
+                                  "resources"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "resources"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_core_types::effects::AccountChangeSet",
+                                  "resources"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1335,6 +1538,7 @@ Module effects.
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1354,18 +1558,35 @@ Module effects.
                         ]
                     ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "modules"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "modules"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_core_types::effects::AccountChangeSet",
-                      "modules"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_core_types::effects::AccountChangeSet",
+                            "modules"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1400,6 +1621,7 @@ Module effects.
                                 ];
                               Ty.path "alloc::alloc::Global"
                             ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1419,18 +1641,35 @@ Module effects.
                               ]
                           ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "resources"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_core_types::effects::AccountChangeSet",
+                                  "resources"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "resources"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "move_core_types::effects::AccountChangeSet",
+                                  "resources"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -1512,7 +1751,9 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -1528,7 +1769,9 @@ Module effects.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| other |) ]
@@ -1560,10 +1803,17 @@ Module effects.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -1603,9 +1853,16 @@ Module effects.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "entry",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| map |); M.read (| key |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| map |) |)
+                                                |);
+                                                M.read (| key |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -1636,9 +1893,10 @@ Module effects.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "get_mut",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ entry ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, entry |) ]
                                                     |)
                                                   |) in
                                                 M.match_operator (|
@@ -1653,9 +1911,15 @@ Module effects.
                                                               []
                                                               [ V ],
                                                             "as_ref",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| r |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| r |) |)
+                                                            |)
+                                                          ]
                                                         |);
                                                         M.read (| op |)
                                                       ]
@@ -1700,23 +1964,22 @@ Module effects.
                                                                           |) in
                                                                         Value.Tuple []))
                                                                   ],
-                                                                  M.closure
-                                                                    (fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        match γ with
-                                                                        | [] =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ1_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ0_1,
-                                                                                "move_core_types::effects::Op::New",
-                                                                                0
-                                                                              |) in
-                                                                            Value.Tuple []))
-                                                                        | _ =>
-                                                                          M.impossible
-                                                                            "wrong number of arguments"
-                                                                        end))
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      match γ with
+                                                                      | [] =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ1_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ0_1,
+                                                                              "move_core_types::effects::Op::New",
+                                                                              0
+                                                                            |) in
+                                                                          Value.Tuple []))
+                                                                      | _ =>
+                                                                        M.impossible
+                                                                          "wrong number of arguments"
+                                                                      end)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
@@ -1756,75 +2019,82 @@ Module effects.
                                                                           |) in
                                                                         Value.Tuple []))
                                                                   ],
-                                                                  M.closure
-                                                                    (fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        match γ with
-                                                                        | [] =>
-                                                                          ltac:(M.monadic
-                                                                            (Value.Tuple []))
-                                                                        | _ =>
-                                                                          M.impossible
-                                                                            "wrong number of arguments"
-                                                                        end))
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      match γ with
+                                                                      | [] =>
+                                                                        ltac:(M.monadic
+                                                                          (Value.Tuple []))
+                                                                      | _ =>
+                                                                        M.impossible
+                                                                          "wrong number of arguments"
+                                                                      end)
                                                                 |)))
                                                           ],
-                                                          M.closure
-                                                            (fun γ =>
-                                                              ltac:(M.monadic
-                                                                match γ with
-                                                                | [] =>
-                                                                  ltac:(M.monadic
-                                                                    (M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            Value.StructTuple
-                                                                              "core::result::Result::Err"
-                                                                              [
-                                                                                M.read (|
-                                                                                  let~ error :=
-                                                                                    M.alloc (|
-                                                                                      M.call_closure (|
-                                                                                        M.get_function (|
-                                                                                          "anyhow::__private::format_err",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.call_closure (|
-                                                                                            M.get_associated_function (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::Arguments",
-                                                                                              "new_const",
-                                                                                              []
-                                                                                            |),
-                                                                                            [
-                                                                                              M.alloc (|
-                                                                                                Value.Array
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "The given change sets cannot be squashed"
-                                                                                                    |)
-                                                                                                  ]
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              match γ with
+                                                              | [] =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          Value.StructTuple
+                                                                            "core::result::Result::Err"
+                                                                            [
+                                                                              M.read (|
+                                                                                let~ error :=
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_function (|
+                                                                                        "anyhow::__private::format_err",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
+                                                                                            "new_const",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.alloc (|
+                                                                                                    Value.Array
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          Value.String
+                                                                                                            "The given change sets cannot be squashed"
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                  |)
+                                                                                                |)
                                                                                               |)
-                                                                                            ]
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    |) in
-                                                                                  error
-                                                                                |)
-                                                                              ]
-                                                                          |)
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |) in
+                                                                                error
+                                                                              |)
+                                                                            ]
                                                                         |)
                                                                       |)
-                                                                    |)))
-                                                                | _ =>
-                                                                  M.impossible
-                                                                    "wrong number of arguments"
-                                                                end))
+                                                                    |)
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
+                                                              end)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -1846,7 +2116,7 @@ Module effects.
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
                                                         M.write (|
-                                                          M.read (| r |),
+                                                          M.deref (| M.read (| r |) |),
                                                           Value.StructTuple
                                                             "move_core_types::effects::Op::Modify"
                                                             [ M.read (| data |) ]
@@ -1871,7 +2141,7 @@ Module effects.
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
                                                         M.write (|
-                                                          M.read (| r |),
+                                                          M.deref (| M.read (| r |) |),
                                                           Value.StructTuple
                                                             "move_core_types::effects::Op::New"
                                                             [ M.read (| data |) ]
@@ -1894,7 +2164,7 @@ Module effects.
                                                             "move_core_types::effects::Op::Delete"
                                                           |) in
                                                         M.write (|
-                                                          M.read (| r |),
+                                                          M.deref (| M.read (| r |) |),
                                                           Value.StructTuple
                                                             "move_core_types::effects::Op::Delete"
                                                             []
@@ -1918,7 +2188,7 @@ Module effects.
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
                                                         M.write (|
-                                                          M.read (| r |),
+                                                          M.deref (| M.read (| r |) |),
                                                           Value.StructTuple
                                                             "move_core_types::effects::Op::Modify"
                                                             [ M.read (| data |) ]
@@ -1958,6 +2228,7 @@ Module effects.
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "remove",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| entry |) ]
@@ -1993,6 +2264,7 @@ Module effects.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "insert",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| entry |); M.read (| op |) ]
@@ -2076,6 +2348,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2100,6 +2373,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -2156,13 +2430,17 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "modules"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::effects::AccountChangeSet",
+                              "modules"
+                            |)
                           |);
                           M.read (| name |)
                         ]
@@ -2189,6 +2467,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2213,77 +2492,110 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "Module "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String " already exists"
-                                                                  |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_core_types::identifier::Identifier"
-                                                                          ]
+                                                                        M.read (|
+                                                                          Value.String "Module "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " already exists"
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::map::entry::OccupiedEntry")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_core_types::identifier::Identifier";
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "move_core_types::effects::Op")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "u8";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ];
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            "key",
-                                                                            []
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_core_types::identifier::Identifier"
+                                                                                ]
+                                                                            ]
                                                                           |),
-                                                                          [ entry ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_core_types::identifier::Identifier";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "move_core_types::effects::Op")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "alloc::vec::Vec")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8";
+                                                                                                    Ty.path
+                                                                                                      "alloc::alloc::Global"
+                                                                                                  ]
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        "key",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          entry
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -2331,6 +2643,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| op |) ]
@@ -2394,13 +2707,17 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::effects::AccountChangeSet",
-                            "resources"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::effects::AccountChangeSet",
+                              "resources"
+                            |)
                           |);
                           M.read (| struct_tag |)
                         ]
@@ -2427,6 +2744,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -2451,77 +2769,110 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "Resource "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String " already exists"
-                                                                  |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_core_types::language_storage::StructTag"
-                                                                          ]
+                                                                        M.read (|
+                                                                          Value.String "Resource "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " already exists"
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [
-                                                                      M.alloc (|
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
                                                                         M.call_closure (|
                                                                           M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::collections::btree::map::entry::OccupiedEntry")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_core_types::language_storage::StructTag";
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "move_core_types::effects::Op")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "u8";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ];
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            "key",
-                                                                            []
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_core_types::language_storage::StructTag"
+                                                                                ]
+                                                                            ]
                                                                           |),
-                                                                          [ entry ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_core_types::language_storage::StructTag";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "move_core_types::effects::Op")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "alloc::vec::Vec")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "u8";
+                                                                                                    Ty.path
+                                                                                                      "alloc::alloc::Global"
+                                                                                                  ]
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        "key",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          entry
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |)
-                                                                    ]
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -2569,6 +2920,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| op |) ]
@@ -2678,10 +3030,18 @@ Module effects.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_core_types::effects::AccountChangeSet",
-            "modules"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::effects::AccountChangeSet",
+                  "modules"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2698,10 +3058,18 @@ Module effects.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_core_types::effects::AccountChangeSet",
-            "resources"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::effects::AccountChangeSet",
+                  "resources"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2738,13 +3106,17 @@ Module effects.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::effects::AccountChangeSet",
-                  "modules"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_core_types::effects::AccountChangeSet",
+                    "modules"
+                  |)
                 |)
               ]
             |),
@@ -2768,13 +3140,17 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "is_empty",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::AccountChangeSet",
-                    "resources"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::AccountChangeSet",
+                      "resources"
+                    |)
                   |)
                 ]
               |)))
@@ -2810,7 +3186,9 @@ Module effects.
                             []
                             [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -2827,10 +3205,18 @@ Module effects.
                               ]
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_core_types::effects::AccountChangeSet",
-                                "modules"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::effects::AccountChangeSet",
+                                      "modules"
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -2865,6 +3251,7 @@ Module effects.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "anyhow::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -2875,6 +3262,7 @@ Module effects.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -2909,10 +3297,18 @@ Module effects.
                       ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_core_types::effects::AccountChangeSet",
-                        "resources"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::effects::AccountChangeSet",
+                              "resources"
+                            |)
+                          |)
+                        |)
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2965,17 +3361,29 @@ Module effects.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ChangeSet" |);
-              M.read (| Value.String "accounts" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::effects::ChangeSet",
-                  "accounts"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ChangeSet" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "accounts" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::effects::ChangeSet",
+                          "accounts"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -3016,14 +3424,24 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::ChangeSet",
-                      "accounts"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::effects::ChangeSet",
+                            "accounts"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -3102,6 +3520,7 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3113,18 +3532,25 @@ Module effects.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::effects::ChangeSet",
+                  "accounts"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::effects::ChangeSet",
+                  "accounts"
+                |)
               |)
             ]
           |)))
@@ -3161,19 +3587,37 @@ Module effects.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -3209,6 +3653,7 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3220,18 +3665,35 @@ Module effects.
                   ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_core_types::effects::ChangeSet",
-                "accounts"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -3262,6 +3724,7 @@ Module effects.
             M.get_associated_function (|
               Ty.path "move_core_types::effects::ChangeSet",
               "new",
+              [],
               []
             |),
             []
@@ -3306,6 +3769,7 @@ Module effects.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -3359,13 +3823,17 @@ Module effects.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "entry",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_core_types::effects::ChangeSet",
-                            "accounts"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::effects::ChangeSet",
+                              "accounts"
+                            |)
                           |);
                           M.read (| addr |)
                         ]
@@ -3391,6 +3859,7 @@ Module effects.
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -3415,37 +3884,66 @@ Module effects.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "Failed to add account change set. Account "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String " already exists."
-                                                                  |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "move_core_types::account_address::AccountAddress"
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "Failed to add account change set. Account "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " already exists."
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ addr ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::account_address::AccountAddress"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  addr
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -3485,6 +3983,7 @@ Module effects.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| entry |); M.read (| account_changeset |) ]
@@ -3512,10 +4011,18 @@ Module effects.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_core_types::effects::ChangeSet",
-            "accounts"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::effects::ChangeSet",
+                  "accounts"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3562,96 +4069,127 @@ Module effects.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let addr := M.alloc (| addr |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::collections::btree::map::BTreeMap")
-                      []
-                      [
-                        Ty.path "move_core_types::account_address::AccountAddress";
-                        Ty.path "move_core_types::effects::AccountChangeSet";
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    "entry",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::effects::ChangeSet",
-                      "accounts"
-                    |);
-                    M.read (| addr |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "alloc::collections::btree::map::entry::Entry::Occupied",
-                        0
-                      |) in
-                    let entry := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
-                            []
-                            [
-                              Ty.path "move_core_types::account_address::AccountAddress";
-                              Ty.path "move_core_types::effects::AccountChangeSet";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "into_mut",
-                          []
-                        |),
-                        [ M.read (| entry |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "alloc::collections::btree::map::entry::Entry::Vacant",
-                        0
-                      |) in
-                    let entry := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
-                            []
-                            [
-                              Ty.path "move_core_types::account_address::AccountAddress";
-                              Ty.path "move_core_types::effects::AccountChangeSet";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "insert",
-                          []
-                        |),
-                        [
-                          M.read (| entry |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_core_types::effects::AccountChangeSet",
-                              "new",
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
                               []
-                            |),
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::effects::AccountChangeSet";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "entry",
+                            [],
                             []
-                          |)
-                        ]
-                      |)
-                    |)))
-              ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::effects::ChangeSet",
+                                "accounts"
+                              |)
+                            |);
+                            M.read (| addr |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloc::collections::btree::map::entry::Entry::Occupied",
+                                0
+                              |) in
+                            let entry := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path
+                                          "alloc::collections::btree::map::entry::OccupiedEntry")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::account_address::AccountAddress";
+                                          Ty.path "move_core_types::effects::AccountChangeSet";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "into_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| entry |) ]
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloc::collections::btree::map::entry::Entry::Vacant",
+                                0
+                              |) in
+                            let entry := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path
+                                          "alloc::collections::btree::map::entry::VacantEntry")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::account_address::AccountAddress";
+                                          Ty.path "move_core_types::effects::AccountChangeSet";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "insert",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.read (| entry |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::effects::AccountChangeSet",
+                                          "new",
+                                          [],
+                                          []
+                                        |),
+                                        []
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3680,18 +4218,22 @@ Module effects.
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::language_storage::ModuleId",
-                          "address",
-                          []
-                        |),
-                        [ module_id ]
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::language_storage::ModuleId",
+                            "address",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, module_id |) ]
+                        |)
                       |)
                     |)
                   ]
@@ -3702,26 +4244,35 @@ Module effects.
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_module_op",
+                  [],
                   []
                 |),
                 [
-                  M.read (| account |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| account |) |) |);
                   M.call_closure (|
                     M.get_trait_method (|
                       "alloc::borrow::ToOwned",
                       Ty.path "move_core_types::identifier::IdentStr",
                       [],
+                      [],
                       "to_owned",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_core_types::language_storage::ModuleId",
-                          "name",
-                          []
-                        |),
-                        [ module_id ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "move_core_types::language_storage::ModuleId",
+                              "name",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, module_id |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |);
@@ -3762,9 +4313,13 @@ Module effects.
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| addr |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| addr |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -3772,9 +4327,14 @@ Module effects.
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_resource_op",
+                  [],
                   []
                 |),
-                [ M.read (| account |); M.read (| struct_tag |); M.read (| op |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| account |) |) |);
+                  M.read (| struct_tag |);
+                  M.read (| op |)
+                ]
               |)
             |)
           |)))
@@ -3824,7 +4384,9 @@ Module effects.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3860,10 +4422,17 @@ Module effects.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -3905,13 +4474,17 @@ Module effects.
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "move_core_types::effects::ChangeSet",
-                                                    "accounts"
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::effects::ChangeSet",
+                                                      "accounts"
+                                                    |)
                                                   |);
                                                   M.read (| addr |)
                                                 ]
@@ -3939,7 +4512,9 @@ Module effects.
                                                               [ Ty.tuple []; Ty.path "anyhow::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -3948,27 +4523,39 @@ Module effects.
                                                                 Ty.path
                                                                   "move_core_types::effects::AccountChangeSet",
                                                                 "squash",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloc::collections::btree::map::entry::OccupiedEntry")
-                                                                      []
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::account_address::AccountAddress";
+                                                                            Ty.path
+                                                                              "move_core_types::effects::AccountChangeSet";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        "get_mut",
+                                                                        [],
+                                                                        []
+                                                                      |),
                                                                       [
-                                                                        Ty.path
-                                                                          "move_core_types::account_address::AccountAddress";
-                                                                        Ty.path
-                                                                          "move_core_types::effects::AccountChangeSet";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ],
-                                                                    "get_mut",
-                                                                    []
-                                                                  |),
-                                                                  [ entry ]
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          entry
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
                                                                 |);
                                                                 M.read (| other_account_changeset |)
                                                               ]
@@ -4001,6 +4588,7 @@ Module effects.
                                                                             Ty.tuple [];
                                                                             Ty.path "anyhow::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4014,6 +4602,7 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4060,6 +4649,7 @@ Module effects.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "insert",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4112,7 +4702,9 @@ Module effects.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -4246,7 +4838,9 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -4294,7 +4888,9 @@ Module effects.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
+                                    [],
                                     "map",
+                                    [],
                                     [
                                       Ty.tuple
                                         [
@@ -4367,7 +4963,9 @@ Module effects.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         [],
+                                        [],
                                         "into_iter",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4404,6 +5002,7 @@ Module effects.
                                                               Ty.path
                                                                 "move_core_types::language_storage::ModuleId",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4457,7 +5056,9 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -4618,13 +5219,17 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "iter",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::ChangeSet",
-                    "accounts"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
                   |)
                 ]
               |);
@@ -4644,7 +5249,7 @@ Module effects.
                                 let addr := M.copy (| γ0_0 |) in
                                 let account := M.copy (| γ0_1 |) in
                                 M.read (|
-                                  let~ addr := M.copy (| M.read (| addr |) |) in
+                                  let~ addr := M.copy (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -4665,7 +5270,9 @@ Module effects.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -4769,13 +5376,17 @@ Module effects.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| account |),
-                                              "move_core_types::effects::AccountChangeSet",
-                                              "modules"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| account |) |),
+                                                "move_core_types::effects::AccountChangeSet",
+                                                "modules"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -4829,6 +5440,7 @@ Module effects.
                                                                         ]
                                                                     ],
                                                                   "map",
+                                                                  [],
                                                                   [
                                                                     Ty.function
                                                                       [
@@ -4889,9 +5501,17 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                       "as_ref",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ M.read (| op |) ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| op |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |);
                                                                   M.closure
                                                                     (fun γ =>
@@ -4921,6 +5541,7 @@ Module effects.
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -4932,11 +5553,17 @@ Module effects.
                                                                                             ]
                                                                                         ],
                                                                                         "as_ref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          v
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              v
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |)))
@@ -4995,7 +5622,9 @@ Module effects.
                   Ty.path "move_core_types::effects::AccountChangeSet"
                 ],
               [],
+              [],
               "flat_map",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
@@ -5156,13 +5785,17 @@ Module effects.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "iter",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::ChangeSet",
-                    "accounts"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::effects::ChangeSet",
+                      "accounts"
+                    |)
                   |)
                 ]
               |);
@@ -5182,7 +5815,7 @@ Module effects.
                                 let addr := M.copy (| γ0_0 |) in
                                 let account := M.copy (| γ0_1 |) in
                                 M.read (|
-                                  let~ addr := M.copy (| M.read (| addr |) |) in
+                                  let~ addr := M.copy (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -5203,7 +5836,9 @@ Module effects.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -5310,13 +5945,17 @@ Module effects.
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "iter",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| account |),
-                                              "move_core_types::effects::AccountChangeSet",
-                                              "resources"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| account |) |),
+                                                "move_core_types::effects::AccountChangeSet",
+                                                "resources"
+                                              |)
                                             |)
                                           ]
                                         |);
@@ -5370,6 +6009,7 @@ Module effects.
                                                                         ]
                                                                     ],
                                                                   "map",
+                                                                  [],
                                                                   [
                                                                     Ty.function
                                                                       [
@@ -5430,9 +6070,17 @@ Module effects.
                                                                             ]
                                                                         ],
                                                                       "as_ref",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ M.read (| op |) ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| op |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |);
                                                                   M.closure
                                                                     (fun γ =>
@@ -5462,6 +6110,7 @@ Module effects.
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -5473,11 +6122,17 @@ Module effects.
                                                                                             ]
                                                                                         ],
                                                                                         "as_ref",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        M.read (|
-                                                                                          v
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              v
+                                                                                            |)
+                                                                                          |)
                                                                                         |)
                                                                                       ]
                                                                                     |)))

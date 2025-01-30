@@ -42,6 +42,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "uninit",
+                                [],
                                 []
                               |),
                               []
@@ -54,6 +55,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 "new",
+                                [],
                                 []
                               |),
                               [ M.read (| element |) ]
@@ -122,7 +124,7 @@ Module iter.
                               BinOp.gt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::sources::repeat_n::RepeatN",
                                     "count"
                                   |)
@@ -136,22 +138,31 @@ Module iter.
                           Value.StructTuple
                             "core::option::Option::Some"
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ A ],
-                                  "assume_init_ref",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat_n::RepeatN",
-                                    "element"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ A ],
+                                      "assume_init_ref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::sources::repeat_n::RepeatN",
+                                          "element"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                         |)));
@@ -204,7 +215,7 @@ Module iter.
                               BinOp.gt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::sources::repeat_n::RepeatN",
                                     "count"
                                   |)
@@ -217,7 +228,7 @@ Module iter.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::sources::repeat_n::RepeatN",
                               "count"
                             |),
@@ -233,10 +244,18 @@ Module iter.
                                 ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::sources::repeat_n::RepeatN",
-                                  "element"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::sources::repeat_n::RepeatN",
+                                        "element"
+                                      |)
+                                    |)
+                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -245,6 +264,7 @@ Module iter.
                                       []
                                       [ A ],
                                     "uninit",
+                                    [],
                                     []
                                   |),
                                   []
@@ -263,6 +283,7 @@ Module iter.
                                     []
                                     [ A ],
                                   "assume_init",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| element |) ]
@@ -307,7 +328,7 @@ Module iter.
                   ("count",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::iter::sources::repeat_n::RepeatN",
                         "count"
                       |)
@@ -317,6 +338,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                         "map_or_else",
+                        [],
                         [
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ];
                           Ty.function
@@ -335,6 +357,7 @@ Module iter.
                               []
                               [ Ty.apply (Ty.path "&") [] [ A ] ],
                             "cloned",
+                            [],
                             []
                           |),
                           [
@@ -345,20 +368,23 @@ Module iter.
                                   []
                                   [ A ],
                                 "element_ref",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           ]
                         |);
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                           "uninit",
+                          [],
                           []
                         |);
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                           "new",
+                          [],
                           []
                         |)
                       ]
@@ -399,53 +425,110 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Formatter",
-                                "debug_struct",
-                                []
-                              |),
-                              [ M.read (| f |); M.read (| Value.String "RepeatN" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugStruct",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "debug_struct",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "RepeatN" |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "count" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::sources::repeat_n::RepeatN",
+                                          "count"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
-                          M.read (| Value.String "count" |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::sources::repeat_n::RepeatN",
-                            "count"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "element" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::sources::repeat_n::RepeatN")
+                                        []
+                                        [ A ],
+                                      "element_ref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.read (| Value.String "element" |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
-                            "element_ref",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -483,9 +566,10 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                         "take_element",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -537,7 +621,7 @@ Module iter.
                               BinOp.gt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::sources::repeat_n::RepeatN",
                                     "count"
                                   |)
@@ -559,10 +643,17 @@ Module iter.
                                     []
                                     [ A ],
                                   [],
+                                  [],
                                   "next_unchecked",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             ]
                         |)));
@@ -595,10 +686,12 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -645,7 +738,7 @@ Module iter.
                 let~ len :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::sources::repeat_n::RepeatN",
                       "count"
                     |)
@@ -670,9 +763,15 @@ Module iter.
                                     []
                                     [ A ],
                                   "take_element",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -700,6 +799,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "new_unchecked",
+                                  [],
                                   []
                                 |),
                                 [ BinOp.Wrap.sub (| M.read (| skip |), M.read (| len |) |) ]
@@ -711,7 +811,7 @@ Module iter.
                         (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::sources::repeat_n::RepeatN",
                               "count"
                             |),
@@ -741,9 +841,10 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   "take_element",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -764,10 +865,12 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.Ref, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -806,7 +909,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::iter::sources::repeat_n::RepeatN",
                   "count"
                 |)
@@ -843,10 +946,12 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -873,10 +978,15 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -898,10 +1008,15 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
                   [],
+                  [],
                   "nth",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -981,16 +1096,16 @@ Module iter.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::sources::repeat_n::RepeatN",
                       "count"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                      M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::iter::sources::repeat_n::RepeatN",
                             "count"
                           |)
@@ -1010,7 +1125,7 @@ Module iter.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::sources::repeat_n::RepeatN",
                                     "count"
                                   |)
@@ -1025,6 +1140,7 @@ Module iter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                               "assume_init",
+                              [],
                               []
                             |),
                             [
@@ -1040,10 +1156,18 @@ Module iter.
                                   ]
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat_n::RepeatN",
-                                    "element"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::sources::repeat_n::RepeatN",
+                                          "element"
+                                        |)
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1052,6 +1176,7 @@ Module iter.
                                         []
                                         [ A ],
                                       "uninit",
+                                      [],
                                       []
                                     |),
                                     []
@@ -1069,21 +1194,33 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
                                 "assume_init_ref",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::sources::repeat_n::RepeatN",
-                                  "element"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::sources::repeat_n::RepeatN",
+                                    "element"
+                                  |)
                                 |)
                               ]
                             |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                            [ M.read (| element |) ]
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| element |) |) |) ]
                           |)
                         |)))
                   ]

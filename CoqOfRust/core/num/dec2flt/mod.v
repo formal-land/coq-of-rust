@@ -21,7 +21,7 @@ Module num.
             (let src := M.alloc (| src |) in
             M.call_closure (|
               M.get_function (| "core::num::dec2flt::dec2flt", [], [ Ty.path "f32" ] |),
-              [ M.read (| src |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -53,7 +53,7 @@ Module num.
             (let src := M.alloc (| src |) in
             M.call_closure (|
               M.get_function (| "core::num::dec2flt::dec2flt", [], [ Ty.path "f64" ] |),
-              [ M.read (| src |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -89,17 +89,32 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ParseFloatError" |);
-                M.read (| Value.String "kind" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::dec2flt::ParseFloatError",
-                    "kind"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ParseFloatError" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::dec2flt::ParseFloatError",
+                            "kind"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -133,14 +148,24 @@ Module num.
                       "core::clone::Clone",
                       Ty.path "core::num::dec2flt::FloatErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::ParseFloatError",
-                        "kind"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::dec2flt::ParseFloatError",
+                              "kind"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -181,20 +206,28 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::num::dec2flt::FloatErrorKind",
+                [],
                 [ Ty.path "core::num::dec2flt::FloatErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::num::dec2flt::ParseFloatError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::dec2flt::ParseFloatError",
+                    "kind"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::num::dec2flt::ParseFloatError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::num::dec2flt::ParseFloatError",
+                    "kind"
+                  |)
                 |)
               ]
             |)))
@@ -272,9 +305,9 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -287,7 +320,12 @@ Module num.
                               γ,
                               "core::num::dec2flt::FloatErrorKind::Empty"
                             |) in
-                          M.alloc (| M.read (| Value.String "Empty" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Empty" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -296,7 +334,12 @@ Module num.
                               γ,
                               "core::num::dec2flt::FloatErrorKind::Invalid"
                             |) in
-                          M.alloc (| M.read (| Value.String "Invalid" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Invalid" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -386,7 +429,7 @@ Module num.
                       [],
                       [ Ty.path "core::num::dec2flt::FloatErrorKind" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -397,7 +440,7 @@ Module num.
                       [],
                       [ Ty.path "core::num::dec2flt::FloatErrorKind" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -458,7 +501,7 @@ Module num.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::num::dec2flt::ParseFloatError",
                   "kind"
                 |),
@@ -468,13 +511,23 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
                       M.alloc (|
-                        M.read (| Value.String "cannot parse float from empty string" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "cannot parse float from empty string" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Invalid" |) in
-                      M.alloc (| M.read (| Value.String "invalid float literal" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid float literal" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)))
@@ -505,19 +558,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::error::Error",
-                    Ty.path "core::num::dec2flt::ParseFloatError",
-                    [],
-                    "description",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::error::Error",
+                        Ty.path "core::num::dec2flt::ParseFloatError",
+                        [],
+                        [],
+                        "description",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -593,7 +653,8 @@ Module num.
                 BinOp.bit_or
                   (M.read (| β |))
                   (BinOp.Wrap.shl (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           x,
@@ -614,7 +675,9 @@ Module num.
                   "core::num::dec2flt::float::RawFloat",
                   T,
                   [],
+                  [],
                   "from_u64_bits",
+                  [],
                   []
                 |),
                 [ M.read (| word |) ]
@@ -687,8 +750,8 @@ Module num.
                 let~ s :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                      [ M.read (| s |) ]
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                     |)
                   |) in
                 let~ c :=
@@ -704,9 +767,10 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "first",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -768,25 +832,40 @@ Module num.
                           let~ _ :=
                             M.write (|
                               s,
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  []
-                                |),
-                                [
-                                  M.read (| s |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| s |) |)
+                                          |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -806,9 +885,10 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| s |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)
                               |)) in
                           let _ :=
@@ -842,7 +922,7 @@ Module num.
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "core::num::dec2flt::parse::parse_number", [], [] |),
-                          [ M.read (| s |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                         |)
                       |),
                       [
@@ -867,7 +947,10 @@ Module num.
                                     [],
                                     [ F ]
                                   |),
-                                  [ M.read (| s |); M.read (| negative |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                                    M.read (| negative |)
+                                  ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -943,9 +1026,10 @@ Module num.
                                         M.get_associated_function (|
                                           Ty.path "core::num::dec2flt::number::Number",
                                           "try_fast_path",
+                                          [],
                                           [ F ]
                                         |),
-                                        [ num ]
+                                        [ M.borrow (| Pointer.Kind.Ref, num |) ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -1029,38 +1113,43 @@ Module num.
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "core::num::dec2flt::common::BiasedFp",
+                                        [],
                                         [ Ty.path "core::num::dec2flt::common::BiasedFp" ],
                                         "ne",
+                                        [],
                                         []
                                       |),
                                       [
-                                        fp;
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (|
-                                              "core::num::dec2flt::lemire::compute_float",
-                                              [],
-                                              [ F ]
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  num,
-                                                  "core::num::dec2flt::number::Number",
-                                                  "exponent"
-                                                |)
-                                              |);
-                                              BinOp.Wrap.add (|
+                                        M.borrow (| Pointer.Kind.Ref, fp |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::num::dec2flt::lemire::compute_float",
+                                                [],
+                                                [ F ]
+                                              |),
+                                              [
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     num,
                                                     "core::num::dec2flt::number::Number",
-                                                    "mantissa"
+                                                    "exponent"
                                                   |)
-                                                |),
-                                                Value.Integer IntegerKind.U64 1
-                                              |)
-                                            ]
+                                                |);
+                                                BinOp.Wrap.add (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      num,
+                                                      "core::num::dec2flt::number::Number",
+                                                      "mantissa"
+                                                    |)
+                                                  |),
+                                                  Value.Integer IntegerKind.U64 1
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -1113,7 +1202,7 @@ Module num.
                                   [],
                                   [ F ]
                                 |),
-                                [ M.read (| s |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -1146,7 +1235,15 @@ Module num.
                             M.write (|
                               float,
                               M.call_closure (|
-                                M.get_trait_method (| "core::ops::arith::Neg", F, [], "neg", [] |),
+                                M.get_trait_method (|
+                                  "core::ops::arith::Neg",
+                                  F,
+                                  [],
+                                  [],
+                                  "neg",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| float |) ]
                               |)
                             |) in

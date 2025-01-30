@@ -23,7 +23,9 @@ Module iter.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
@@ -62,14 +64,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once::Once",
-                          "inner"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::sources::once::Once",
+                                "inner"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -102,17 +114,29 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Once" |);
-                  M.read (| Value.String "inner" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::sources::once::Once",
-                      "inner"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Once" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::sources::once::Once",
+                              "inner"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -152,14 +176,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::sources::once::Once",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::sources::once::Once",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -182,14 +211,19 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::sources::once::Once",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::sources::once::Once",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -230,14 +264,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::sources::once::Once",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::sources::once::Once",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))
@@ -273,14 +312,19 @@ Module iter.
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
+                  [],
                   "len",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::sources::once::Once",
-                    "inner"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::sources::once::Once",
+                      "inner"
+                    |)
                   |)
                 ]
               |)))

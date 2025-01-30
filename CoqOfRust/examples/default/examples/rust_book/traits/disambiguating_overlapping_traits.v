@@ -33,14 +33,19 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
             "core::clone::Clone",
             Ty.path "alloc::string::String",
             [],
+            [],
             "clone",
+            [],
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "disambiguating_overlapping_traits::Form",
-              "username"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "disambiguating_overlapping_traits::Form",
+                "username"
+              |)
             |)
           ]
         |)))
@@ -70,7 +75,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "disambiguating_overlapping_traits::Form",
             "age"
           |)
@@ -120,10 +125,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "alloc::borrow::ToOwned",
                       Ty.path "str",
                       [],
+                      [],
                       "to_owned",
+                      [],
                       []
                     |),
-                    [ M.read (| Value.String "rustacean" |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "rustacean" |) |)
+                      |)
+                    ]
                   |));
                 ("age", Value.Integer IntegerKind.U8 28)
               ]
@@ -135,10 +147,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "disambiguating_overlapping_traits::UsernameWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
                 [],
+                [],
                 "get",
+                [],
                 []
               |),
-              [ form ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, form |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -146,19 +161,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "alloc::string::ToString",
-                        Ty.path "str",
-                        [],
-                        "to_string",
-                        []
-                      |),
-                      [ M.read (| Value.String "rustacean" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "alloc::string::ToString",
+                          Ty.path "str",
+                          [],
+                          [],
+                          "to_string",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "rustacean" |) |)
+                          |)
+                        ]
+                      |)
                     |)
                   |);
-                  username
+                  M.borrow (| Pointer.Kind.Ref, username |)
                 ]
             |),
             [
@@ -181,11 +206,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "alloc::string::String",
+                                      [],
                                       [ Ty.path "alloc::string::String" ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -210,8 +246,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -231,15 +283,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "disambiguating_overlapping_traits::AgeWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
                 [],
+                [],
                 "get",
+                [],
                 []
               |),
-              [ form ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, form |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer IntegerKind.U8 28 |); age ] |),
+            M.alloc (|
+              Value.Tuple
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U8 28 |) |);
+                  M.borrow (| Pointer.Kind.Ref, age |)
+                ]
+            |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -257,8 +318,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)
                               |)) in
@@ -280,8 +341,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

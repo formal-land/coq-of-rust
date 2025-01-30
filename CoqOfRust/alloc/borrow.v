@@ -16,15 +16,27 @@ Module borrow.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -49,10 +61,18 @@ Module borrow.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| target |),
+                M.deref (| M.read (| target |) |),
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::borrow::ToOwned", Self, [], "to_owned", [] |),
-                  [ M.read (| self |) ]
+                  M.get_trait_method (|
+                    "alloc::borrow::ToOwned",
+                    Self,
+                    [],
+                    [],
+                    "to_owned",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -82,8 +102,8 @@ Module borrow.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-            [ M.read (| self |) ]
+            M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -104,8 +124,11 @@ Module borrow.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", T, [], "clone_from", [] |),
-                  [ M.read (| target |); M.read (| self |) ]
+                  M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| target |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -170,7 +193,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -182,7 +205,9 @@ Module borrow.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| b |) ]
+                      Value.StructTuple
+                        "alloc::borrow::Cow::Borrowed"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -191,15 +216,22 @@ Module borrow.
                     let o := M.alloc (| γ0_0 |) in
                     let~ b :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::borrow::Borrow",
-                            Ty.associated,
-                            [ B ],
-                            "borrow",
-                            []
-                          |),
-                          [ M.read (| o |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::borrow::Borrow",
+                                Ty.associated,
+                                [],
+                                [ B ],
+                                "borrow",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| o |) |) |) ]
+                            |)
+                          |)
                         |)
                       |) in
                     M.alloc (|
@@ -211,10 +243,12 @@ Module borrow.
                               "alloc::borrow::ToOwned",
                               B,
                               [],
+                              [],
                               "to_owned",
+                              [],
                               []
                             |),
-                            [ M.read (| b |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
                           |)
                         ]
                     |)))
@@ -265,19 +299,34 @@ Module borrow.
                     let o := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "alloc::borrow::ToOwned", B, [], "clone_into", [] |),
+                        M.get_trait_method (|
+                          "alloc::borrow::ToOwned",
+                          B,
+                          [],
+                          [],
+                          "clone_into",
+                          [],
+                          []
+                        |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::borrow::Borrow",
-                              Ty.associated,
-                              [ B ],
-                              "borrow",
-                              []
-                            |),
-                            [ M.read (| o |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::borrow::Borrow",
+                                  Ty.associated,
+                                  [],
+                                  [ B ],
+                                  "borrow",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| o |) |) |) ]
+                              |)
+                            |)
                           |);
-                          M.read (| dest |)
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
                         ]
                       |)
                     |)));
@@ -288,16 +337,18 @@ Module borrow.
                     let t := M.copy (| γ0_0 |) in
                     let s := M.copy (| γ0_1 |) in
                     M.write (|
-                      M.read (| t |),
+                      M.deref (| M.read (| t |) |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
                           Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     |)))
               ]
@@ -338,7 +389,7 @@ Module borrow.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -380,9 +431,10 @@ Module borrow.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                 "is_borrowed",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -412,84 +464,129 @@ Module borrow.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.read (| self |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "alloc::borrow::Cow::Borrowed",
-                        0
-                      |) in
-                    let borrowed := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.read (|
-                        let~ _ :=
-                          M.write (|
-                            M.read (| self |),
-                            Value.StructTuple
-                              "alloc::borrow::Cow::Owned"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "alloc::borrow::ToOwned",
-                                    B,
-                                    [],
-                                    "to_owned",
-                                    []
-                                  |),
-                                  [ M.read (| borrowed |) ]
-                                |)
-                              ]
-                          |) in
-                        M.alloc (|
-                          M.read (|
-                            M.match_operator (|
-                              M.read (| self |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (| γ, "alloc::borrow::Cow::Borrowed" |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [], [] |),
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.match_operator (|
+                      M.deref (| M.read (| self |) |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloc::borrow::Cow::Borrowed",
+                                0
+                              |) in
+                            let borrowed := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    let~ _ :=
+                                      M.write (|
+                                        M.deref (| M.read (| self |) |),
+                                        Value.StructTuple
+                                          "alloc::borrow::Cow::Owned"
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "alloc::borrow::ToOwned",
+                                                B,
+                                                [],
+                                                [],
+                                                "to_owned",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| borrowed |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
+                                      |) in
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.match_operator (|
+                                              M.deref (| M.read (| self |) |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "alloc::borrow::Cow::Borrowed"
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "internal error: entered unreachable code"
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "alloc::borrow::Cow::Owned",
+                                                        0
+                                                      |) in
+                                                    let owned := M.alloc (| γ0_0 |) in
+                                                    M.alloc (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| owned |) |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)
+                                          |)
                                         |)
                                       |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "alloc::borrow::Cow::Owned",
-                                        0
-                                      |) in
-                                    let owned := M.alloc (| γ0_0 |) in
-                                    M.alloc (| M.read (| owned |) |)))
-                              ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let owned := M.alloc (| γ0_0 |) in
-                    M.alloc (| M.read (| owned |) |)))
-              ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloc::borrow::Cow::Owned",
+                                0
+                              |) in
+                            let owned := M.alloc (| γ0_0 |) in
+                            M.alloc (|
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| owned |) |) |)
+                            |)))
+                      ]
+                    |)
+                  |)
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -528,8 +625,16 @@ Module borrow.
                     let borrowed := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "alloc::borrow::ToOwned", B, [], "to_owned", [] |),
-                        [ M.read (| borrowed |) ]
+                        M.get_trait_method (|
+                          "alloc::borrow::ToOwned",
+                          B,
+                          [],
+                          [],
+                          "to_owned",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrowed |) |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -569,38 +674,57 @@ Module borrow.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.read (| self |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "alloc::borrow::Cow::Borrowed",
-                        0
-                      |) in
-                    let borrowed := M.copy (| γ0_0 |) in
-                    M.alloc (| M.read (| borrowed |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let owned := M.alloc (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::borrow::Borrow",
-                          Ty.associated,
-                          [ B ],
-                          "borrow",
-                          []
-                        |),
-                        [ M.read (| owned |) ]
-                      |)
-                    |)))
-              ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.read (|
+                M.match_operator (|
+                  M.deref (| M.read (| self |) |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloc::borrow::Cow::Borrowed",
+                            0
+                          |) in
+                        let borrowed := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrowed |) |) |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloc::borrow::Cow::Owned",
+                            0
+                          |) in
+                        let owned := M.alloc (| γ0_0 |) in
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::borrow::Borrow",
+                                  Ty.associated,
+                                  [],
+                                  [ B ],
+                                  "borrow",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| owned |) |) |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -652,27 +776,51 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", B, [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -704,27 +852,51 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialEq", B, [ C ], "eq", [] |),
+            M.get_trait_method (| "core::cmp::PartialEq", B, [], [ C ], "eq", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -756,27 +928,51 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
+            M.get_trait_method (| "core::cmp::PartialOrd", B, [], [ B ], "partial_cmp", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -812,7 +1008,7 @@ Module borrow.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -829,10 +1025,15 @@ Module borrow.
                           "core::fmt::Debug",
                           Ty.apply (Ty.path "&") [] [ B ],
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
-                        [ M.read (| b |); M.read (| f |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -842,8 +1043,19 @@ Module borrow.
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::fmt::Debug", Ty.associated, [], "fmt", [] |),
-                        [ M.read (| o |); M.read (| f |) ]
+                        M.get_trait_method (|
+                          "core::fmt::Debug",
+                          Ty.associated,
+                          [],
+                          [],
+                          "fmt",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| o |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -881,7 +1093,7 @@ Module borrow.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -898,10 +1110,15 @@ Module borrow.
                           "core::fmt::Display",
                           Ty.apply (Ty.path "&") [] [ B ],
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
-                        [ M.read (| b |); M.read (| f |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -911,8 +1128,19 @@ Module borrow.
                     let o := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_trait_method (| "core::fmt::Display", Ty.associated, [], "fmt", [] |),
-                        [ M.read (| o |); M.read (| f |) ]
+                        M.get_trait_method (|
+                          "core::fmt::Display",
+                          Ty.associated,
+                          [],
+                          [],
+                          "fmt",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| o |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -947,7 +1175,15 @@ Module borrow.
             "alloc::borrow::Cow::Owned"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.associated, [], "default", [] |),
+                M.get_trait_method (|
+                  "core::default::Default",
+                  Ty.associated,
+                  [],
+                  [],
+                  "default",
+                  [],
+                  []
+                |),
                 []
               |)
             ]))
@@ -979,19 +1215,31 @@ Module borrow.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ H ] |),
+            M.get_trait_method (| "core::hash::Hash", B, [], [], "hash", [], [ H ] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1020,15 +1268,22 @@ Module borrow.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ],
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1067,11 +1322,13 @@ Module borrow.
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "add_assign",
+                    [],
                     []
                   |),
-                  [ self; M.read (| rhs |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                 |)
               |) in
             self
@@ -1112,11 +1369,13 @@ Module borrow.
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                     "add_assign",
+                    [],
                     []
                   |),
-                  [ self; M.read (| rhs |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| rhs |) ]
                 |)
               |) in
             self
@@ -1166,25 +1425,39 @@ Module borrow.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                            M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                                  [],
-                                  "deref",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.write (|
-                      M.read (| self |),
-                      Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| rhs |) ]
+                      M.deref (| M.read (| self |) |),
+                      Value.StructTuple
+                        "alloc::borrow::Cow::Borrowed"
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -1198,8 +1471,18 @@ Module borrow.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
-                                      [ M.read (| rhs |) ]
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "is_empty",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| rhs |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -1211,7 +1494,7 @@ Module borrow.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ := M.read (| self |) in
+                                      (let γ := M.deref (| M.read (| self |) |) in
                                       let γ0_0 :=
                                         M.SubPointer.get_struct_tuple_field (|
                                           γ,
@@ -1225,6 +1508,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1233,17 +1517,29 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| lhs |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| lhs |) |)
+                                                    |)
+                                                  ]
                                                 |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| rhs |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| rhs |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             ]
@@ -1255,14 +1551,21 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
-                                            [ s; M.read (| lhs |) ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, s |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           Value.StructTuple
                                             "alloc::borrow::Cow::Owned"
                                             [ M.read (| s |) ]
@@ -1277,21 +1580,33 @@ Module borrow.
                                   M.get_associated_function (|
                                     Ty.path "alloc::string::String",
                                     "push_str",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::borrow::Cow")
-                                          []
-                                          [ Ty.path "str" ],
-                                        "to_mut",
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::borrow::Cow")
+                                              []
+                                              [ Ty.path "str" ],
+                                            "to_mut",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |);
-                                    M.read (| rhs |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
                                   ]
                                 |)
                               |) in
@@ -1346,23 +1661,35 @@ Module borrow.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                            M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
                             [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                                  [],
-                                  "deref",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.write (| M.read (| self |), M.read (| rhs |) |)));
+                    M.write (| M.deref (| M.read (| self |) |), M.read (| rhs |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -1375,20 +1702,32 @@ Module borrow.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "is_empty",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::borrow::Cow")
-                                              []
-                                              [ Ty.path "str" ],
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [ rhs ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::borrow::Cow")
+                                                  []
+                                                  [ Ty.path "str" ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1402,7 +1741,7 @@ Module borrow.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ := M.read (| self |) in
+                                      (let γ := M.deref (| M.read (| self |) |) in
                                       let γ0_0 :=
                                         M.SubPointer.get_struct_tuple_field (|
                                           γ,
@@ -1416,6 +1755,7 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "with_capacity",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1424,29 +1764,43 @@ Module borrow.
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| lhs |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| lhs |) |)
+                                                    |)
+                                                  ]
                                                 |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.apply
-                                                          (Ty.path "alloc::borrow::Cow")
-                                                          []
-                                                          [ Ty.path "str" ],
-                                                        [],
-                                                        "deref",
-                                                        []
-                                                      |),
-                                                      [ rhs ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::borrow::Cow")
+                                                              []
+                                                              [ Ty.path "str" ],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1460,14 +1814,21 @@ Module borrow.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
-                                            [ s; M.read (| lhs |) ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, s |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| lhs |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           Value.StructTuple
                                             "alloc::borrow::Cow::Owned"
                                             [ M.read (| s |) ]
@@ -1482,32 +1843,56 @@ Module borrow.
                                   M.get_associated_function (|
                                     Ty.path "alloc::string::String",
                                     "push_str",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::borrow::Cow")
-                                          []
-                                          [ Ty.path "str" ],
-                                        "to_mut",
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::borrow::Cow")
+                                              []
+                                              [ Ty.path "str" ],
+                                            "to_mut",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |);
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::borrow::Cow")
-                                          []
-                                          [ Ty.path "str" ],
-                                        [],
-                                        "deref",
-                                        []
-                                      |),
-                                      [ rhs ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "alloc::borrow::Cow")
+                                              []
+                                              [ Ty.path "str" ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, rhs |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)

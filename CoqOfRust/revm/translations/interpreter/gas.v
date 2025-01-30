@@ -38,7 +38,7 @@ Module gas.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
                       ]
                     |)))
@@ -81,35 +81,71 @@ Module gas.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field4_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "Gas" |);
-              M.read (| Value.String "limit" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::gas::Gas",
-                "limit"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Gas" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "limit" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::Gas",
+                      "limit"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "remaining" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::gas::Gas",
-                "remaining"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "remaining" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::Gas",
+                      "remaining"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "refunded" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::gas::Gas",
-                "refunded"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "refunded" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::Gas",
+                      "refunded"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "memory" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::gas::Gas",
-                  "memory"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "memory" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "memory"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -142,7 +178,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -153,7 +191,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -164,7 +204,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "i64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -175,7 +217,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -219,14 +263,14 @@ Module gas.
                 BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "revm_interpreter::gas::Gas",
                       "limit"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "revm_interpreter::gas::Gas",
                       "limit"
                     |)
@@ -236,14 +280,14 @@ Module gas.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "revm_interpreter::gas::Gas",
                         "remaining"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "revm_interpreter::gas::Gas",
                         "remaining"
                       |)
@@ -254,14 +298,14 @@ Module gas.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "revm_interpreter::gas::Gas",
                       "refunded"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "revm_interpreter::gas::Gas",
                       "refunded"
                     |)
@@ -273,20 +317,28 @@ Module gas.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::gas::MemoryGas",
+                  [],
                   [ Ty.path "revm_interpreter::gas::MemoryGas" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::gas::Gas",
-                    "memory"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::Gas",
+                      "memory"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_interpreter::gas::Gas",
-                    "memory"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_interpreter::gas::Gas",
+                      "memory"
+                    |)
                   |)
                 ]
               |)))
@@ -361,42 +413,90 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::gas::Gas",
-                      "limit"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::gas::Gas",
+                            "limit"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::gas::Gas",
-                      "remaining"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::gas::Gas",
+                            "remaining"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "i64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "i64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::gas::Gas",
-                      "refunded"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::gas::Gas",
+                            "refunded"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -406,16 +506,26 @@ Module gas.
                   "core::hash::Hash",
                   Ty.path "revm_interpreter::gas::MemoryGas",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::gas::Gas",
-                    "memory"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "memory"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -460,6 +570,7 @@ Module gas.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -496,6 +607,7 @@ Module gas.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::gas::MemoryGas",
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -518,7 +630,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "revm_interpreter::gas::Gas",
               "limit"
             |)
@@ -556,7 +668,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "revm_interpreter::gas::Gas",
               "refunded"
             |)
@@ -579,14 +691,14 @@ Module gas.
           BinOp.Wrap.sub (|
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::gas::Gas",
                 "limit"
               |)
             |),
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::gas::Gas",
                 "remaining"
               |)
@@ -609,7 +721,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "revm_interpreter::gas::Gas",
               "remaining"
             |)
@@ -632,7 +744,7 @@ Module gas.
           BinOp.Wrap.sub (|
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::gas::Gas",
                 "remaining"
               |)
@@ -640,7 +752,7 @@ Module gas.
             BinOp.Wrap.div (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |)
@@ -669,7 +781,7 @@ Module gas.
             let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |) in
@@ -695,7 +807,7 @@ Module gas.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |),
@@ -723,7 +835,7 @@ Module gas.
             let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |) in
@@ -767,31 +879,35 @@ Module gas.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |),
-                M.rust_cast
+                M.cast
+                  (Ty.path "i64")
                   (M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "min", [] |),
+                    M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "min", [], [] |),
                     [
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "refunded",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |));
                       BinOp.Wrap.div (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |),
                         M.read (| max_refund_quotient |)
                       |)
@@ -821,7 +937,7 @@ Module gas.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |),
@@ -854,11 +970,11 @@ Module gas.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [] |),
+                  M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "revm_interpreter::gas::Gas",
                         "remaining"
                       |)
@@ -890,7 +1006,7 @@ Module gas.
                               let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "revm_interpreter::gas::Gas",
                                     "remaining"
                                   |),
@@ -937,13 +1053,17 @@ Module gas.
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::gas::MemoryGas",
                         "record_new_len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::gas::Gas",
-                          "memory"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::gas::Gas",
+                            "memory"
+                          |)
                         |);
                         M.read (| new_len |)
                       ]
@@ -973,9 +1093,16 @@ Module gas.
                                             M.get_associated_function (|
                                               Ty.path "revm_interpreter::gas::Gas",
                                               "record_cost",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self |); M.read (| additional_cost |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| additional_cost |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
@@ -1065,7 +1192,7 @@ Module gas.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                      [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
               ]
             |)
@@ -1109,7 +1236,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "usize",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -1120,7 +1249,9 @@ Module gas.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -1151,23 +1282,46 @@ Module gas.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MemoryGas" |);
-              M.read (| Value.String "words_num" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::gas::MemoryGas",
-                "words_num"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "MemoryGas" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "words_num" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::MemoryGas",
+                      "words_num"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| Value.String "expansion_cost" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::gas::MemoryGas",
-                  "expansion_cost"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "expansion_cost" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::MemoryGas",
+                          "expansion_cost"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1208,14 +1362,14 @@ Module gas.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::MemoryGas",
                   "words_num"
                 |)
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
+                  M.deref (| M.read (| other |) |),
                   "revm_interpreter::gas::MemoryGas",
                   "words_num"
                 |)
@@ -1225,14 +1379,14 @@ Module gas.
               (BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "revm_interpreter::gas::MemoryGas",
                     "expansion_cost"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "revm_interpreter::gas::MemoryGas",
                     "expansion_cost"
                   |)
@@ -1302,27 +1456,59 @@ Module gas.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "usize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::gas::MemoryGas",
-                      "words_num"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::gas::MemoryGas",
+                            "words_num"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u64",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::gas::MemoryGas",
-                    "expansion_cost"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::MemoryGas",
+                          "expansion_cost"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -1399,7 +1585,7 @@ Module gas.
                                   M.read (| new_num |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "revm_interpreter::gas::MemoryGas",
                                       "words_num"
                                     |)
@@ -1421,7 +1607,7 @@ Module gas.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "revm_interpreter::gas::MemoryGas",
                       "words_num"
                     |),
@@ -1439,12 +1625,23 @@ Module gas.
                     M.call_closure (|
                       M.get_function (| "core::mem::swap", [], [ Ty.path "u64" ] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::gas::MemoryGas",
-                          "expansion_cost"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::gas::MemoryGas",
+                                "expansion_cost"
+                              |)
+                            |)
+                          |)
                         |);
-                        cost
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, cost |) |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1455,7 +1652,7 @@ Module gas.
                       BinOp.Wrap.sub (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "revm_interpreter::gas::MemoryGas",
                             "expansion_cost"
                           |)

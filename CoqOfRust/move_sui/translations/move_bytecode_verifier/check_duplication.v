@@ -35,6 +35,7 @@ Module check_duplication.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               "map_err",
+              [],
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
@@ -47,9 +48,10 @@ Module check_duplication.
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                   "verify_module_impl",
+                  [],
                   []
                 |),
-                [ M.read (| module |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -67,6 +69,7 @@ Module check_duplication.
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
+                                    [],
                                     []
                                   |),
                                   [
@@ -79,9 +82,15 @@ Module check_duplication.
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
                                             "self_id",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| module |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| module |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
                                   ]
@@ -137,7 +146,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -146,16 +157,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_identifiers",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "identifiers",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "identifiers",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -186,6 +209,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -196,6 +220,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -227,7 +252,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -236,16 +263,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_address_identifiers",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "address_identifiers",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "address_identifiers",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -276,6 +315,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -286,6 +326,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -317,7 +358,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -326,16 +369,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_constants",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "constant_pool",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "constant_pool",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -366,6 +421,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -376,6 +432,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -407,7 +464,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -416,16 +475,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_signatures",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "signatures",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "signatures",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -456,6 +527,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -466,6 +538,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -497,7 +570,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -506,16 +581,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_module_handles",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "module_handles",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "module_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -546,6 +633,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -556,6 +644,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -587,7 +676,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -596,16 +687,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_module_handles",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "friend_decls",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "friend_decls",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -636,6 +739,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -646,6 +750,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -677,7 +782,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -686,16 +793,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_struct_handles",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "struct_handles",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "struct_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -726,6 +845,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -736,6 +856,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -767,7 +888,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -776,16 +899,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_handles",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "function_handles",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "function_handles",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -816,6 +951,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -826,6 +962,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -857,7 +994,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -866,16 +1005,28 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_instantiations",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "function_instantiations",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "function_instantiations",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -906,6 +1057,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -916,6 +1068,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -953,7 +1106,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -962,9 +1117,10 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_field_handles",
+                              [],
                               []
                             |),
-                            [ checker ]
+                            [ M.borrow (| Pointer.Kind.Ref, checker |) ]
                           |)
                         ]
                       |)
@@ -993,6 +1149,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1003,6 +1160,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1034,7 +1192,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1043,9 +1203,10 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_field_instantiations",
+                              [],
                               []
                             |),
-                            [ checker ]
+                            [ M.borrow (| Pointer.Kind.Ref, checker |) ]
                           |)
                         ]
                       |)
@@ -1074,6 +1235,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1084,6 +1246,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1115,7 +1278,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1124,9 +1289,10 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_function_defintions",
+                              [],
                               []
                             |),
-                            [ checker ]
+                            [ M.borrow (| Pointer.Kind.Ref, checker |) ]
                           |)
                         ]
                       |)
@@ -1155,6 +1321,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1165,6 +1332,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1196,7 +1364,9 @@ Module check_duplication.
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -1205,9 +1375,10 @@ Module check_duplication.
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
                               "check_struct_definitions",
+                              [],
                               []
                             |),
-                            [ checker ]
+                            [ M.borrow (| Pointer.Kind.Ref, checker |) ]
                           |)
                         ]
                       |)
@@ -1236,6 +1407,7 @@ Module check_duplication.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -1246,6 +1418,7 @@ Module check_duplication.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -1271,9 +1444,10 @@ Module check_duplication.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                       "check_struct_instantiations",
+                      [],
                       []
                     |),
-                    [ checker ]
+                    [ M.borrow (| Pointer.Kind.Ref, checker |) ]
                   |)
                 |)
               |)))
@@ -1308,6 +1482,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1394,6 +1569,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1478,6 +1654,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1560,6 +1737,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1642,6 +1820,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1724,6 +1903,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
@@ -1760,7 +1940,9 @@ Module check_duplication.
                           []
                           [ Ty.path "move_binary_format::file_format::StructHandle" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -1792,9 +1974,15 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::StructHandle" ],
                             "iter",
+                            [],
                             []
                           |),
-                          [ M.read (| struct_handles |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| struct_handles |) |)
+                            |)
+                          ]
                         |);
                         M.closure
                           (fun γ =>
@@ -1812,14 +2000,14 @@ Module check_duplication.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::StructHandle",
                                                   "module"
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::StructHandle",
                                                   "name"
                                                 |)
@@ -1907,6 +2095,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -1991,6 +2180,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
@@ -2027,7 +2217,9 @@ Module check_duplication.
                           []
                           [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.tuple
                             [
@@ -2059,9 +2251,15 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                             "iter",
+                            [],
                             []
                           |),
-                          [ M.read (| function_handles |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| function_handles |) |)
+                            |)
+                          ]
                         |);
                         M.closure
                           (fun γ =>
@@ -2079,14 +2277,14 @@ Module check_duplication.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::FunctionHandle",
                                                   "module"
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::FunctionHandle",
                                                   "name"
                                                 |)
@@ -2168,6 +2366,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -2185,14 +2384,20 @@ Module check_duplication.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "field_handles",
+                        [],
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                "module"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -2271,6 +2476,7 @@ Module check_duplication.
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "&")
@@ -2288,14 +2494,20 @@ Module check_duplication.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_instantiations",
+                        [],
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                            "module"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                "module"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -2385,6 +2597,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2405,14 +2618,20 @@ Module check_duplication.
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "field_instantiations",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                          "module"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                              "module"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -2552,6 +2771,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
@@ -2594,7 +2814,9 @@ Module check_duplication.
                                             "move_binary_format::file_format::StructDefinition"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path
                                           "move_binary_format::file_format::StructHandleIndex";
@@ -2626,25 +2848,37 @@ Module check_duplication.
                                                 "move_binary_format::file_format::StructDefinition"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::file_format::CompiledModule",
-                                              "struct_defs",
-                                              []
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                  "module"
-                                                |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "struct_defs",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                          "module"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -2662,7 +2896,7 @@ Module check_duplication.
                                                         (let x := M.copy (| γ |) in
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| x |),
+                                                            M.deref (| M.read (| x |) |),
                                                             "move_binary_format::file_format::StructDefinition",
                                                             "struct_handle"
                                                           |)
@@ -2731,7 +2965,9 @@ Module check_duplication.
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2743,7 +2979,9 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -2755,24 +2993,37 @@ Module check_duplication.
                                       [ Ty.path "move_binary_format::file_format::StructDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "struct_defs",
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                            "module"
-                                          |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "struct_defs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                    "module"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2806,10 +3057,17 @@ Module check_duplication.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2839,10 +3097,13 @@ Module check_duplication.
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| struct_def |),
-                                                    "move_binary_format::file_format::StructDefinition",
-                                                    "field_information"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| struct_def |) |),
+                                                      "move_binary_format::file_format::StructDefinition",
+                                                      "field_information"
+                                                    |)
                                                   |)
                                                 |),
                                                 [
@@ -2893,9 +3154,15 @@ Module check_duplication.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "is_empty",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| fields |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| fields |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -2923,7 +3190,8 @@ Module check_duplication.
                                                                     Value.StructTuple
                                                                       "move_binary_format::IndexKind::StructDefinition"
                                                                       [];
-                                                                    M.rust_cast
+                                                                    M.cast
+                                                                      (Ty.path "u16")
                                                                       (M.read (| struct_idx |))
                                                                   ]
                                                                 |)
@@ -2948,6 +3216,7 @@ Module check_duplication.
                                                           Ty.path
                                                             "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                                           "first_duplicate_element",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
@@ -2992,7 +3261,9 @@ Module check_duplication.
                                                                     "move_binary_format::file_format::FieldDefinition"
                                                                 ],
                                                               [],
+                                                              [],
                                                               "map",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::IdentifierIndex";
@@ -3024,26 +3295,42 @@ Module check_duplication.
                                                                         "move_binary_format::file_format::FieldDefinition"
                                                                     ],
                                                                   "iter",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FieldDefinition";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          [],
+                                                                          "deref",
+                                                                          [],
+                                                                          []
+                                                                        |),
                                                                         [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::FieldDefinition";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      "deref",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| fields |) ]
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| fields |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |);
@@ -3062,7 +3349,9 @@ Module check_duplication.
                                                                                   M.copy (| γ |) in
                                                                                 M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
-                                                                                    M.read (| x |),
+                                                                                    M.deref (|
+                                                                                      M.read (| x |)
+                                                                                    |),
                                                                                     "move_binary_format::file_format::FieldDefinition",
                                                                                     "name"
                                                                                   |)
@@ -3139,7 +3428,9 @@ Module check_duplication.
                                     []
                                     [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -3158,38 +3449,53 @@ Module check_duplication.
                                   ]
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::StructDefinition"
-                                          ],
-                                        "iter",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "struct_defs",
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                "module"
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructDefinition"
+                                            ],
+                                          "iter",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "struct_defs",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                          "module"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |)
-                                          ]
-                                        |)
-                                      ]
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |);
                                   M.closure
@@ -3209,59 +3515,85 @@ Module check_duplication.
                                                         "core::cmp::PartialEq",
                                                         Ty.path
                                                           "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::ModuleHandleIndex"
                                                         ],
                                                         "ne",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule",
-                                                              "struct_handle_at",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                  "module"
-                                                                |)
-                                                              |);
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| x |),
-                                                                  "move_binary_format::file_format::StructDefinition",
-                                                                  "struct_handle"
-                                                                |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CompiledModule",
+                                                                  "struct_handle_at",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                          "module"
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (| M.read (| x |) |),
+                                                                      "move_binary_format::file_format::StructDefinition",
+                                                                      "struct_handle"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            ]
-                                                          |),
-                                                          "move_binary_format::file_format::StructHandle",
-                                                          "module"
+                                                            |),
+                                                            "move_binary_format::file_format::StructHandle",
+                                                            "module"
+                                                          |)
                                                         |);
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule",
-                                                              "self_handle_idx",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                  "module"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::CompiledModule",
+                                                                "self_handle_idx",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)
-                                                              |)
-                                                            ]
+                                                              ]
+                                                            |)
                                                           |)
                                                         |)
                                                       ]
@@ -3300,7 +3632,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructDefinition"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -3338,7 +3670,9 @@ Module check_duplication.
                               (Ty.path "move_binary_format::file_format::StructHandleIndex")
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
@@ -3358,7 +3692,9 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "move_binary_format::file_format::StructHandleIndex";
                               Ty.function
@@ -3385,24 +3721,36 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "struct_defs",
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                        "module"
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "struct_defs",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                "module"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |);
@@ -3420,7 +3768,7 @@ Module check_duplication.
                                               (let x := M.copy (| γ |) in
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::StructDefinition",
                                                   "struct_handle"
                                                 |)
@@ -3450,49 +3798,66 @@ Module check_duplication.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      [
-                                        ("start", Value.Integer IntegerKind.Usize 0);
-                                        ("end_",
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructHandle"
-                                                ],
-                                              "len",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_binary_format::file_format::CompiledModule",
-                                                  "struct_handles",
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      Value.StructRecord
+                                        "core::ops::range::Range"
+                                        [
+                                          ("start", Value.Integer IntegerKind.Usize 0);
+                                          ("end_",
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "slice")
                                                   []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                      "module"
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructHandle"
+                                                  ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::CompiledModule",
+                                                        "struct_handles",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                "module"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |))
-                                      ]
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
                                   |);
                                   M.closure
                                     (fun γ =>
@@ -3514,9 +3879,14 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::StructHandleIndex",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -3526,53 +3896,79 @@ Module check_duplication.
                                                               "core::cmp::PartialEq",
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
                                                               ],
                                                               "eq",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                    "struct_handle_at",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                        "module"
-                                                                      |)
-                                                                    |);
-                                                                    M.read (| y |)
-                                                                  ]
-                                                                |),
-                                                                "move_binary_format::file_format::StructHandle",
-                                                                "module"
-                                                              |);
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                    "self_handle_idx",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                        "module"
-                                                                      |)
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "struct_handle_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                                "module"
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.read (| y |)
+                                                                      ]
                                                                     |)
-                                                                  ]
+                                                                  |),
+                                                                  "move_binary_format::file_format::StructHandle",
+                                                                  "module"
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                      "self_handle_idx",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                              "module"
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 |)
                                                               |)
                                                             ]
@@ -3592,12 +3988,27 @@ Module check_duplication.
                                                                         "std::hash::random::RandomState"
                                                                     ],
                                                                   "contains",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::file_format::StructHandleIndex"
                                                                   ]
                                                                 |),
-                                                                [ implemented_struct_handles; y ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    implemented_struct_handles
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        y
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)))
                                                         |)
@@ -3637,7 +4048,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::StructHandle"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -3736,6 +4147,7 @@ Module check_duplication.
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
                                   "first_duplicate_element",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
@@ -3778,7 +4190,9 @@ Module check_duplication.
                                             "move_binary_format::file_format::FunctionDefinition"
                                         ],
                                       [],
+                                      [],
                                       "map",
+                                      [],
                                       [
                                         Ty.path
                                           "move_binary_format::file_format::FunctionHandleIndex";
@@ -3810,25 +4224,37 @@ Module check_duplication.
                                                 "move_binary_format::file_format::FunctionDefinition"
                                             ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "move_binary_format::file_format::CompiledModule",
-                                              "function_defs",
-                                              []
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                  "module"
-                                                |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "function_defs",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                          "module"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -3846,7 +4272,7 @@ Module check_duplication.
                                                         (let x := M.copy (| γ |) in
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| x |),
+                                                            M.deref (| M.read (| x |) |),
                                                             "move_binary_format::file_format::FunctionDefinition",
                                                             "function"
                                                           |)
@@ -3915,7 +4341,9 @@ Module check_duplication.
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -3927,7 +4355,9 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -3941,24 +4371,37 @@ Module check_duplication.
                                           "move_binary_format::file_format::FunctionDefinition"
                                       ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "function_defs",
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                            "module"
-                                          |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "function_defs",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                    "module"
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -3992,10 +4435,17 @@ Module check_duplication.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -4033,31 +4483,44 @@ Module check_duplication.
                                                         "move_binary_format::file_format::StructDefinitionIndex"
                                                     ],
                                                   "iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
-                                                        []
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefinitionIndex";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "deref",
+                                                          [],
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefinitionIndex";
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ],
-                                                      [],
-                                                      "deref",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| function_def |),
-                                                        "move_binary_format::file_format::FunctionDefinition",
-                                                        "acquires_global_resources"
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (|
+                                                                M.read (| function_def |)
+                                                              |),
+                                                              "move_binary_format::file_format::FunctionDefinition",
+                                                              "acquires_global_resources"
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
-                                                    ]
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -4077,27 +4540,32 @@ Module check_duplication.
                                                               []
                                                               [ Ty.path "u16" ],
                                                             "is_some",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                  "first_duplicate_element",
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::slice::iter::Iter")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::StructDefinitionIndex"
-                                                                      ]
-                                                                  ]
-                                                                |),
-                                                                [ M.read (| acquires |) ]
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                    "first_duplicate_element",
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::slice::iter::Iter")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructDefinitionIndex"
+                                                                        ]
+                                                                    ]
+                                                                  |),
+                                                                  [ M.read (| acquires |) ]
+                                                                |)
                                                               |)
                                                             |)
                                                           ]
@@ -4128,7 +4596,9 @@ Module check_duplication.
                                                                   Value.StructTuple
                                                                     "move_binary_format::IndexKind::FunctionDefinition"
                                                                     [];
-                                                                  M.rust_cast (M.read (| idx |))
+                                                                  M.cast
+                                                                    (Ty.path "u16")
+                                                                    (M.read (| idx |))
                                                                 ]
                                                               |)
                                                             ]
@@ -4163,7 +4633,9 @@ Module check_duplication.
                                     [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -4182,38 +4654,53 @@ Module check_duplication.
                                   ]
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FunctionDefinition"
-                                          ],
-                                        "iter",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_binary_format::file_format::CompiledModule",
-                                            "function_defs",
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
                                             []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                "module"
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ],
+                                          "iter",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CompiledModule",
+                                                  "function_defs",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                          "module"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |)
-                                          ]
-                                        |)
-                                      ]
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |);
                                   M.closure
@@ -4233,59 +4720,85 @@ Module check_duplication.
                                                         "core::cmp::PartialEq",
                                                         Ty.path
                                                           "move_binary_format::file_format::ModuleHandleIndex",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::ModuleHandleIndex"
                                                         ],
                                                         "ne",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule",
-                                                              "function_handle_at",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                  "module"
-                                                                |)
-                                                              |);
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| x |),
-                                                                  "move_binary_format::file_format::FunctionDefinition",
-                                                                  "function"
-                                                                |)
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CompiledModule",
+                                                                  "function_handle_at",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                          "module"
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (| M.read (| x |) |),
+                                                                      "move_binary_format::file_format::FunctionDefinition",
+                                                                      "function"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            ]
-                                                          |),
-                                                          "move_binary_format::file_format::FunctionHandle",
-                                                          "module"
+                                                            |),
+                                                            "move_binary_format::file_format::FunctionHandle",
+                                                            "module"
+                                                          |)
                                                         |);
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "move_binary_format::file_format::CompiledModule",
-                                                              "self_handle_idx",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                  "module"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::CompiledModule",
+                                                                "self_handle_idx",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                        "module"
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)
-                                                              |)
-                                                            ]
+                                                              ]
+                                                            |)
                                                           |)
                                                         |)
                                                       ]
@@ -4324,7 +4837,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionDefinition"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -4364,7 +4877,9 @@ Module check_duplication.
                               (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
@@ -4384,7 +4899,9 @@ Module check_duplication.
                               []
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                             [],
+                            [],
                             "map",
+                            [],
                             [
                               Ty.path "move_binary_format::file_format::FunctionHandleIndex";
                               Ty.function
@@ -4411,24 +4928,36 @@ Module check_duplication.
                                   []
                                   [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::CompiledModule",
-                                    "function_defs",
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                        "module"
-                                      |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "function_defs",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                "module"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |);
@@ -4446,7 +4975,7 @@ Module check_duplication.
                                               (let x := M.copy (| γ |) in
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| x |),
+                                                  M.deref (| M.read (| x |) |),
                                                   "move_binary_format::file_format::FunctionDefinition",
                                                   "function"
                                                 |)
@@ -4476,49 +5005,66 @@ Module check_duplication.
                                     []
                                     [ Ty.path "usize" ],
                                   [],
+                                  [],
                                   "position",
+                                  [],
                                   [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
-                                      [
-                                        ("start", Value.Integer IntegerKind.Usize 0);
-                                        ("end_",
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionHandle"
-                                                ],
-                                              "len",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_binary_format::file_format::CompiledModule",
-                                                  "function_handles",
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      Value.StructRecord
+                                        "core::ops::range::Range"
+                                        [
+                                          ("start", Value.Integer IntegerKind.Usize 0);
+                                          ("end_",
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "slice")
                                                   []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                      "module"
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::CompiledModule",
+                                                        "function_handles",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                "module"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |))
-                                      ]
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
                                   |);
                                   M.closure
                                     (fun γ =>
@@ -4540,9 +5086,14 @@ Module check_duplication.
                                                               Ty.path
                                                                 "move_binary_format::file_format::FunctionHandleIndex",
                                                               "new",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.rust_cast (M.read (| x |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| x |))
+                                                            ]
                                                           |)
                                                         |) in
                                                       M.alloc (|
@@ -4552,53 +5103,79 @@ Module check_duplication.
                                                               "core::cmp::PartialEq",
                                                               Ty.path
                                                                 "move_binary_format::file_format::ModuleHandleIndex",
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "move_binary_format::file_format::ModuleHandleIndex"
                                                               ],
                                                               "eq",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                    "function_handle_at",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                        "module"
-                                                                      |)
-                                                                    |);
-                                                                    M.read (| y |)
-                                                                  ]
-                                                                |),
-                                                                "move_binary_format::file_format::FunctionHandle",
-                                                                "module"
-                                                              |);
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::CompiledModule",
-                                                                    "self_handle_idx",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "move_bytecode_verifier::check_duplication::DuplicationChecker",
-                                                                        "module"
-                                                                      |)
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::CompiledModule",
+                                                                        "function_handle_at",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                                "module"
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.read (| y |)
+                                                                      ]
                                                                     |)
-                                                                  ]
+                                                                  |),
+                                                                  "move_binary_format::file_format::FunctionHandle",
+                                                                  "module"
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::CompiledModule",
+                                                                      "self_handle_idx",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "move_bytecode_verifier::check_duplication::DuplicationChecker",
+                                                                              "module"
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 |)
                                                               |)
                                                             ]
@@ -4618,12 +5195,27 @@ Module check_duplication.
                                                                         "std::hash::random::RandomState"
                                                                     ],
                                                                   "contains",
+                                                                  [],
                                                                   [
                                                                     Ty.path
                                                                       "move_binary_format::file_format::FunctionHandleIndex"
                                                                   ]
                                                                 |),
-                                                                [ implemented_function_handles; y ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    implemented_function_handles
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        y
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)))
                                                         |)
@@ -4663,7 +5255,7 @@ Module check_duplication.
                                           Value.StructTuple
                                             "move_binary_format::IndexKind::FunctionHandle"
                                             [];
-                                          M.rust_cast (M.read (| idx |))
+                                          M.cast (Ty.path "u16") (M.read (| idx |))
                                         ]
                                       |)
                                     ]
@@ -4715,6 +5307,7 @@ Module check_duplication.
                           []
                           [ Ty.associated; Ty.path "std::hash::random::RandomState" ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -4732,7 +5325,9 @@ Module check_duplication.
                               []
                               [ Ty.associated ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -4741,7 +5336,9 @@ Module check_duplication.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.associated,
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -4750,7 +5347,9 @@ Module check_duplication.
                                     "core::iter::traits::collect::IntoIterator",
                                     T,
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| iter |) ]
@@ -4777,10 +5376,17 @@ Module check_duplication.
                                             []
                                             [ Ty.associated ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -4827,9 +5433,16 @@ Module check_duplication.
                                                                     "std::hash::random::RandomState"
                                                                 ],
                                                               "insert",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ uniq; M.read (| x |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                uniq
+                                                              |);
+                                                              M.read (| x |)
+                                                            ]
                                                           |)
                                                         |)
                                                       |)) in
@@ -4844,7 +5457,11 @@ Module check_duplication.
                                                         M.return_ (|
                                                           Value.StructTuple
                                                             "core::option::Option::Some"
-                                                            [ M.rust_cast (M.read (| i |)) ]
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "u16")
+                                                                (M.read (| i |))
+                                                            ]
                                                         |)
                                                       |)
                                                     |)

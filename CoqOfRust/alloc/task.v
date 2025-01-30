@@ -18,7 +18,7 @@ Module task.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::Wake", Self, [], "wake", [] |),
+                  M.get_trait_method (| "alloc::task::Wake", Self, [], [], "wake", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -28,10 +28,12 @@ Module task.
                           []
                           [ Self; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -62,7 +64,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::task::wake::Waker", "from_raw", [] |),
+            M.get_associated_function (| Ty.path "core::task::wake::Waker", "from_raw", [], [] |),
             [
               M.call_closure (|
                 M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
@@ -163,37 +165,49 @@ Module task.
       ltac:(M.monadic
         (let waker := M.alloc (| waker |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+          M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
+                  [],
                   []
                 |),
                 [ M.read (| waker |) ]
               |));
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::task::wake::RawWakerVTable",
-                  "new",
-                  []
-                |),
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
-                ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::task::wake::RawWakerVTable",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
+                      ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -225,37 +239,47 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "increment_strong_count",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.read (| waker |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::task::wake::RawWakerVTable",
-                        "new",
-                        []
-                      |),
-                      [
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::task::wake::RawWakerVTable",
+                              "new",
+                              [],
+                              []
+                            |),
+                            [
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
+                            ]
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -285,15 +309,16 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::Wake", W, [], "wake", [] |),
+                  M.get_trait_method (| "alloc::task::Wake", W, [], [], "wake", [], [] |),
                   [ M.read (| waker |) ]
                 |)
               |) in
@@ -330,6 +355,7 @@ Module task.
                           [ W; Ty.path "alloc::alloc::Global" ]
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -340,9 +366,10 @@ Module task.
                           []
                           [ W; Ty.path "alloc::alloc::Global" ],
                         "from_raw",
+                        [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| waker |)) ]
+                      [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                     |)
                   ]
                 |)
@@ -350,25 +377,37 @@ Module task.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::Wake", W, [], "wake_by_ref", [] |),
+                  M.get_trait_method (| "alloc::task::Wake", W, [], [], "wake_by_ref", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
                             Ty.apply
-                              (Ty.path "alloc::sync::Arc")
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
                               []
-                              [ W; Ty.path "alloc::alloc::Global" ]
-                          ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ waker ]
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::sync::Arc")
+                                  []
+                                  [ W; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, waker |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -397,9 +436,10 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "decrement_strong_count",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -426,7 +466,7 @@ Module task.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::LocalWake", Self, [], "wake", [] |),
+                  M.get_trait_method (| "alloc::task::LocalWake", Self, [], [], "wake", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -436,10 +476,12 @@ Module task.
                           []
                           [ Self; Ty.path "alloc::alloc::Global" ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -470,7 +512,12 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::task::wake::LocalWaker", "from_raw", [] |),
+            M.get_associated_function (|
+              Ty.path "core::task::wake::LocalWaker",
+              "from_raw",
+              [],
+              []
+            |),
             [
               M.call_closure (|
                 M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
@@ -566,38 +613,49 @@ Module task.
       ltac:(M.monadic
         (let waker := M.alloc (| waker |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+          M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
+                  [],
                   []
                 |),
                 [ M.read (| waker |) ]
               |));
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::task::wake::RawWakerVTable",
-                  "new",
-                  []
-                |),
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [], [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [], [] |))
-                ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::task::wake::RawWakerVTable",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [], [] |))
+                      ]
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -629,37 +687,59 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "increment_strong_count",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.read (| waker |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::task::wake::RawWakerVTable",
-                        "new",
-                        []
-                      |),
-                      [
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [], [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [], [] |))
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::task::wake::RawWakerVTable",
+                              "new",
+                              [],
+                              []
+                            |),
+                            [
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (|
+                                  "alloc::task::local_raw_waker.clone_waker",
+                                  [],
+                                  []
+                                |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (|
+                                  "alloc::task::local_raw_waker.wake_by_ref",
+                                  [],
+                                  []
+                                |));
+                              (* ReifyFnPointer *)
+                              M.pointer_coercion
+                                (M.get_function (|
+                                  "alloc::task::local_raw_waker.drop_waker",
+                                  [],
+                                  []
+                                |))
+                            ]
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -690,15 +770,16 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::LocalWake", W, [], "wake", [] |),
+                  M.get_trait_method (| "alloc::task::LocalWake", W, [], [], "wake", [], [] |),
                   [ M.read (| waker |) ]
                 |)
               |) in
@@ -731,6 +812,7 @@ Module task.
                       [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ]
                       ],
                     "new",
+                    [],
                     []
                   |),
                   [
@@ -738,9 +820,10 @@ Module task.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                         "from_raw",
+                        [],
                         []
                       |),
-                      [ M.rust_cast (M.read (| waker |)) ]
+                      [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                     |)
                   ]
                 |)
@@ -748,25 +831,45 @@ Module task.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "alloc::task::LocalWake", W, [], "wake_by_ref", [] |),
+                  M.get_trait_method (|
+                    "alloc::task::LocalWake",
+                    W,
+                    [],
+                    [],
+                    "wake_by_ref",
+                    [],
+                    []
+                  |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
                             Ty.apply
-                              (Ty.path "alloc::rc::Rc")
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
                               []
-                              [ W; Ty.path "alloc::alloc::Global" ]
-                          ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ waker ]
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [ W; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, waker |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -796,9 +899,10 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "decrement_strong_count",
+                    [],
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

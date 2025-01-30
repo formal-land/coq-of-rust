@@ -98,10 +98,12 @@ Module interpreter_action.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -131,10 +133,12 @@ Module interpreter_action.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -164,10 +168,12 @@ Module interpreter_action.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -214,9 +220,20 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Call" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -234,9 +251,20 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Create" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Create" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -254,9 +282,20 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "EOFCreate" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EOFCreate" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -303,7 +342,7 @@ Module interpreter_action.
                     [],
                     [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -314,7 +353,7 @@ Module interpreter_action.
                     [],
                     [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -362,6 +401,7 @@ Module interpreter_action.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -378,9 +418,13 @@ Module interpreter_action.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -420,6 +464,7 @@ Module interpreter_action.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -436,9 +481,13 @@ Module interpreter_action.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -478,6 +527,7 @@ Module interpreter_action.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -494,9 +544,13 @@ Module interpreter_action.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -584,7 +638,10 @@ Module interpreter_action.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| self |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -656,10 +713,12 @@ Module interpreter_action.
                               "core::clone::Clone",
                               Ty.path "revm_interpreter::interpreter_action::FrameInput",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -683,10 +742,13 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.path "revm_interpreter::interpreter::InterpreterResult",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |))
                         ]
                     |)));
@@ -746,9 +808,20 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "NewFrame" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NewFrame" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -766,13 +839,23 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field1_finish",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "Return" |);
-                          M.read (| Value.String "result" |);
-                          __self_0
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Return" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "result" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -789,9 +872,16 @@ Module interpreter_action.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "None" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "None" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -858,7 +948,7 @@ Module interpreter_action.
                     [],
                     [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -869,7 +959,7 @@ Module interpreter_action.
                     [],
                     [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -908,6 +998,7 @@ Module interpreter_action.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -915,9 +1006,13 @@ Module interpreter_action.
                                       [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -948,6 +1043,7 @@ Module interpreter_action.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -955,9 +1051,13 @@ Module interpreter_action.
                                       [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1174,9 +1274,10 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                 "is_none",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

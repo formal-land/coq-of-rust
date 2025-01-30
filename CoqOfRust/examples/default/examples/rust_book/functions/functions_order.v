@@ -34,7 +34,12 @@ Module Impl_functions_order_SomeType.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "functions_order::SomeType", "meth2", [] |),
+                M.get_associated_function (|
+                  Ty.path "functions_order::SomeType",
+                  "meth2",
+                  [],
+                  []
+                |),
                 [ M.read (| self |) ]
               |)
             |) in
@@ -78,10 +83,17 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
                 "functions_order::SomeTrait",
                 Ty.path "functions_order::OtherType",
                 [],
+                [],
                 "some_trait_foo",
+                [],
                 []
               |),
-              [ M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "functions_order::OtherType" [ M.read (| b |) ] |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -91,10 +103,17 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
                 "functions_order::SomeTrait",
                 Ty.path "functions_order::SomeType",
                 [],
+                [],
                 "some_trait_foo",
+                [],
                 []
               |),
-              [ M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |) ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.StructTuple "functions_order::SomeType" [ M.read (| u |) ] |)
+                |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -126,10 +145,12 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
             "functions_order::SomeTrait",
             Ty.path "functions_order::SomeType",
             [],
+            [],
             "some_trait_bar",
+            [],
             []
           |),
-          [ M.read (| self |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -286,7 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [] |),
+              M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [], [] |),
               [ Value.StructTuple "functions_order::SomeType" [ Value.Integer IntegerKind.U32 0 ] ]
             |)
           |) in

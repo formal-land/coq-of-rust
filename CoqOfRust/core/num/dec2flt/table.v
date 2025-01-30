@@ -14,7 +14,8 @@ Module num.
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "usize")
                 (BinOp.Wrap.add (|
                   BinOp.Wrap.sub (|
                     M.read (|

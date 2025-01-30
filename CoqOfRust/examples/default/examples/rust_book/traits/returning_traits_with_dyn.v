@@ -105,6 +105,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         [ Ty.path "returning_traits_with_dyn::Sheep"; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
@@ -121,6 +122,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
@@ -165,43 +167,84 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "You've randomly chosen an animal, and it says "
-                            |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "You've randomly chosen an animal, and it says "
+                                  |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "returning_traits_with_dyn::Animal",
-                                      Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ],
-                                      [],
-                                      "noise",
-                                      []
-                                    |),
-                                    [ M.read (| animal |) ]
-                                  |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "returning_traits_with_dyn::Animal",
+                                                  Ty.dyn
+                                                    [
+                                                      ("returning_traits_with_dyn::Animal::Trait",
+                                                        [])
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "noise",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| animal |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

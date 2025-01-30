@@ -27,7 +27,15 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           M.write (|
             x,
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", impl_Default, [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                impl_Default,
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           |) in
@@ -36,7 +44,15 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           M.write (|
             y,
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", impl_Default'1, [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                impl_Default'1,
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           |) in
@@ -50,6 +66,7 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                   []
                   [ Ty.tuple [ impl_Default; impl_Default'1; A ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]

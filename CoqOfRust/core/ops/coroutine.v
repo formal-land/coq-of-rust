@@ -54,8 +54,17 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", Y, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Y,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -74,8 +83,17 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", R, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                R,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)))
@@ -141,7 +159,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -152,7 +170,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -188,11 +206,16 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Y ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ Y ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -220,11 +243,16 @@ Module ops.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ R ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ R ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -281,7 +309,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -292,7 +320,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -323,11 +351,16 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
+                            [],
                             [ Y ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -355,11 +388,16 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             R,
+                            [],
                             [ R ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -369,11 +407,22 @@ Module ops.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ __self_discr; __arg1_discr ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -455,7 +504,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -466,14 +515,31 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_discr; __arg1_discr ]
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
                   |)
                 |),
                 [
@@ -505,8 +571,25 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", Y, [], "cmp", [] |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    Y,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -531,8 +614,25 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", R, [], "cmp", [] |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    R,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -597,9 +697,20 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Yielded" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Yielded" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -617,9 +728,20 @@ Module ops.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Complete" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Complete" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -658,7 +780,7 @@ Module ops.
                       [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -668,10 +790,18 @@ Module ops.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -689,8 +819,19 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", Y, [], "hash", [ __H ] |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            Y,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -705,8 +846,19 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", R, [], "hash", [ __H ] |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            R,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -750,37 +902,53 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
-              M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+              M.get_trait_method (|
+                "core::ops::coroutine::Coroutine",
+                G,
+                [],
+                [ R ],
+                "resume",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "as_mut",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::DerefMut",
                             Ty.apply
-                              (Ty.path "&mut")
+                              (Ty.path "core::pin::Pin")
                               []
                               [
                                 Ty.apply
-                                  (Ty.path "core::pin::Pin")
+                                  (Ty.path "&mut")
                                   []
-                                  [ Ty.apply (Ty.path "&mut") [] [ G ] ]
-                              ]
-                          ],
-                        [],
-                        "deref_mut",
-                        []
-                      |),
-                      [ self ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::pin::Pin")
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ G ] ]
+                                  ]
+                              ],
+                            [],
+                            [],
+                            "deref_mut",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |);
@@ -826,28 +994,56 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
-              M.get_trait_method (| "core::ops::coroutine::Coroutine", G, [ R ], "resume", [] |),
+              M.get_trait_method (|
+                "core::ops::coroutine::Coroutine",
+                G,
+                [],
+                [ R ],
+                "resume",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "new",
+                    [],
                     []
                   |),
                   [
-                    M.read (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ] ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [ self ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.read (|
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "core::pin::Pin")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "&mut") [] [ G ] ]
+                                      ],
+                                    [],
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
                       |)
                     |)
                   ]

@@ -839,8 +839,14 @@ Module marker.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "PhantomPinned" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "PhantomPinned" |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -891,7 +897,7 @@ Module marker.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

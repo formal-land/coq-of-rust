@@ -117,6 +117,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "alloc::alloc::Global"
                   ],
                 "new",
+                [],
                 []
               |),
               []
@@ -125,8 +126,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ chunked_data :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
-              [ M.read (| data |) ]
+              M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
             |)
           |) in
         let~ _ :=
@@ -141,7 +142,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                       [ Ty.path "core::str::iter::SplitWhitespace" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -150,7 +153,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::SplitWhitespace",
                         [],
+                        [],
                         "enumerate",
+                        [],
                         []
                       |),
                       [ M.read (| chunked_data |) ]
@@ -175,10 +180,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.path "core::str::iter::SplitWhitespace" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -209,43 +221,84 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "data segment " |);
-                                                      M.read (| Value.String " is """ |);
-                                                      M.read (| Value.String """
-" |)
-                                                    ]
-                                                |);
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ i ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "str" ]
+                                                            M.read (|
+                                                              Value.String "data segment "
+                                                            |);
+                                                            M.read (| Value.String " is """ |);
+                                                            M.read (| Value.String """
+" |)
                                                           ]
-                                                        |),
-                                                        [ data_segment ]
                                                       |)
-                                                    ]
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [ Ty.path "usize" ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      i
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "str" ]
+                                                                ]
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      data_segment
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -268,10 +321,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "push",
+                                          [],
                                           []
                                         |),
                                         [
-                                          children;
+                                          M.borrow (| Pointer.Kind.MutRef, children |);
                                           M.call_closure (|
                                             M.get_function (|
                                               "std::thread::spawn",
@@ -315,7 +369,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 (Ty.path "u32")
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "sum",
+                                                                          [],
                                                                           [ Ty.path "u32" ]
                                                                         |),
                                                                         [
@@ -325,7 +381,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                               Ty.path
                                                                                 "core::str::iter::Chars",
                                                                               [],
+                                                                              [],
                                                                               "map",
+                                                                              [],
                                                                               [
                                                                                 Ty.path "u32";
                                                                                 Ty.function
@@ -344,11 +402,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 M.get_associated_function (|
                                                                                   Ty.path "str",
                                                                                   "chars",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    data_segment
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        data_segment
+                                                                                      |)
+                                                                                    |)
                                                                                   |)
                                                                                 ]
                                                                               |);
@@ -381,6 +445,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                           "u32"
                                                                                                       ],
                                                                                                     "expect",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -389,6 +454,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                         Ty.path
                                                                                                           "char",
                                                                                                         "to_digit",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -400,9 +466,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                           10
                                                                                                       ]
                                                                                                     |);
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "should be a digit"
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          Value.String
+                                                                                                            "should be a digit"
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)))
@@ -432,55 +503,94 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
                                                                                 "new_v1",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "processed segment "
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          ", result="
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "processed segment "
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                ", result="
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "
 "
+                                                                                            |)
+                                                                                          ]
                                                                                       |)
-                                                                                    ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |);
-                                                                                M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Argument",
-                                                                                          "new_display",
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.alloc (|
+                                                                                        Value.Array
                                                                                           [
-                                                                                            Ty.path
-                                                                                              "usize"
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_display",
+                                                                                                [],
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "usize"
+                                                                                                ]
+                                                                                              |),
+                                                                                              [
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.deref (|
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      i
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
+                                                                                              ]
+                                                                                            |);
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_display",
+                                                                                                [],
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u32"
+                                                                                                ]
+                                                                                              |),
+                                                                                              [
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.deref (|
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      result
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
+                                                                                              ]
+                                                                                            |)
                                                                                           ]
-                                                                                        |),
-                                                                                        [ i ]
-                                                                                      |);
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Argument",
-                                                                                          "new_display",
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u32"
-                                                                                          ]
-                                                                                        |),
-                                                                                        [ result ]
                                                                                       |)
-                                                                                    ]
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -530,7 +640,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       (Ty.path "u32")
                   ],
                 [],
+                [],
                 "sum",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -545,7 +657,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "map",
+                    [],
                     [
                       Ty.path "u32";
                       Ty.function
@@ -568,7 +682,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| children |) ]
@@ -605,6 +721,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 ]
                                             ],
                                           "unwrap",
+                                          [],
                                           []
                                         |),
                                         [
@@ -615,6 +732,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                                 [ Ty.path "u32" ],
                                               "join",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| c |) ]
@@ -637,28 +755,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Final sum result: " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Final sum result: " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "u32" ]
-                              |),
-                              [ final_result ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, final_result |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

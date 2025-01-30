@@ -25,33 +25,53 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
-              M.get_trait_method (| "core::future::future::Future", F, [], "poll", [] |),
+              M.get_trait_method (| "core::future::future::Future", F, [], [], "poll", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                     "new",
+                    [],
                     []
                   |),
                   [
-                    M.read (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [ self ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "core::pin::Pin")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "&mut") [] [ F ] ]
+                                      ],
+                                    [],
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
                       |)
                     |)
                   ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -90,7 +110,9 @@ Module future.
                 "core::future::future::Future",
                 Ty.associated,
                 [],
+                [],
                 "poll",
+                [],
                 []
               |),
               [
@@ -98,11 +120,12 @@ Module future.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

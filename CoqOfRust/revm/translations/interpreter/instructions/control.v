@@ -40,14 +40,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -65,14 +70,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -101,24 +111,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -141,14 +162,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -165,20 +191,26 @@ Module instructions.
                   |) in
                 let~ offset :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "isize")
                       (M.call_closure (|
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
                           [],
+                          [],
                           "read_i16",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| interpreter |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "bytecode"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| interpreter |) |),
+                              "revm_interpreter::interpreter::Interpreter",
+                              "bytecode"
+                            |)
                           |)
                         ]
                       |))
@@ -190,14 +222,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "relative_jump",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "bytecode"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "bytecode"
+                          |)
                         |);
                         BinOp.Wrap.add (| M.read (| offset |), Value.Integer IntegerKind.Isize 2 |)
                       ]
@@ -253,14 +290,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -278,14 +320,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -314,24 +361,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -354,14 +412,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -383,14 +446,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "stack"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "stack"
+                          |)
                         |)
                       ]
                     |)
@@ -427,9 +495,13 @@ Module instructions.
                                                 ]
                                                 [],
                                               "is_zero",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
-                                            [ condition ]
+                                            [ M.borrow (| Pointer.Kind.Ref, condition |) ]
                                           |)
                                         |)
                                       |)) in
@@ -444,20 +516,26 @@ Module instructions.
                                       β,
                                       BinOp.Wrap.add (|
                                         M.read (| β |),
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "isize")
                                           (M.call_closure (|
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::Immediates",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "read_i16",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interpreter |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "bytecode"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "bytecode"
+                                                |)
                                               |)
                                             ]
                                           |))
@@ -474,14 +552,19 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
                                 [],
+                                [],
                                 "relative_jump",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "bytecode"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| interpreter |) |),
+                                    "revm_interpreter::interpreter::Interpreter",
+                                    "bytecode"
+                                  |)
                                 |);
                                 M.read (| offset |)
                               ]
@@ -542,14 +625,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -567,14 +655,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -603,24 +696,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -643,14 +747,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -672,14 +781,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "stack"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "stack"
+                          |)
                         |)
                       ]
                     |)
@@ -704,6 +818,7 @@ Module instructions.
                                   []
                                   [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                                 "unwrap_or",
+                                [],
                                 []
                               |),
                               [
@@ -711,8 +826,10 @@ Module instructions.
                                   M.get_trait_method (|
                                     "core::convert::TryFrom",
                                     Ty.path "isize",
+                                    [],
                                     [ Ty.path "u64" ],
                                     "try_from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -729,9 +846,13 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
-                                            [ case ]
+                                            [ M.borrow (| Pointer.Kind.Ref, case |) ]
                                           |)
                                         |),
                                         [
@@ -751,7 +872,7 @@ Module instructions.
                                                                 (BinOp.eq (|
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| x |),
+                                                                      M.deref (| M.read (| x |) |),
                                                                       M.alloc (|
                                                                         Value.Integer
                                                                           IntegerKind.Usize
@@ -764,7 +885,7 @@ Module instructions.
                                                                 (BinOp.eq (|
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| x |),
+                                                                      M.deref (| M.read (| x |) |),
                                                                       M.alloc (|
                                                                         Value.Integer
                                                                           IntegerKind.Usize
@@ -777,7 +898,7 @@ Module instructions.
                                                               (BinOp.eq (|
                                                                 M.read (|
                                                                   M.SubPointer.get_array_field (|
-                                                                    M.read (| x |),
+                                                                    M.deref (| M.read (| x |) |),
                                                                     M.alloc (|
                                                                       Value.Integer
                                                                         IntegerKind.Usize
@@ -794,7 +915,7 @@ Module instructions.
                                                           Value.Bool true
                                                         |) in
                                                       M.SubPointer.get_array_field (|
-                                                        M.read (| x |),
+                                                        M.deref (| M.read (| x |) |),
                                                         M.alloc (|
                                                           Value.Integer IntegerKind.Usize 0
                                                         |)
@@ -815,20 +936,26 @@ Module instructions.
                           |) in
                         let~ max_index :=
                           M.alloc (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "isize")
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::Immediates",
                                   Ty.associated,
                                   [],
+                                  [],
                                   "read_u8",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| interpreter |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "bytecode"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "bytecode"
+                                    |)
                                   |)
                                 ]
                               |))
@@ -868,20 +995,26 @@ Module instructions.
                                       β,
                                       BinOp.Wrap.add (|
                                         M.read (| β |),
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "isize")
                                           (M.call_closure (|
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::Immediates",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "read_offset_i16",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interpreter |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "bytecode"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "bytecode"
+                                                |)
                                               |);
                                               BinOp.Wrap.add (|
                                                 Value.Integer IntegerKind.Isize 1,
@@ -905,14 +1038,19 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
                                 [],
+                                [],
                                 "relative_jump",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "bytecode"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| interpreter |) |),
+                                    "revm_interpreter::interpreter::Interpreter",
+                                    "bytecode"
+                                  |)
                                 |);
                                 M.read (| offset |)
                               ]
@@ -961,24 +1099,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (| "revm_interpreter::gas::constants::MID" |)
@@ -999,14 +1148,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -1028,14 +1182,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "stack"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "stack"
+                          |)
                         |)
                       ]
                     |)
@@ -1059,7 +1218,13 @@ Module instructions.
                                 [],
                                 [ WIRE ]
                               |),
-                              [ M.read (| interpreter |); M.read (| target |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| interpreter |) |)
+                                |);
+                                M.read (| target |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
@@ -1108,24 +1273,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -1148,14 +1324,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -1177,14 +1358,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "stack"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "stack"
+                          |)
                         |)
                       ]
                     |)
@@ -1221,9 +1407,13 @@ Module instructions.
                                               ]
                                               [],
                                             "is_zero",
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ],
                                             []
                                           |),
-                                          [ cond ]
+                                          [ M.borrow (| Pointer.Kind.Ref, cond |) ]
                                         |)
                                       |)
                                     |)) in
@@ -1240,7 +1430,13 @@ Module instructions.
                                         [],
                                         [ WIRE ]
                                       |),
-                                      [ M.read (| interpreter |); M.read (| target |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| interpreter |) |)
+                                        |);
+                                        M.read (| target |)
+                                      ]
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -1292,9 +1488,11 @@ Module instructions.
                               ]
                               [],
                             "as_limbs",
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ],
                             []
                           |),
-                          [ target ]
+                          [ M.borrow (| Pointer.Kind.Ref, target |) ]
                         |)
                       |),
                       [
@@ -1316,13 +1514,14 @@ Module instructions.
                                                   (BinOp.gt (|
                                                     M.read (|
                                                       M.SubPointer.get_array_field (|
-                                                        M.read (| x |),
+                                                        M.deref (| M.read (| x |) |),
                                                         M.alloc (|
                                                           Value.Integer IntegerKind.Usize 0
                                                         |)
                                                       |)
                                                     |),
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "u64")
                                                       (M.read (|
                                                         M.get_constant (| "core::num::MAX" |)
                                                       |))
@@ -1330,7 +1529,7 @@ Module instructions.
                                                   (BinOp.ne (|
                                                     M.read (|
                                                       M.SubPointer.get_array_field (|
-                                                        M.read (| x |),
+                                                        M.deref (| M.read (| x |) |),
                                                         M.alloc (|
                                                           Value.Integer IntegerKind.Usize 1
                                                         |)
@@ -1341,7 +1540,7 @@ Module instructions.
                                                 (BinOp.ne (|
                                                   M.read (|
                                                     M.SubPointer.get_array_field (|
-                                                      M.read (| x |),
+                                                      M.deref (| M.read (| x |) |),
                                                       M.alloc (|
                                                         Value.Integer IntegerKind.Usize 2
                                                       |)
@@ -1352,7 +1551,7 @@ Module instructions.
                                               (BinOp.ne (|
                                                 M.read (|
                                                   M.SubPointer.get_array_field (|
-                                                    M.read (| x |),
+                                                    M.deref (| M.read (| x |) |),
                                                     M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                                                   |)
                                                 |),
@@ -1374,14 +1573,19 @@ Module instructions.
                                                     "revm_interpreter::interpreter_types::LoopControl",
                                                     Ty.associated,
                                                     [],
+                                                    [],
                                                     "set_instruction_result",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| interpreter |),
-                                                      "revm_interpreter::interpreter::Interpreter",
-                                                      "control"
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| interpreter |) |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "control"
+                                                      |)
                                                     |);
                                                     Value.StructTuple
                                                       "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
@@ -1397,10 +1601,11 @@ Module instructions.
                                 ]
                               |) in
                             M.alloc (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "usize")
                                 (M.read (|
                                   M.SubPointer.get_array_field (|
-                                    M.read (| x |),
+                                    M.deref (| M.read (| x |) |),
                                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                   |)
                                 |))
@@ -1423,14 +1628,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::Jumps",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_valid_legacy_jump",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "bytecode"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "bytecode"
+                                        |)
                                       |);
                                       M.read (| target |)
                                     ]
@@ -1449,14 +1659,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
@@ -1478,14 +1693,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "absolute_jump",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "bytecode"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "bytecode"
+                          |)
                         |);
                         M.read (| target |)
                       ]
@@ -1531,24 +1751,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -1571,14 +1802,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -1668,14 +1904,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1693,14 +1934,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -1729,24 +1975,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
@@ -1767,14 +2024,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -1791,20 +2053,26 @@ Module instructions.
                   |) in
                 let~ idx :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
                           [],
+                          [],
                           "read_u16",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| interpreter |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "bytecode"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| interpreter |) |),
+                              "revm_interpreter::interpreter::Interpreter",
+                              "bytecode"
+                            |)
                           |)
                         ]
                       |))
@@ -1816,14 +2084,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::EofCodeInfo",
                         Ty.associated,
                         [],
+                        [],
                         "code_section_info",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "bytecode"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "bytecode"
+                          |)
                         |);
                         M.read (| idx |)
                       ]
@@ -1855,30 +2128,37 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::StackTrait",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "stack"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "stack"
+                                                  |)
                                                 |)
                                               ]
                                             |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "usize")
                                               (BinOp.Wrap.sub (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| types |),
+                                                    M.deref (| M.read (| types |) |),
                                                     "revm_bytecode::eof::types_section::TypesSection",
                                                     "max_stack_size"
                                                   |)
                                                 |),
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.path "u16")
                                                   (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| types |),
+                                                      M.deref (| M.read (| types |) |),
                                                       "revm_bytecode::eof::types_section::TypesSection",
                                                       "inputs"
                                                     |)
@@ -1903,14 +2183,19 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
+                                                  |)
                                                 |);
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
@@ -1940,14 +2225,19 @@ Module instructions.
                                               "revm_interpreter::interpreter_types::SubRoutineStack",
                                               Ty.associated,
                                               [],
+                                              [],
                                               "push",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interpreter |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "sub_routine"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "sub_routine"
+                                                |)
                                               |);
                                               BinOp.Wrap.add (|
                                                 M.call_closure (|
@@ -1955,14 +2245,19 @@ Module instructions.
                                                     "revm_interpreter::interpreter_types::Jumps",
                                                     Ty.associated,
                                                     [],
+                                                    [],
                                                     "pc",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| interpreter |),
-                                                      "revm_interpreter::interpreter::Interpreter",
-                                                      "bytecode"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| interpreter |) |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "bytecode"
+                                                      |)
                                                     |)
                                                   ]
                                                 |),
@@ -1988,14 +2283,19 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "set_instruction_result",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
+                                                  |)
                                                 |);
                                                 Value.StructTuple
                                                   "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
@@ -2016,6 +2316,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "expect",
+                                [],
                                 []
                               |),
                               [
@@ -2024,19 +2325,29 @@ Module instructions.
                                     "revm_interpreter::interpreter_types::EofCodeInfo",
                                     Ty.associated,
                                     [],
+                                    [],
                                     "code_section_pc",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| interpreter |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "bytecode"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| interpreter |) |),
+                                        "revm_interpreter::interpreter::Interpreter",
+                                        "bytecode"
+                                      |)
                                     |);
                                     M.read (| idx |)
                                   ]
                                 |);
-                                M.read (| Value.String "Invalid code section index" |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (| Value.String "Invalid code section index" |)
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -2047,14 +2358,19 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
                                 [],
+                                [],
                                 "absolute_jump",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "bytecode"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| interpreter |) |),
+                                    "revm_interpreter::interpreter::Interpreter",
+                                    "bytecode"
+                                  |)
                                 |);
                                 M.read (| pc |)
                               ]
@@ -2109,14 +2425,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2134,14 +2455,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -2170,24 +2496,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -2210,14 +2547,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -2239,14 +2581,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::SubRoutineStack",
                         Ty.associated,
                         [],
+                        [],
                         "pop",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "sub_routine"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "sub_routine"
+                          |)
                         |)
                       ]
                     |)
@@ -2268,14 +2615,19 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
                                 [],
+                                [],
                                 "absolute_jump",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "bytecode"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| interpreter |) |),
+                                    "revm_interpreter::interpreter::Interpreter",
+                                    "bytecode"
+                                  |)
                                 |);
                                 M.read (| jump |)
                               ]
@@ -2347,14 +2699,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "is_eof",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "runtime_flag"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2372,14 +2729,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
@@ -2408,24 +2770,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
@@ -2446,14 +2819,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -2470,20 +2848,26 @@ Module instructions.
                   |) in
                 let~ idx :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "usize")
                       (M.call_closure (|
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
                           [],
+                          [],
                           "read_u16",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| interpreter |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "bytecode"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| interpreter |) |),
+                              "revm_interpreter::interpreter::Interpreter",
+                              "bytecode"
+                            |)
                           |)
                         ]
                       |))
@@ -2502,6 +2886,7 @@ Module instructions.
                               [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
                           ],
                         "expect",
+                        [],
                         []
                       |),
                       [
@@ -2510,19 +2895,27 @@ Module instructions.
                             "revm_interpreter::interpreter_types::EofCodeInfo",
                             Ty.associated,
                             [],
+                            [],
                             "code_section_info",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| interpreter |),
-                              "revm_interpreter::interpreter::Interpreter",
-                              "bytecode"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| interpreter |) |),
+                                "revm_interpreter::interpreter::Interpreter",
+                                "bytecode"
+                              |)
                             |);
                             M.read (| idx |)
                           ]
                         |);
-                        M.read (| Value.String "Invalid code section index" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                        |)
                       ]
                     |)
                   |) in
@@ -2542,30 +2935,37 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::StackTrait",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "stack"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "stack"
+                                          |)
                                         |)
                                       ]
                                     |),
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "usize")
                                       (BinOp.Wrap.sub (|
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| types |),
+                                            M.deref (| M.read (| types |) |),
                                             "revm_bytecode::eof::types_section::TypesSection",
                                             "max_stack_size"
                                           |)
                                         |),
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.path "u16")
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| types |),
+                                              M.deref (| M.read (| types |) |),
                                               "revm_bytecode::eof::types_section::TypesSection",
                                               "inputs"
                                             |)
@@ -2587,14 +2987,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
@@ -2616,14 +3021,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::SubRoutineStack",
                         Ty.associated,
                         [],
+                        [],
                         "set_routine_idx",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "sub_routine"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "sub_routine"
+                          |)
                         |);
                         M.read (| idx |)
                       ]
@@ -2635,6 +3045,7 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "expect",
+                        [],
                         []
                       |),
                       [
@@ -2643,19 +3054,27 @@ Module instructions.
                             "revm_interpreter::interpreter_types::EofCodeInfo",
                             Ty.associated,
                             [],
+                            [],
                             "code_section_pc",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| interpreter |),
-                              "revm_interpreter::interpreter::Interpreter",
-                              "bytecode"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| interpreter |) |),
+                                "revm_interpreter::interpreter::Interpreter",
+                                "bytecode"
+                              |)
                             |);
                             M.read (| idx |)
                           ]
                         |);
-                        M.read (| Value.String "Invalid code section index" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                        |)
                       ]
                     |)
                   |) in
@@ -2666,14 +3085,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
                         [],
+                        [],
                         "absolute_jump",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "bytecode"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "bytecode"
+                          |)
                         |);
                         M.read (| pc |)
                       ]
@@ -2720,24 +3144,35 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated,
-                                          [],
-                                          "gas",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "control"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "gas",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       M.read (|
                                         M.get_constant (|
@@ -2760,14 +3195,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
@@ -2797,14 +3237,19 @@ Module instructions.
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
                                       [],
+                                      [],
                                       "push",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "stack"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "stack"
+                                        |)
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2816,6 +3261,10 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -2825,14 +3274,19 @@ Module instructions.
                                                 "revm_interpreter::interpreter_types::Jumps",
                                                 Ty.associated,
                                                 [],
+                                                [],
                                                 "pc",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "bytecode"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "bytecode"
+                                                  |)
                                                 |)
                                               ]
                                             |),
@@ -2856,14 +3310,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
@@ -2932,14 +3391,19 @@ Module instructions.
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
                         [],
+                        [],
                         "popn",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| interpreter |),
-                          "revm_interpreter::interpreter::Interpreter",
-                          "stack"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| interpreter |) |),
+                            "revm_interpreter::interpreter::Interpreter",
+                            "stack"
+                          |)
                         |)
                       ]
                     |)
@@ -2971,9 +3435,13 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ],
                                     []
                                   |),
-                                  [ len ]
+                                  [ M.borrow (| Pointer.Kind.Ref, len |) ]
                                 |)
                               |),
                               [
@@ -2995,13 +3463,14 @@ Module instructions.
                                                           (BinOp.gt (|
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
-                                                                M.read (| x |),
+                                                                M.deref (| M.read (| x |) |),
                                                                 M.alloc (|
                                                                   Value.Integer IntegerKind.Usize 0
                                                                 |)
                                                               |)
                                                             |),
-                                                            M.rust_cast
+                                                            M.cast
+                                                              (Ty.path "u64")
                                                               (M.read (|
                                                                 M.get_constant (|
                                                                   "core::num::MAX"
@@ -3011,7 +3480,7 @@ Module instructions.
                                                           (BinOp.ne (|
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
-                                                                M.read (| x |),
+                                                                M.deref (| M.read (| x |) |),
                                                                 M.alloc (|
                                                                   Value.Integer IntegerKind.Usize 1
                                                                 |)
@@ -3022,7 +3491,7 @@ Module instructions.
                                                         (BinOp.ne (|
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
-                                                              M.read (| x |),
+                                                              M.deref (| M.read (| x |) |),
                                                               M.alloc (|
                                                                 Value.Integer IntegerKind.Usize 2
                                                               |)
@@ -3033,7 +3502,7 @@ Module instructions.
                                                       (BinOp.ne (|
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.read (| x |),
+                                                            M.deref (| M.read (| x |) |),
                                                             M.alloc (|
                                                               Value.Integer IntegerKind.Usize 3
                                                             |)
@@ -3057,14 +3526,21 @@ Module instructions.
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
                                                             [],
+                                                            [],
                                                             "set_instruction_result",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| interpreter |),
-                                                              "revm_interpreter::interpreter::Interpreter",
-                                                              "control"
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.read (| interpreter |)
+                                                                |),
+                                                                "revm_interpreter::interpreter::Interpreter",
+                                                                "control"
+                                                              |)
                                                             |);
                                                             Value.StructTuple
                                                               "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
@@ -3080,10 +3556,11 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
-                                            M.read (| x |),
+                                            M.deref (| M.read (| x |) |),
                                             M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                           |)
                                         |))
@@ -3098,7 +3575,9 @@ Module instructions.
                                 "core::default::Default",
                                 Ty.path "alloy_primitives::bytes_::Bytes",
                                 [],
+                                [],
                                 "default",
+                                [],
                                 []
                               |),
                               []
@@ -3137,9 +3616,13 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
-                                            [ offset ]
+                                            [ M.borrow (| Pointer.Kind.Ref, offset |) ]
                                           |)
                                         |),
                                         [
@@ -3161,7 +3644,9 @@ Module instructions.
                                                                     (BinOp.gt (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| x |),
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             Value.Integer
                                                                               IntegerKind.Usize
@@ -3169,7 +3654,8 @@ Module instructions.
                                                                           |)
                                                                         |)
                                                                       |),
-                                                                      M.rust_cast
+                                                                      M.cast
+                                                                        (Ty.path "u64")
                                                                         (M.read (|
                                                                           M.get_constant (|
                                                                             "core::num::MAX"
@@ -3179,7 +3665,9 @@ Module instructions.
                                                                     (BinOp.ne (|
                                                                       M.read (|
                                                                         M.SubPointer.get_array_field (|
-                                                                          M.read (| x |),
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |),
                                                                           M.alloc (|
                                                                             Value.Integer
                                                                               IntegerKind.Usize
@@ -3194,7 +3682,9 @@ Module instructions.
                                                                   (BinOp.ne (|
                                                                     M.read (|
                                                                       M.SubPointer.get_array_field (|
-                                                                        M.read (| x |),
+                                                                        M.deref (|
+                                                                          M.read (| x |)
+                                                                        |),
                                                                         M.alloc (|
                                                                           Value.Integer
                                                                             IntegerKind.Usize
@@ -3207,7 +3697,7 @@ Module instructions.
                                                                 (BinOp.ne (|
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
-                                                                      M.read (| x |),
+                                                                      M.deref (| M.read (| x |) |),
                                                                       M.alloc (|
                                                                         Value.Integer
                                                                           IntegerKind.Usize
@@ -3233,14 +3723,21 @@ Module instructions.
                                                                       "revm_interpreter::interpreter_types::LoopControl",
                                                                       Ty.associated,
                                                                       [],
+                                                                      [],
                                                                       "set_instruction_result",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| interpreter |),
-                                                                        "revm_interpreter::interpreter::Interpreter",
-                                                                        "control"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| interpreter |)
+                                                                          |),
+                                                                          "revm_interpreter::interpreter::Interpreter",
+                                                                          "control"
+                                                                        |)
                                                                       |);
                                                                       Value.StructTuple
                                                                         "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
@@ -3258,10 +3755,11 @@ Module instructions.
                                                   ]
                                                 |) in
                                               M.alloc (|
-                                                M.rust_cast
+                                                M.cast
+                                                  (Ty.path "usize")
                                                   (M.read (|
                                                     M.SubPointer.get_array_field (|
-                                                      M.read (| x |),
+                                                      M.deref (| M.read (| x |) |),
                                                       M.alloc (|
                                                         Value.Integer IntegerKind.Usize 0
                                                       |)
@@ -3284,6 +3782,7 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "saturating_add",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| offset |); M.read (| len |) ]
@@ -3298,24 +3797,35 @@ Module instructions.
                                           M.get_associated_function (|
                                             Ty.path "revm_interpreter::gas::Gas",
                                             "record_memory_expansion",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
-                                                [],
-                                                "gas",
-                                                []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "control"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "revm_interpreter::interpreter_types::LoopControl",
+                                                    Ty.associated,
+                                                    [],
+                                                    [],
+                                                    "gas",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| interpreter |) |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "control"
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |);
                                             M.read (| words_num |)
                                           ]
@@ -3336,14 +3846,19 @@ Module instructions.
                                                     "revm_interpreter::interpreter_types::MemoryTrait",
                                                     Ty.associated,
                                                     [],
+                                                    [],
                                                     "resize",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| interpreter |),
-                                                      "revm_interpreter::interpreter::Interpreter",
-                                                      "memory"
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| interpreter |) |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "memory"
+                                                      |)
                                                     |);
                                                     BinOp.Wrap.mul (|
                                                       M.read (| words_num |),
@@ -3370,14 +3885,21 @@ Module instructions.
                                                           "revm_interpreter::interpreter_types::LoopControl",
                                                           Ty.associated,
                                                           [],
+                                                          [],
                                                           "set_instruction_result",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| interpreter |),
-                                                            "revm_interpreter::interpreter::Interpreter",
-                                                            "control"
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (|
+                                                                M.read (| interpreter |)
+                                                              |),
+                                                              "revm_interpreter::interpreter::Interpreter",
+                                                              "control"
+                                                            |)
                                                           |);
                                                           Value.StructTuple
                                                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
@@ -3408,8 +3930,10 @@ Module instructions.
                                           (Ty.path "alloc::vec::Vec")
                                           []
                                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                        [],
                                         [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3417,39 +3941,57 @@ Module instructions.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "to_vec",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.associated,
-                                                [],
-                                                "deref",
-                                                []
-                                              |),
-                                              [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "revm_interpreter::interpreter_types::MemoryTrait",
-                                                      Ty.associated,
-                                                      [],
-                                                      "slice_len",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| interpreter |),
-                                                        "revm_interpreter::interpreter::Interpreter",
-                                                        "memory"
-                                                      |);
-                                                      M.read (| offset |);
-                                                      M.read (| len |)
-                                                    ]
-                                                  |)
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.associated,
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "revm_interpreter::interpreter_types::MemoryTrait",
+                                                            Ty.associated,
+                                                            [],
+                                                            [],
+                                                            "slice_len",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.read (| interpreter |)
+                                                                |),
+                                                                "revm_interpreter::interpreter::Interpreter",
+                                                                "memory"
+                                                              |)
+                                                            |);
+                                                            M.read (| offset |);
+                                                            M.read (| len |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -3461,21 +4003,28 @@ Module instructions.
                           |) in
                         let~ gas :=
                           M.copy (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "revm_interpreter::interpreter_types::LoopControl",
-                                Ty.associated,
-                                [],
-                                "gas",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "control"
-                                |)
-                              ]
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated,
+                                  [],
+                                  [],
+                                  "gas",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |) in
                         let~ _ :=
@@ -3485,14 +4034,19 @@ Module instructions.
                                 "revm_interpreter::interpreter_types::LoopControl",
                                 Ty.associated,
                                 [],
+                                [],
                                 "set_next_action",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| interpreter |),
-                                  "revm_interpreter::interpreter::Interpreter",
-                                  "control"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| interpreter |) |),
+                                    "revm_interpreter::interpreter::Interpreter",
+                                    "control"
+                                  |)
                                 |);
                                 Value.StructRecord
                                   "revm_interpreter::interpreter_action::InterpreterAction::Return"
@@ -3545,7 +4099,7 @@ Module instructions.
                     [ WIRE ]
                   |),
                   [
-                    M.read (| interpreter |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::Return"
                       []
@@ -3591,6 +4145,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3599,14 +4154,19 @@ Module instructions.
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
                                           Ty.associated,
                                           [],
+                                          [],
                                           "spec_id",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "runtime_flag"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| interpreter |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "runtime_flag"
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -3629,14 +4189,19 @@ Module instructions.
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
                                         [],
+                                        [],
                                         "set_instruction_result",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "control"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| interpreter |) |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |)
                                         |);
                                         Value.StructTuple
                                           "revm_interpreter::instruction_result::InstructionResult::NotActivated"
@@ -3660,7 +4225,7 @@ Module instructions.
                         [ WIRE ]
                       |),
                       [
-                        M.read (| interpreter |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
                         Value.StructTuple
                           "revm_interpreter::instruction_result::InstructionResult::Revert"
                           []
@@ -3699,14 +4264,19 @@ Module instructions.
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,
                     [],
+                    [],
                     "set_instruction_result",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| interpreter |),
-                      "revm_interpreter::interpreter::Interpreter",
-                      "control"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| interpreter |) |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "control"
+                      |)
                     |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::Stop"
@@ -3745,14 +4315,19 @@ Module instructions.
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,
                     [],
+                    [],
                     "set_instruction_result",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| interpreter |),
-                      "revm_interpreter::interpreter::Interpreter",
-                      "control"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| interpreter |) |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "control"
+                      |)
                     |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
@@ -3792,14 +4367,19 @@ Module instructions.
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,
                     [],
+                    [],
                     "set_instruction_result",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| interpreter |),
-                      "revm_interpreter::interpreter::Interpreter",
-                      "control"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| interpreter |) |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "control"
+                      |)
                     |);
                     Value.StructTuple
                       "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"

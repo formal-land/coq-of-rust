@@ -64,10 +64,18 @@ Module collections.
                     M.call_closure (|
                       M.get_function (| "core::mem::replace", [], [ Ty.path "usize" ] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| deque |),
-                          "alloc::collections::vec_deque::VecDeque",
-                          "len"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| deque |) |),
+                                "alloc::collections::vec_deque::VecDeque",
+                                "len"
+                              |)
+                            |)
+                          |)
                         |);
                         M.read (| drain_start |)
                       ]
@@ -94,6 +102,7 @@ Module collections.
                                   []
                                   [ T; A ]
                               ],
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -106,6 +115,7 @@ Module collections.
                                 ]
                             ],
                             "from",
+                            [],
                             []
                           |),
                           [ M.read (| deque |) ]
@@ -166,13 +176,17 @@ Module collections.
                           [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ]
                           ],
                         "as_ref",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::drain::Drain",
-                          "deque"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::drain::Drain",
+                            "deque"
+                          |)
                         |)
                       ]
                     |)
@@ -185,7 +199,7 @@ Module collections.
                         ("start",
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "alloc::collections::vec_deque::drain::Drain",
                               "idx"
                             |)
@@ -194,14 +208,14 @@ Module collections.
                           BinOp.Wrap.add (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
                               |)
                             |),
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "remaining"
                               |)
@@ -215,19 +229,22 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "slice_ranges",
+                        [],
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
-                        M.read (| deque |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| deque |) |) |);
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::clone::Clone",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
-                          [ logical_remaining_range ]
+                          [ M.borrow (| Pointer.Kind.Ref, logical_remaining_range |) ]
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -256,9 +273,13 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "buffer_range",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| deque |); M.read (| a_range |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| deque |) |) |);
+                                  M.read (| a_range |)
+                                ]
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -267,9 +288,13 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "buffer_range",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| deque |); M.read (| b_range |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| deque |) |) |);
+                                  M.read (| b_range |)
+                                ]
                               |)
                             ]
                         |)))
@@ -309,74 +334,146 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugTuple",
-                              "field",
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "debug_tuple",
-                                        []
-                                      |),
-                                      [ M.read (| f |); M.read (| Value.String "Drain" |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::builders::DebugTuple",
+                                          "field",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::builders::DebugTuple",
+                                                  "field",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "debug_tuple",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| f |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (| Value.String "Drain" |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "alloc::collections::vec_deque::drain::Drain",
+                                                          "drain_len"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::vec_deque::drain::Drain",
+                                                  "idx"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::drain::Drain",
-                                    "drain_len"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::vec_deque::drain::Drain",
+                                          "new_len"
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
-                              |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::drain::Drain",
-                                "idx"
                               |)
-                            ]
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::vec_deque::drain::Drain",
-                            "new_len"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::drain::Drain",
+                                  "remaining"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::vec_deque::drain::Drain",
-                        "remaining"
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -574,7 +671,7 @@ Module collections.
                   M.alloc (|
                     Value.StructTuple
                       "alloc::collections::vec_deque::drain::drop::DropGuard"
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |) in
                 let~ _ :=
                   M.match_operator (|
@@ -594,11 +691,13 @@ Module collections.
                                     (BinOp.ne (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              guard,
-                                              "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                              0
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                guard,
+                                                "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                                0
+                                              |)
                                             |)
                                           |),
                                           "alloc::collections::vec_deque::drain::Drain",
@@ -620,14 +719,20 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "as_slices",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.read (|
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      guard,
-                                      "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                      0
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          guard,
+                                          "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                          0
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -643,11 +748,13 @@ Module collections.
                                   let~ _ :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            guard,
-                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                            0
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              guard,
+                                              "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                              0
+                                            |)
                                           |)
                                         |),
                                         "alloc::collections::vec_deque::drain::Drain",
@@ -664,6 +771,7 @@ Module collections.
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| front |) ]
@@ -673,11 +781,13 @@ Module collections.
                                   let~ _ :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            guard,
-                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                            0
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              guard,
+                                              "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                              0
+                                            |)
                                           |)
                                         |),
                                         "alloc::collections::vec_deque::drain::Drain",
@@ -694,6 +804,7 @@ Module collections.
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| front |) ]
@@ -714,11 +825,13 @@ Module collections.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            guard,
-                                            "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                            0
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              guard,
+                                              "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                              0
+                                            |)
                                           |)
                                         |),
                                         "alloc::collections::vec_deque::drain::Drain",
@@ -796,7 +909,7 @@ Module collections.
                                     BinOp.eq (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
                                         |)
@@ -830,34 +943,44 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      (Ty.path "core::ptr::non_null::NonNull")
                                       []
-                                      [ T; A ]
-                                  ],
-                                "as_ref",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "deque"
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
+                                          [ T; A ]
+                                      ],
+                                    "as_ref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::drain::Drain",
+                                        "deque"
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
                               |)
@@ -868,7 +991,7 @@ Module collections.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::vec_deque::drain::Drain",
                           "idx"
                         |) in
@@ -879,7 +1002,7 @@ Module collections.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::vec_deque::drain::Drain",
                           "remaining"
                         |) in
@@ -898,30 +1021,40 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_read",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                        (Ty.path "core::ptr::non_null::NonNull")
                                         []
-                                        [ T; A ]
-                                    ],
-                                  "as_mut",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::drain::Drain",
-                                    "deque"
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                            []
+                                            [ T; A ]
+                                        ],
+                                      "as_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::vec_deque::drain::Drain",
+                                          "deque"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |);
                               M.read (| wrapped_idx |)
                             ]
@@ -954,7 +1087,7 @@ Module collections.
                 let~ len :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::collections::vec_deque::drain::Drain",
                       "remaining"
                     |)
@@ -1024,7 +1157,7 @@ Module collections.
                                     BinOp.eq (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "alloc::collections::vec_deque::drain::Drain",
                                           "remaining"
                                         |)
@@ -1052,7 +1185,7 @@ Module collections.
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::vec_deque::drain::Drain",
                           "remaining"
                         |) in
@@ -1069,42 +1202,52 @@ Module collections.
                               []
                               [ T; A ],
                             "to_physical_idx",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                      (Ty.path "core::ptr::non_null::NonNull")
                                       []
-                                      [ T; A ]
-                                  ],
-                                "as_ref",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "deque"
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
+                                          [ T; A ]
+                                      ],
+                                    "as_ref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::drain::Drain",
+                                        "deque"
+                                      |)
+                                    |)
+                                  ]
                                 |)
-                              ]
+                              |)
                             |);
                             BinOp.Wrap.add (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "idx"
                                 |)
                               |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "remaining"
                                 |)
@@ -1124,30 +1267,40 @@ Module collections.
                                 []
                                 [ T; A ],
                               "buffer_read",
+                              [],
                               []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                        (Ty.path "core::ptr::non_null::NonNull")
                                         []
-                                        [ T; A ]
-                                    ],
-                                  "as_mut",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::drain::Drain",
-                                    "deque"
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                            []
+                                            [ T; A ]
+                                        ],
+                                      "as_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::vec_deque::drain::Drain",
+                                          "deque"
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                ]
+                                |)
                               |);
                               M.read (| wrapped_idx |)
                             ]

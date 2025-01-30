@@ -45,28 +45,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Tell me about " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Tell me about " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [ number ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, number |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -94,10 +121,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "One!
-" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "One!
+" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -149,37 +187,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             |) in
                           Value.Tuple []))
                     ],
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (let~ _ :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_print", [], [] |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          []
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is a prime
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (let~ _ :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_function (| "std::io::stdio::_print", [], [] |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Arguments",
+                                        "new_const",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String "This is a prime
 " |) ]
+                                              |)
+                                            |)
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
                   |)));
               fun γ =>
                 ltac:(M.monadic
@@ -192,10 +238,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "A teen
-" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "A teen
+" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -212,12 +271,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Ain't special
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "Ain't special
 " |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -251,37 +319,70 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String " -> " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "" |);
+                                  M.read (| Value.String " -> " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "bool" ]
-                              |),
-                              [ boolean ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [ binary ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "bool" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, boolean |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, binary |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

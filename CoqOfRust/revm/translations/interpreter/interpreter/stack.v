@@ -41,17 +41,29 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Stack" |);
-                M.read (| Value.String "data" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter::stack::Stack",
-                    "data"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Stack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::stack::Stack",
+                            "data"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -101,6 +113,7 @@ Module interpreter.
                       [];
                     Ty.path "alloc::alloc::Global"
                   ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -114,18 +127,25 @@ Module interpreter.
                     ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::stack::Stack",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "revm_interpreter::interpreter::stack::Stack",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
                 |)
               ]
             |)))
@@ -195,16 +215,26 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 [],
+                [],
                 "hash",
+                [],
                 [ __H ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::stack::Stack",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::stack::Stack",
+                        "data"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -253,7 +283,9 @@ Module interpreter.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -261,9 +293,16 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_str",
+                                [],
                                 []
                               |),
-                              [ M.read (| f |); M.read (| Value.String "[" |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "[" |) |)
+                                |)
+                              ]
                             |)
                           ]
                         |)
@@ -289,6 +328,7 @@ Module interpreter.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -299,6 +339,7 @@ Module interpreter.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -344,7 +385,9 @@ Module interpreter.
                                     ]
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -364,7 +407,9 @@ Module interpreter.
                                         []
                                     ],
                                   [],
+                                  [],
                                   "enumerate",
+                                  [],
                                   []
                                 |),
                                 [
@@ -383,36 +428,47 @@ Module interpreter.
                                             []
                                         ],
                                       "iter",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
                                               Ty.apply
-                                                (Ty.path "ruint::Uint")
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [];
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          [],
-                                          "deref",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_interpreter::interpreter::stack::Stack",
-                                            "data"
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "revm_interpreter::interpreter::stack::Stack",
+                                                  "data"
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -451,10 +507,17 @@ Module interpreter.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
-                                          [ iter ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -515,7 +578,9 @@ Module interpreter.
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "branch",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -523,11 +588,22 @@ Module interpreter.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Formatter",
                                                                     "write_str",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| f |);
-                                                                    M.read (| Value.String ", " |)
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.deref (| M.read (| f |) |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          Value.String ", "
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               ]
@@ -559,6 +635,7 @@ Module interpreter.
                                                                                 Ty.path
                                                                                   "core::fmt::Error"
                                                                               ],
+                                                                            [],
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -572,6 +649,7 @@ Module interpreter.
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| residual |) ]
@@ -608,7 +686,9 @@ Module interpreter.
                                                         []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -616,52 +696,88 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Formatter",
                                                           "write_fmt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| f |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| f |) |)
+                                                          |);
                                                           M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
-                                                              |);
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_display",
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
                                                                         [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "ruint::Uint")
-                                                                                [
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    256;
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    4
-                                                                                ]
-                                                                                []
-                                                                            ]
+                                                                          M.read (|
+                                                                            Value.String ""
+                                                                          |)
                                                                         ]
-                                                                      |),
-                                                                      [ x ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_display",
+                                                                              [],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          4
+                                                                                      ]
+                                                                                      []
+                                                                                  ]
+                                                                              ]
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    x
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -694,6 +810,7 @@ Module interpreter.
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -706,6 +823,7 @@ Module interpreter.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -738,9 +856,13 @@ Module interpreter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_str",
+                        [],
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "]" |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "]" |) |) |)
+                      ]
                     |)
                   |)
                 |)))
@@ -772,6 +894,7 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "new",
+                [],
                 []
               |),
               []
@@ -812,6 +935,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -833,41 +957,60 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "extend_from_slice",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        new_stack,
-                        "revm_interpreter::interpreter::stack::Stack",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          new_stack,
+                          "revm_interpreter::interpreter::stack::Stack",
+                          "data"
+                        |)
                       |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
                               Ty.apply
-                                (Ty.path "ruint::Uint")
+                                (Ty.path "alloc::vec::Vec")
+                                []
                                 [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::stack::Stack",
-                            "data"
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::stack::Stack",
+                                      "data"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |)
@@ -902,9 +1045,10 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "len",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -940,9 +1084,15 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.read (|
                                       M.get_constant (|
@@ -971,9 +1121,10 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                   |)
@@ -1013,9 +1164,15 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     BinOp.Wrap.add (|
                                       M.read (|
@@ -1047,9 +1204,10 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn_top",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                   |)
@@ -1074,9 +1232,14 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "exchange",
+                [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |); M.read (| m |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| n |);
+                M.read (| m |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1096,9 +1259,11 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "dup",
+                [],
                 []
               |),
-              [ M.read (| self |); M.read (| n |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1118,9 +1283,13 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "push",
+                [],
                 []
               |),
-              [ M.read (| self |); M.read (| value |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                M.read (| value |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1174,6 +1343,7 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [
@@ -1211,13 +1381,17 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "len",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::stack::Stack",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
                 |)
               ]
             |)))
@@ -1249,13 +1423,17 @@ Module interpreter.
                     Ty.path "alloc::alloc::Global"
                   ],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::stack::Stack",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
                 |)
               ]
             |)))
@@ -1274,10 +1452,18 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_interpreter::interpreter::stack::Stack",
-              "data"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1294,10 +1480,23 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_interpreter::interpreter::stack::Stack",
-              "data"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::stack::Stack",
+                        "data"
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1348,6 +1547,7 @@ Module interpreter.
                       []
                   ],
                 "ok_or",
+                [],
                 [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
               |),
               [
@@ -1364,13 +1564,17 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::stack::Stack",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::stack::Stack",
+                        "data"
+                      |)
                     |)
                   ]
                 |);
@@ -1406,6 +1610,7 @@ Module interpreter.
                       []
                   ],
                 "unwrap_unchecked",
+                [],
                 []
               |),
               [
@@ -1422,13 +1627,17 @@ Module interpreter.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "pop",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::stack::Stack",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::stack::Stack",
+                        "data"
+                      |)
                     |)
                   ]
                 |)
@@ -1450,80 +1659,110 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              let~ len :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  let~ len :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "len",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::stack::Stack",
-                        "data"
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::stack::Stack",
+                              "data"
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
-                  |)
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
-                      ],
-                    "get_unchecked_mut",
-                    [ Ty.path "usize" ]
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
+                    |) in
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "ruint::Uint")
+                              (Ty.path "slice")
+                              []
                               [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ]
-                              [];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        [],
-                        "deref_mut",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter::stack::Stack",
-                          "data"
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ],
+                            "get_unchecked_mut",
+                            [],
+                            [ Ty.path "usize" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [],
+                                    "deref_mut",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter::stack::Stack",
+                                        "data"
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |);
+                            BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
+                          ]
                         |)
-                      ]
-                    |);
-                    BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
-                  ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -1606,7 +1845,9 @@ Module interpreter.
                                     []
                                 ],
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [
@@ -1625,9 +1866,10 @@ Module interpreter.
                                         []
                                     ],
                                   "iter_mut",
+                                  [],
                                   []
                                 |),
-                                [ result ]
+                                [ M.borrow (| Pointer.Kind.MutRef, result |) ]
                               |)
                             ]
                           |)
@@ -1657,10 +1899,17 @@ Module interpreter.
                                                   []
                                               ],
                                             [],
+                                            [],
                                             "next",
+                                            [],
                                             []
                                           |),
-                                          [ iter ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -1685,7 +1934,7 @@ Module interpreter.
                                             let v := M.copy (| γ0_0 |) in
                                             let~ _ :=
                                               M.write (|
-                                                M.read (| v |),
+                                                M.deref (| M.read (| v |) |),
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply
@@ -1701,6 +1950,7 @@ Module interpreter.
                                                           []
                                                       ],
                                                     "unwrap_unchecked",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1720,13 +1970,17 @@ Module interpreter.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "pop",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "revm_interpreter::interpreter::stack::Stack",
-                                                          "data"
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "revm_interpreter::interpreter::stack::Stack",
+                                                            "data"
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -1767,9 +2021,10 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "popn",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ top :=
@@ -1778,12 +2033,19 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "top_unsafe",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [ M.read (| result |); M.read (| top |) ] |)
+              M.alloc (|
+                Value.Tuple
+                  [
+                    M.read (| result |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| top |) |) |)
+                  ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1837,13 +2099,17 @@ Module interpreter.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "capacity",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_interpreter::interpreter::stack::Stack",
-                                            "data"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::interpreter::stack::Stack",
+                                              "data"
+                                            |)
                                           |)
                                         ]
                                       |),
@@ -1885,26 +2151,45 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
+                                                                    |)
+                                                                  ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |)
                                                         |);
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "none",
-                                                              []
-                                                            |),
-                                                            []
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "none",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  []
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         |)
                                                       ]
@@ -1970,13 +2255,17 @@ Module interpreter.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "revm_interpreter::interpreter::stack::Stack",
-                                          "data"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_interpreter::interpreter::stack::Stack",
+                                            "data"
+                                          |)
                                         |)
                                       ]
                                     |),
@@ -2013,13 +2302,17 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "push",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::stack::Stack",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::stack::Stack",
+                              "data"
+                            |)
                           |);
                           M.read (| value |)
                         ]
@@ -2074,13 +2367,17 @@ Module interpreter.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_interpreter::interpreter::stack::Stack",
-                                    "data"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::stack::Stack",
+                                      "data"
+                                    |)
                                   |)
                                 ]
                               |),
@@ -2093,65 +2390,76 @@ Module interpreter.
                           "core::result::Result::Ok"
                           [
                             M.read (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::Index",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [ Ty.path "usize" ],
+                                    "index",
+                                    [],
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ]
-                                        [];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [ Ty.path "usize" ],
-                                  "index",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_interpreter::interpreter::stack::Stack",
-                                    "data"
-                                  |);
-                                  BinOp.Wrap.sub (|
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter::stack::Stack",
+                                        "data"
+                                      |)
+                                    |);
                                     BinOp.Wrap.sub (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                      BinOp.Wrap.sub (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  [];
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "len",
+                                            [],
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [];
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "len",
-                                          []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm_interpreter::interpreter::stack::Stack",
+                                                "data"
+                                              |)
+                                            |)
+                                          ]
                                         |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm_interpreter::interpreter::stack::Stack",
-                                            "data"
-                                          |)
-                                        ]
+                                        M.read (| no_from_top |)
                                       |),
-                                      M.read (| no_from_top |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |)
-                                ]
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
                           ]
@@ -2242,26 +2550,44 @@ Module interpreter.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "internal error: entered unreachable code: attempted to dup 0"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "internal error: entered unreachable code: attempted to dup 0"
+                                                                |)
+                                                              ]
                                                           |)
-                                                        ]
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "none",
-                                                          []
-                                                        |),
-                                                        []
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "none",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              []
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     |)
                                                   ]
@@ -2317,13 +2643,17 @@ Module interpreter.
                           Ty.path "alloc::alloc::Global"
                         ],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::stack::Stack",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::stack::Stack",
+                          "data"
+                        |)
                       |)
                     ]
                   |)
@@ -2374,6 +2704,7 @@ Module interpreter.
                                       []
                                   ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -2393,13 +2724,17 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::interpreter::stack::Stack",
-                                      "data"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter::stack::Stack",
+                                        "data"
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -2441,6 +2776,7 @@ Module interpreter.
                                             []
                                         ],
                                       "sub",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ptr |); M.read (| n |) ]
@@ -2468,13 +2804,17 @@ Module interpreter.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "set_len",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm_interpreter::interpreter::stack::Stack",
-                                  "data"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_interpreter::interpreter::stack::Stack",
+                                    "data"
+                                  |)
                                 |);
                                 BinOp.Wrap.add (|
                                   M.read (| len |),
@@ -2508,9 +2848,14 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::stack::Stack",
                 "exchange",
+                [],
                 []
               |),
-              [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| n |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                Value.Integer IntegerKind.Usize 0;
+                M.read (| n |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2590,26 +2935,45 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "internal error: entered unreachable code: overlapping exchange"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "internal error: entered unreachable code: overlapping exchange"
+                                                                    |)
+                                                                  ]
                                                               |)
-                                                            ]
+                                                            |)
+                                                          |)
                                                         |);
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "none",
-                                                              []
-                                                            |),
-                                                            []
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "none",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  []
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)
                                                         |)
                                                       ]
@@ -2667,13 +3031,17 @@ Module interpreter.
                               Ty.path "alloc::alloc::Global"
                             ],
                           "len",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::stack::Stack",
-                            "data"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::stack::Stack",
+                              "data"
+                            |)
                           |)
                         ]
                       |)
@@ -2717,6 +3085,7 @@ Module interpreter.
                                   []
                               ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -2736,13 +3105,17 @@ Module interpreter.
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm_interpreter::interpreter::stack::Stack",
-                                  "data"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_interpreter::interpreter::stack::Stack",
+                                    "data"
+                                  |)
                                 |)
                               ]
                             |);
@@ -2782,6 +3155,7 @@ Module interpreter.
                                       []
                                   ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [ M.read (| top |); M.read (| n |) ]
@@ -2801,6 +3175,7 @@ Module interpreter.
                                       []
                                   ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [ M.read (| top |); M.read (| n_m_index |) ]
@@ -2903,9 +3278,15 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| slice |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| slice |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -2930,9 +3311,10 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
+                              [],
                               []
                             |),
-                            [ M.read (| slice |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                           |),
                           Value.Integer IntegerKind.Usize 31
                         |),
@@ -2958,13 +3340,17 @@ Module interpreter.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::stack::Stack",
-                              "data"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::stack::Stack",
+                                "data"
+                              |)
                             |)
                           ]
                         |),
@@ -3027,6 +3413,7 @@ Module interpreter.
                                   []
                               ],
                             "cast",
+                            [],
                             [ Ty.path "u64" ]
                           |),
                           [
@@ -3045,6 +3432,7 @@ Module interpreter.
                                       []
                                   ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -3064,13 +3452,17 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::interpreter::stack::Stack",
-                                      "data"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter::stack::Stack",
+                                        "data"
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -3090,13 +3482,17 @@ Module interpreter.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::interpreter::stack::Stack",
-                                      "data"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter::stack::Stack",
+                                        "data"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -3123,13 +3519,17 @@ Module interpreter.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "set_len",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::stack::Stack",
-                              "data"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::stack::Stack",
+                                "data"
+                              |)
                             |);
                             M.read (| new_len |)
                           ]
@@ -3142,9 +3542,13 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "chunks_exact",
+                            [],
                             []
                           |),
-                          [ M.read (| slice |); Value.Integer IntegerKind.Usize 32 ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
+                            Value.Integer IntegerKind.Usize 32
+                          ]
                         |)
                       |) in
                     let~ partial_last_word :=
@@ -3153,9 +3557,10 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                             "remainder",
+                            [],
                             []
                           |),
-                          [ words ]
+                          [ M.borrow (| Pointer.Kind.Ref, words |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -3170,7 +3575,9 @@ Module interpreter.
                                   []
                                   [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| words |) ]
@@ -3193,10 +3600,19 @@ Module interpreter.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -3231,7 +3647,9 @@ Module interpreter.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3242,10 +3660,14 @@ Module interpreter.
                                                               []
                                                               [ Ty.path "u8" ],
                                                             "rchunks_exact",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| word |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| word |) |)
+                                                            |);
                                                             Value.Integer IntegerKind.Usize 8
                                                           ]
                                                         |)
@@ -3270,10 +3692,22 @@ Module interpreter.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ iter ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            iter
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |),
                                                                 [
@@ -3307,6 +3741,7 @@ Module interpreter.
                                                                                 []
                                                                                 [ Ty.path "u64" ],
                                                                               "write",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3318,6 +3753,7 @@ Module interpreter.
                                                                                     [ Ty.path "u64"
                                                                                     ],
                                                                                   "add",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3329,6 +3765,7 @@ Module interpreter.
                                                                                 M.get_associated_function (|
                                                                                   Ty.path "u64",
                                                                                   "from_be_bytes",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3355,6 +3792,7 @@ Module interpreter.
                                                                                             "core::array::TryFromSliceError"
                                                                                         ],
                                                                                       "unwrap",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -3375,6 +3813,7 @@ Module interpreter.
                                                                                                     "u8"
                                                                                                 ]
                                                                                             ],
+                                                                                          [],
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -3390,11 +3829,17 @@ Module interpreter.
                                                                                               ]
                                                                                           ],
                                                                                           "try_into",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.read (|
-                                                                                            l
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                l
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |)
@@ -3442,9 +3887,15 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "is_empty",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| partial_last_word |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| partial_last_word |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -3472,9 +3923,16 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "rchunks_exact",
+                            [],
                             []
                           |),
-                          [ M.read (| partial_last_word |); Value.Integer IntegerKind.Usize 8 ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| partial_last_word |) |)
+                            |);
+                            Value.Integer IntegerKind.Usize 8
+                          ]
                         |)
                       |) in
                     let~ partial_last_limb :=
@@ -3486,9 +3944,10 @@ Module interpreter.
                               []
                               [ Ty.path "u8" ],
                             "remainder",
+                            [],
                             []
                           |),
-                          [ limbs ]
+                          [ M.borrow (| Pointer.Kind.Ref, limbs |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -3503,7 +3962,9 @@ Module interpreter.
                                   []
                                   [ Ty.path "u8" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| limbs |) ]
@@ -3526,10 +3987,19 @@ Module interpreter.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -3561,6 +4031,7 @@ Module interpreter.
                                                         []
                                                         [ Ty.path "u64" ],
                                                       "write",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3571,6 +4042,7 @@ Module interpreter.
                                                             []
                                                             [ Ty.path "u64" ],
                                                           "add",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| dst |); M.read (| i |) ]
@@ -3579,6 +4051,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.path "u64",
                                                           "from_be_bytes",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -3600,6 +4073,7 @@ Module interpreter.
                                                                     "core::array::TryFromSliceError"
                                                                 ],
                                                               "unwrap",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3615,6 +4089,7 @@ Module interpreter.
                                                                         []
                                                                         [ Ty.path "u8" ]
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "array")
@@ -3626,9 +4101,15 @@ Module interpreter.
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                   "try_into",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| l |) ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| l |) |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                           |)
@@ -3667,9 +4148,15 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "is_empty",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| partial_last_limb |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| partial_last_limb |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)
                                   |)) in
@@ -3691,49 +4178,68 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "copy_from_slice",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::index::IndexMut",
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 8 ]
-                                            [ Ty.path "u8" ],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeFrom")
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::index::IndexMut",
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 8 ]
+                                                [ Ty.path "u8" ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index_mut",
+                                              [],
                                               []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index_mut",
-                                          []
-                                        |),
-                                        [
-                                          tmp;
-                                          Value.StructRecord
-                                            "core::ops::range::RangeFrom"
+                                            |),
                                             [
-                                              ("start",
-                                                BinOp.Wrap.sub (|
-                                                  Value.Integer IntegerKind.Usize 8,
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [ M.read (| partial_last_limb |) ]
-                                                  |)
-                                                |))
+                                              M.borrow (| Pointer.Kind.MutRef, tmp |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                [
+                                                  ("start",
+                                                    BinOp.Wrap.sub (|
+                                                      Value.Integer IntegerKind.Usize 8,
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "len",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (| partial_last_limb |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |))
+                                                ]
                                             ]
-                                        ]
+                                          |)
+                                        |)
                                       |);
-                                      M.read (| partial_last_limb |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| partial_last_limb |) |)
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -3743,6 +4249,7 @@ Module interpreter.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "write",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3750,6 +4257,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| dst |); M.read (| i |) ]
@@ -3758,6 +4266,7 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "from_be_bytes",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| tmp |) ]
@@ -3795,16 +4304,19 @@ Module interpreter.
                                   M.alloc (|
                                     Value.Tuple
                                       [
-                                        M.alloc (|
-                                          BinOp.Wrap.div (|
-                                            BinOp.Wrap.add (|
-                                              M.read (| i |),
-                                              Value.Integer IntegerKind.Usize 3
-                                            |),
-                                            Value.Integer IntegerKind.Usize 4
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            BinOp.Wrap.div (|
+                                              BinOp.Wrap.add (|
+                                                M.read (| i |),
+                                                Value.Integer IntegerKind.Usize 3
+                                              |),
+                                              Value.Integer IntegerKind.Usize 4
+                                            |)
                                           |)
                                         |);
-                                        n_words
+                                        M.borrow (| Pointer.Kind.Ref, n_words |)
                                       ]
                                   |),
                                   [
@@ -3824,8 +4336,12 @@ Module interpreter.
                                                     (M.alloc (|
                                                       UnOp.not (|
                                                         BinOp.eq (|
-                                                          M.read (| M.read (| left_val |) |),
-                                                          M.read (| M.read (| right_val |) |)
+                                                          M.read (|
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |),
+                                                          M.read (|
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
                                                         |)
                                                       |)
                                                     |)) in
@@ -3852,8 +4368,28 @@ Module interpreter.
                                                           |),
                                                           [
                                                             M.read (| kind |);
-                                                            M.read (| left_val |);
-                                                            M.read (| right_val |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| left_val |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| right_val |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |);
                                                             Value.StructTuple
                                                               "core::option::Option::Some"
                                                               [
@@ -3861,17 +4397,26 @@ Module interpreter.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "wrote too much"
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "wrote too much"
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -3913,6 +4458,7 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "write_bytes",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3920,6 +4466,7 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                         "add",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| dst |); M.read (| i |) ]
@@ -3988,13 +4535,17 @@ Module interpreter.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "len",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_interpreter::interpreter::stack::Stack",
-                                    "data"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::stack::Stack",
+                                      "data"
+                                    |)
                                   |)
                                 ]
                               |),
@@ -4020,50 +4571,61 @@ Module interpreter.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "len",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter::stack::Stack",
-                                "data"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::stack::Stack",
+                                  "data"
+                                |)
                               |)
                             ]
                           |)
                         |) in
                       let~ _ :=
                         M.write (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::index::IndexMut",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::index::IndexMut",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                [],
+                                [ Ty.path "usize" ],
+                                "index_mut",
+                                [],
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              [ Ty.path "usize" ],
-                              "index_mut",
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter::stack::Stack",
-                                "data"
-                              |);
-                              BinOp.Wrap.sub (|
-                                BinOp.Wrap.sub (| M.read (| len |), M.read (| no_from_top |) |),
-                                Value.Integer IntegerKind.Usize 1
-                              |)
-                            ]
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_interpreter::interpreter::stack::Stack",
+                                    "data"
+                                  |)
+                                |);
+                                BinOp.Wrap.sub (|
+                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| no_from_top |) |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              ]
+                            |)
                           |),
                           M.read (| val |)
                         |) in

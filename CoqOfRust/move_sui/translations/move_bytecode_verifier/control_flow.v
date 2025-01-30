@@ -45,13 +45,14 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "function_handle_at",
+                      [],
                       []
                     |),
                     [
-                      M.read (| module |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| function_definition |),
+                          M.deref (| M.read (| function_definition |) |),
                           "move_binary_format::file_format::FunctionDefinition",
                           "function"
                         |)
@@ -72,9 +73,11 @@ Module control_flow.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| module |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
+                                ]
                               |),
                               Value.Integer IntegerKind.U32 5
                             |)
@@ -94,7 +97,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -105,11 +110,14 @@ Module control_flow.
                                     []
                                   |),
                                   [
-                                    M.read (| verifier_config |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| verifier_config |) |)
+                                    |);
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [ M.read (| index |) ];
-                                    M.read (| code |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
                                 |)
                               ]
@@ -140,6 +148,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -151,6 +160,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -179,13 +189,17 @@ Module control_flow.
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "new",
+                                [],
                                 []
                               |),
                               [
-                                M.read (| module |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                                 M.read (| index |);
-                                M.read (| code |);
-                                M.read (| function_handle |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| function_handle |) |)
+                                |)
                               ]
                             |)
                           ]
@@ -206,7 +220,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -220,7 +236,7 @@ Module control_flow.
                                     Value.StructTuple
                                       "core::option::Option::Some"
                                       [ M.read (| index |) ];
-                                    M.read (| code |)
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
                                   ]
                                 |)
                               ]
@@ -251,6 +267,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -262,6 +279,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -288,13 +306,17 @@ Module control_flow.
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "new",
+                              [],
                               []
                             |),
                             [
-                              M.read (| module |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                               M.read (| index |);
-                              M.read (| code |);
-                              M.read (| function_handle |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_handle |) |)
+                              |)
                             ]
                           |)
                         |) in
@@ -312,7 +334,9 @@ Module control_flow.
                                     Ty.path "move_binary_format::errors::PartialVMError"
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -322,7 +346,18 @@ Module control_flow.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| verifier_config |); function_context ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| verifier_config |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (| Pointer.Kind.Ref, function_context |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -352,6 +387,7 @@ Module control_flow.
                                                   "move_bytecode_verifier::absint::FunctionContext";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -363,6 +399,7 @@ Module control_flow.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -430,6 +467,7 @@ Module control_flow.
                     []
                     [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                   "unwrap_or",
+                  [],
                   []
                 |),
                 [
@@ -449,30 +487,41 @@ Module control_flow.
                     []
                     [ Ty.path "move_binary_format::file_format::Bytecode" ],
                   "last",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::Bytecode";
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
                         [
-                          Ty.path "move_binary_format::file_format::Bytecode";
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| code |),
-                        "move_binary_format::file_format::CodeUnit",
-                        "code"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| code |) |),
+                              "move_binary_format::file_format::CodeUnit",
+                              "code"
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)
@@ -489,6 +538,7 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -511,9 +561,10 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Bytecode",
                             "is_unconditional_branch",
+                            [],
                             []
                           |),
-                          [ M.read (| last |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
                         |)
                       |)
                     |) in
@@ -526,6 +577,7 @@ Module control_flow.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "at_code_offset",
+                            [],
                             []
                           |),
                           [
@@ -533,6 +585,7 @@ Module control_flow.
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 "new",
+                                [],
                                 []
                               |),
                               [
@@ -542,7 +595,8 @@ Module control_flow.
                               ]
                             |);
                             M.read (| current_function |);
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.sub (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -554,13 +608,17 @@ Module control_flow.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| code |),
-                                      "move_binary_format::file_format::CodeUnit",
-                                      "code"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| code |) |),
+                                        "move_binary_format::file_format::CodeUnit",
+                                        "code"
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -672,6 +730,7 @@ Module control_flow.
                         []
                         [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                       "unwrap_or",
+                      [],
                       []
                     |),
                     [
@@ -679,9 +738,15 @@ Module control_flow.
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::absint::FunctionContext",
                           "index",
+                          [],
                           []
                         |),
-                        [ M.read (| function_context |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| function_context |) |)
+                          |)
+                        ]
                       |);
                       Value.StructTuple
                         "move_binary_format::file_format::FunctionDefinitionIndex"
@@ -717,6 +782,7 @@ Module control_flow.
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
                                                     "at_code_offset",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -725,6 +791,7 @@ Module control_flow.
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
                                                         "new",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| code |) ]
@@ -747,16 +814,28 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                       "new",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "move_bytecode_verifier::absint::FunctionContext",
-                          "cfg",
-                          []
-                        |),
-                        [ M.read (| function_context |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
+                              "cfg",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| function_context |) |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -767,9 +846,15 @@ Module control_flow.
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                       "new",
+                      [],
                       []
                     |),
-                    [ summary ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, summary |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -781,7 +866,9 @@ Module control_flow.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -790,7 +877,9 @@ Module control_flow.
                               "core::iter::traits::iterator::Iterator",
                               Ty.associated,
                               [],
+                              [],
                               "rev",
+                              [],
                               []
                             |),
                             [
@@ -798,9 +887,10 @@ Module control_flow.
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                                   "preorder",
+                                  [],
                                   []
                                 |),
-                                [ summary ]
+                                [ M.borrow (| Pointer.Kind.Ref, summary |) ]
                               |)
                             ]
                           |)
@@ -824,10 +914,17 @@ Module control_flow.
                                           []
                                           [ Ty.associated ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -854,9 +951,13 @@ Module control_flow.
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopSummary",
                                                 "back_edges",
+                                                [],
                                                 []
                                               |),
-                                              [ summary; M.read (| head |) ]
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, summary |);
+                                                M.read (| head |)
+                                              ]
                                             |)
                                           |) in
                                         let~ _ :=
@@ -879,9 +980,15 @@ Module control_flow.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             "is_empty",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| back |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| back |) |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -912,6 +1019,7 @@ Module control_flow.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "new",
+                                                [],
                                                 []
                                               |),
                                               []
@@ -938,7 +1046,9 @@ Module control_flow.
                                                           ]
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| back |) ]
@@ -965,10 +1075,22 @@ Module control_flow.
                                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -1000,12 +1122,18 @@ Module control_flow.
                                                                           Ty.path
                                                                             "move_bytecode_verifier::loop_summary::LoopPartition",
                                                                           "containing_loop",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
-                                                                          partition;
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            partition
+                                                                          |);
                                                                           M.read (|
-                                                                            M.read (| node |)
+                                                                            M.deref (|
+                                                                              M.read (| node |)
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -1023,14 +1151,25 @@ Module control_flow.
                                                                                     "core::cmp::PartialEq",
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::loop_summary::NodeId",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::loop_summary::NodeId"
                                                                                     ],
                                                                                     "ne",
+                                                                                    [],
                                                                                     []
                                                                                   |),
-                                                                                  [ node; head ]
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      node
+                                                                                    |);
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      head
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
@@ -1053,10 +1192,14 @@ Module control_flow.
                                                                                         "alloc::alloc::Global"
                                                                                     ],
                                                                                   "insert",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  body;
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    body
+                                                                                  |);
                                                                                   M.read (| node |)
                                                                                 ]
                                                                               |)
@@ -1096,7 +1239,9 @@ Module control_flow.
                                                       ]
                                                   ],
                                                 [],
+                                                [],
                                                 "collect",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -1121,7 +1266,9 @@ Module control_flow.
                                                           "move_bytecode_verifier::loop_summary::NodeId"
                                                       ],
                                                     [],
+                                                    [],
                                                     "copied",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::loop_summary::NodeId"
@@ -1140,9 +1287,10 @@ Module control_flow.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "iter",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ body ]
+                                                      [ M.borrow (| Pointer.Kind.Ref, body |) ]
                                                     |)
                                                   ]
                                                 |)
@@ -1170,9 +1318,15 @@ Module control_flow.
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               "pop",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ frontier ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                frontier
+                                                              |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let γ0_0 :=
@@ -1203,7 +1357,9 @@ Module control_flow.
                                                                       ]
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "into_iter",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1212,9 +1368,16 @@ Module control_flow.
                                                                     Ty.path
                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                     "pred_edges",
+                                                                    [],
                                                                     []
                                                                   |),
-                                                                  [ summary; M.read (| node |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      summary
+                                                                    |);
+                                                                    M.read (| node |)
+                                                                  ]
                                                                 |)
                                                               ]
                                                             |)
@@ -1240,10 +1403,22 @@ Module control_flow.
                                                                                     "move_bytecode_verifier::loop_summary::NodeId"
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "next",
+                                                                              [],
                                                                               []
                                                                             |),
-                                                                            [ iter ]
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    iter
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |),
                                                                         [
@@ -1278,13 +1453,19 @@ Module control_flow.
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::loop_summary::LoopPartition",
                                                                                       "containing_loop",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      partition;
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.MutRef,
+                                                                                        partition
+                                                                                      |);
                                                                                       M.read (|
-                                                                                        M.read (|
-                                                                                          pred
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            pred
+                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     ]
@@ -1307,10 +1488,14 @@ Module control_flow.
                                                                                                     Ty.path
                                                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                                                     "is_descendant",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    summary;
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      summary
+                                                                                                    |);
                                                                                                     M.read (|
                                                                                                       head
                                                                                                     |);
@@ -1356,6 +1541,7 @@ Module control_flow.
                                                                                                           Ty.path
                                                                                                             "move_binary_format::errors::PartialVMError"
                                                                                                         ]),
+                                                                                                    [],
                                                                                                     [
                                                                                                       Ty.tuple
                                                                                                         [
@@ -1366,10 +1552,14 @@ Module control_flow.
                                                                                                         ]
                                                                                                     ],
                                                                                                     "call",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
-                                                                                                    err;
+                                                                                                    M.borrow (|
+                                                                                                      Pointer.Kind.Ref,
+                                                                                                      err
+                                                                                                    |);
                                                                                                     Value.Tuple
                                                                                                       [
                                                                                                         Value.StructTuple
@@ -1380,10 +1570,14 @@ Module control_flow.
                                                                                                             Ty.path
                                                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                                                             "block",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
-                                                                                                            summary;
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              summary
+                                                                                                            |);
                                                                                                             M.read (|
                                                                                                               pred
                                                                                                             |)
@@ -1412,14 +1606,25 @@ Module control_flow.
                                                                                         "core::cmp::PartialEq",
                                                                                         Ty.path
                                                                                           "move_bytecode_verifier::loop_summary::NodeId",
+                                                                                        [],
                                                                                         [
                                                                                           Ty.path
                                                                                             "move_bytecode_verifier::loop_summary::NodeId"
                                                                                         ],
                                                                                         "ne",
+                                                                                        [],
                                                                                         []
                                                                                       |),
-                                                                                      [ pred; head ]
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          pred
+                                                                                        |);
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          head
+                                                                                        |)
+                                                                                      ]
                                                                                     |),
                                                                                     ltac:(M.monadic
                                                                                       (M.call_closure (|
@@ -1435,10 +1640,14 @@ Module control_flow.
                                                                                                 "alloc::alloc::Global"
                                                                                             ],
                                                                                           "insert",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          body;
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.MutRef,
+                                                                                            body
+                                                                                          |);
                                                                                           M.read (|
                                                                                             pred
                                                                                           |)
@@ -1479,10 +1688,14 @@ Module control_flow.
                                                                                                     "alloc::alloc::Global"
                                                                                                 ],
                                                                                               "push",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
-                                                                                              frontier;
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.MutRef,
+                                                                                                frontier
+                                                                                              |);
                                                                                               M.read (|
                                                                                                 pred
                                                                                               |)
@@ -1532,9 +1745,19 @@ Module control_flow.
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopPartition",
                                                 "collapse_loop",
+                                                [],
                                                 []
                                               |),
-                                              [ partition; M.read (| head |); body ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, partition |);
+                                                M.read (| head |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, body |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         M.match_operator (|
@@ -1544,7 +1767,7 @@ Module control_flow.
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| verifier_config |),
+                                                    M.deref (| M.read (| verifier_config |) |),
                                                     "move_vm_config::verifier::VerifierConfig",
                                                     "max_loop_depth"
                                                   |) in
@@ -1564,7 +1787,9 @@ Module control_flow.
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.gt (|
-                                                                M.rust_cast (M.read (| depth |)),
+                                                                M.cast
+                                                                  (Ty.path "usize")
+                                                                  (M.read (| depth |)),
                                                                 M.read (| max_depth |)
                                                               |)
                                                             |)) in
@@ -1598,6 +1823,7 @@ Module control_flow.
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError"
                                                                         ]),
+                                                                    [],
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -1607,10 +1833,14 @@ Module control_flow.
                                                                         ]
                                                                     ],
                                                                     "call",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    err;
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      err
+                                                                    |);
                                                                     Value.Tuple
                                                                       [
                                                                         Value.StructTuple
@@ -1621,10 +1851,14 @@ Module control_flow.
                                                                             Ty.path
                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",
                                                                             "block",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            summary;
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              summary
+                                                                            |);
                                                                             M.read (| head |)
                                                                           ]
                                                                         |)

@@ -32,10 +32,18 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "derive::Centimeters",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "derive::Centimeters",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -63,13 +71,39 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
           M.get_trait_method (|
             "core::cmp::PartialOrd",
             Ty.path "f64",
+            [],
             [ Ty.path "f64" ],
             "partial_cmp",
+            [],
             []
           |),
           [
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |);
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "derive::Centimeters",
+                    0
+                  |)
+                |)
+              |)
+            |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "derive::Centimeters",
+                    0
+                  |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -105,13 +139,29 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Inches" |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Inches", 0 |)
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Inches" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "derive::Inches",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)
           ]
         |)))
@@ -155,7 +205,7 @@ Module Impl_derive_Inches.
                       "derive::Centimeters"
                       [
                         BinOp.Wrap.mul (|
-                          M.rust_cast (M.read (| inches |)),
+                          M.cast (Ty.path "f64") (M.read (| inches |)),
                           M.read (| UnsupportedLiteral |)
                         |)
                       ]
@@ -221,28 +271,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "One foot equals " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "One foot equals " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "derive::Inches" ]
-                              |),
-                              [ foot ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "derive::Inches" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, foot |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -268,28 +345,41 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "derive::Centimeters",
+                              [],
                               [ Ty.path "derive::Centimeters" ],
                               "lt",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "derive::Inches",
-                                    "to_centimeters",
-                                    []
-                                  |),
-                                  [ foot ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "derive::Inches",
+                                      "to_centimeters",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, foot |) ]
+                                  |)
                                 |)
                               |);
-                              meter
+                              M.borrow (| Pointer.Kind.Ref, meter |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     Value.String "smaller"));
-                fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "bigger" |) |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "bigger" |) |)
+                      |)
+                    |)))
               ]
             |)
           |) in
@@ -300,28 +390,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "One foot is " |);
-                            M.read (| Value.String " than one meter.
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "One foot is " |);
+                                  M.read (| Value.String " than one meter.
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ cmp ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, cmp |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

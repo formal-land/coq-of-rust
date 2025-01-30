@@ -65,8 +65,17 @@ Module task.
                           "core::task::poll::Poll::Ready"
                           [
                             M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                T,
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -120,9 +129,20 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Ready" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Ready" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -134,9 +154,16 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Pending" |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Pending" |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -220,7 +247,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -231,7 +258,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -267,11 +294,16 @@ Module task.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
+                                    [],
                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -313,7 +345,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -324,14 +356,31 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_discr; __arg1_discr ]
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
                   |)
                 |),
                 [
@@ -363,8 +412,25 @@ Module task.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  M.get_trait_method (|
+                                    "core::cmp::Ord",
+                                    T,
+                                    [],
+                                    [],
+                                    "cmp",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __self_0 |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| __arg1_0 |) |)
+                                    |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -411,7 +477,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -422,7 +488,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -453,11 +519,16 @@ Module task.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             T,
+                            [],
                             [ T ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -467,11 +538,22 @@ Module task.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
+                            [],
                             [ Ty.path "isize" ],
                             "partial_cmp",
+                            [],
                             []
                           |),
-                          [ __self_discr; __arg1_discr ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -509,7 +591,7 @@ Module task.
                       [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -519,10 +601,18 @@ Module task.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -540,8 +630,19 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ __H ] |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          M.get_trait_method (|
+                            "core::hash::Hash",
+                            T,
+                            [],
+                            [],
+                            "hash",
+                            [],
+                            [ __H ]
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -602,8 +703,10 @@ Module task.
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
+                                [],
                                 [ Ty.tuple [ T ] ],
                                 "call_once",
+                                [],
                                 []
                               |),
                               [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -637,7 +740,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -675,9 +778,10 @@ Module task.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                   "is_ready",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -744,8 +848,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
+                                    [],
                                     [ Ty.tuple [ T ] ],
                                     "call_once",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -856,8 +962,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
+                                    [],
                                     [ Ty.tuple [ E ] ],
                                     "call_once",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -951,8 +1059,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
+                                        [],
                                         [ Ty.tuple [ T ] ],
                                         "call_once",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
@@ -1108,8 +1218,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
+                                        [],
                                         [ Ty.tuple [ E ] ],
                                         "call_once",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
@@ -1209,6 +1321,7 @@ Module task.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
                   Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
@@ -1356,8 +1469,10 @@ Module task.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     F,
+                                    [],
                                     [ E ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| e |) ]
@@ -1430,6 +1545,7 @@ Module task.
                   []
                   [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -1461,6 +1577,7 @@ Module task.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                       "map",
+                                      [],
                                       [
                                         Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
                                         Ty.function
@@ -1662,8 +1779,10 @@ Module task.
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         F,
+                                        [],
                                         [ E ],
                                         "from",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| e |) ]

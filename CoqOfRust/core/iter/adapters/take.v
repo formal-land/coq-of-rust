@@ -28,12 +28,20 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take::Take",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -43,14 +51,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take::Take",
-                          "n"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "n"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -83,23 +101,43 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Take" |);
-                  M.read (| Value.String "iter" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::take::Take",
-                    "iter"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Take" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::take::Take",
+                          "iter"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "n" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::take::Take",
-                      "n"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "n" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::take::Take",
+                              "n"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -178,7 +216,7 @@ Module iter.
                               BinOp.ne (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -191,7 +229,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::take::Take",
                               "n"
                             |) in
@@ -205,14 +243,19 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::take::Take",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::take::Take",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -259,7 +302,7 @@ Module iter.
                               BinOp.gt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -272,7 +315,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::take::Take",
                               "n"
                             |) in
@@ -289,14 +332,19 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               I,
                               [],
+                              [],
                               "nth",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::take::Take",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::take::Take",
+                                  "iter"
+                                |)
                               |);
                               M.read (| n |)
                             ]
@@ -316,7 +364,7 @@ Module iter.
                                         BinOp.gt (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::iter::adapters::take::Take",
                                               "n"
                                             |)
@@ -336,19 +384,24 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           I,
                                           [],
+                                          [],
                                           "nth",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::take::Take",
-                                            "iter"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::take::Take",
+                                              "iter"
+                                            |)
                                           |);
                                           BinOp.Wrap.sub (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::iter::adapters::take::Take",
                                                 "n"
                                               |)
@@ -361,7 +414,7 @@ Module iter.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::iter::adapters::take::Take",
                                         "n"
                                       |),
@@ -417,7 +470,7 @@ Module iter.
                                     BinOp.eq (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::iter::adapters::take::Take",
                                           "n"
                                         |)
@@ -455,14 +508,19 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             I,
                             [],
+                            [],
                             "size_hint",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -482,7 +540,7 @@ Module iter.
                                     M.read (| lower |);
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::iter::adapters::take::Take",
                                         "n"
                                       |)
@@ -510,7 +568,7 @@ Module iter.
                                               M.read (| x |),
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::iter::adapters::take::Take",
                                                   "n"
                                                 |)
@@ -535,7 +593,7 @@ Module iter.
                                             [
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::iter::adapters::take::Take",
                                                   "n"
                                                 |)
@@ -598,7 +656,7 @@ Module iter.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -614,7 +672,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               R,
                               [],
+                              [],
                               "from_output",
+                              [],
                               []
                             |),
                             [ M.read (| init |) ]
@@ -624,10 +684,13 @@ Module iter.
                       ltac:(M.monadic
                         (let~ n :=
                           M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take::Take",
-                              "n"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "n"
+                              |)
                             |)
                           |) in
                         M.alloc (|
@@ -638,6 +701,7 @@ Module iter.
                                 []
                                 [ R; Ty.associated ],
                               "into_try",
+                              [],
                               []
                             |),
                             [
@@ -646,7 +710,9 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   I,
                                   [],
+                                  [],
                                   "try_fold",
+                                  [],
                                   [
                                     Acc;
                                     Ty.associated;
@@ -657,15 +723,24 @@ Module iter.
                                   ]
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::take::Take",
-                                    "iter"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "iter"
+                                    |)
                                   |);
                                   M.read (| init |);
                                   M.call_closure (|
-                                    M.get_associated_function (| Self, "check.try_fold", [] |),
-                                    [ M.read (| n |); M.read (| fold |) ]
+                                    M.get_associated_function (| Self, "check.try_fold", [], [] |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| n |) |)
+                                      |);
+                                      M.read (| fold |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -700,7 +775,9 @@ Module iter.
                   "core::iter::adapters::take::SpecTake",
                   Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                   [],
+                  [],
                   "spec_fold",
+                  [],
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -725,7 +802,9 @@ Module iter.
                   "core::iter::adapters::take::SpecTake",
                   Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                   [],
+                  [],
                   "spec_for_each",
+                  [],
                   [ F ]
                 |),
                 [ M.read (| self |); M.read (| f |) ]
@@ -761,11 +840,19 @@ Module iter.
                 let~ min :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::iter::adapters::take::Take",
                             "n"
                           |)
@@ -783,14 +870,19 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             I,
                             [],
+                            [],
                             "advance_by",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |);
                             M.read (| min |)
                           ]
@@ -823,6 +915,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| rem |) ]
@@ -836,7 +929,7 @@ Module iter.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::adapters::take::Take",
                       "n"
                     |) in
@@ -849,6 +942,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -877,6 +971,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
+                          [],
                           []
                         |),
                         [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced |) |) ]
@@ -928,15 +1023,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::take::Take",
-                    "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "iter"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1026,7 +1152,7 @@ Module iter.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -1042,7 +1168,7 @@ Module iter.
                         (let~ n :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::take::Take",
                               "n"
                             |)
@@ -1050,7 +1176,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::take::Take",
                               "n"
                             |) in
@@ -1064,19 +1190,25 @@ Module iter.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               I,
                               [],
+                              [],
                               "nth_back",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::take::Take",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::take::Take",
+                                  "iter"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1085,14 +1217,19 @@ Module iter.
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       I,
                                       [],
+                                      [],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::take::Take",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::take::Take",
+                                          "iter"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -1138,14 +1275,19 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         I,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take::Take",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::take::Take",
+                            "iter"
+                          |)
                         |)
                       ]
                     |)
@@ -1161,7 +1303,7 @@ Module iter.
                               BinOp.gt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -1178,13 +1320,14 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.path "usize",
                                   "saturating_sub",
+                                  [],
                                   []
                                 |),
                                 [
                                   M.read (| len |);
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::take::Take",
                                       "n"
                                     |)
@@ -1197,7 +1340,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::take::Take",
                               "n"
                             |) in
@@ -1214,14 +1357,19 @@ Module iter.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               I,
                               [],
+                              [],
                               "nth_back",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::take::Take",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::take::Take",
+                                  "iter"
+                                |)
                               |);
                               M.read (| m |)
                             ]
@@ -1255,14 +1403,19 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           I,
                                           [],
+                                          [],
                                           "nth_back",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::take::Take",
-                                            "iter"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::take::Take",
+                                              "iter"
+                                            |)
                                           |);
                                           BinOp.Wrap.sub (|
                                             M.read (| len |),
@@ -1321,7 +1474,7 @@ Module iter.
                               BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::take::Take",
                                     "n"
                                   |)
@@ -1337,7 +1490,9 @@ Module iter.
                               "core::ops::try_trait::Try",
                               R,
                               [],
+                              [],
                               "from_output",
+                              [],
                               []
                             |),
                             [ M.read (| init |) ]
@@ -1352,14 +1507,19 @@ Module iter.
                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                 I,
                                 [],
+                                [],
                                 "len",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::take::Take",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::take::Take",
+                                    "iter"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1377,7 +1537,7 @@ Module iter.
                                           M.read (| len |),
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::iter::adapters::take::Take",
                                               "n"
                                             |)
@@ -1391,38 +1551,47 @@ Module iter.
                                                 []
                                                 [ Ty.associated ],
                                               "is_none",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::double_ended::DoubleEndedIterator",
-                                                    I,
-                                                    [],
-                                                    "nth_back",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "core::iter::adapters::take::Take",
-                                                      "iter"
-                                                    |);
-                                                    BinOp.Wrap.sub (|
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| len |),
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::iter::adapters::take::Take",
-                                                            "n"
-                                                          |)
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::double_ended::DoubleEndedIterator",
+                                                      I,
+                                                      [],
+                                                      [],
+                                                      "nth_back",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::iter::adapters::take::Take",
+                                                          "iter"
                                                         |)
-                                                      |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |)
-                                                  ]
+                                                      |);
+                                                      BinOp.Wrap.sub (|
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| len |),
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "core::iter::adapters::take::Take",
+                                                              "n"
+                                                            |)
+                                                          |)
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
                                             ]
@@ -1440,7 +1609,9 @@ Module iter.
                                       "core::ops::try_trait::Try",
                                       R,
                                       [],
+                                      [],
                                       "from_output",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| init |) ]
@@ -1454,14 +1625,19 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "try_rfold",
+                                      [],
                                       [ Acc; Fold; R ]
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::take::Take",
-                                        "iter"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::take::Take",
+                                          "iter"
+                                        |)
                                       |);
                                       M.read (| init |);
                                       M.read (| fold |)
@@ -1534,14 +1710,19 @@ Module iter.
                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                 I,
                                 [],
+                                [],
                                 "len",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::take::Take",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::take::Take",
+                                    "iter"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1573,38 +1754,47 @@ Module iter.
                                                 []
                                                 [ Ty.associated ],
                                               "is_none",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::double_ended::DoubleEndedIterator",
-                                                    I,
-                                                    [],
-                                                    "nth_back",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      self,
-                                                      "core::iter::adapters::take::Take",
-                                                      "iter"
-                                                    |);
-                                                    BinOp.Wrap.sub (|
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| len |),
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            self,
-                                                            "core::iter::adapters::take::Take",
-                                                            "n"
-                                                          |)
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::iter::traits::double_ended::DoubleEndedIterator",
+                                                      I,
+                                                      [],
+                                                      [],
+                                                      "nth_back",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          self,
+                                                          "core::iter::adapters::take::Take",
+                                                          "iter"
                                                         |)
-                                                      |),
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |)
-                                                  ]
+                                                      |);
+                                                      BinOp.Wrap.sub (|
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| len |),
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              self,
+                                                              "core::iter::adapters::take::Take",
+                                                              "n"
+                                                            |)
+                                                          |)
+                                                        |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
                                             ]
@@ -1625,7 +1815,9 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "rfold",
+                                      [],
                                       [ Acc; Fold ]
                                     |),
                                     [
@@ -1685,27 +1877,32 @@ Module iter.
                 let~ trim_inner :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                      M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::exact_size::ExactSizeIterator",
                             I,
                             [],
+                            [],
                             "len",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |)
                           ]
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::iter::adapters::take::Take",
                             "n"
                           |)
@@ -1716,7 +1913,7 @@ Module iter.
                 let~ advance_by :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+                      M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
                       [ M.read (| trim_inner |); M.read (| n |) ]
                     |)
                   |) in
@@ -1729,14 +1926,19 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             I,
                             [],
+                            [],
                             "advance_back_by",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |);
                             M.read (| advance_by |)
                           ]
@@ -1769,6 +1971,7 @@ Module iter.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| rem |) ]
@@ -1788,7 +1991,7 @@ Module iter.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::adapters::take::Take",
                       "n"
                     |) in
@@ -1801,6 +2004,7 @@ Module iter.
                         []
                         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1829,6 +2033,7 @@ Module iter.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
+                          [],
                           []
                         |),
                         [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced_by |) |) ]
@@ -1943,7 +2148,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ],
                         [],
+                        [],
                         "try_fold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -1951,12 +2158,13 @@ Module iter.
                         ]
                       |),
                       [
-                        self;
+                        M.borrow (| Pointer.Kind.MutRef, self |);
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -2034,7 +2242,9 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "try_fold",
+                                [],
                                 [
                                   Ty.path "usize";
                                   Ty.associated;
@@ -2042,17 +2252,25 @@ Module iter.
                                 ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  self,
-                                  "core::iter::adapters::take::Take",
-                                  "iter"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::iter::adapters::take::Take",
+                                    "iter"
+                                  |)
                                 |);
                                 BinOp.Wrap.sub (|
                                   M.read (| remaining |),
                                   Value.Integer IntegerKind.Usize 1
                                 |);
                                 M.call_closure (|
-                                  M.get_associated_function (| Self, "check.spec_for_each", [] |),
+                                  M.get_associated_function (|
+                                    Self,
+                                    "check.spec_for_each",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| f |) ]
                                 |)
                               ]
@@ -2112,7 +2330,15 @@ Module iter.
                 let~ end_ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2126,14 +2352,19 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             I,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -2149,7 +2380,9 @@ Module iter.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2179,10 +2412,17 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2212,14 +2452,19 @@ Module iter.
                                                   "core::iter::traits::iterator::Iterator",
                                                   I,
                                                   [],
+                                                  [],
                                                   "__iterator_get_unchecked",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "core::iter::adapters::take::Take",
-                                                    "iter"
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "core::iter::adapters::take::Take",
+                                                      "iter"
+                                                    |)
                                                   |);
                                                   M.read (| i |)
                                                 ]
@@ -2232,12 +2477,14 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ B; Ty.associated ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple [ M.read (| acc |); M.read (| val |) ]
                                                 ]
                                               |)
@@ -2280,7 +2527,15 @@ Module iter.
                 let~ end_ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "usize",
+                        [],
+                        [],
+                        "min",
+                        [],
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2294,14 +2549,19 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             I,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "core::iter::adapters::take::Take",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::iter::adapters::take::Take",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -2316,7 +2576,9 @@ Module iter.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2346,10 +2608,17 @@ Module iter.
                                           []
                                           [ Ty.path "usize" ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -2376,14 +2645,19 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
                                                 [],
+                                                [],
                                                 "__iterator_get_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "core::iter::adapters::take::Take",
-                                                  "iter"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "core::iter::adapters::take::Take",
+                                                    "iter"
+                                                  |)
                                                 |);
                                                 M.read (| i |)
                                               ]
@@ -2395,11 +2669,16 @@ Module iter.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.associated ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
-                                              [ f; Value.Tuple [ M.read (| val |) ] ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, f |);
+                                                Value.Tuple [ M.read (| val |) ]
+                                              ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
@@ -2452,10 +2731,12 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2480,10 +2761,15 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "nth",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2514,10 +2800,16 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ Acc; Fold; R ]
                 |),
-                [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| init |);
+                  M.read (| fold |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2547,7 +2839,9 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "fold",
+                  [],
                   [ Acc; Fold ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
@@ -2580,10 +2874,15 @@ Module iter.
                     []
                     [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2624,7 +2923,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::iter::adapters::take::Take",
                   "n"
                 |)
@@ -2661,7 +2960,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::iter::adapters::take::Take",
                   "n"
                 |)

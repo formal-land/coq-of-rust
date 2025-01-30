@@ -19,6 +19,7 @@ Module constants.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -29,7 +30,7 @@ Module constants.
           [
             M.call_closure (|
               M.get_function (| "move_bytecode_verifier::constants::verify_module_impl", [], [] |),
-              [ M.read (| module |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
             |);
             M.closure
               (fun γ =>
@@ -47,6 +48,7 @@ Module constants.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -58,9 +60,15 @@ Module constants.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -110,7 +118,9 @@ Module constants.
                                 [ Ty.path "move_binary_format::file_format::Constant" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -122,7 +132,9 @@ Module constants.
                                 []
                                 [ Ty.path "move_binary_format::file_format::Constant" ],
                               [],
+                              [],
                               "enumerate",
+                              [],
                               []
                             |),
                             [
@@ -133,16 +145,28 @@ Module constants.
                                     []
                                     [ Ty.path "move_binary_format::file_format::Constant" ],
                                   "iter",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "constant_pool",
-                                      []
-                                    |),
-                                    [ M.read (| module |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "constant_pool",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -174,10 +198,17 @@ Module constants.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -214,7 +245,9 @@ Module constants.
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -224,7 +257,13 @@ Module constants.
                                                     [],
                                                     []
                                                   |),
-                                                  [ M.read (| idx |); M.read (| constant |) ]
+                                                  [
+                                                    M.read (| idx |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| constant |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -254,6 +293,7 @@ Module constants.
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -266,6 +306,7 @@ Module constants.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -327,7 +368,9 @@ Module constants.
                           []
                           [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -339,10 +382,18 @@ Module constants.
                           |),
                           [
                             M.read (| idx |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| constant |),
-                              "move_binary_format::file_format::Constant",
-                              "type_"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| constant |) |),
+                                    "move_binary_format::file_format::Constant",
+                                    "type_"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -373,6 +424,7 @@ Module constants.
                                         Ty.tuple [];
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -383,6 +435,7 @@ Module constants.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -410,7 +463,10 @@ Module constants.
                     [],
                     []
                   |),
-                  [ M.read (| idx |); M.read (| constant |) ]
+                  [
+                    M.read (| idx |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| constant |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -453,9 +509,10 @@ Module constants.
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::SignatureToken",
                             "is_valid_for_constant",
+                            [],
                             []
                           |),
-                          [ M.read (| type_ |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| type_ |) |) |) ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -477,7 +534,7 @@ Module constants.
                               "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
                               [];
                             Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                            M.rust_cast (M.read (| idx |))
+                            M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)
                       ]
@@ -516,9 +573,10 @@ Module constants.
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::Constant",
                   "deserialize_constant",
+                  [],
                   []
                 |),
-                [ M.read (| constant |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| constant |) |) |) ]
               |)
             |),
             [
@@ -545,7 +603,7 @@ Module constants.
                               "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
                               [];
                             Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-                            M.rust_cast (M.read (| idx |))
+                            M.cast (Ty.path "u16") (M.read (| idx |))
                           ]
                         |)
                       ]

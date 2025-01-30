@@ -24,63 +24,116 @@ Module Animal.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " says " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " says " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "traits::Animal",
-                                        Self,
-                                        [],
-                                        "name",
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "traits::Animal",
-                                        Self,
-                                        [],
-                                        "noise",
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "traits::Animal",
+                                                    Self,
+                                                    [],
+                                                    [],
+                                                    "name",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "traits::Animal",
+                                                    Self,
+                                                    [],
+                                                    [],
+                                                    "noise",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -110,7 +163,11 @@ Module Impl_traits_Sheep.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "traits::Sheep", "naked" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "traits::Sheep",
+            "naked"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -143,8 +200,13 @@ Module Impl_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [] |),
-                          [ M.read (| self |) ]
+                          M.get_associated_function (|
+                            Ty.path "traits::Sheep",
+                            "is_naked",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -158,42 +220,75 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "" |);
-                                      M.read (| Value.String " is already naked...
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "" |);
+                                            M.read (| Value.String " is already naked...
 " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "traits::Animal",
-                                                Ty.path "traits::Sheep",
-                                                [],
-                                                "name",
-                                                []
-                                              |),
-                                              [ M.read (| self |) ]
-                                            |)
-                                          |)
-                                        ]
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "traits::Animal",
+                                                            Ty.path "traits::Sheep",
+                                                            [],
+                                                            [],
+                                                            "name",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -214,35 +309,61 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "" |);
-                                      M.read (| Value.String " gets a haircut!
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "" |);
+                                            M.read (| Value.String " gets a haircut!
 " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "traits::Sheep",
-                                            "name"
-                                          |)
-                                        ]
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "traits::Sheep",
+                                                        "name"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -253,7 +374,7 @@ Module Impl_traits_Sheep.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "traits::Sheep",
                         "naked"
                       |),
@@ -302,7 +423,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "traits::Sheep", "name" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "traits::Sheep",
+            "name"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -331,8 +456,13 @@ Module Impl_traits_Animal_for_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [] |),
-                          [ M.read (| self |) ]
+                          M.get_associated_function (|
+                            Ty.path "traits::Sheep",
+                            "is_naked",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -363,56 +493,102 @@ Module Impl_traits_Animal_for_traits_Sheep.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " pauses briefly... " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " pauses briefly... " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "traits::Sheep",
-                                    "name"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "traits::Animal",
-                                        Ty.path "traits::Sheep",
-                                        [],
-                                        "noise",
-                                        []
-                                      |),
-                                      [ M.read (| self |) ]
-                                    |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "traits::Sheep",
+                                                "name"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "traits::Animal",
+                                                    Ty.path "traits::Sheep",
+                                                    [],
+                                                    [],
+                                                    "noise",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -459,29 +635,53 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ dolly :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "new", [] |),
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "new",
+                [],
+                []
+              |),
               [ M.read (| Value.String "Dolly" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),
-              [ dolly ]
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "talk",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "traits::Sheep", "shear", [] |),
-              [ dolly ]
+              M.get_associated_function (| Ty.path "traits::Sheep", "shear", [], [] |),
+              [ M.borrow (| Pointer.Kind.MutRef, dolly |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),
-              [ dolly ]
+              M.get_trait_method (|
+                "traits::Animal",
+                Ty.path "traits::Sheep",
+                [],
+                [],
+                "talk",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

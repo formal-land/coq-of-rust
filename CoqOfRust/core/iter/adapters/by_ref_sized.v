@@ -28,16 +28,31 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "ByRefSized" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "ByRefSized" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::by_ref_sized::ByRefSized",
+                              0
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -77,15 +92,22 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "next",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -109,15 +131,22 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "size_hint",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -147,15 +176,22 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "advance_by",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -177,13 +213,26 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
-                M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  I,
+                  [],
+                  [],
+                  "nth",
+                  [],
+                  []
+                |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -217,7 +266,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "try_fold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -225,11 +276,16 @@ Module iter.
                         ]
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "core::iter::adapters::by_ref_sized::ByRefSized",
-                            0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "core::iter::adapters::by_ref_sized::ByRefSized",
+                                0
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| init |);
@@ -237,6 +293,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -273,15 +330,22 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "try_fold",
+                  [],
                   [ B; F; R ]
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| init |);
@@ -329,15 +393,22 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -367,15 +438,22 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -401,15 +479,22 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "nth_back",
+                  [],
                   []
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| n |)
@@ -443,7 +528,9 @@ Module iter.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         I,
                         [],
+                        [],
                         "try_rfold",
+                        [],
                         [
                           B;
                           Ty.associated;
@@ -451,11 +538,16 @@ Module iter.
                         ]
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "core::iter::adapters::by_ref_sized::ByRefSized",
-                            0
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "core::iter::adapters::by_ref_sized::ByRefSized",
+                                0
+                              |)
+                            |)
                           |)
                         |);
                         M.read (| init |);
@@ -463,6 +555,7 @@ Module iter.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
+                            [],
                             [ B; Ty.associated; F ]
                           |),
                           [ M.read (| f |) ]
@@ -499,15 +592,22 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::by_ref_sized::ByRefSized",
-                      0
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::by_ref_sized::ByRefSized",
+                          0
+                        |)
+                      |)
                     |)
                   |);
                   M.read (| init |);

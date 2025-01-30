@@ -80,9 +80,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -117,9 +118,15 @@ Module slice.
                                                     [ T ]
                                                 ],
                                               "len",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| scratch |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| scratch |) |)
+                                              |)
+                                            ]
                                           |),
                                           M.call_closure (|
                                             M.get_function (|
@@ -155,9 +162,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "slice_as_mut_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| scratch |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |) ]
                         |)
                       |) in
                     let~ v_base :=
@@ -166,9 +174,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ v_mid :=
@@ -177,6 +186,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [ M.read (| v_base |); M.read (| mid |) ]
@@ -188,6 +198,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [ M.read (| v_base |); M.read (| len |) ]
@@ -256,6 +267,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| buf |); M.read (| save_len |) ]
@@ -280,13 +292,17 @@ Module slice.
                                       []
                                       [ T ],
                                     "merge_up",
+                                    [],
                                     [ F ]
                                   |),
                                   [
-                                    merge_state;
+                                    M.borrow (| Pointer.Kind.MutRef, merge_state |);
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| v_mid |));
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| v_end |));
-                                    M.read (| is_less |)
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -302,15 +318,19 @@ Module slice.
                                       []
                                       [ T ],
                                     "merge_down",
+                                    [],
                                     [ F ]
                                   |),
                                   [
-                                    merge_state;
+                                    M.borrow (| Pointer.Kind.MutRef, merge_state |);
                                     (* MutToConstPointer *)
                                     M.pointer_coercion (M.read (| v_base |));
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |));
                                     M.read (| v_end |);
-                                    M.read (| is_less |)
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -384,18 +404,24 @@ Module slice.
                 M.read (|
                   let~ left :=
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::sort::stable::merge::MergeState",
-                        "start"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::sort::stable::merge::MergeState",
+                          "start"
+                        |)
                       |)
                     |) in
                   let~ out :=
                     M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::sort::stable::merge::MergeState",
-                        "dst"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::sort::stable::merge::MergeState",
+                          "dst"
+                        |)
                       |)
                     |) in
                   M.loop (|
@@ -410,10 +436,10 @@ Module slice.
                                   (M.alloc (|
                                     LogicalOp.and (|
                                       BinOp.ne (|
-                                        M.read (| M.read (| left |) |),
+                                        M.read (| M.deref (| M.read (| left |) |) |),
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::slice::sort::stable::merge::MergeState",
                                             "end"
                                           |)
@@ -421,7 +447,9 @@ Module slice.
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.ne (|
-                                          M.rust_cast (M.read (| right |)),
+                                          M.cast
+                                            (Ty.apply (Ty.path "*const") [] [ T ])
+                                            (M.read (| right |)),
                                           M.read (| right_end |)
                                         |)))
                                     |)
@@ -438,6 +466,7 @@ Module slice.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -446,12 +475,37 @@ Module slice.
                                             ]
                                         ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (| is_less |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| is_less |) |)
+                                        |);
                                         Value.Tuple
-                                          [ M.read (| right |); M.read (| M.read (| left |) |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| right |) |)
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (| M.deref (| M.read (| left |) |) |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                       ]
                                     |)
                                   |)
@@ -471,7 +525,8 @@ Module slice.
                                             |) in
                                           M.alloc (|
                                             (* MutToConstPointer *)
-                                            M.pointer_coercion (M.read (| M.read (| left |) |))
+                                            M.pointer_coercion
+                                              (M.read (| M.deref (| M.read (| left |) |) |))
                                           |)));
                                       fun γ => ltac:(M.monadic right)
                                     ]
@@ -487,23 +542,24 @@ Module slice.
                                     |),
                                     [
                                       M.read (| src |);
-                                      M.read (| M.read (| out |) |);
+                                      M.read (| M.deref (| M.read (| out |) |) |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
                               let~ _ :=
                                 M.write (|
-                                  M.read (| left |),
+                                  M.deref (| M.read (| left |) |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| M.read (| left |) |);
-                                      M.rust_cast (M.read (| consume_left |))
+                                      M.read (| M.deref (| M.read (| left |) |) |);
+                                      M.cast (Ty.path "usize") (M.read (| consume_left |))
                                     ]
                                   |)
                                 |) in
@@ -514,25 +570,29 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
                                       M.read (| right |);
-                                      M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (UnOp.not (| M.read (| consume_left |) |))
                                     ]
                                   |)
                                 |) in
                               let~ _ :=
                                 M.write (|
-                                  M.read (| out |),
+                                  M.deref (| M.read (| out |) |),
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (| M.read (| out |) |);
+                                      M.read (| M.deref (| M.read (| out |) |) |);
                                       Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
@@ -616,12 +676,13 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub",
+                              [],
                               []
                             |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::slice::sort::stable::merge::MergeState",
                                   "dst"
                                 |)
@@ -636,12 +697,13 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub",
+                              [],
                               []
                             |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::slice::sort::stable::merge::MergeState",
                                   "end"
                                 |)
@@ -657,6 +719,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub",
+                              [],
                               []
                             |),
                             [ M.read (| out |); Value.Integer IntegerKind.Usize 1 ]
@@ -668,17 +731,42 @@ Module slice.
                             M.get_trait_method (|
                               "core::ops::function::FnMut",
                               F,
+                              [],
                               [
                                 Ty.tuple
                                   [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ]
                                   ]
                               ],
                               "call_mut",
+                              [],
                               []
                             |),
                             [
-                              M.read (| is_less |);
-                              Value.Tuple [ M.read (| right |); M.read (| left |) ]
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| is_less |) |)
+                              |);
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right |) |)
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left |) |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                             ]
                           |)
                         |) in
@@ -714,7 +802,7 @@ Module slice.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::slice::sort::stable::merge::MergeState",
                             "dst"
                           |),
@@ -722,18 +810,19 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "add",
+                              [],
                               []
                             |),
                             [
                               M.read (| left |);
-                              M.rust_cast (UnOp.not (| M.read (| consume_left |) |))
+                              M.cast (Ty.path "usize") (UnOp.not (| M.read (| consume_left |) |))
                             ]
                           |)
                         |) in
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::slice::sort::stable::merge::MergeState",
                             "end"
                           |),
@@ -741,9 +830,13 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "add",
+                              [],
                               []
                             |),
-                            [ M.read (| right |); M.rust_cast (M.read (| consume_left |)) ]
+                            [
+                              M.read (| right |);
+                              M.cast (Ty.path "usize") (M.read (| consume_left |))
+                            ]
                           |)
                         |) in
                       M.match_operator (|
@@ -756,12 +849,13 @@ Module slice.
                                   (M.alloc (|
                                     LogicalOp.or (|
                                       BinOp.eq (|
-                                        M.rust_cast
+                                        M.cast
+                                          (Ty.apply (Ty.path "*const") [] [ T ])
                                           (* MutToConstPointer *)
                                           (M.pointer_coercion
                                             (M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::slice::sort::stable::merge::MergeState",
                                                 "dst"
                                               |)
@@ -770,12 +864,13 @@ Module slice.
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.eq (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*const") [] [ T ])
                                             (* MutToConstPointer *)
                                             (M.pointer_coercion
                                               (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::slice::sort::stable::merge::MergeState",
                                                   "end"
                                                 |)
@@ -833,12 +928,13 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "sub_ptr",
+                          [],
                           []
                         |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::slice::sort::stable::merge::MergeState",
                               "end"
                             |)
@@ -847,7 +943,7 @@ Module slice.
                           M.pointer_coercion
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::slice::sort::stable::merge::MergeState",
                                 "start"
                               |)
@@ -864,14 +960,14 @@ Module slice.
                           M.pointer_coercion
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::slice::sort::stable::merge::MergeState",
                                 "start"
                               |)
                             |));
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::slice::sort::stable::merge::MergeState",
                               "dst"
                             |)

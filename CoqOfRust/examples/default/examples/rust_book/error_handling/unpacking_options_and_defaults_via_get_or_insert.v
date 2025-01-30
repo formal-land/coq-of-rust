@@ -48,9 +48,9 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -63,7 +63,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           γ,
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple"
                         |) in
-                      M.alloc (| M.read (| Value.String "Apple" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Apple" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -72,7 +77,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           γ,
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Orange"
                         |) in
-                      M.alloc (| M.read (| Value.String "Orange" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Orange" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -81,7 +91,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           γ,
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Banana"
                         |) in
-                      M.alloc (| M.read (| Value.String "Banana" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Banana" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -90,7 +105,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           γ,
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Kiwi"
                         |) in
-                      M.alloc (| M.read (| Value.String "Kiwi" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Kiwi" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -99,7 +119,12 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           γ,
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Lemon"
                         |) in
-                      M.alloc (| M.read (| Value.String "Lemon" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Lemon" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -148,9 +173,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "unpacking_options_and_defaults_via_get_or_insert::Fruit" ],
                 "get_or_insert",
+                [],
                 []
               |),
-              [ my_fruit; M.read (| apple |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, my_fruit |); M.read (| apple |) ]
             |)
           |) in
         let~ _ :=
@@ -160,34 +186,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "my_fruit is: " |); M.read (| Value.String "
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.path
-                                        "unpacking_options_and_defaults_via_get_or_insert::Fruit"
-                                    ]
+                                  M.read (| Value.String "my_fruit is: " |);
+                                  M.read (| Value.String "
+" |)
                                 ]
-                              |),
-                              [ first_available_fruit ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.path
+                                              "unpacking_options_and_defaults_via_get_or_insert::Fruit"
+                                          ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (| Pointer.Kind.Ref, first_available_fruit |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -202,36 +259,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "first_available_fruit is: " |);
-                            M.read (| Value.String "
-" |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
                                 [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.path
-                                        "unpacking_options_and_defaults_via_get_or_insert::Fruit"
-                                    ]
+                                  M.read (| Value.String "first_available_fruit is: " |);
+                                  M.read (| Value.String "
+" |)
                                 ]
-                              |),
-                              [ first_available_fruit ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.path
+                                              "unpacking_options_and_defaults_via_get_or_insert::Fruit"
+                                          ]
+                                      ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (| Pointer.Kind.Ref, first_available_fruit |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

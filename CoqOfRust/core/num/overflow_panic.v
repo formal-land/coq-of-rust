@@ -16,10 +16,18 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to add with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array [ M.read (| Value.String "attempt to add with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -43,10 +51,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to subtract with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to subtract with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -70,10 +87,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to multiply with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to multiply with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -97,10 +123,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to divide with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to divide with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -124,12 +159,23 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [ M.read (| Value.String "attempt to calculate the remainder with overflow" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String "attempt to calculate the remainder with overflow"
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -153,10 +199,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to negate with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to negate with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -180,10 +235,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to shift right with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to shift right with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -207,10 +271,19 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array [ M.read (| Value.String "attempt to shift left with overflow" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "attempt to shift left with overflow" |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)

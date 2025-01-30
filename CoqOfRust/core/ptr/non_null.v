@@ -67,6 +67,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "new_unchecked",
+                    [],
                     []
                   |),
                   [ M.read (| ptr |) ]
@@ -98,25 +99,37 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                "as_ptr",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                    "cast",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                  |),
-                  [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "cast",
+                            [],
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -143,25 +156,57 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                "as_ptr",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                    "cast",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                  |),
-                  [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                    "cast",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -216,9 +261,14 @@ Module ptr.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.new_unchecked",
+                                [],
                                 []
                               |),
-                              [ M.rust_cast (M.read (| ptr |)) ]
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (M.read (| ptr |))
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -230,7 +280,9 @@ Module ptr.
                   "core::ptr::non_null::NonNull"
                   [
                     ("pointer",
-                      M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| ptr |))))
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
+                        (* MutToConstPointer *) (M.pointer_coercion (M.read (| ptr |))))
                   ]
               |)
             |)))
@@ -271,6 +323,7 @@ Module ptr.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "is_null",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
@@ -286,6 +339,7 @@ Module ptr.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "new_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| ptr |) ]
@@ -332,6 +386,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -346,6 +401,7 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data_pointer |) ]
@@ -384,6 +440,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "cast",
+                    [],
                     [ Ty.tuple [] ]
                   |),
                   [ M.read (| self |) ]
@@ -397,6 +454,7 @@ Module ptr.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -428,11 +486,17 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "addr", [] |),
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    "addr",
+                    [],
+                    []
+                  |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -469,14 +533,17 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
-                M.rust_cast
+                M.cast
+                  (Ty.apply (Ty.path "*mut") [] [ T ])
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "with_addr",
+                      [],
                       []
                     |),
                     [
@@ -491,6 +558,7 @@ Module ptr.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
+                          [],
                           []
                         |),
                         [ M.read (| addr |) ]
@@ -522,6 +590,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "with_addr",
+                [],
                 []
               |),
               [
@@ -530,11 +599,13 @@ Module ptr.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     impl_FnOnce_NonZero_usize___arrow_NonZero_usize_,
+                    [],
                     [
                       Ty.tuple
                         [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                     ],
                     "call_once",
+                    [],
                     []
                   |),
                   [
@@ -545,6 +616,7 @@ Module ptr.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "addr",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -572,7 +644,8 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.apply (Ty.path "*mut") [] [ T ])
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   self,
@@ -601,18 +674,34 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast_const", [] |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                    "as_ptr",
-                    []
-                  |),
-                  [ M.read (| M.read (| self |) |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "cast_const",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      ]
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -634,13 +723,34 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                "as_ptr",
-                []
-              |),
-              [ M.read (| M.read (| self |) |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -667,11 +777,13 @@ Module ptr.
                 ("pointer",
                   (* MutToConstPointer *)
                   M.pointer_coercion
-                    (M.rust_cast
+                    (M.cast
+                      (Ty.apply (Ty.path "*mut") [] [ U ])
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                           "as_ptr",
+                          [],
                           []
                         |),
                         [ M.read (| self |) ]
@@ -757,6 +869,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_offset",
+                      [],
                       []
                     |),
                     [
@@ -851,6 +964,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_add",
+                      [],
                       []
                     |),
                     [
@@ -912,13 +1026,19 @@ Module ptr.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "offset",
+                            [],
                             []
                           |),
                           [
                             M.read (| self |);
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "isize", "unchecked_neg", [] |),
-                              [ M.rust_cast (M.read (| count |)) ]
+                              M.get_associated_function (|
+                                Ty.path "isize",
+                                "unchecked_neg",
+                                [],
+                                []
+                              |),
+                              [ M.cast (Ty.path "isize") (M.read (| count |)) ]
                             |)
                           ]
                         |)
@@ -958,6 +1078,7 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_sub",
+                      [],
                       []
                     |),
                     [
@@ -999,6 +1120,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "offset_from",
+                [],
                 []
               |),
               [
@@ -1047,6 +1169,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "byte_offset_from",
+                [],
                 [ U ]
               |),
               [
@@ -1090,7 +1213,12 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let subtracted := M.alloc (| subtracted |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "sub_ptr", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                "sub_ptr",
+                [],
+                []
+              |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -1258,6 +1386,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| dest |) ]
@@ -1308,6 +1437,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| dest |) ]
@@ -1353,6 +1483,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1403,6 +1534,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1441,6 +1573,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1477,6 +1610,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1515,6 +1649,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1558,6 +1693,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1600,6 +1736,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1637,6 +1774,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1674,6 +1812,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1682,6 +1821,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| with_ |) ]
@@ -1737,6 +1877,7 @@ Module ptr.
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| align |) ]
@@ -1754,16 +1895,26 @@ Module ptr.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "align_offset: align is not a power-of-two"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "align_offset: align is not a power-of-two"
+                                                |)
+                                              ]
                                           |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1815,6 +1966,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "is_aligned",
+                [],
                 []
               |),
               [
@@ -1855,6 +2007,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "is_aligned_to",
+                [],
                 []
               |),
               [
@@ -1909,6 +2062,7 @@ Module ptr.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -1919,6 +2073,7 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| data |) ]
@@ -1950,6 +2105,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "len",
+                [],
                 []
               |),
               [
@@ -1960,6 +2116,7 @@ Module ptr.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1992,6 +2149,7 @@ Module ptr.
                     []
                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   "len",
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -2028,6 +2186,7 @@ Module ptr.
                   []
                   [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "cast",
+                [],
                 [ T ]
               |),
               [ M.read (| self |) ]
@@ -2054,6 +2213,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
+                [],
                 []
               |),
               [
@@ -2064,6 +2224,7 @@ Module ptr.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "as_non_null_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -2094,50 +2255,58 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_function (|
-                "core::slice::raw::from_raw_parts",
-                [],
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-              |),
-              [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::ptr::non_null::NonNull")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                      "as_ptr",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::slice::raw::from_raw_parts",
+                    [],
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  |),
+                  [
+                    (* MutToConstPointer *)
+                    M.pointer_coercion
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
                             []
-                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                          "cast",
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                          "as_ptr",
+                          [],
+                          []
                         |),
-                        [ M.read (| self |) ]
-                      |)
-                    ]
-                  |));
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "len",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              "cast",
+                              [],
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        ]
+                      |));
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        "len",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2163,48 +2332,76 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_function (|
-                "core::slice::raw::from_raw_parts_mut",
-                [],
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
-                      []
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                    "as_ptr",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        "cast",
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      |),
-                      [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts_mut",
+                            [],
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "cast",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
-                  ]
-                |);
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "len",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2239,6 +2436,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -2246,6 +2444,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",
+                    [],
                     [ I ]
                   |),
                   [
@@ -2256,6 +2455,7 @@ Module ptr.
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "as_ptr",
+                        [],
                         []
                       |),
                       [ M.read (| self |) ]
@@ -2288,7 +2488,7 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2376,21 +2576,32 @@ Module ptr.
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2426,21 +2637,32 @@ Module ptr.
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "fmt",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2489,17 +2711,19 @@ Module ptr.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |) ]
               |),
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| other |) |) ]
+                [ M.read (| M.deref (| M.read (| other |) |) |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2535,28 +2759,43 @@ Module ptr.
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "cmp",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2593,29 +2832,44 @@ Module ptr.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.apply (Ty.path "*mut") [] [ T ],
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "partial_cmp",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2653,21 +2907,27 @@ Module ptr.
                 "core::hash::Hash",
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
+                [],
                 "hash",
+                [],
                 [ H ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2701,6 +2961,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                 "as_non_null_ptr",
+                [],
                 []
               |),
               [ M.read (| unique |) ]
@@ -2739,7 +3000,16 @@ Module ptr.
               [
                 ("pointer",
                   (* MutToConstPointer *)
-                  M.pointer_coercion (M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)))
+                  M.pointer_coercion
+                    (M.read (|
+                      M.use
+                        (M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.MutPointer,
+                            M.deref (| M.read (| reference |) |)
+                          |)
+                        |))
+                    |)))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2771,7 +3041,18 @@ Module ptr.
             (let reference := M.alloc (| reference |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
-              [ ("pointer", M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)) ]))
+              [
+                ("pointer",
+                  M.read (|
+                    M.use
+                      (M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.read (| reference |) |)
+                        |)
+                      |))
+                  |))
+              ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

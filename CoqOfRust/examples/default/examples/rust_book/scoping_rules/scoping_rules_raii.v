@@ -23,6 +23,7 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 3 ]
@@ -71,6 +72,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 5 ]
@@ -86,6 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 [ Value.Integer IntegerKind.I32 4 ]
@@ -100,7 +103,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -127,10 +132,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
-                              [ iter ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                |)
+                              ]
                             |)
                           |),
                           [

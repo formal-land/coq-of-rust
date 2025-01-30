@@ -30,10 +30,15 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let _ :=
                   M.is_constant_or_break_match (| M.read (| γ |), Value.String "798-1364" |) in
                 M.alloc (|
-                  M.read (|
-                    Value.String
-                      "We're sorry, the call cannot be completed as dialed. 
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        Value.String
+                          "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
+                      |)
+                    |)
                   |)
                 |)));
             fun γ =>
@@ -41,14 +46,25 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let _ :=
                   M.is_constant_or_break_match (| M.read (| γ |), Value.String "645-7689" |) in
                 M.alloc (|
-                  M.read (|
-                    Value.String
-                      "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        Value.String
+                          "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
+                      |)
+                    |)
                   |)
                 |)));
             fun γ =>
-              ltac:(M.monadic (M.alloc (| M.read (| Value.String "Hi! Who is this again?" |) |)))
+              ltac:(M.monadic
+                (M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Hi! Who is this again?" |) |)
+                  |)
+                |)))
           ]
         |)
       |)))
@@ -108,6 +124,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "new",
+                [],
                 []
               |),
               []
@@ -126,9 +143,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
-              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "798-1364" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.read (| Value.String "Daniel" |);
+                M.read (| Value.String "798-1364" |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -144,9 +166,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
-              [ contacts; M.read (| Value.String "Ashley" |); M.read (| Value.String "645-7689" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ashley" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "645-7689" |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -162,9 +189,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
-              [ contacts; M.read (| Value.String "Katie" |); M.read (| Value.String "435-8291" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Katie" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "435-8291" |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -180,9 +212,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
-              [ contacts; M.read (| Value.String "Robert" |); M.read (| Value.String "956-1745" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Robert" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "956-1745" |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -199,9 +236,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
-                [ contacts; Value.String "Daniel" ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, contacts |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Daniel" |) |)
+                  |)
+                ]
               |)
             |),
             [
@@ -220,36 +264,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Calling Daniel: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Calling Daniel: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "hash_map::call", [], [] |),
-                                            [ M.read (| number |) ]
-                                          |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "hash_map::call",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| number |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -268,13 +347,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "Don't have Daniel's number.
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "Don't have Daniel's number.
 " |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -297,9 +385,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "insert",
+                [],
                 []
               |),
-              [ contacts; M.read (| Value.String "Daniel" |); M.read (| Value.String "164-6743" |) ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Daniel" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "164-6743" |) |) |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -316,9 +409,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "std::hash::random::RandomState"
                     ],
                   "get",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
-                [ contacts; Value.String "Ashley" ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, contacts |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Ashley" |) |)
+                  |)
+                ]
               |)
             |),
             [
@@ -337,36 +437,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Calling Ashley: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Calling Ashley: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_function (| "hash_map::call", [], [] |),
-                                            [ M.read (| number |) ]
-                                          |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "hash_map::call",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| number |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -385,13 +520,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "Don't have Ashley's number.
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "Don't have Ashley's number.
 " |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -414,9 +558,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "std::hash::random::RandomState"
                   ],
                 "remove",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
-              [ contacts; Value.String "Ashley" ]
+              [
+                M.borrow (| Pointer.Kind.MutRef, contacts |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Ashley" |) |)
+                |)
+              ]
             |)
           |) in
         M.use
@@ -433,7 +584,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                     ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -448,9 +601,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "iter",
+                      [],
                       []
                     |),
-                    [ contacts ]
+                    [ M.borrow (| Pointer.Kind.Ref, contacts |) ]
                   |)
                 ]
               |)
@@ -475,10 +629,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                                   ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
-                              [ iter ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                |)
+                              ]
                             |)
                           |),
                           [
@@ -509,64 +670,108 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "Calling " |);
-                                                    M.read (| Value.String ": " |);
-                                                    M.read (| Value.String "
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "Calling " |);
+                                                          M.read (| Value.String ": " |);
+                                                          M.read (| Value.String "
 " |)
-                                                  ]
-                                              |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "str" ]
-                                                            ]
                                                         ]
-                                                      |),
-                                                      [ contact ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "str" ]
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "hash_map::call",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ M.read (| number |) ]
-                                                          |)
-                                                        |)
-                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "str" ]
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    contact
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ]
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_function (|
+                                                                          "hash_map::call",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (| number |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)

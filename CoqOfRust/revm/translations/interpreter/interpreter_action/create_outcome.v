@@ -34,23 +34,46 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CreateOutcome" |);
-                M.read (| Value.String "result" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                  "result"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CreateOutcome" |) |)
                 |);
-                M.read (| Value.String "address" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                    "address"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                        "result"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                            "address"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -85,14 +108,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter::InterpreterResult",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                        "result"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                              "result"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -105,14 +138,24 @@ Module interpreter_action.
                         []
                         [ Ty.path "alloy_primitives::bits::address::Address" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                        "address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                              "address"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -156,20 +199,28 @@ Module interpreter_action.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::interpreter::InterpreterResult",
+                  [],
                   [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                    "result"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                      "result"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                    "result"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                      "result"
+                    |)
                   |)
                 ]
               |),
@@ -181,6 +232,7 @@ Module interpreter_action.
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.path "alloy_primitives::bits::address::Address" ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -188,18 +240,25 @@ Module interpreter_action.
                         [ Ty.path "alloy_primitives::bits::address::Address" ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                      "address"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                        "address"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                      "address"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                        "address"
+                      |)
                     |)
                   ]
                 |)))
@@ -287,14 +346,22 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                "result"
-              |),
-              "revm_interpreter::interpreter::InterpreterResult",
-              "result"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                      "result"
+                    |),
+                    "revm_interpreter::interpreter::InterpreterResult",
+                    "result"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -312,14 +379,22 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                "result"
-              |),
-              "revm_interpreter::interpreter::InterpreterResult",
-              "output"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                      "result"
+                    |),
+                    "revm_interpreter::interpreter::InterpreterResult",
+                    "output"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -336,14 +411,22 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                "result"
-              |),
-              "revm_interpreter::interpreter::InterpreterResult",
-              "gas"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                      "result"
+                    |),
+                    "revm_interpreter::interpreter::InterpreterResult",
+                    "gas"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

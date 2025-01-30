@@ -29,14 +29,24 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::Chars",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::Chars",
+                              "iter"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -74,6 +84,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
               [
@@ -84,10 +95,18 @@ Module str.
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::Chars",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Chars",
+                            "iter"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |);
@@ -107,6 +126,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "from_u32_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ch |) ]
@@ -133,9 +153,19 @@ Module str.
             M.call_closure (|
               M.get_function (| "core::str::count::count_chars", [], [] |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
-                  [ self ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::str::iter::Chars",
+                        "as_str",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -222,25 +252,35 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "array_chunks",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::slice::iter::Iter")
-                                      []
-                                      [ Ty.path "u8" ],
-                                    "as_slice",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::Chars",
-                                      "iter"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "u8" ],
+                                        "as_slice",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::Chars",
+                                            "iter"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -281,10 +321,12 @@ Module str.
                                                 [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
-                                            [ chunks ]
+                                            [ M.borrow (| Pointer.Kind.MutRef, chunks |) ]
                                           |)
                                         |) in
                                       let γ0_0 :=
@@ -326,7 +368,9 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "into_iter",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -362,10 +406,22 @@ Module str.
                                                                   []
                                                                   [ Ty.path "usize" ],
                                                                 [],
+                                                                [],
                                                                 "next",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ iter ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      iter
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |),
                                                           [
@@ -406,7 +462,9 @@ Module str.
                                                                         [
                                                                           M.read (|
                                                                             M.SubPointer.get_array_field (|
-                                                                              M.read (| chunk |),
+                                                                              M.deref (|
+                                                                                M.read (| chunk |)
+                                                                              |),
                                                                               i
                                                                             |)
                                                                           |)
@@ -427,7 +485,8 @@ Module str.
                                           β,
                                           BinOp.Wrap.sub (|
                                             M.read (| β |),
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "usize")
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
@@ -444,7 +503,9 @@ Module str.
                                                         (Ty.path "u8")
                                                     ],
                                                   [],
+                                                  [],
                                                   "sum",
+                                                  [],
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
@@ -456,7 +517,9 @@ Module str.
                                                         [ Value.Integer IntegerKind.Usize 32 ]
                                                         [ Ty.path "bool" ],
                                                       [],
+                                                      [],
                                                       "map",
+                                                      [],
                                                       [
                                                         Ty.path "u8";
                                                         Ty.function
@@ -473,7 +536,9 @@ Module str.
                                                             [ Value.Integer IntegerKind.Usize 32 ]
                                                             [ Ty.path "bool" ],
                                                           [],
+                                                          [],
                                                           "into_iter",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| start_bytes |) ]
@@ -490,7 +555,8 @@ Module str.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let i := M.copy (| γ |) in
-                                                                        M.rust_cast
+                                                                        M.cast
+                                                                          (Ty.path "u8")
                                                                           (M.read (| i |))))
                                                                   ]
                                                                 |)))
@@ -536,6 +602,7 @@ Module str.
                                       [ Ty.path "usize" ]
                                   ],
                                 "unwrap_unchecked",
+                                [],
                                 []
                               |),
                               [
@@ -547,14 +614,19 @@ Module str.
                                       []
                                       [ Ty.path "u8" ],
                                     [],
+                                    [],
                                     "advance_by",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::Chars",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::str::iter::Chars",
+                                        "iter"
+                                      |)
                                     |);
                                     M.read (| bytes_skipped |)
                                   ]
@@ -581,14 +653,19 @@ Module str.
                                                   []
                                                   [ Ty.path "u8" ],
                                                 [],
+                                                [],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::str::iter::Chars",
-                                                  "iter"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::str::iter::Chars",
+                                                    "iter"
+                                                  |)
                                                 |)
                                               ]
                                             |),
@@ -603,22 +680,28 @@ Module str.
                                     let~ b :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::slice::iter::Iter")
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [ Ty.path "u8" ],
+                                                "as_slice",
+                                                [],
                                                 []
-                                                [ Ty.path "u8" ],
-                                              "as_slice",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::str::iter::Chars",
-                                                "iter"
-                                              |)
-                                            ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::str::iter::Chars",
+                                                    "iter"
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
                                           |),
                                           M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                         |)
@@ -669,6 +752,7 @@ Module str.
                                                   [ Ty.path "usize" ]
                                               ],
                                             "unwrap_unchecked",
+                                            [],
                                             []
                                           |),
                                           [
@@ -680,14 +764,19 @@ Module str.
                                                   []
                                                   [ Ty.path "u8" ],
                                                 [],
+                                                [],
                                                 "advance_by",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::str::iter::Chars",
-                                                  "iter"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::str::iter::Chars",
+                                                    "iter"
+                                                  |)
                                                 |);
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
@@ -741,14 +830,19 @@ Module str.
                                               []
                                               [ Ty.path "u8" ],
                                             [],
+                                            [],
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::iter::Chars",
-                                              "iter"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::str::iter::Chars",
+                                                "iter"
+                                              |)
                                             |)
                                           ]
                                         |),
@@ -770,22 +864,28 @@ Module str.
                             let~ b :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "u8" ],
+                                        "as_slice",
+                                        [],
                                         []
-                                        [ Ty.path "u8" ],
-                                      "as_slice",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::str::iter::Chars",
-                                        "iter"
-                                      |)
-                                    ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::Chars",
+                                            "iter"
+                                          |)
+                                        |)
+                                      ]
+                                    |)
                                   |),
                                   M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                 |)
@@ -816,6 +916,7 @@ Module str.
                                           [ Ty.path "usize" ]
                                       ],
                                     "unwrap_unchecked",
+                                    [],
                                     []
                                   |),
                                   [
@@ -827,14 +928,19 @@ Module str.
                                           []
                                           [ Ty.path "u8" ],
                                         [],
+                                        [],
                                         "advance_by",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::iter::Chars",
-                                          "iter"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::Chars",
+                                            "iter"
+                                          |)
                                         |);
                                         M.read (| slurp |)
                                       ]
@@ -865,6 +971,7 @@ Module str.
                       []
                       [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -889,6 +996,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| remainder |) ]
@@ -924,14 +1032,19 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::Chars",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::str::iter::Chars",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -966,10 +1079,12 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1021,7 +1136,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1029,17 +1146,30 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
-                                M.read (| f |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String "Chars(" |) ] |)
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String "Chars(" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1068,6 +1198,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1078,6 +1209,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1109,7 +1241,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1117,37 +1251,60 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugList",
                                 "finish",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::builders::DebugList",
-                                    "entries",
-                                    [ Ty.path "char"; Ty.path "core::str::iter::Chars" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "debug_list",
-                                          []
-                                        |),
-                                        [ M.read (| f |) ]
-                                      |)
-                                    |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
                                     M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        Ty.path "core::str::iter::Chars",
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::builders::DebugList",
+                                        "entries",
                                         [],
-                                        "clone",
-                                        []
+                                        [ Ty.path "char"; Ty.path "core::str::iter::Chars" ]
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Formatter",
+                                                "debug_list",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| f |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            Ty.path "core::str::iter::Chars",
+                                            [],
+                                            [],
+                                            "clone",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -1175,6 +1332,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1185,6 +1343,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1216,7 +1375,9 @@ Module str.
                               []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -1224,17 +1385,31 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
+                                [],
                                 []
                               |),
                               [
-                                M.read (| f |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
-                                  [ M.alloc (| Value.Array [ M.read (| Value.String ")" |) ] |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String ")" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
                                 |)
                               ]
                             |)
@@ -1262,6 +1437,7 @@ Module str.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -1272,6 +1448,7 @@ Module str.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -1325,6 +1502,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
+                [],
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
               [
@@ -1335,10 +1513,18 @@ Module str.
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::Chars",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Chars",
+                            "iter"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |);
@@ -1358,6 +1544,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "from_u32_unchecked",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ch |) ]
@@ -1404,24 +1591,38 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-              [
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
-                    "as_slice",
-                    []
-                  |),
+                  M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::Chars",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                            "as_slice",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::Chars",
+                                "iter"
+                              |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1451,12 +1652,28 @@ Module str.
               [
                 ("front_offset",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "usize",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::CharIndices",
-                        "front_offset"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::CharIndices",
+                              "front_offset"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -1466,14 +1683,24 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::CharIndices",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::CharIndices",
+                              "iter"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -1503,23 +1730,49 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "CharIndices" |);
-                M.read (| Value.String "front_offset" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::CharIndices",
-                  "front_offset"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "CharIndices" |) |)
                 |);
-                M.read (| Value.String "iter" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::CharIndices",
-                    "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "front_offset" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::CharIndices",
+                        "front_offset"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::CharIndices",
+                            "iter"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1568,18 +1821,23 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::iter::CharIndices",
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::CharIndices",
+                            "iter"
+                          |),
+                          "core::str::iter::Chars",
                           "iter"
-                        |),
-                        "core::str::iter::Chars",
-                        "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -1591,14 +1849,19 @@ Module str.
                       "core::iter::traits::iterator::Iterator",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "next",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::CharIndices",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::str::iter::CharIndices",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -1620,7 +1883,7 @@ Module str.
                       let~ index :=
                         M.copy (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::CharIndices",
                             "front_offset"
                           |)
@@ -1632,18 +1895,23 @@ Module str.
                               "core::iter::traits::exact_size::ExactSizeIterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "len",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::str::iter::CharIndices",
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::CharIndices",
+                                    "iter"
+                                  |),
+                                  "core::str::iter::Chars",
                                   "iter"
-                                |),
-                                "core::str::iter::Chars",
-                                "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -1651,7 +1919,7 @@ Module str.
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::CharIndices",
                             "front_offset"
                           |) in
@@ -1688,7 +1956,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -1719,14 +1989,19 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Chars",
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::CharIndices",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::CharIndices",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -1749,10 +2024,12 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::CharIndices",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1792,6 +2069,7 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.path "char" ];
                   Ty.function
@@ -1805,14 +2083,19 @@ Module str.
                     "core::iter::traits::double_ended::DoubleEndedIterator",
                     Ty.path "core::str::iter::Chars",
                     [],
+                    [],
                     "next_back",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::CharIndices",
-                      "iter"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::CharIndices",
+                        "iter"
+                      |)
                     |)
                   ]
                 |);
@@ -1834,7 +2117,7 @@ Module str.
                                         BinOp.Wrap.add (|
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::str::iter::CharIndices",
                                               "front_offset"
                                             |)
@@ -1847,18 +2130,23 @@ Module str.
                                                 []
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "len",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::str::iter::CharIndices",
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::str::iter::CharIndices",
+                                                    "iter"
+                                                  |),
+                                                  "core::str::iter::Chars",
                                                   "iter"
-                                                |),
-                                                "core::str::iter::Chars",
-                                                "iter"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1909,15 +2197,28 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::CharIndices",
-                  "iter"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::str::iter::Chars",
+                    "as_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::CharIndices",
+                        "iter"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1936,7 +2237,7 @@ Module str.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::str::iter::CharIndices",
                 "front_offset"
               |)
@@ -1981,14 +2282,24 @@ Module str.
                       []
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Bytes",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Bytes",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -2018,16 +2329,28 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Bytes" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::iter::Bytes",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bytes" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Bytes",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -2067,14 +2390,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2099,14 +2427,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2131,7 +2464,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -2161,7 +2496,9 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -2192,14 +2529,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -2229,14 +2571,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "all",
+                [],
                 [ F ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| f |)
               ]
@@ -2266,14 +2613,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "any",
+                [],
                 [ F ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| f |)
               ]
@@ -2303,14 +2655,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "find",
+                [],
                 [ P ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| predicate |)
               ]
@@ -2340,14 +2697,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "position",
+                [],
                 [ P ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| predicate |)
               ]
@@ -2377,14 +2739,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "rposition",
+                [],
                 [ P ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| predicate |)
               ]
@@ -2417,14 +2784,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "__iterator_get_unchecked",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| idx |)
               ]
@@ -2475,14 +2847,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2508,14 +2885,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -2545,14 +2927,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "rfind",
+                [],
                 [ P ]
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |);
                 M.read (| predicate |)
               ]
@@ -2594,14 +2981,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2626,14 +3018,19 @@ Module str.
                   []
                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Bytes",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Bytes",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -2719,7 +3116,7 @@ Module str.
               let~ s := M.copy (| self |) in
               M.alloc (|
                 M.struct_record_update
-                  (M.read (| M.read (| s |) |))
+                  (M.read (| M.deref (| M.read (| s |) |) |))
                   [
                     ("matcher",
                       M.call_closure (|
@@ -2727,14 +3124,19 @@ Module str.
                           "core::clone::Clone",
                           Ty.associated,
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| s |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| s |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |))
@@ -2794,94 +3196,198 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugStruct",
-                    "field",
-                    []
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::builders::DebugStruct",
-                            "field",
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugStruct",
                                 "field",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::builders::DebugStruct",
-                                    "field",
-                                    []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "debug_struct",
-                                          []
-                                        |),
-                                        [ M.read (| f |); M.read (| Value.String "SplitInternal" |)
-                                        ]
-                                      |)
-                                    |);
-                                    M.read (| Value.String "start" |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::SplitInternal",
-                                      "start"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::builders::DebugStruct",
+                                        "field",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::builders::DebugStruct",
+                                                "field",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::builders::DebugStruct",
+                                                        "field",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "debug_struct",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| f |) |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      Value.String "SplitInternal"
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (| Value.String "start" |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "core::str::iter::SplitInternal",
+                                                                "start"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| Value.String "end" |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::str::iter::SplitInternal",
+                                                        "end"
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| Value.String "matcher" |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::str::iter::SplitInternal",
+                                                "matcher"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |);
-                                M.read (| Value.String "end" |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::str::iter::SplitInternal",
-                                  "end"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "allow_trailing_empty" |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::str::iter::SplitInternal",
+                                        "allow_trailing_empty"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
-                            |);
-                            M.read (| Value.String "matcher" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::SplitInternal",
-                              "matcher"
                             |)
-                          ]
+                          |)
                         |);
-                        M.read (| Value.String "allow_trailing_empty" |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::iter::SplitInternal",
-                          "allow_trailing_empty"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "finished" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitInternal",
+                                "finished"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
-                    |);
-                    M.read (| Value.String "finished" |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitInternal",
-                      "finished"
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -2937,7 +3443,7 @@ Module str.
                                   UnOp.not (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::SplitInternal",
                                         "finished"
                                       |)
@@ -2949,7 +3455,7 @@ Module str.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |),
@@ -2966,7 +3472,7 @@ Module str.
                                           LogicalOp.or (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::str::iter::SplitInternal",
                                                 "allow_trailing_empty"
                                               |)
@@ -2976,14 +3482,14 @@ Module str.
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::iter::SplitInternal",
                                                       "end"
                                                     |)
                                                   |),
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "core::str::iter::SplitInternal",
                                                       "start"
                                                     |)
@@ -3007,6 +3513,7 @@ Module str.
                                                 M.get_associated_function (|
                                                   Ty.path "str",
                                                   "get_unchecked",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
@@ -3015,21 +3522,31 @@ Module str.
                                                   ]
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::str::pattern::Searcher",
-                                                      Ty.associated,
-                                                      [],
-                                                      "haystack",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::str::iter::SplitInternal",
-                                                        "matcher"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::str::pattern::Searcher",
+                                                          Ty.associated,
+                                                          [],
+                                                          [],
+                                                          "haystack",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "core::str::iter::SplitInternal",
+                                                              "matcher"
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
-                                                    ]
+                                                    |)
                                                   |);
                                                   Value.StructRecord
                                                     "core::ops::range::Range"
@@ -3037,7 +3554,7 @@ Module str.
                                                       ("start",
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::str::iter::SplitInternal",
                                                             "start"
                                                           |)
@@ -3045,7 +3562,7 @@ Module str.
                                                       ("end_",
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::str::iter::SplitInternal",
                                                             "end"
                                                           |)
@@ -3057,7 +3574,12 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ M.read (| string |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| string |) |)
+                                                |)
+                                              ]
                                           |)
                                         |)
                                       |)
@@ -3114,7 +3636,7 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |)) in
@@ -3137,14 +3659,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3156,14 +3683,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3187,6 +3719,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3195,14 +3728,17 @@ Module str.
                                   ]
                                 |),
                                 [
-                                  M.read (| haystack |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| haystack |) |)
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
                                       ("start",
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::iter::SplitInternal",
                                             "start"
                                           |)
@@ -3215,14 +3751,16 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "start"
                               |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| elt |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -3232,9 +3770,11 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |)))
                     ]
@@ -3291,7 +3831,7 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |)) in
@@ -3314,14 +3854,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3333,14 +3878,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3363,6 +3913,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3371,14 +3922,17 @@ Module str.
                                   ]
                                 |),
                                 [
-                                  M.read (| haystack |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| haystack |) |)
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
                                       ("start",
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::iter::SplitInternal",
                                             "start"
                                           |)
@@ -3391,14 +3945,16 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "start"
                               |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| elt |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -3408,9 +3964,11 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |)
                           |)))
                     ]
@@ -3479,7 +4037,7 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |)) in
@@ -3507,7 +4065,7 @@ Module str.
                                   UnOp.not (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::SplitInternal",
                                         "allow_trailing_empty"
                                       |)
@@ -3519,7 +4077,7 @@ Module str.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "allow_trailing_empty"
                                 |),
@@ -3531,9 +4089,15 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -3553,9 +4117,15 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "is_empty",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| elt |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| elt |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |) in
@@ -3570,7 +4140,12 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ M.read (| elt |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| elt |) |)
+                                                |)
+                                              ]
                                           |)
                                         |)
                                       |)
@@ -3585,7 +4160,7 @@ Module str.
                                             (let γ :=
                                               M.use
                                                 (M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::iter::SplitInternal",
                                                   "finished"
                                                 |)) in
@@ -3620,14 +4195,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3639,14 +4219,19 @@ Module str.
                           "core::str::pattern::ReverseSearcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match_back",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3670,6 +4255,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -3678,7 +4264,10 @@ Module str.
                                   ]
                                 |),
                                 [
-                                  M.read (| haystack |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| haystack |) |)
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
@@ -3686,7 +4275,7 @@ Module str.
                                       ("end_",
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::iter::SplitInternal",
                                             "end"
                                           |)
@@ -3698,14 +4287,16 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "end"
                               |),
                               M.read (| a |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| elt |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -3713,7 +4304,7 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "finished"
                               |),
@@ -3723,40 +4314,49 @@ Module str.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "str",
-                                    "get_unchecked",
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ]
-                                  |),
-                                  [
-                                    M.read (| haystack |);
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "get_unchecked",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ]
+                                      |),
                                       [
-                                        ("start",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::iter::SplitInternal",
-                                              "start"
-                                            |)
-                                          |));
-                                        ("end_",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::iter::SplitInternal",
-                                              "end"
-                                            |)
-                                          |))
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| haystack |) |)
+                                        |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "start"
+                                                |)
+                                              |));
+                                            ("end_",
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "end"
+                                                |)
+                                              |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |)
                               ]
                           |)))
@@ -3837,7 +4437,7 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |)) in
@@ -3865,7 +4465,7 @@ Module str.
                                   UnOp.not (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::SplitInternal",
                                         "allow_trailing_empty"
                                       |)
@@ -3877,7 +4477,7 @@ Module str.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "allow_trailing_empty"
                                 |),
@@ -3889,9 +4489,15 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back_inclusive",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -3911,9 +4517,15 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "is_empty",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| elt |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| elt |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |) in
@@ -3928,7 +4540,12 @@ Module str.
                                           M.return_ (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ M.read (| elt |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| elt |) |)
+                                                |)
+                                              ]
                                           |)
                                         |)
                                       |)
@@ -3943,7 +4560,7 @@ Module str.
                                             (let γ :=
                                               M.use
                                                 (M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::str::iter::SplitInternal",
                                                   "finished"
                                                 |)) in
@@ -3978,14 +4595,19 @@ Module str.
                           "core::str::pattern::Searcher",
                           Ty.associated,
                           [],
+                          [],
                           "haystack",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -3997,14 +4619,19 @@ Module str.
                           "core::str::pattern::ReverseSearcher",
                           Ty.associated,
                           [],
+                          [],
                           "next_match_back",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::str::iter::SplitInternal",
-                            "matcher"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitInternal",
+                              "matcher"
+                            |)
                           |)
                         ]
                       |)
@@ -4027,6 +4654,7 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
@@ -4035,7 +4663,10 @@ Module str.
                                   ]
                                 |),
                                 [
-                                  M.read (| haystack |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| haystack |) |)
+                                  |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
@@ -4043,7 +4674,7 @@ Module str.
                                       ("end_",
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::str::iter::SplitInternal",
                                             "end"
                                           |)
@@ -4055,14 +4686,16 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "end"
                               |),
                               M.read (| b |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| elt |) ]
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| elt |) |) |) ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -4070,7 +4703,7 @@ Module str.
                           let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::str::iter::SplitInternal",
                                 "finished"
                               |),
@@ -4080,40 +4713,49 @@ Module str.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "str",
-                                    "get_unchecked",
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ]
-                                    ]
-                                  |),
-                                  [
-                                    M.read (| haystack |);
-                                    Value.StructRecord
-                                      "core::ops::range::Range"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "get_unchecked",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ]
+                                      |),
                                       [
-                                        ("start",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::iter::SplitInternal",
-                                              "start"
-                                            |)
-                                          |));
-                                        ("end_",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::iter::SplitInternal",
-                                              "end"
-                                            |)
-                                          |))
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| haystack |) |)
+                                        |);
+                                        Value.StructRecord
+                                          "core::ops::range::Range"
+                                          [
+                                            ("start",
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "start"
+                                                |)
+                                              |));
+                                            ("end_",
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::SplitInternal",
+                                                  "end"
+                                                |)
+                                              |))
+                                          ]
                                       ]
-                                  ]
+                                    |)
+                                  |)
                                 |)
                               ]
                           |)))
@@ -4157,7 +4799,7 @@ Module str.
                             (let γ :=
                               M.use
                                 (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::SplitInternal",
                                   "finished"
                                 |)) in
@@ -4177,50 +4819,71 @@ Module str.
                     Value.StructTuple
                       "core::option::Option::Some"
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "str",
-                            "get_unchecked",
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::str::pattern::Searcher",
-                                Ty.associated,
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "get_unchecked",
                                 [],
-                                "haystack",
-                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::str::iter::SplitInternal",
-                                  "matcher"
-                                |)
-                              ]
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::Range"
-                              [
-                                ("start",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::SplitInternal",
-                                      "start"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::str::pattern::Searcher",
+                                        Ty.associated,
+                                        [],
+                                        [],
+                                        "haystack",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::SplitInternal",
+                                            "matcher"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  |));
-                                ("end_",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::SplitInternal",
-                                      "end"
-                                    |)
-                                  |))
+                                  |)
+                                |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start",
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::iter::SplitInternal",
+                                          "start"
+                                        |)
+                                      |));
+                                    ("end_",
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::iter::SplitInternal",
+                                          "end"
+                                        |)
+                                      |))
+                                  ]
                               ]
-                          ]
+                            |)
+                          |)
                         |)
                       ]
                   |)
@@ -4263,32 +4926,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "Split" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Split",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "Split" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::Split",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -4325,13 +5013,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Split",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Split",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4370,14 +5062,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Split",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::Split",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4423,32 +5120,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "RSplit" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplit",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "RSplit" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::RSplit",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -4485,13 +5207,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplit",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplit",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4530,14 +5256,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplit",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::RSplit",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4596,13 +5327,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Split",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Split",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4636,13 +5371,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplit",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplit",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4676,13 +5415,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Split",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Split",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4712,13 +5455,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplit",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplit",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4760,32 +5507,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "SplitTerminator" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitTerminator",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "SplitTerminator" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitTerminator",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -4823,13 +5595,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -4869,14 +5645,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitTerminator",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::SplitTerminator",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -4923,32 +5704,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "RSplitTerminator" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplitTerminator",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "RSplitTerminator" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::RSplitTerminator",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -4986,13 +5792,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5032,14 +5842,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplitTerminator",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::RSplitTerminator",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5101,13 +5916,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5142,13 +5961,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5183,13 +6006,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5220,13 +6047,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplitTerminator",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplitTerminator",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5258,7 +6089,7 @@ Module str.
               let~ s := M.copy (| self |) in
               M.alloc (|
                 M.struct_record_update
-                  (M.read (| M.read (| s |) |))
+                  (M.read (| M.deref (| M.read (| s |) |) |))
                   [
                     ("iter",
                       M.call_closure (|
@@ -5266,14 +6097,19 @@ Module str.
                           "core::clone::Clone",
                           Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                           [],
+                          [],
                           "clone",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| s |),
-                            "core::str::iter::SplitNInternal",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| s |) |),
+                              "core::str::iter::SplitNInternal",
+                              "iter"
+                            |)
                           |)
                         ]
                       |))
@@ -5327,48 +6163,96 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugStruct",
-                    "field",
-                    []
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "debug_struct",
-                              []
-                            |),
-                            [ M.read (| f |); M.read (| Value.String "SplitNInternal" |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::builders::DebugStruct",
+                                "field",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::Formatter",
+                                        "debug_struct",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| f |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| Value.String "SplitNInternal" |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "iter" |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::str::iter::SplitNInternal",
+                                        "iter"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |)
                         |);
-                        M.read (| Value.String "iter" |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::iter::SplitNInternal",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "count" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitNInternal",
+                                "count"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
-                    |);
-                    M.read (| Value.String "count" |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitNInternal",
-                      "count"
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -5412,7 +6296,7 @@ Module str.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::str::iter::SplitNInternal",
                   "count"
                 |),
@@ -5435,7 +6319,7 @@ Module str.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::SplitNInternal",
                             "count"
                           |),
@@ -5446,13 +6330,17 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::SplitNInternal",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitNInternal",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -5462,7 +6350,7 @@ Module str.
                       (let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::SplitNInternal",
                             "count"
                           |) in
@@ -5475,13 +6363,17 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::SplitNInternal",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitNInternal",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -5523,7 +6415,7 @@ Module str.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::str::iter::SplitNInternal",
                   "count"
                 |),
@@ -5546,7 +6438,7 @@ Module str.
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::SplitNInternal",
                             "count"
                           |),
@@ -5557,13 +6449,17 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::SplitNInternal",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitNInternal",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -5573,7 +6469,7 @@ Module str.
                       (let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::str::iter::SplitNInternal",
                             "count"
                           |) in
@@ -5586,13 +6482,17 @@ Module str.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next_back",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::SplitNInternal",
-                              "iter"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitNInternal",
+                                "iter"
+                              |)
                             |)
                           ]
                         |)
@@ -5622,13 +6522,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitNInternal",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitNInternal",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5669,32 +6573,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "SplitN" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitN",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "SplitN" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitN",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -5731,13 +6660,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitN",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitN",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5776,14 +6709,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitN",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::SplitN",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -5829,32 +6767,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "RSplitN" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplitN",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "RSplitN" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::RSplitN",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -5891,13 +6854,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplitN",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplitN",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5936,14 +6903,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RSplitN",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::RSplitN",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6002,13 +6974,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitN",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitN",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6038,13 +7014,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RSplitN",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RSplitN",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6079,12 +7059,23 @@ Module str.
                   "core::str::iter::MatchIndicesInternal"
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| s |),
-                          "core::str::iter::MatchIndicesInternal",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| s |) |),
+                            "core::str::iter::MatchIndicesInternal",
+                            0
+                          |)
                         |)
                       ]
                     |)
@@ -6131,32 +7122,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "MatchIndicesInternal" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchIndicesInternal",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "MatchIndicesInternal" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::MatchIndicesInternal",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -6197,6 +7213,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
@@ -6210,14 +7227,19 @@ Module str.
                     "core::str::pattern::Searcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchIndicesInternal",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::MatchIndicesInternal",
+                        0
+                      |)
                     |)
                   ]
                 |);
@@ -6243,6 +7265,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "get_unchecked",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
@@ -6251,21 +7274,31 @@ Module str.
                                           ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::str::pattern::Searcher",
-                                              Ty.associated,
-                                              [],
-                                              "haystack",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                M.read (| self |),
-                                                "core::str::iter::MatchIndicesInternal",
-                                                0
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::str::pattern::Searcher",
+                                                  Ty.associated,
+                                                  [],
+                                                  [],
+                                                  "haystack",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::str::iter::MatchIndicesInternal",
+                                                      0
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
@@ -6313,6 +7346,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
@@ -6326,14 +7360,19 @@ Module str.
                     "core::str::pattern::ReverseSearcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match_back",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchIndicesInternal",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::MatchIndicesInternal",
+                        0
+                      |)
                     |)
                   ]
                 |);
@@ -6359,6 +7398,7 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "get_unchecked",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
@@ -6367,21 +7407,31 @@ Module str.
                                           ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::str::pattern::Searcher",
-                                              Ty.associated,
-                                              [],
-                                              "haystack",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                M.read (| self |),
-                                                "core::str::iter::MatchIndicesInternal",
-                                                0
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::str::pattern::Searcher",
+                                                  Ty.associated,
+                                                  [],
+                                                  [],
+                                                  "haystack",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::str::iter::MatchIndicesInternal",
+                                                      0
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
-                                            ]
+                                            |)
                                           |);
                                           Value.StructRecord
                                             "core::ops::range::Range"
@@ -6436,32 +7486,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "MatchIndices" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchIndices",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "MatchIndices" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::MatchIndices",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -6500,13 +7575,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::MatchIndices",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::MatchIndices",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6546,14 +7625,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchIndices",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::MatchIndices",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6600,32 +7684,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "RMatchIndices" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RMatchIndices",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "RMatchIndices" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::RMatchIndices",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -6664,13 +7773,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RMatchIndices",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RMatchIndices",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6710,14 +7823,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RMatchIndices",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::RMatchIndices",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -6779,13 +7897,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::MatchIndices",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::MatchIndices",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6820,13 +7942,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RMatchIndices",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RMatchIndices",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -6865,12 +7991,23 @@ Module str.
                   "core::str::iter::MatchesInternal"
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| s |),
-                          "core::str::iter::MatchesInternal",
-                          0
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| s |) |),
+                            "core::str::iter::MatchesInternal",
+                            0
+                          |)
                         |)
                       ]
                     |)
@@ -6917,32 +8054,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "MatchesInternal" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchesInternal",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "MatchesInternal" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::MatchesInternal",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -6984,6 +8146,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
@@ -6997,14 +8160,19 @@ Module str.
                     "core::str::pattern::Searcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchesInternal",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::MatchesInternal",
+                        0
+                      |)
                     |)
                   ]
                 |);
@@ -7027,6 +8195,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -7035,21 +8204,31 @@ Module str.
                                       ]
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::str::pattern::Searcher",
-                                          Ty.associated,
-                                          [],
-                                          "haystack",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.read (| self |),
-                                            "core::str::iter::MatchesInternal",
-                                            0
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::str::pattern::Searcher",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "haystack",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::MatchesInternal",
+                                                  0
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -7094,6 +8273,7 @@ Module str.
                   []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
@@ -7107,14 +8287,19 @@ Module str.
                     "core::str::pattern::ReverseSearcher",
                     Ty.associated,
                     [],
+                    [],
                     "next_match_back",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::MatchesInternal",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::MatchesInternal",
+                        0
+                      |)
                     |)
                   ]
                 |);
@@ -7137,6 +8322,7 @@ Module str.
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "get_unchecked",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -7145,21 +8331,31 @@ Module str.
                                       ]
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::str::pattern::Searcher",
-                                          Ty.associated,
-                                          [],
-                                          "haystack",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.read (| self |),
-                                            "core::str::iter::MatchesInternal",
-                                            0
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::str::pattern::Searcher",
+                                              Ty.associated,
+                                              [],
+                                              [],
+                                              "haystack",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::MatchesInternal",
+                                                  0
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        ]
+                                        |)
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
@@ -7209,32 +8405,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "Matches" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Matches",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "Matches" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::Matches",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -7271,13 +8492,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Matches",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Matches",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7316,14 +8541,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Matches",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::Matches",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7369,32 +8599,57 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "RMatches" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RMatches",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "RMatches" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::RMatches",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -7431,13 +8686,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RMatches",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RMatches",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7476,14 +8735,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::RMatches",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::RMatches",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -7542,13 +8806,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Matches",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Matches",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7582,13 +8850,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::RMatches",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::RMatches",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7644,14 +8916,24 @@ Module str.
                         Ty.path "core::str::LinesMap"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::Lines",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Lines",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7681,16 +8963,28 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Lines" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::iter::Lines",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Lines" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::Lines",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -7733,14 +9027,19 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Lines",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Lines",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7768,14 +9067,19 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Lines",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Lines",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7797,10 +9101,12 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7843,14 +9149,19 @@ Module str.
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::Lines",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::Lines",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -7893,17 +9204,21 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::iter::Lines",
-                    0
-                  |),
-                  "core::iter::adapters::map::Map",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::str::iter::Lines",
+                      0
+                    |),
+                    "core::iter::adapters::map::Map",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -7938,14 +9253,24 @@ Module str.
                     "core::clone::Clone",
                     Ty.path "core::str::iter::Lines",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::LinesAny",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::LinesAny",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7975,16 +9300,28 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "LinesAny" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::str::iter::LinesAny",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "LinesAny" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::LinesAny",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -8021,14 +9358,19 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::LinesAny",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::LinesAny",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -8050,14 +9392,19 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::LinesAny",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::LinesAny",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -8095,14 +9442,19 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::Lines",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::LinesAny",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::LinesAny",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -8176,14 +9528,24 @@ Module str.
                           Ty.path "core::str::IsNotEmpty"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitWhitespace",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitWhitespace",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -8213,17 +9575,32 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SplitWhitespace" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::SplitWhitespace",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SplitWhitespace" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::SplitWhitespace",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -8299,14 +9676,24 @@ Module str.
                           Ty.path "core::str::UnsafeBytesToStr"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::SplitAsciiWhitespace",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::SplitAsciiWhitespace",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -8336,17 +9723,32 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SplitAsciiWhitespace" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::SplitAsciiWhitespace",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SplitAsciiWhitespace" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::SplitAsciiWhitespace",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -8400,14 +9802,19 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8438,14 +9845,19 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8467,10 +9879,12 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::SplitWhitespace",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8516,14 +9930,19 @@ Module str.
                     Ty.path "core::str::IsNotEmpty"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8569,17 +9988,21 @@ Module str.
                   []
                   [ Ty.path "core::str::IsWhitespace" ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::SplitWhitespace",
-                    "inner"
-                  |),
-                  "core::iter::adapters::filter::Filter",
-                  "iter"
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::str::iter::SplitWhitespace",
+                      "inner"
+                    |),
+                    "core::iter::adapters::filter::Filter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -8625,14 +10048,19 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitAsciiWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitAsciiWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8669,14 +10097,19 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitAsciiWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitAsciiWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8698,10 +10131,12 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.path "core::str::iter::SplitAsciiWhitespace",
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
-              [ self ]
+              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8753,14 +10188,19 @@ Module str.
                     Ty.path "core::str::UnsafeBytesToStr"
                   ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitAsciiWhitespace",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitAsciiWhitespace",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -8819,7 +10259,7 @@ Module str.
                                   M.SubPointer.get_struct_record_field (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::SplitAsciiWhitespace",
                                         "inner"
                                       |),
@@ -8848,29 +10288,48 @@ Module str.
                     Value.StructTuple
                       "core::option::Option::Some"
                       [
-                        M.call_closure (|
-                          M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-                          [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::iter::SplitAsciiWhitespace",
-                                      "inner"
-                                    |),
-                                    "core::iter::adapters::map::Map",
-                                    "iter"
-                                  |),
-                                  "core::iter::adapters::filter::Filter",
-                                  "iter"
-                                |),
-                                "core::slice::iter::Split",
-                                "v"
-                              |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::str::converts::from_utf8_unchecked",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::str::iter::SplitAsciiWhitespace",
+                                                  "inner"
+                                                |),
+                                                "core::iter::adapters::map::Map",
+                                                "iter"
+                                              |),
+                                              "core::iter::adapters::filter::Filter",
+                                              "iter"
+                                            |),
+                                            "core::slice::iter::Split",
+                                            "v"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                   |)
@@ -8904,13 +10363,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_inclusive",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -8947,33 +10410,61 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugStruct",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "SplitInclusive" |) ]
-                      |)
-                    |);
-                    M.read (| Value.String "0" |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitInclusive",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugStruct",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_struct",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "SplitInclusive" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "0" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitInclusive",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -9012,14 +10503,19 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::iter::SplitInclusive",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::str::iter::SplitInclusive",
+                        0
+                      |)
                     |)
                   ]
                 |)
@@ -9055,13 +10551,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back_inclusive",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -9109,13 +10609,17 @@ Module str.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::str::iter::SplitInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::SplitInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -9153,25 +10657,51 @@ Module str.
                       "core::clone::Clone",
                       Ty.path "core::str::iter::Chars",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::EncodeUtf16",
-                        "chars"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::EncodeUtf16",
+                              "chars"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
                 ("extra",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u16", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u16",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::EncodeUtf16",
-                        "extra"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::EncodeUtf16",
+                              "extra"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -9205,17 +10735,28 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Formatter",
-                      "debug_struct",
-                      []
-                    |),
-                    [ M.read (| f |); M.read (| Value.String "EncodeUtf16" |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "EncodeUtf16" |) |)
+                        |)
+                      ]
+                    |)
                   |)
                 |)
               ]
@@ -9275,7 +10816,7 @@ Module str.
                                   BinOp.ne (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::EncodeUtf16",
                                         "extra"
                                       |)
@@ -9291,7 +10832,7 @@ Module str.
                                   let~ tmp :=
                                     M.copy (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::EncodeUtf16",
                                         "extra"
                                       |)
@@ -9299,7 +10840,7 @@ Module str.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::str::iter::EncodeUtf16",
                                         "extra"
                                       |),
@@ -9328,6 +10869,7 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                         "map",
+                        [],
                         [ Ty.path "u16"; Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "u16")
                         ]
                       |),
@@ -9337,14 +10879,19 @@ Module str.
                             "core::iter::traits::iterator::Iterator",
                             Ty.path "core::str::iter::Chars",
                             [],
+                            [],
                             "next",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::iter::EncodeUtf16",
-                              "chars"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::EncodeUtf16",
+                                "chars"
+                              |)
                             |)
                           ]
                         |);
@@ -9367,16 +10914,34 @@ Module str.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "char",
-                                                        "encode_utf16",
-                                                        []
-                                                      |),
-                                                      [ M.read (| ch |); buf ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "char",
+                                                            "encode_utf16",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| ch |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  buf
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -9403,7 +10968,7 @@ Module str.
                                                       let~ _ :=
                                                         M.write (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::str::iter::EncodeUtf16",
                                                             "extra"
                                                           |),
@@ -9471,18 +11036,23 @@ Module str.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
+                      [],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::str::iter::EncodeUtf16",
-                          "chars"
-                        |),
-                        "core::str::iter::Chars",
-                        "iter"
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::EncodeUtf16",
+                            "chars"
+                          |),
+                          "core::str::iter::Chars",
+                          "iter"
+                        |)
                       |)
                     ]
                   |)
@@ -9498,7 +11068,7 @@ Module str.
                             BinOp.eq (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::str::iter::EncodeUtf16",
                                   "extra"
                                 |)
@@ -9647,14 +11217,24 @@ Module str.
                             ]
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::EscapeDebug",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::EscapeDebug",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -9684,17 +11264,32 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "EscapeDebug" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::EscapeDebug",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "EscapeDebug" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::EscapeDebug",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -9754,14 +11349,24 @@ Module str.
                           Ty.path "core::str::CharEscapeDefault"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::EscapeDefault",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::EscapeDefault",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -9791,17 +11396,32 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "EscapeDefault" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::EscapeDefault",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "EscapeDefault" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::EscapeDefault",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -9861,14 +11481,24 @@ Module str.
                           Ty.path "core::str::CharEscapeUnicode"
                         ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::str::iter::EscapeUnicode",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::str::iter::EscapeUnicode",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -9898,17 +11528,32 @@ Module str.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "EscapeUnicode" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::iter::EscapeUnicode",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "EscapeUnicode" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::EscapeUnicode",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -9943,7 +11588,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeDebug",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -9958,16 +11605,21 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::str::iter::EscapeDebug",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::str::iter::EscapeDebug",
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -9987,10 +11639,18 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| f |); M.read (| c |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| f |) |)
+                                      |);
+                                      M.read (| c |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -10047,14 +11707,19 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDebug",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDebug",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10093,14 +11758,19 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDebug",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDebug",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10147,14 +11817,19 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDebug",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDebug",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)
@@ -10203,7 +11878,9 @@ Module str.
                       ]
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [
@@ -10266,7 +11943,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeDefault",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -10281,16 +11960,21 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::str::iter::EscapeDefault",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::str::iter::EscapeDefault",
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -10310,10 +11994,18 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| f |); M.read (| c |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| f |) |)
+                                      |);
+                                      M.read (| c |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -10356,14 +12048,19 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDefault",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDefault",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10388,14 +12085,19 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDefault",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDefault",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10428,14 +12130,19 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeDefault",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeDefault",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)
@@ -10470,7 +12177,9 @@ Module str.
                     Ty.path "core::str::CharEscapeDefault"
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [
@@ -10533,7 +12242,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "core::str::iter::EscapeUnicode",
                 [],
+                [],
                 "try_for_each",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "char" ] ]
@@ -10548,16 +12259,21 @@ Module str.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::str::iter::EscapeUnicode",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::str::iter::EscapeUnicode",
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -10577,10 +12293,18 @@ Module str.
                                       "core::fmt::Write",
                                       Ty.path "core::fmt::Formatter",
                                       [],
+                                      [],
                                       "write_char",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| f |); M.read (| c |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| f |) |)
+                                      |);
+                                      M.read (| c |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -10623,14 +12347,19 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeUnicode",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeUnicode",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10655,14 +12384,19 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeUnicode",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeUnicode",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -10695,14 +12429,19 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "try_fold",
+                [],
                 [ Acc; Fold; R ]
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::str::iter::EscapeUnicode",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::str::iter::EscapeUnicode",
+                    "inner"
+                  |)
                 |);
                 M.read (| init |);
                 M.read (| fold |)
@@ -10737,7 +12476,9 @@ Module str.
                     Ty.path "core::str::CharEscapeUnicode"
                   ],
                 [],
+                [],
                 "fold",
+                [],
                 [ Acc; Fold ]
               |),
               [

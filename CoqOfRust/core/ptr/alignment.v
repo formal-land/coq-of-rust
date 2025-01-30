@@ -34,7 +34,7 @@ Module ptr.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -73,20 +73,28 @@ Module ptr.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::ptr::alignment::AlignmentEnum",
+                [],
                 [ Ty.path "core::ptr::alignment::AlignmentEnum" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::ptr::alignment::Alignment",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ptr::alignment::Alignment",
+                    0
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::ptr::alignment::Alignment",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::ptr::alignment::Alignment",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -206,6 +214,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "new_unchecked",
+                [],
                 []
               |),
               [ M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |) ]
@@ -243,6 +252,7 @@ Module ptr.
                               M.get_associated_function (|
                                 Ty.path "usize",
                                 "is_power_of_two",
+                                [],
                                 []
                               |),
                               [ M.read (| align |) ]
@@ -257,6 +267,7 @@ Module ptr.
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "new_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| align |) ]
@@ -315,6 +326,7 @@ Module ptr.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.new_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| align |) ]
@@ -351,7 +363,8 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
+            M.cast
+              (Ty.path "usize")
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (| self, "core::ptr::alignment::Alignment", 0 |)
               |))))
@@ -375,6 +388,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -382,6 +396,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -407,6 +422,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "trailing_zeros",
+                [],
                 []
               |),
               [
@@ -414,6 +430,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_nonzero",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -438,12 +455,13 @@ Module ptr.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+                M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "as_usize",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -482,6 +500,7 @@ Module ptr.
                                 M.get_associated_function (|
                                   Ty.path "core::ptr::alignment::Alignment",
                                   "as_usize",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| a |) ]
@@ -490,6 +509,7 @@ Module ptr.
                                 M.get_associated_function (|
                                   Ty.path "core::ptr::alignment::Alignment",
                                   "as_usize",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| b |) ]
@@ -523,67 +543,103 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "" |);
-                          M.read (| Value.String " (1 << " |);
-                          M.read (| Value.String ")" |)
-                        ]
-                    |);
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_debug",
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
                               [
-                                Ty.apply
-                                  (Ty.path "core::num::nonzero::NonZero")
-                                  []
-                                  [ Ty.path "usize" ]
+                                M.read (| Value.String "" |);
+                                M.read (| Value.String " (1 << " |);
+                                M.read (| Value.String ")" |)
                               ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::ptr::alignment::Alignment",
-                                    "as_nonzero",
-                                    []
-                                  |),
-                                  [ M.read (| M.read (| self |) |) ]
-                                |)
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_debug",
-                              [ Ty.path "u32" ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::ptr::alignment::Alignment",
-                                    "log2",
-                                    []
-                                  |),
-                                  [ M.read (| M.read (| self |) |) ]
-                                |)
-                              |)
-                            ]
                           |)
-                        ]
+                        |)
+                      |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::ptr::alignment::Alignment",
+                                                "as_nonzero",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
+                                    [],
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::ptr::alignment::Alignment",
+                                                "log2",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -620,8 +676,10 @@ Module ptr.
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "usize",
+                [],
                 [ Ty.path "core::ptr::alignment::Alignment" ],
                 "try_into",
+                [],
                 []
               |),
               [
@@ -629,6 +687,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
+                    [],
                     []
                   |),
                   [ M.read (| align |) ]
@@ -671,6 +730,7 @@ Module ptr.
                   []
                   [ Ty.path "core::ptr::alignment::Alignment" ],
                 "ok_or",
+                [],
                 [ Ty.path "core::num::error::TryFromIntError" ]
               |),
               [
@@ -678,6 +738,7 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| align |) ]
@@ -715,6 +776,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_nonzero",
+                [],
                 []
               |),
               [ M.read (| align |) ]
@@ -747,6 +809,7 @@ Module ptr.
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_usize",
+                [],
                 []
               |),
               [ M.read (| align |) ]
@@ -777,44 +840,59 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "cmp", [] |),
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], [], "cmp", [], [] |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "get",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::ptr::alignment::Alignment",
-                          "as_nonzero",
-                          []
-                        |),
-                        [ M.read (| M.read (| self |) |) ]
-                      |)
-                    ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::ptr::alignment::Alignment",
+                            "as_nonzero",
+                            [],
+                            []
+                          |),
+                          [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      ]
+                    |)
                   |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "get",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::ptr::alignment::Alignment",
-                          "as_nonzero",
-                          []
-                        |),
-                        [ M.read (| M.read (| other |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                            "get",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ptr::alignment::Alignment",
+                                "as_nonzero",
+                                [],
+                                []
+                              |),
+                              [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                            |)
+                          ]
+                        |)
                       |)
-                    ]
+                    |)
                   |)
                 |)
               ]
@@ -852,10 +930,15 @@ Module ptr.
                     "core::cmp::Ord",
                     Ty.path "core::ptr::alignment::Alignment",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -888,21 +971,27 @@ Module ptr.
                 "core::hash::Hash",
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 [],
+                [],
                 "hash",
+                [],
                 [ H ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::ptr::alignment::Alignment",
-                      "as_nonzero",
-                      []
-                    |),
-                    [ M.read (| M.read (| self |) |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::ptr::alignment::Alignment",
+                        "as_nonzero",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
                   |)
                 |);
-                M.read (| state |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1290,7 +1379,7 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1332,7 +1421,7 @@ Module ptr.
                       [],
                       [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -1343,7 +1432,7 @@ Module ptr.
                       [],
                       [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)

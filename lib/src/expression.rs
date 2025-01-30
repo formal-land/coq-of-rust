@@ -58,6 +58,13 @@ pub(crate) enum Literal {
     Error,
 }
 
+#[derive(Debug, Eq, PartialEq, Serialize)]
+pub(crate) enum LambdaForm {
+    Closure,
+    Function,
+    ListFunction,
+}
+
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum Expr {
@@ -71,13 +78,16 @@ pub(crate) enum Expr {
     GetTraitMethod {
         trait_name: Rc<Path>,
         self_ty: Rc<CoqType>,
+        trait_consts: Vec<Rc<Expr>>,
         trait_tys: Vec<Rc<CoqType>>,
         method_name: String,
+        generic_consts: Vec<Rc<Expr>>,
         generic_tys: Vec<Rc<CoqType>>,
     },
     GetAssociatedFunction {
         ty: Rc<CoqType>,
         func: String,
+        generic_consts: Vec<Rc<Expr>>,
         generic_tys: Vec<Rc<CoqType>>,
     },
     Literal(Rc<Literal>),
@@ -93,11 +103,15 @@ pub(crate) enum Expr {
         lhs: Rc<Expr>,
         rhs: Rc<Expr>,
     },
+    Cast {
+        target_ty: Rc<CoqType>,
+        source: Rc<Expr>,
+    },
     Lambda {
         args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Rc<Expr>,
         is_for_match: bool,
-        is_internal: bool,
+        form: LambdaForm,
     },
     Array {
         elements: Vec<Rc<Expr>>,
@@ -243,11 +257,15 @@ impl Expr {
                 kind: _,
             } => func.has_return() || args.iter().any(|arg| arg.has_return()),
             Expr::LogicalOperator { name: _, lhs, rhs } => lhs.has_return() || rhs.has_return(),
+            Expr::Cast {
+                target_ty: _,
+                source,
+            } => source.has_return(),
             Expr::Lambda {
                 args: _,
                 body,
                 is_for_match,
-                is_internal: _,
+                form: _,
             } => *is_for_match && body.has_return(),
             Expr::Array {
                 elements,
@@ -460,12 +478,20 @@ impl Expr {
             Expr::GetTraitMethod {
                 trait_name,
                 self_ty,
+                trait_consts,
                 trait_tys,
                 method_name,
+                generic_consts,
                 generic_tys,
             } => coq::Expression::just_name("M.get_trait_method").monadic_apply_many(&[
                 coq::Expression::String(trait_name.to_string()),
                 self_ty.to_coq(),
+                coq::Expression::List {
+                    exprs: trait_consts
+                        .iter()
+                        .map(|trait_const| trait_const.to_coq())
+                        .collect_vec(),
+                },
                 coq::Expression::List {
                     exprs: trait_tys
                         .iter()
@@ -474,16 +500,29 @@ impl Expr {
                 },
                 coq::Expression::String(method_name.to_string()),
                 coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|const_| const_.to_coq())
+                        .collect_vec(),
+                },
+                coq::Expression::List {
                     exprs: generic_tys.iter().map(|ty| ty.to_coq()).collect_vec(),
                 },
             ]),
             Expr::GetAssociatedFunction {
                 ty,
                 func,
+                generic_consts,
                 generic_tys,
             } => coq::Expression::just_name("M.get_associated_function").monadic_apply_many(&[
                 ty.to_coq(),
                 coq::Expression::String(func.to_string()),
+                coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|generic_const| generic_const.to_coq())
+                        .collect(),
+                },
                 coq::Expression::List {
                     exprs: generic_tys
                         .iter()
@@ -509,48 +548,53 @@ impl Expr {
             },
             Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
                 .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(&rhs.to_coq())]),
+            Expr::Cast { target_ty, source } => coq::Expression::just_name("M.cast")
+                .apply_many(&[target_ty.to_coq(), source.to_coq()]),
             Expr::Lambda {
                 args,
                 body,
                 is_for_match: _,
-                is_internal,
-            } => {
-                if *is_internal {
-                    return coq::Expression::Function {
-                        parameters: args
-                            .iter()
-                            .map(|(name, _)| coq::Expression::just_name(name))
-                            .collect_vec(),
-                        body: Rc::new(coq::Expression::monadic(&body.to_coq())),
-                    };
-                }
-
-                coq::Expression::just_name("M.closure").apply(&coq::Expression::Function {
-                    parameters: vec![coq::Expression::just_name("γ")],
-                    body: Rc::new(coq::Expression::monadic(&coq::Expression::Match {
-                        scrutinees: vec![coq::Expression::just_name("γ")],
-                        arms: vec![
-                            (
-                                vec![coq::Expression::List {
-                                    exprs: args
-                                        .iter()
-                                        .map(|(name, _)| coq::Expression::name_pattern(name))
-                                        .collect(),
-                                }],
-                                coq::Expression::monadic(&body.to_coq()),
-                            ),
-                            (
-                                vec![coq::Expression::Wild],
-                                coq::Expression::just_name("M.impossible").apply(
-                                    &coq::Expression::String(
-                                        "wrong number of arguments".to_string(),
+                form,
+            } => match form {
+                LambdaForm::Function => coq::Expression::Function {
+                    parameters: args
+                        .iter()
+                        .map(|(name, _)| coq::Expression::just_name(name))
+                        .collect_vec(),
+                    body: Rc::new(coq::Expression::monadic(&body.to_coq())),
+                },
+                _ => {
+                    let body = coq::Expression::Function {
+                        parameters: vec![coq::Expression::just_name("γ")],
+                        body: Rc::new(coq::Expression::monadic(&coq::Expression::Match {
+                            scrutinees: vec![coq::Expression::just_name("γ")],
+                            arms: vec![
+                                (
+                                    vec![coq::Expression::List {
+                                        exprs: args
+                                            .iter()
+                                            .map(|(name, _)| coq::Expression::name_pattern(name))
+                                            .collect(),
+                                    }],
+                                    coq::Expression::monadic(&body.to_coq()),
+                                ),
+                                (
+                                    vec![coq::Expression::Wild],
+                                    coq::Expression::just_name("M.impossible").apply(
+                                        &coq::Expression::String(
+                                            "wrong number of arguments".to_string(),
+                                        ),
                                     ),
                                 ),
-                            ),
-                        ],
-                    })),
-                })
-            }
+                            ],
+                        })),
+                    };
+                    if matches!(form, LambdaForm::Closure) {
+                        return coq::Expression::just_name("M.closure").apply(&body);
+                    }
+                    body
+                }
+            },
             Expr::Array {
                 elements,
                 is_internal,

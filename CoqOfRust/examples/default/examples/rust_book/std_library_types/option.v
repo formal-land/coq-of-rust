@@ -84,38 +84,69 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " / " |);
-                                  M.read (| Value.String " failed!
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "" |);
+                                        M.read (| Value.String " / " |);
+                                        M.read (| Value.String " failed!
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ dividend ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ divisor ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.Ref, dividend |)
+                                              |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, divisor |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -137,47 +168,86 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " / " |);
-                                  M.read (| Value.String " = " |);
-                                  M.read (| Value.String "
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "" |);
+                                        M.read (| Value.String " / " |);
+                                        M.read (| Value.String " = " |);
+                                        M.read (| Value.String "
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ dividend ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ divisor ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ quotient ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.Ref, dividend |)
+                                              |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, divisor |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (| Pointer.Kind.Ref, quotient |)
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -247,51 +317,95 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String " unwraps to " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "" |);
+                                  M.read (| Value.String " unwraps to " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] ]
-                              |),
-                              [ optional_float ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "f32" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "f32" ],
-                                      "unwrap",
-                                      []
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "f32" ]
+                                      ]
                                     |),
-                                    [ M.read (| optional_float |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (| Pointer.Kind.Ref, optional_float |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "f32" ],
+                                                  "unwrap",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| optional_float |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -306,51 +420,93 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String " unwraps to " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "" |);
+                                  M.read (| Value.String " unwraps to " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
-                              |),
-                              [ none ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "i32" ],
-                                      "unwrap",
-                                      []
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
+                                      ]
                                     |),
-                                    [ M.read (| none |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, none |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "i32" ],
+                                                  "unwrap",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| none |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

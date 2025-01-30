@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
           "basic_contract_caller::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -48,7 +56,7 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -125,14 +133,14 @@ Module Impl_basic_contract_caller_OtherContract.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "basic_contract_caller::OtherContract",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "basic_contract_caller::OtherContract",
                     "value"
                   |)
@@ -158,7 +166,7 @@ Module Impl_basic_contract_caller_OtherContract.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "basic_contract_caller::OtherContract",
             "value"
           |)
@@ -236,13 +244,17 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                 M.get_associated_function (|
                   Ty.path "basic_contract_caller::OtherContract",
                   "flip",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "basic_contract_caller::BasicContractCaller",
-                    "other_contract"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "basic_contract_caller::BasicContractCaller",
+                      "other_contract"
+                    |)
                   |)
                 ]
               |)
@@ -252,13 +264,17 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               M.get_associated_function (|
                 Ty.path "basic_contract_caller::OtherContract",
                 "get",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "basic_contract_caller::BasicContractCaller",
-                  "other_contract"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "basic_contract_caller::BasicContractCaller",
+                    "other_contract"
+                  |)
                 |)
               ]
             |)

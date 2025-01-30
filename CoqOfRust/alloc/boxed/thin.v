@@ -63,7 +63,12 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
-                    [ value ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ ptr :=
@@ -72,6 +77,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                       "new",
+                      [],
                       [ Ty.tuple []; T ]
                     |),
                     [ M.read (| meta |); M.read (| value |) ]
@@ -110,7 +116,12 @@ Module boxed.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
-                    [ value ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                      |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -124,6 +135,7 @@ Module boxed.
                         Ty.path "core::alloc::AllocError"
                       ],
                     "map",
+                    [],
                     [
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ];
                       Ty.function
@@ -136,6 +148,7 @@ Module boxed.
                       M.get_associated_function (|
                         Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                         "try_new",
+                        [],
                         [ Ty.tuple []; T ]
                       |),
                       [ M.read (| meta |); M.read (| value |) ]
@@ -187,22 +200,31 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
-                  "header",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "with_header",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                    "header",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                            "with_header",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -227,16 +249,23 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                 "value",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    "with_header",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        "with_header",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -259,12 +288,30 @@ Module boxed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::boxed::thin::ThinBox",
-                "ptr"
-              |))))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.cast
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ]
+                        ])
+                      (M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::boxed::thin::ThinBox",
+                          "ptr"
+                        |)
+                      |))
+                  |)
+                |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -327,6 +374,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                               "new_unsize_zst",
+                              [],
                               [ Dyn; T ]
                             |),
                             [ M.read (| value |) ]
@@ -346,7 +394,22 @@ Module boxed.
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::ptr::metadata::metadata", [], [ Dyn ] |),
-                            [ M.read (| M.use (M.alloc (| value |)) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (|
+                                  M.read (|
+                                    M.use
+                                      (M.alloc (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                                        |)
+                                      |))
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         |) in
                       let~ ptr :=
@@ -355,6 +418,7 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                               "new",
+                              [],
                               [ Ty.associated; T ]
                             |),
                             [ M.read (| meta |); M.read (| value |) ]
@@ -396,19 +460,26 @@ Module boxed.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -440,19 +511,26 @@ Module boxed.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -495,9 +573,10 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "data",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ metadata :=
@@ -506,9 +585,10 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ pointer :=
@@ -519,10 +599,18 @@ Module boxed.
                       [],
                       [ T; Ty.tuple [] ]
                     |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
+                    [
+                      M.cast (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]) (M.read (| value |));
+                      M.read (| metadata |)
+                    ]
                   |)
                 |) in
-              M.alloc (| M.read (| pointer |) |)
+              M.alloc (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pointer |) |) |) |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -555,41 +643,65 @@ Module boxed.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              let~ value :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "data",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  let~ value :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                          "data",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |) in
+                  let~ metadata :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                          "meta",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |) in
+                  let~ pointer :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::ptr::metadata::from_raw_parts_mut",
+                          [],
+                          [ T; Ty.tuple [] ]
+                        |),
+                        [
+                          M.cast
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                            (M.read (| value |));
+                          M.read (| metadata |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| pointer |) |) |)
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                |) in
-              let~ metadata :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                      "meta",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pointer :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::ptr::metadata::from_raw_parts_mut",
-                      [],
-                      [ T; Ty.tuple [] ]
-                    |),
-                    [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
-                  |)
-                |) in
-              M.alloc (| M.read (| pointer |) |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -630,29 +742,44 @@ Module boxed.
                       "core::ops::deref::DerefMut",
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       [],
+                      [],
                       "deref_mut",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ value := M.copy (| M.use (M.alloc (| M.read (| value |) |)) |) in
+              let~ value :=
+                M.copy (|
+                  M.use
+                    (M.alloc (|
+                      M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| value |) |) |)
+                    |))
+                |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                       "drop",
+                      [],
                       [ T ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                          "with_header",
-                          []
-                        |),
-                        [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                              "with_header",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
                       |);
                       M.read (| value |)
                     ]
@@ -715,6 +842,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "new",
+                      [],
                       [ T ]
                     |),
                     [ M.read (| header |); M.read (| value |) ]
@@ -761,6 +889,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
                       "new_unsize_zst",
+                      [],
                       [ Dyn; T ]
                     |),
                     [ M.read (| value |) ]
@@ -807,6 +936,7 @@ Module boxed.
                     Ty.path "core::alloc::AllocError"
                   ],
                 "map",
+                [],
                 [
                   Ty.path "alloc::boxed::thin::WithOpaqueHeader";
                   Ty.function
@@ -819,6 +949,7 @@ Module boxed.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                     "try_new",
+                    [],
                     [ T ]
                   |),
                   [ M.read (| header |); M.read (| value |) ]
@@ -918,6 +1049,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
+                      [],
                       [ T ]
                     |),
                     []
@@ -929,6 +1061,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                       "alloc_layout",
+                      [],
                       []
                     |),
                     [ M.read (| value_layout |) ]
@@ -962,9 +1095,10 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "size",
+                                              [],
                                               []
                                             |),
-                                            [ layout ]
+                                            [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                           |),
                                           Value.Integer IntegerKind.Usize 0
                                         |)
@@ -1055,9 +1189,10 @@ Module boxed.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "dangling",
+                                        [],
                                         []
                                       |),
-                                      [ layout ]
+                                      [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                     |)
                                   |)));
                               fun γ =>
@@ -1082,6 +1217,7 @@ Module boxed.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                       "is_null",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| ptr |) ]
@@ -1109,11 +1245,13 @@ Module boxed.
                                     |) in
                                   let~ ptr :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "add",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| ptr |); M.read (| value_offset |) ]
@@ -1127,6 +1265,7 @@ Module boxed.
                                           []
                                           [ Ty.path "u8" ],
                                         "new_unchecked",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| ptr |) ]
@@ -1150,9 +1289,10 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                   "header",
+                                  [],
                                   []
                                 |),
-                                [ result ]
+                                [ M.borrow (| Pointer.Kind.Ref, result |) ]
                               |);
                               M.read (| header |)
                             ]
@@ -1167,6 +1307,7 @@ Module boxed.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "cast",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -1174,9 +1315,10 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                       "value",
+                                      [],
                                       []
                                     |),
-                                    [ result ]
+                                    [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                   |)
                                 ]
                               |);
@@ -1250,6 +1392,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "new",
+                          [],
                           [ T ]
                         |),
                         []
@@ -1261,6 +1404,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                           "alloc_layout",
+                          [],
                           []
                         |),
                         [ M.read (| value_layout |) ]
@@ -1294,9 +1438,10 @@ Module boxed.
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
+                                                  [],
                                                   []
                                                 |),
-                                                [ layout ]
+                                                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                               |),
                                               Value.Integer IntegerKind.Usize 0
                                             |)
@@ -1404,9 +1549,10 @@ Module boxed.
                                           M.get_associated_function (|
                                             Ty.path "core::alloc::layout::Layout",
                                             "dangling",
+                                            [],
                                             []
                                           |),
-                                          [ layout ]
+                                          [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                                         |)
                                       |)));
                                   fun γ =>
@@ -1434,6 +1580,7 @@ Module boxed.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "is_null",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| ptr |) ]
@@ -1464,11 +1611,13 @@ Module boxed.
                                         |) in
                                       let~ ptr :=
                                         M.alloc (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| ptr |); M.read (| value_offset |) ]
@@ -1482,6 +1631,7 @@ Module boxed.
                                               []
                                               [ Ty.path "u8" ],
                                             "new_unchecked",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| ptr |) ]
@@ -1506,9 +1656,10 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                                       "header",
+                                      [],
                                       []
                                     |),
-                                    [ result ]
+                                    [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                   |);
                                   M.read (| header |)
                                 ]
@@ -1523,6 +1674,7 @@ Module boxed.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -1533,9 +1685,10 @@ Module boxed.
                                             []
                                             [ H ],
                                           "value",
+                                          [],
                                           []
                                         |),
-                                        [ result ]
+                                        [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                       |)
                                     ]
                                   |);
@@ -1666,6 +1819,7 @@ Module boxed.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "cast_mut",
+                      [],
                       []
                     |),
                     [
@@ -1673,6 +1827,7 @@ Module boxed.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ H ],
                           "cast",
+                          [],
                           [ T ]
                         |),
                         [
@@ -1680,10 +1835,19 @@ Module boxed.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ H ],
                               "add",
+                              [],
                               []
                             |),
                             [
-                              M.read (| M.use (M.alloc (| M.read (| alloc |) |)) |);
+                              M.read (|
+                                M.use
+                                  (M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| alloc |) |)
+                                    |)
+                                  |))
+                              |);
                               Value.Integer IntegerKind.Usize 1
                             ]
                           |)
@@ -1715,6 +1879,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "is_aligned",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| value_ptr |) ]
@@ -1763,6 +1928,7 @@ Module boxed.
                           []
                           [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
                         "unwrap",
+                        [],
                         []
                       |),
                       [
@@ -1770,6 +1936,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "new",
+                            [],
                             []
                           |),
                           [
@@ -1777,6 +1944,7 @@ Module boxed.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "cast",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [ M.read (| value_ptr |) ]
@@ -1853,7 +2021,7 @@ Module boxed.
                       ("ptr",
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::boxed::thin::WithHeader",
                             0
                           |)
@@ -1863,6 +2031,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "for_value_raw",
+                            [],
                             [ T ]
                           |),
                           [ (* MutToConstPointer *) M.pointer_coercion (M.read (| value |)) ]
@@ -1909,11 +2078,13 @@ Module boxed.
             M.read (|
               let~ hp :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*mut") [] [ H ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "sub",
+                        [],
                         []
                       |),
                       [
@@ -1921,12 +2092,13 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::boxed::thin::WithHeader",
                                 0
                               |)
@@ -1937,6 +2109,7 @@ Module boxed.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                             "header_size",
+                            [],
                             []
                           |),
                           []
@@ -1967,6 +2140,7 @@ Module boxed.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ H ],
                                               "is_aligned",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| hp |) ]
@@ -2021,12 +2195,13 @@ Module boxed.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "as_ptr",
+                [],
                 []
               |),
               [
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::boxed::thin::WithHeader",
                     0
                   |)
@@ -2075,16 +2250,25 @@ Module boxed.
           ltac:(M.monadic
             (let value_layout := M.alloc (| value_layout |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "extend", [] |),
+              M.get_associated_function (|
+                Ty.path "core::alloc::layout::Layout",
+                "extend",
+                [],
+                []
+              |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::alloc::layout::Layout",
-                      "new",
-                      [ H ]
-                    |),
-                    []
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::alloc::layout::Layout",
+                        "new",
+                        [],
+                        [ H ]
+                      |),
+                      []
+                    |)
                   |)
                 |);
                 M.read (| value_layout |)
@@ -2114,17 +2298,24 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
+              M.get_trait_method (| "core::error::Error", T, [], [], "source", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))

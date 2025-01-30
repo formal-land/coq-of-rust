@@ -73,20 +73,31 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      ("page loaded, r"
-                                        ++
-                                        (String.String "233" ("f" ++ (String.String "233" "
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            ("page loaded, r"
+                                              ++
+                                              (String.String
+                                                "233"
+                                                ("f" ++ (String.String "233" "
 "))))
+                                        |)
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -106,10 +117,22 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
-                          [ M.alloc (| Value.Array [ M.read (| Value.String "page unloaded
-" |) ] |)
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array [ M.read (| Value.String "page unloaded
+" |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -130,29 +153,52 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "pressed '" |);
-                                  M.read (| Value.String "'.
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "pressed '" |);
+                                        M.read (| Value.String "'.
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "char" ]
-                                    |),
-                                    [ c ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "char" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, c |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -174,29 +220,52 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "pasted """ |);
-                                  M.read (| Value.String """.
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "pasted """ |);
+                                        M.read (| Value.String """.
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "alloc::string::String" ]
-                                    |),
-                                    [ s ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -222,38 +291,67 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "clicked at x=" |);
-                                    M.read (| Value.String ", y=" |);
-                                    M.read (| Value.String ".
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "clicked at x=" |);
+                                          M.read (| Value.String ", y=" |);
+                                          M.read (| Value.String ".
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i64" ]
-                                      |),
-                                      [ x ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i64" ]
-                                      |),
-                                      [ y ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i64" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "i64" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -303,10 +401,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "alloc::borrow::ToOwned",
                     Ty.path "str",
                     [],
+                    [],
                     "to_owned",
+                    [],
                     []
                   |),
-                  [ M.read (| Value.String "my text" |) ]
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "my text" |) |)
+                    |)
+                  ]
                 |)
               ]
           |) in

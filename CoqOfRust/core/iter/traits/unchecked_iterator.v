@@ -24,10 +24,12 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Self,
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -35,6 +37,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "unwrap_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| opt |) ]

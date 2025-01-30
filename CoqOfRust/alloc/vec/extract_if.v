@@ -35,41 +35,88 @@ Module vec.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ExtractIf" |);
-                M.read (| Value.String "vec" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::extract_if::ExtractIf",
-                  "vec"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ExtractIf" |) |)
                 |);
-                M.read (| Value.String "idx" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::extract_if::ExtractIf",
-                  "idx"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "vec" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::extract_if::ExtractIf",
+                        "vec"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "del" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::extract_if::ExtractIf",
-                  "del"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "idx" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::extract_if::ExtractIf",
+                        "idx"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "old_len" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::extract_if::ExtractIf",
-                  "old_len"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "del" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::extract_if::ExtractIf",
+                        "del"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "pred" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::extract_if::ExtractIf",
-                    "pred"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "old_len" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::extract_if::ExtractIf",
+                        "old_len"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "pred" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::extract_if::ExtractIf",
+                            "pred"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -106,21 +153,32 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::extract_if::ExtractIf",
-                    "vec"
-                  |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::extract_if::ExtractIf",
+                            "vec"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -185,14 +243,14 @@ Module vec.
                                       BinOp.lt (|
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "alloc::vec::extract_if::ExtractIf",
                                             "idx"
                                           |)
                                         |),
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "alloc::vec::extract_if::ExtractIf",
                                             "old_len"
                                           |)
@@ -207,7 +265,7 @@ Module vec.
                                 let~ i :=
                                   M.copy (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "idx"
                                     |)
@@ -225,21 +283,27 @@ Module vec.
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                             "as_mut_ptr",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::vec::extract_if::ExtractIf",
-                                                "vec"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::vec::extract_if::ExtractIf",
+                                                    "vec"
+                                                  |)
+                                                |)
                                               |)
                                             |)
                                           ]
                                         |);
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "alloc::vec::extract_if::ExtractIf",
                                             "old_len"
                                           |)
@@ -253,25 +317,43 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::extract_if::ExtractIf",
-                                          "pred"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::vec::extract_if::ExtractIf",
+                                            "pred"
+                                          |)
                                         |);
                                         Value.Tuple
-                                          [ M.SubPointer.get_array_field (| M.read (| v |), i |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (| M.read (| v |) |),
+                                                    i
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                       ]
                                     |)
                                   |) in
                                 let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "idx"
                                     |) in
@@ -299,7 +381,7 @@ Module vec.
                                               let~ _ :=
                                                 let β :=
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "alloc::vec::extract_if::ExtractIf",
                                                     "del"
                                                   |) in
@@ -321,9 +403,17 @@ Module vec.
                                                         [ T ]
                                                       |),
                                                       [
-                                                        M.SubPointer.get_array_field (|
-                                                          M.read (| v |),
-                                                          i
+                                                        M.borrow (|
+                                                          Pointer.Kind.ConstPointer,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.SubPointer.get_array_field (|
+                                                                M.deref (| M.read (| v |) |),
+                                                                i
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -345,7 +435,7 @@ Module vec.
                                                       BinOp.gt (|
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "alloc::vec::extract_if::ExtractIf",
                                                             "del"
                                                           |)
@@ -361,26 +451,42 @@ Module vec.
                                                 let~ del :=
                                                   M.copy (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
+                                                      M.deref (| M.read (| self |) |),
                                                       "alloc::vec::extract_if::ExtractIf",
                                                       "del"
                                                     |)
                                                   |) in
                                                 let~ src :=
                                                   M.alloc (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.read (| v |),
-                                                      i
+                                                    M.borrow (|
+                                                      Pointer.Kind.ConstPointer,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| v |) |),
+                                                            i
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   |) in
                                                 let~ dst :=
                                                   M.alloc (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.read (| v |),
-                                                      M.alloc (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| i |),
-                                                          M.read (| del |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutPointer,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| v |) |),
+                                                            M.alloc (|
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| i |),
+                                                                M.read (| del |)
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
@@ -453,14 +559,14 @@ Module vec.
                     BinOp.Wrap.sub (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::vec::extract_if::ExtractIf",
                           "old_len"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::vec::extract_if::ExtractIf",
                           "idx"
                         |)
@@ -529,14 +635,14 @@ Module vec.
                                 BinOp.lt (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "idx"
                                     |)
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::extract_if::ExtractIf",
                                       "old_len"
                                     |)
@@ -546,7 +652,7 @@ Module vec.
                                   (BinOp.gt (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "alloc::vec::extract_if::ExtractIf",
                                         "del"
                                       |)
@@ -563,14 +669,20 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::extract_if::ExtractIf",
-                                    "vec"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::vec::extract_if::ExtractIf",
+                                        "vec"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               ]
@@ -582,13 +694,14 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
                                 M.read (| ptr |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::vec::extract_if::ExtractIf",
                                     "idx"
                                   |)
@@ -602,13 +715,14 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "sub",
+                                [],
                                 []
                               |),
                               [
                                 M.read (| src |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::vec::extract_if::ExtractIf",
                                     "del"
                                   |)
@@ -621,14 +735,14 @@ Module vec.
                             BinOp.Wrap.sub (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "old_len"
                                 |)
                               |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "idx"
                                 |)
@@ -641,6 +755,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "copy_to",
+                                [],
                                 []
                               |),
                               [ M.read (| src |); M.read (| dst |); M.read (| tail_len |) ]
@@ -656,27 +771,33 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
+                      [],
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::vec::extract_if::ExtractIf",
-                          "vec"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::extract_if::ExtractIf",
+                              "vec"
+                            |)
+                          |)
                         |)
                       |);
                       BinOp.Wrap.sub (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::vec::extract_if::ExtractIf",
                             "old_len"
                           |)
                         |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::vec::extract_if::ExtractIf",
                             "del"
                           |)

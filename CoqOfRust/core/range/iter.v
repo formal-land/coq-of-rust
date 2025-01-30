@@ -27,16 +27,31 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRange" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRange",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRange" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRange",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -72,14 +87,24 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRange",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRange",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -470,14 +495,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -500,14 +530,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -530,7 +565,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -559,14 +596,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -590,7 +632,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -621,7 +665,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "min",
+                [],
                 []
               |),
               [
@@ -652,7 +698,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "max",
+                [],
                 []
               |),
               [
@@ -696,14 +744,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "advance_by",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -736,19 +789,30 @@ Module range.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_trait_method (| "core::iter::range::Step", A, [], "forward_unchecked", [] |),
+              M.get_trait_method (|
+                "core::iter::range::Step",
+                A,
+                [],
+                [],
+                "forward_unchecked",
+                [],
+                []
+              |),
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::range::iter::IterRange",
-                        0
-                      |),
-                      "core::ops::range::Range",
-                      "start"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::range::iter::IterRange",
+                          0
+                        |),
+                        "core::ops::range::Range",
+                        "start"
+                      |)
                     |)
                   ]
                 |);
@@ -800,14 +864,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -831,14 +900,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -868,14 +942,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                 [],
+                [],
                 "advance_back_by",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRange",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRange",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -951,8 +1030,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::Range") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::Range") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -999,16 +1080,31 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRangeInclusive" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRangeInclusive",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRangeInclusive" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeInclusive",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1044,14 +1140,24 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRangeInclusive",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeInclusive",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1106,13 +1212,17 @@ Module range.
                                         []
                                         [ A ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        self,
-                                        "core::range::iter::IterRangeInclusive",
-                                        0
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          self,
+                                          "core::range::iter::IterRangeInclusive",
+                                          0
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1196,14 +1306,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1226,14 +1341,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1256,7 +1376,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "count",
+                [],
                 []
               |),
               [
@@ -1289,14 +1411,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1320,7 +1447,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -1355,7 +1484,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "min",
+                [],
                 []
               |),
               [
@@ -1390,7 +1521,9 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "max",
+                [],
                 []
               |),
               [
@@ -1438,14 +1571,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "advance_by",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1494,14 +1632,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1525,14 +1668,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "nth_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1562,14 +1710,19 @@ Module range.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                 [],
+                [],
                 "advance_back_by",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeInclusive",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeInclusive",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -1646,8 +1799,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1790,16 +1945,31 @@ Module range.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IterRangeFrom" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::range::iter::IterRangeFrom",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IterRangeFrom" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeFrom",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1835,14 +2005,24 @@ Module range.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::range::iter::IterRangeFrom",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::range::iter::IterRangeFrom",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1921,14 +2101,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1951,14 +2136,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -1982,14 +2172,19 @@ Module range.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                 [],
+                [],
                 "nth",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::range::iter::IterRangeFrom",
-                  0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::range::iter::IterRangeFrom",
+                    0
+                  |)
                 |);
                 M.read (| n |)
               ]
@@ -2066,8 +2261,10 @@ Module range.
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeFrom") [] [ A ],
+                    [],
                     [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ] ],
                     "into",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]

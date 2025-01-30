@@ -68,29 +68,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Matched " |);
-                                      M.read (| Value.String "!
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "Matched " |);
+                                            M.read (| Value.String "!
 " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [ i ]
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_debug",
+                                                [],
+                                                [ Ty.path "i32" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -122,29 +145,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Matched " |);
-                                      M.read (| Value.String "!
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "Matched " |);
+                                            M.read (| Value.String "!
 " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [ i ]
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_debug",
+                                                [],
+                                                [ Ty.path "i32" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -165,18 +211,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "Didn't match a number. Let's go with a letter!
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "Didn't match a number. Let's go with a letter!
 "
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -207,29 +262,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Matched " |);
-                                    M.read (| Value.String "!
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Matched " |);
+                                          M.read (| Value.String "!
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ i ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -258,18 +336,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Didn't match a number. Let's go with a letter!
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String
+                                                      "Didn't match a number. Let's go with a letter!
 "
+                                                  |)
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -290,18 +377,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "I don't like letters. Let's go with an emoticon :)!
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String
+                                                      "I don't like letters. Let's go with an emoticon :)!
 "
+                                                  |)
+                                                ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)

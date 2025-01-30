@@ -19,6 +19,7 @@ Module friends.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             "map_err",
+            [],
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
@@ -29,7 +30,7 @@ Module friends.
           [
             M.call_closure (|
               M.get_function (| "move_bytecode_verifier::friends::verify_module_impl", [], [] |),
-              [ M.read (| module |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
             |);
             M.closure
               (fun γ =>
@@ -47,6 +48,7 @@ Module friends.
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
+                                  [],
                                   []
                                 |),
                                 [
@@ -58,9 +60,15 @@ Module friends.
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| module |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                 ]
@@ -125,9 +133,10 @@ Module friends.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle",
+                      [],
                       []
                     |),
-                    [ M.read (| module |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -146,18 +155,33 @@ Module friends.
                                     []
                                     [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "friend_decls",
-                                      []
-                                    |),
-                                    [ M.read (| module |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "friend_decls",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| module |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
-                                  M.read (| self_handle |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| self_handle |) |)
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -174,6 +198,7 @@ Module friends.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [
@@ -196,29 +221,39 @@ Module friends.
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "address_identifier_at",
+                      [],
                       []
                     |),
                     [
-                      M.read (| module |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "move_binary_format::file_format::CompiledModule",
-                              "module_handle_at",
-                              []
-                            |),
-                            [
-                              M.read (| module |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::file_format::CompiledModule",
-                                  "self_handle_idx",
-                                  []
-                                |),
-                                [ M.read (| module |) ]
-                              |)
-                            ]
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "move_binary_format::file_format::CompiledModule",
+                                "module_handle_at",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::file_format::CompiledModule",
+                                    "self_handle_idx",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| module |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
                           |),
                           "move_binary_format::file_format::ModuleHandle",
                           "address"
@@ -237,7 +272,9 @@ Module friends.
                         []
                         [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                       [],
+                      [],
                       "any",
+                      [],
                       [
                         Ty.function
                           [
@@ -253,26 +290,41 @@ Module friends.
                       ]
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                            "iter",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::file_format::CompiledModule",
-                                "friend_decls",
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
                                 []
-                              |),
-                              [ M.read (| module |) ]
-                            |)
-                          ]
+                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
+                              "iter",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::file_format::CompiledModule",
+                                      "friend_decls",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| module |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
                         |)
                       |);
                       M.closure
@@ -297,6 +349,7 @@ Module friends.
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -307,30 +360,38 @@ Module friends.
                                                 ]
                                             ],
                                             "ne",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_binary_format::file_format::CompiledModule",
-                                                  "address_identifier_at",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| module |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| handle |),
-                                                      "move_binary_format::file_format::ModuleHandle",
-                                                      "address"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule",
+                                                    "address_identifier_at",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| module |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| handle |) |),
+                                                        "move_binary_format::file_format::ModuleHandle",
+                                                        "address"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            self_address
+                                            M.borrow (| Pointer.Kind.Ref, self_address |)
                                           ]
                                         |)))
                                   ]
@@ -360,6 +421,7 @@ Module friends.
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
+                                        [],
                                         []
                                       |),
                                       [

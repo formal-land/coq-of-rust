@@ -36,16 +36,28 @@ Module runtime_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MoveStruct" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::runtime_value::MoveStruct",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "MoveStruct" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStruct",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -92,6 +104,7 @@ Module runtime_value.
                   Ty.path "move_core_types::runtime_value::MoveValue";
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -102,18 +115,25 @@ Module runtime_value.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::runtime_value::MoveStruct",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::runtime_value::MoveStruct",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_core_types::runtime_value::MoveStruct",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_core_types::runtime_value::MoveStruct",
+                  0
+                |)
               |)
             ]
           |)))
@@ -182,14 +202,24 @@ Module runtime_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::runtime_value::MoveStruct",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStruct",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -310,9 +340,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -330,9 +371,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -350,9 +402,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -370,9 +433,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bool" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bool" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -390,9 +464,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -410,9 +495,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Vector" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -430,9 +526,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Struct" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -450,9 +557,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Signer" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Signer" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -470,9 +588,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -490,9 +619,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -510,9 +650,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -559,7 +710,7 @@ Module runtime_value.
                     [],
                     [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -570,7 +721,7 @@ Module runtime_value.
                     [],
                     [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -606,11 +757,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -638,11 +794,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -670,11 +831,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -702,11 +868,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -737,6 +908,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -744,9 +916,13 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -785,6 +961,7 @@ Module runtime_value.
                                           Ty.path "alloc::alloc::Global"
                                         ]
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -800,9 +977,13 @@ Module runtime_value.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -833,6 +1014,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::runtime_value::MoveStruct" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -840,9 +1022,13 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::runtime_value::MoveStruct" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -873,6 +1059,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -880,9 +1067,13 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::account_address::AccountAddress" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -910,11 +1101,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -942,11 +1138,16 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -977,6 +1178,7 @@ Module runtime_value.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::u256::U256" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -984,9 +1186,13 @@ Module runtime_value.
                                       [ Ty.path "move_core_types::u256::U256" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -1149,10 +1355,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u8",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1175,10 +1383,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u64",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1201,10 +1411,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u128",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1227,10 +1439,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "bool",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1253,10 +1467,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1285,10 +1501,12 @@ Module runtime_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1311,10 +1529,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1337,10 +1557,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1363,10 +1585,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u16",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1389,10 +1613,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "u32",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -1415,10 +1641,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -1467,16 +1695,31 @@ Module runtime_value.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "MoveStructLayout" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::runtime_value::MoveStructLayout",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "MoveStructLayout" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStructLayout",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -1515,14 +1758,24 @@ Module runtime_value.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::runtime_value::MoveStructLayout",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStructLayout",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1554,7 +1807,9 @@ Module runtime_value.
                 "serde::ser::Serializer",
                 __S,
                 [],
+                [],
                 "serialize_newtype_struct",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -1568,10 +1823,18 @@ Module runtime_value.
               [
                 M.read (| __serializer |);
                 M.read (| Value.String "MoveStructLayout" |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::runtime_value::MoveStructLayout",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_core_types::runtime_value::MoveStructLayout",
+                        0
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -1599,7 +1862,9 @@ Module runtime_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_newtype_struct",
+                [],
                 [ Ty.path "move_core_types::runtime_value::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -1635,7 +1900,7 @@ Module runtime_value.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1650,7 +1915,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1674,7 +1941,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1698,7 +1967,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1722,7 +1993,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1746,7 +2019,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1772,7 +2047,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -1788,7 +2065,7 @@ Module runtime_value.
                             M.read (| Value.String "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "vector" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)));
@@ -1807,7 +2084,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_newtype_variant",
+                            [],
                             [ Ty.path "move_core_types::runtime_value::MoveStructLayout" ]
                           |),
                           [
@@ -1815,7 +2094,7 @@ Module runtime_value.
                             M.read (| Value.String "MoveTypeLayout" |);
                             Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "struct" |);
-                            M.read (| __field0 |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
                       |)));
@@ -1832,7 +2111,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1856,7 +2137,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1880,7 +2163,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1904,7 +2189,9 @@ Module runtime_value.
                             "serde::ser::Serializer",
                             __S,
                             [],
+                            [],
                             "serialize_unit_variant",
+                            [],
                             []
                           |),
                           [
@@ -1942,7 +2229,9 @@ Module runtime_value.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_enum",
+                [],
                 [ Ty.path "move_core_types::runtime_value::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -2075,9 +2364,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Bool" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Bool" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2093,9 +2389,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U8" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U8" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2111,9 +2414,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U64" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U64" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2129,9 +2439,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U128" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U128" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2147,9 +2464,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Address" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Address" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2167,9 +2491,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Vector" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2187,9 +2522,20 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Struct" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2205,9 +2551,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Signer" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Signer" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2223,9 +2576,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U16" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U16" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2241,9 +2601,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U32" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U32" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2259,9 +2626,16 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "U256" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "U256" |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -2371,10 +2745,12 @@ Module runtime_value.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2397,10 +2773,12 @@ Module runtime_value.
                               "core::clone::Clone",
                               Ty.path "move_core_types::runtime_value::MoveStructLayout",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2497,7 +2875,9 @@ Module runtime_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -2512,7 +2892,10 @@ Module runtime_value.
                                     [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                                 ]
                               |),
-                              [ M.read (| ty |); M.read (| blob |) ]
+                              [
+                                M.read (| ty |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -2541,6 +2924,7 @@ Module runtime_value.
                                             Ty.path "move_core_types::runtime_value::MoveValue";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -2551,6 +2935,7 @@ Module runtime_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -2603,6 +2988,7 @@ Module runtime_value.
                   Ty.path "bcs::error::Error"
                 ],
               "ok",
+              [],
               []
             |),
             [
@@ -2612,7 +2998,7 @@ Module runtime_value.
                   [],
                   [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             ]
           |)))
@@ -2651,7 +3037,9 @@ Module runtime_value.
                         (Ty.path "move_core_types::runtime_value::MoveValue")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2671,7 +3059,9 @@ Module runtime_value.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_core_types::runtime_value::MoveValue";
                         Ty.function
@@ -2688,7 +3078,9 @@ Module runtime_value.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -2741,6 +3133,7 @@ Module runtime_value.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "with_capacity",
+                        [],
                         []
                       |),
                       [
@@ -2754,9 +3147,10 @@ Module runtime_value.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "len",
+                            [],
                             []
                           |),
-                          [ vec ]
+                          [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                         |)
                       ]
                     |)
@@ -2776,7 +3170,9 @@ Module runtime_value.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| vec |) ]
@@ -2802,10 +3198,17 @@ Module runtime_value.
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2852,9 +3255,16 @@ Module runtime_value.
                                                               Ty.path "alloc::alloc::Global"
                                                             ],
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ vec_u8; M.read (| u8 |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            vec_u8
+                                                          |);
+                                                          M.read (| u8 |)
+                                                        ]
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -2884,13 +3294,20 @@ Module runtime_value.
                                                                                 "alloc::string::ToString",
                                                                                 Ty.path "str",
                                                                                 [],
+                                                                                [],
                                                                                 "to_string",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "Expected inner MoveValue in Vec<MoveValue> to be a MoveValue::U8"
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "Expected inner MoveValue in Vec<MoveValue> to be a MoveValue::U8"
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               ]
                                                                             |)
@@ -2906,6 +3323,7 @@ Module runtime_value.
                                                                                       Ty.path
                                                                                         "anyhow::kind::Adhoc",
                                                                                       "new",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -2924,12 +3342,20 @@ Module runtime_value.
                                                                                                 "alloc::string::String"
                                                                                             ],
                                                                                           [],
+                                                                                          [],
                                                                                           "anyhow_kind",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
-                                                                                          M.alloc (|
-                                                                                            error
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                error
+                                                                                              |)
+                                                                                            |)
                                                                                           |)
                                                                                         ]
                                                                                       |);
@@ -3000,7 +3426,9 @@ Module runtime_value.
                         (Ty.path "move_core_types::runtime_value::MoveValue")
                     ],
                   [],
+                  [],
                   "collect",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3023,7 +3451,9 @@ Module runtime_value.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "map",
+                      [],
                       [
                         Ty.path "move_core_types::runtime_value::MoveValue";
                         Ty.function
@@ -3043,7 +3473,9 @@ Module runtime_value.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -3119,9 +3551,13 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               "decorate",
+                              [],
                               []
                             |),
-                            [ M.read (| s |); M.read (| l |) ]
+                            [
+                              M.read (| s |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |)
+                            ]
                           |)
                         ]
                     |)));
@@ -3170,7 +3606,9 @@ Module runtime_value.
                                     (Ty.path "move_core_types::annotated_value::MoveValue")
                                 ],
                               [],
+                              [],
                               "collect",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -3193,7 +3631,9 @@ Module runtime_value.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   [],
+                                  [],
                                   "map",
+                                  [],
                                   [
                                     Ty.path "move_core_types::annotated_value::MoveValue";
                                     Ty.function
@@ -3216,7 +3656,9 @@ Module runtime_value.
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       [],
+                                      [],
                                       "into_iter",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| vals |) ]
@@ -3238,9 +3680,19 @@ Module runtime_value.
                                                         Ty.path
                                                           "move_core_types::runtime_value::MoveValue",
                                                         "decorate",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ M.read (| v |); M.read (| M.read (| t |) |)
+                                                      [
+                                                        M.read (| v |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.deref (| M.read (| t |) |)
+                                                            |)
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)))
                                               ]
@@ -3408,11 +3860,21 @@ Module runtime_value.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "Invalid decoration" |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [ M.read (| Value.String "Invalid decoration" |) ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3471,7 +3933,9 @@ Module runtime_value.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
               ],
             [],
+            [],
             "collect",
+            [],
             [
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -3491,7 +3955,9 @@ Module runtime_value.
                 "core::iter::traits::iterator::Iterator",
                 Ty.associated,
                 [],
+                [],
                 "map",
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -3519,7 +3985,9 @@ Module runtime_value.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| vals |) ]
@@ -3548,6 +4016,7 @@ Module runtime_value.
                                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                         ],
                                       "expect",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3555,11 +4024,22 @@ Module runtime_value.
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::runtime_value::MoveValue",
                                           "simple_serialize",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| val |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| val |) |)
+                                          |)
+                                        ]
                                       |);
-                                      M.read (| Value.String "serialization should succeed" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (| Value.String "serialization should succeed" |)
+                                        |)
+                                      |)
                                     ]
                                   |)))
                             ]
@@ -3625,7 +4105,9 @@ Module runtime_value.
                                 Ty.path "bcs::error::Error"
                               ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3640,7 +4122,10 @@ Module runtime_value.
                                     [ Ty.path "move_core_types::runtime_value::MoveStructLayout" ]
                                 ]
                               |),
-                              [ M.read (| ty |); M.read (| blob |) ]
+                              [
+                                M.read (| ty |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -3669,6 +4154,7 @@ Module runtime_value.
                                             Ty.path "move_core_types::runtime_value::MoveStruct";
                                             Ty.path "anyhow::Error"
                                           ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -3679,6 +4165,7 @@ Module runtime_value.
                                             ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3771,10 +4258,17 @@ Module runtime_value.
                                         "core::clone::Clone",
                                         Ty.path "move_core_types::language_storage::StructTag",
                                         [],
+                                        [],
                                         "clone",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| type_ |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| type_ |) |)
+                                        |)
+                                      ]
                                     |));
                                   ("fields",
                                     M.call_closure (|
@@ -3830,7 +4324,9 @@ Module runtime_value.
                                                 ])
                                           ],
                                         [],
+                                        [],
                                         "collect",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -3871,7 +4367,9 @@ Module runtime_value.
                                                   ]
                                               ],
                                             [],
+                                            [],
                                             "map",
+                                            [],
                                             [
                                               Ty.tuple
                                                 [
@@ -3919,7 +4417,9 @@ Module runtime_value.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 [],
+                                                [],
                                                 "zip",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -3949,7 +4449,9 @@ Module runtime_value.
                                                         Ty.path "alloc::alloc::Global"
                                                       ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| vals |) ]
@@ -3988,14 +4490,21 @@ Module runtime_value.
                                                                       Ty.path
                                                                         "move_core_types::identifier::Identifier",
                                                                       [],
+                                                                      [],
                                                                       "clone",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| l |),
-                                                                        "move_core_types::annotated_value::MoveFieldLayout",
-                                                                        "name"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| l |)
+                                                                          |),
+                                                                          "move_core_types::annotated_value::MoveFieldLayout",
+                                                                          "name"
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |);
@@ -4004,14 +4513,25 @@ Module runtime_value.
                                                                       Ty.path
                                                                         "move_core_types::runtime_value::MoveValue",
                                                                       "decorate",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
                                                                       M.read (| v |);
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| l |),
-                                                                        "move_core_types::annotated_value::MoveFieldLayout",
-                                                                        "layout"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| l |)
+                                                                              |),
+                                                                              "move_core_types::annotated_value::MoveFieldLayout",
+                                                                              "layout"
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -4046,27 +4566,42 @@ Module runtime_value.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::runtime_value::MoveValue";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_core_types::runtime_value::MoveValue";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              "deref",
-              []
-            |),
-            [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::runtime_value::MoveStruct",
-                0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStruct",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4127,27 +4662,42 @@ Module runtime_value.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::runtime_value::MoveTypeLayout";
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
                 [
-                  Ty.path "move_core_types::runtime_value::MoveTypeLayout";
-                  Ty.path "alloc::alloc::Global"
-                ],
-              [],
-              "deref",
-              []
-            |),
-            [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::runtime_value::MoveStructLayout",
-                0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::runtime_value::MoveStructLayout",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4238,6 +4788,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "bool"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4251,7 +4802,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "bool",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4277,6 +4830,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u8"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4290,7 +4844,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u8",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4316,6 +4872,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u16"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4329,7 +4886,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u16",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4355,6 +4914,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u32"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4368,7 +4928,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u32",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4394,6 +4956,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u64"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4407,7 +4970,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u64",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4433,6 +4998,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "u128"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4446,7 +5012,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "u128",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4472,6 +5040,7 @@ Module runtime_value.
                                 []
                                 [ Ty.path "move_core_types::u256::U256"; Ty.associated ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4485,7 +5054,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::u256::U256",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4514,6 +5085,7 @@ Module runtime_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4527,7 +5099,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4556,6 +5130,7 @@ Module runtime_value.
                                   Ty.associated
                                 ],
                               "map",
+                              [],
                               [
                                 Ty.path "move_core_types::runtime_value::MoveValue";
                                 Ty.function
@@ -4569,7 +5144,9 @@ Module runtime_value.
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   [],
+                                  [],
                                   "deserialize",
+                                  [],
                                   [ D ]
                                 |),
                                 [ M.read (| deserializer |) ]
@@ -4611,7 +5188,9 @@ Module runtime_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4626,10 +5205,18 @@ Module runtime_value.
                                                       "move_core_types::runtime_value::MoveStructLayout"
                                                   ],
                                                 [],
+                                                [],
                                                 "deserialize",
+                                                [],
                                                 [ D ]
                                               |),
-                                              [ M.read (| ty |); M.read (| deserializer |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| ty |) |)
+                                                |);
+                                                M.read (| deserializer |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4659,6 +5246,7 @@ Module runtime_value.
                                                               "move_core_types::runtime_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -4669,6 +5257,7 @@ Module runtime_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -4731,7 +5320,9 @@ Module runtime_value.
                                                 Ty.associated
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4740,7 +5331,9 @@ Module runtime_value.
                                                 "serde::de::Deserializer",
                                                 D,
                                                 [],
+                                                [],
                                                 "deserialize_seq",
+                                                [],
                                                 [
                                                   Ty.path
                                                     "move_core_types::runtime_value::VectorElementVisitor"
@@ -4750,7 +5343,16 @@ Module runtime_value.
                                                 M.read (| deserializer |);
                                                 Value.StructTuple
                                                   "move_core_types::runtime_value::VectorElementVisitor"
-                                                  [ M.read (| M.read (| layout |) |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.deref (| M.read (| layout |) |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                               ]
                                             |)
                                           ]
@@ -4781,6 +5383,7 @@ Module runtime_value.
                                                               "move_core_types::runtime_value::MoveValue";
                                                             Ty.associated
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -4791,6 +5394,7 @@ Module runtime_value.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -4862,8 +5466,11 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Vector" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4901,6 +5508,7 @@ Module runtime_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -4932,7 +5540,9 @@ Module runtime_value.
                                             Ty.associated
                                           ],
                                         [],
+                                        [],
                                         "branch",
+                                        [],
                                         []
                                       |),
                                       [
@@ -4941,7 +5551,9 @@ Module runtime_value.
                                             "serde::de::SeqAccess",
                                             A,
                                             [],
+                                            [],
                                             "next_element_seed",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -4953,7 +5565,7 @@ Module runtime_value.
                                             ]
                                           |),
                                           [
-                                            seq;
+                                            M.borrow (| Pointer.Kind.MutRef, seq |);
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 self,
@@ -4997,6 +5609,7 @@ Module runtime_value.
                                                           ];
                                                         Ty.associated
                                                       ],
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5007,6 +5620,7 @@ Module runtime_value.
                                                         ]
                                                     ],
                                                     "from_residual",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| residual |) ]
@@ -5045,9 +5659,10 @@ Module runtime_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "push",
+                                    [],
                                     []
                                   |),
-                                  [ vals; M.read (| elem |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, vals |); M.read (| elem |) ]
                                 |)
                               |)));
                           fun γ =>
@@ -5126,8 +5741,11 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let formatter := M.alloc (| formatter |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Struct" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5168,6 +5786,7 @@ Module runtime_value.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
+                        [],
                         []
                       |),
                       []
@@ -5190,7 +5809,9 @@ Module runtime_value.
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -5202,7 +5823,9 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -5213,14 +5836,20 @@ Module runtime_value.
                                       []
                                       [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.read (|
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        self,
-                                        "move_core_types::runtime_value::StructFieldVisitor",
-                                        0
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "move_core_types::runtime_value::StructFieldVisitor",
+                                            0
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -5255,10 +5884,17 @@ Module runtime_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -5304,7 +5940,9 @@ Module runtime_value.
                                                         Ty.associated
                                                       ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5313,7 +5951,9 @@ Module runtime_value.
                                                         "serde::de::SeqAccess",
                                                         A,
                                                         [],
+                                                        [],
                                                         "next_element_seed",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -5324,7 +5964,10 @@ Module runtime_value.
                                                             ]
                                                         ]
                                                       |),
-                                                      [ seq; M.read (| field_type |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, seq |);
+                                                        M.read (| field_type |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -5361,6 +6004,7 @@ Module runtime_value.
                                                                       ];
                                                                     Ty.associated
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -5372,6 +6016,7 @@ Module runtime_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -5414,9 +6059,13 @@ Module runtime_value.
                                                             Ty.path "alloc::alloc::Global"
                                                           ],
                                                         "push",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ val; M.read (| elem |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, val |);
+                                                        M.read (| elem |)
+                                                      ]
                                                     |)
                                                   |)));
                                               fun γ =>
@@ -5438,10 +6087,23 @@ Module runtime_value.
                                                                   "serde::de::Error",
                                                                   Ty.associated,
                                                                   [],
+                                                                  [],
                                                                   "invalid_length",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ M.read (| i |); self ]
+                                                                [
+                                                                  M.read (| i |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        self
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                         |)
@@ -5527,7 +6189,9 @@ Module runtime_value.
                                     Ty.associated
                                   ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -5536,7 +6200,9 @@ Module runtime_value.
                                     "serde::de::Deserializer",
                                     D,
                                     [],
+                                    [],
                                     "deserialize_tuple",
+                                    [],
                                     [ Ty.path "move_core_types::runtime_value::StructFieldVisitor" ]
                                   |),
                                   [
@@ -5552,41 +6218,60 @@ Module runtime_value.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "len",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::runtime_value::MoveStructLayout",
-                                          0
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_core_types::runtime_value::MoveStructLayout",
+                                            0
+                                          |)
                                         |)
                                       ]
                                     |);
                                     Value.StructTuple
                                       "move_core_types::runtime_value::StructFieldVisitor"
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveTypeLayout";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
                                               [
-                                                Ty.path
-                                                  "move_core_types::runtime_value::MoveTypeLayout";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              M.read (| self |),
-                                              "move_core_types::runtime_value::MoveStructLayout",
-                                              0
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "move_core_types::runtime_value::MoveStructLayout",
+                                                        0
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
-                                          ]
+                                          |)
                                         |)
                                       ]
                                   ]
@@ -5619,6 +6304,7 @@ Module runtime_value.
                                                   "move_core_types::runtime_value::MoveStruct";
                                                 Ty.associated
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -5627,6 +6313,7 @@ Module runtime_value.
                                                 ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -5717,10 +6404,15 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::runtime_value::MoveStruct",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
-                            [ M.read (| s |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -5739,10 +6431,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_bool",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| b |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| b |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5761,10 +6455,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u8",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5783,10 +6479,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u16",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5805,10 +6503,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u32",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5827,10 +6527,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u64",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5849,10 +6551,12 @@ Module runtime_value.
                               "serde::ser::Serializer",
                               S,
                               [],
+                              [],
                               "serialize_u128",
+                              [],
                               []
                             |),
-                            [ M.read (| serializer |); M.read (| M.read (| i |) |) ]
+                            [ M.read (| serializer |); M.read (| M.deref (| M.read (| i |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -5871,10 +6575,15 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::u256::U256",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
-                            [ M.read (| i |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| i |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -5893,10 +6602,15 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
-                            [ M.read (| a |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -5915,10 +6629,15 @@ Module runtime_value.
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
                               [],
+                              [],
                               "serialize",
+                              [],
                               [ S ]
                             |),
-                            [ M.read (| a |); M.read (| serializer |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                              M.read (| serializer |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -5943,7 +6662,9 @@ Module runtime_value.
                                       []
                                       [ Ty.associated; Ty.associated ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5952,7 +6673,9 @@ Module runtime_value.
                                         "serde::ser::Serializer",
                                         S,
                                         [],
+                                        [],
                                         "serialize_seq",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5971,9 +6694,15 @@ Module runtime_value.
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| v |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| v |) |)
+                                                |)
+                                              ]
                                             |)
                                           ]
                                       ]
@@ -6002,6 +6731,7 @@ Module runtime_value.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.associated; Ty.associated ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -6012,6 +6742,7 @@ Module runtime_value.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -6053,7 +6784,9 @@ Module runtime_value.
                                           ]
                                       ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| v |) ]
@@ -6079,10 +6812,19 @@ Module runtime_value.
                                                         "move_core_types::runtime_value::MoveValue"
                                                     ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -6116,7 +6858,9 @@ Module runtime_value.
                                                               []
                                                               [ Ty.tuple []; Ty.associated ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6125,13 +6869,24 @@ Module runtime_value.
                                                                 "serde::ser::SerializeSeq",
                                                                 Ty.associated,
                                                                 [],
+                                                                [],
                                                                 "serialize_element",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_core_types::runtime_value::MoveValue"
                                                                 ]
                                                               |),
-                                                              [ t; M.read (| val |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  t
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| val |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -6161,6 +6916,7 @@ Module runtime_value.
                                                                             Ty.associated;
                                                                             Ty.associated
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -6173,6 +6929,7 @@ Module runtime_value.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -6206,7 +6963,9 @@ Module runtime_value.
                               "serde::ser::SerializeSeq",
                               Ty.associated,
                               [],
+                              [],
                               "end",
+                              [],
                               []
                             |),
                             [ M.read (| t |) ]
@@ -6260,7 +7019,9 @@ Module runtime_value.
                               []
                               [ Ty.associated; Ty.associated ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -6269,7 +7030,9 @@ Module runtime_value.
                                 "serde::ser::Serializer",
                                 S,
                                 [],
+                                [],
                                 "serialize_tuple",
+                                [],
                                 []
                               |),
                               [
@@ -6284,13 +7047,17 @@ Module runtime_value.
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.read (| self |),
-                                      "move_core_types::runtime_value::MoveStruct",
-                                      0
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::runtime_value::MoveStruct",
+                                        0
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -6320,6 +7087,7 @@ Module runtime_value.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.associated; Ty.associated ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -6327,6 +7095,7 @@ Module runtime_value.
                                             [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -6360,7 +7129,9 @@ Module runtime_value.
                               []
                               [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -6371,30 +7142,41 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                                 "iter",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::runtime_value::MoveValue";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        Ty.path "move_core_types::runtime_value::MoveValue";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    "deref",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.read (| self |),
-                                      "move_core_types::runtime_value::MoveStruct",
-                                      0
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_core_types::runtime_value::MoveStruct",
+                                            0
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
                               ]
                             |)
@@ -6418,10 +7200,17 @@ Module runtime_value.
                                             []
                                             [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -6455,7 +7244,9 @@ Module runtime_value.
                                                       []
                                                       [ Ty.tuple []; Ty.associated ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6464,13 +7255,21 @@ Module runtime_value.
                                                         "serde::ser::SerializeTuple",
                                                         Ty.associated,
                                                         [],
+                                                        [],
                                                         "serialize_element",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_core_types::runtime_value::MoveValue"
                                                         ]
                                                       |),
-                                                      [ t; M.read (| v |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.MutRef, t |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| v |) |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -6496,6 +7295,7 @@ Module runtime_value.
                                                                   (Ty.path "core::result::Result")
                                                                   []
                                                                   [ Ty.associated; Ty.associated ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -6507,6 +7307,7 @@ Module runtime_value.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -6540,7 +7341,9 @@ Module runtime_value.
                       "serde::ser::SerializeTuple",
                       Ty.associated,
                       [],
+                      [],
                       "end",
+                      [],
                       []
                     |),
                     [ M.read (| t |) ]
@@ -6605,17 +7408,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6633,17 +7448,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6661,17 +7488,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6689,17 +7528,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6717,17 +7568,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6745,17 +7608,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6773,17 +7648,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6801,17 +7688,31 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "address" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6829,17 +7730,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -6860,9 +7773,10 @@ Module runtime_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
-                          [ M.read (| f |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6871,75 +7785,111 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "vector<" |);
-                                    M.read (| Value.String ">" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
+                                          M.read (| Value.String "vector<" |);
+                                          M.read (| Value.String ">" |)
                                         ]
-                                      |),
-                                      [ typ ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::runtime_value::MoveTypeLayout";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, typ |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -6964,50 +7914,74 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "vector<" |);
-                                    M.read (| Value.String ">" |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveTypeLayout";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
+                                          M.read (| Value.String "vector<" |);
+                                          M.read (| Value.String ">" |)
                                         ]
-                                      |),
-                                      [ typ ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::runtime_value::MoveTypeLayout";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, typ |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7030,9 +8004,10 @@ Module runtime_value.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "alternate",
+                            [],
                             []
                           |),
-                          [ M.read (| f |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7041,63 +8016,99 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::runtime_value::MoveStructLayout"
-                                            ]
-                                        ]
-                                      |),
-                                      [ s ]
-                                    |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveStructLayout"
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -7122,38 +8133,62 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveStructLayout"
+                                                  ]
+                                              ]
+                                            |),
                                             [
-                                              Ty.path
-                                                "move_core_types::runtime_value::MoveStructLayout"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
                                             ]
+                                          |)
                                         ]
-                                      |),
-                                      [ s ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7215,9 +8250,10 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "alternate",
+                              [],
                               []
                             |),
-                            [ M.read (| f |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7226,61 +8262,100 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1_formatted",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::runtime_value::DebugAsDisplay",
-                                          0
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::runtime_value::DebugAsDisplay",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 []
@@ -7297,36 +8372,63 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::runtime_value::DebugAsDisplay",
-                                          0
-                                        |)
-                                      ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_core_types::runtime_value::DebugAsDisplay",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7384,7 +8486,9 @@ Module runtime_value.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -7392,17 +8496,30 @@ Module runtime_value.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
-                                [ M.alloc (| Value.Array [ M.read (| Value.String "struct " |) ] |)
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "struct " |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -7431,6 +8548,7 @@ Module runtime_value.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7441,6 +8559,7 @@ Module runtime_value.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -7467,9 +8586,10 @@ Module runtime_value.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_map",
+                        [],
                         []
                       |),
-                      [ M.read (| f |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -7489,7 +8609,9 @@ Module runtime_value.
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -7501,7 +8623,9 @@ Module runtime_value.
                                   []
                                   [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                 [],
+                                [],
                                 "enumerate",
+                                [],
                                 []
                               |),
                               [
@@ -7512,31 +8636,42 @@ Module runtime_value.
                                       []
                                       [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                                     "iter",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::runtime_value::MoveTypeLayout";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path
-                                              "move_core_types::runtime_value::MoveTypeLayout";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        "deref",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| self |),
-                                          "move_core_types::runtime_value::MoveStructLayout",
-                                          0
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "move_core_types::runtime_value::MoveStructLayout",
+                                                0
+                                              |)
+                                            |)
+                                          ]
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -7570,10 +8705,17 @@ Module runtime_value.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -7605,15 +8747,34 @@ Module runtime_value.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugMap",
                                                   "entry",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  map;
-                                                  i;
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "move_core_types::runtime_value::DebugAsDisplay"
-                                                      [ l ]
+                                                  M.borrow (| Pointer.Kind.MutRef, map |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, i |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "move_core_types::runtime_value::DebugAsDisplay"
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (| Pointer.Kind.Ref, l |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -7630,9 +8791,10 @@ Module runtime_value.
                     M.get_associated_function (|
                       Ty.path "core::fmt::builders::DebugMap",
                       "finish",
+                      [],
                       []
                     |),
-                    [ map ]
+                    [ M.borrow (| Pointer.Kind.MutRef, map |) ]
                   |)
                 |)
               |)))
@@ -7694,33 +8856,60 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u8" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                      |),
-                                      [ u ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u8" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7742,33 +8931,60 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u16" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                      |),
-                                      [ u ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u16" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7790,33 +9006,60 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u32" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                      |),
-                                      [ u ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u32" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7838,33 +9081,60 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u64" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                      |),
-                                      [ u ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u64" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7886,33 +9156,60 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u128" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
-                                      |),
-                                      [ u ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u128" |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7934,38 +9231,65 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "u256" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_core_types::u256::U256" ]
+                                          M.read (| Value.String "" |);
+                                          M.read (| Value.String "u256" |)
                                         ]
-                                      |),
-                                      [ u ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "move_core_types::u256::U256" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, u |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -7988,17 +9312,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8019,17 +9355,29 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -8049,42 +9397,75 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [
-                                        M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path
-                                                "move_core_types::account_address::AccountAddress",
-                                              "to_hex_literal",
-                                              []
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "alloc::string::String" ]
                                             |),
-                                            [ M.read (| a |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_core_types::account_address::AccountAddress",
+                                                          "to_hex_literal",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| a |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8106,48 +9487,81 @@ Module runtime_value.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "signer(" |);
-                                    M.read (| Value.String ")" |)
-                                  ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "signer(" |);
+                                          M.read (| Value.String ")" |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [
-                                        M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path
-                                                "move_core_types::account_address::AccountAddress",
-                                              "to_hex_literal",
-                                              []
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "alloc::string::String" ]
                                             |),
-                                            [ M.read (| a |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_core_types::account_address::AccountAddress",
+                                                          "to_hex_literal",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| a |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
-                                        |)
-                                      ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -8189,10 +9603,16 @@ Module runtime_value.
                           ]
                         |),
                         [
-                          M.read (| f |);
-                          M.read (| Value.String "vector[" |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "vector[" |) |)
+                          |);
                           M.read (| v |);
-                          M.read (| Value.String "]" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "]" |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -8212,10 +9632,15 @@ Module runtime_value.
                           "core::fmt::Display",
                           Ty.path "move_core_types::runtime_value::MoveStruct",
                           [],
+                          [],
                           "fmt",
+                          [],
                           []
                         |),
-                        [ M.read (| s |); M.read (| f |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                        ]
                       |)
                     |)))
               ]
@@ -8267,14 +9692,17 @@ Module runtime_value.
               ]
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "struct[" |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_core_types::runtime_value::MoveStruct",
-                0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "struct[" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::runtime_value::MoveStruct",
+                  0
+                |)
               |);
-              M.read (| Value.String "]" |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "]" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

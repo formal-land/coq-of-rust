@@ -63,68 +63,118 @@ Module collections.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugTuple",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Formatter",
-                                "debug_tuple",
-                                []
-                              |),
-                              [ M.read (| f |); M.read (| Value.String "Iter" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugTuple",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "debug_tuple",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "Iter" |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                              "as_slice",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::vec_deque::iter::Iter",
+                                                  "i1"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                "as_slice",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                      "as_slice",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::vec_deque::iter::Iter",
+                                          "i2"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
-                              ]
+                              |)
                             |)
                           |)
                         ]
-                      |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::vec_deque::iter::Iter",
-                              "i2"
-                            |)
-                          ]
-                        |)
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -163,7 +213,9 @@ Module collections.
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -174,7 +226,9 @@ Module collections.
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -216,14 +270,19 @@ Module collections.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |));
@@ -233,14 +292,19 @@ Module collections.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |)
                       ]
                     |))
@@ -294,14 +358,19 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |)
@@ -317,7 +386,9 @@ Module collections.
                           |) in
                         let val := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -331,15 +402,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -350,14 +437,19 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |)
                             ]
                           |)
@@ -400,14 +492,19 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "advance_by",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -445,15 +542,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -464,14 +577,19 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "advance_by",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -480,6 +598,7 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| n |) ]
@@ -513,10 +632,12 @@ Module collections.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 M.alloc (|
@@ -555,7 +676,9 @@ Module collections.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "fold",
+                        [],
                         [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
@@ -567,7 +690,7 @@ Module collections.
                           |)
                         |);
                         M.read (| accum |);
-                        f
+                        M.borrow (| Pointer.Kind.MutRef, f |)
                       ]
                     |)
                   |) in
@@ -577,7 +700,9 @@ Module collections.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "fold",
+                      [],
                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
@@ -589,7 +714,7 @@ Module collections.
                         |)
                       |);
                       M.read (| accum |);
-                      f
+                      M.borrow (| Pointer.Kind.MutRef, f |)
                     ]
                   |)
                 |)
@@ -627,7 +752,9 @@ Module collections.
                                 "core::ops::try_trait::Try",
                                 R,
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -636,17 +763,22 @@ Module collections.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                     [],
+                                    [],
                                     "try_fold",
+                                    [],
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i1"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
                                     |);
                                     M.read (| init |);
-                                    f
+                                    M.borrow (| Pointer.Kind.MutRef, f |)
                                   ]
                                 |)
                               ]
@@ -670,8 +802,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
+                                            [],
                                             [ Ty.associated ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -699,17 +833,22 @@ Module collections.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           [],
+                          [],
                           "try_fold",
+                          [],
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::vec_deque::iter::Iter",
-                            "i2"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i2"
+                            |)
                           |);
                           M.read (| acc |);
-                          f
+                          M.borrow (| Pointer.Kind.MutRef, f |)
                         ]
                       |)
                     |)
@@ -734,10 +873,12 @@ Module collections.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ],
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ self ]
+                [ M.borrow (| Pointer.Kind.MutRef, self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -776,14 +917,19 @@ Module collections.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i1"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i1"
+                          |)
                         |)
                       ]
                     |)
@@ -804,14 +950,19 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "__iterator_get_unchecked",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i1"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |)
                               |);
                               M.read (| idx |)
                             ]
@@ -825,14 +976,19 @@ Module collections.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "__iterator_get_unchecked",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |);
                               BinOp.Wrap.sub (| M.read (| idx |), M.read (| i1_len |) |)
                             ]
@@ -897,14 +1053,19 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "next_back",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |)
                       ]
                     |)
@@ -920,7 +1081,9 @@ Module collections.
                           |) in
                         let val := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -934,15 +1097,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -953,14 +1132,19 @@ Module collections.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "next_back",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |)
                             ]
                           |)
@@ -1002,14 +1186,19 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "advance_back_by",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::iter::Iter",
-                          "i2"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::vec_deque::iter::Iter",
+                            "i2"
+                          |)
                         |);
                         M.read (| n |)
                       ]
@@ -1045,15 +1234,31 @@ Module collections.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i1"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i1"
+                                      |)
+                                    |)
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::vec_deque::iter::Iter",
-                                  "i2"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -1064,14 +1269,19 @@ Module collections.
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               [],
+                              [],
                               "advance_back_by",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter::Iter",
-                                "i2"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1080,6 +1290,7 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| n |) ]
@@ -1118,7 +1329,9 @@ Module collections.
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         [],
+                        [],
                         "rfold",
+                        [],
                         [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
@@ -1130,7 +1343,7 @@ Module collections.
                           |)
                         |);
                         M.read (| accum |);
-                        f
+                        M.borrow (| Pointer.Kind.MutRef, f |)
                       ]
                     |)
                   |) in
@@ -1140,7 +1353,9 @@ Module collections.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "rfold",
+                      [],
                       [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
@@ -1152,7 +1367,7 @@ Module collections.
                         |)
                       |);
                       M.read (| accum |);
-                      f
+                      M.borrow (| Pointer.Kind.MutRef, f |)
                     ]
                   |)
                 |)
@@ -1190,7 +1405,9 @@ Module collections.
                                 "core::ops::try_trait::Try",
                                 R,
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1199,17 +1416,22 @@ Module collections.
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                     [],
+                                    [],
                                     "try_rfold",
+                                    [],
                                     [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i2"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::vec_deque::iter::Iter",
+                                        "i2"
+                                      |)
                                     |);
                                     M.read (| init |);
-                                    f
+                                    M.borrow (| Pointer.Kind.MutRef, f |)
                                   ]
                                 |)
                               ]
@@ -1233,8 +1455,10 @@ Module collections.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
+                                            [],
                                             [ Ty.associated ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1262,17 +1486,22 @@ Module collections.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           [],
+                          [],
                           "try_rfold",
+                          [],
                           [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::vec_deque::iter::Iter",
-                            "i1"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i1"
+                            |)
                           |);
                           M.read (| acc |);
-                          f
+                          M.borrow (| Pointer.Kind.MutRef, f |)
                         ]
                       |)
                     |)
@@ -1317,14 +1546,19 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i1"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i1"
+                      |)
                     |)
                   ]
                 |),
@@ -1333,14 +1567,19 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i2"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i2"
+                      |)
                     |)
                   ]
                 |)
@@ -1365,14 +1604,19 @@ Module collections.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     [],
+                    [],
                     "is_empty",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::vec_deque::iter::Iter",
-                      "i1"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::vec_deque::iter::Iter",
+                        "i1"
+                      |)
                     |)
                   ]
                 |),
@@ -1382,14 +1626,19 @@ Module collections.
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "is_empty",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::vec_deque::iter::Iter",
-                        "i2"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::vec_deque::iter::Iter",
+                          "i2"
+                        |)
                       |)
                     ]
                   |)))

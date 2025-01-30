@@ -33,12 +33,21 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "ToDrop is being dropped
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "ToDrop is being dropped
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -78,9 +87,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Made a ToDrop!
-" |) ] |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Made a ToDrop!
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)

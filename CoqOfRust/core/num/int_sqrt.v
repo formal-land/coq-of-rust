@@ -35,9 +35,10 @@ Module num.
                                       []
                                       [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ result ]
+                                  [ M.borrow (| Pointer.Kind.Ref, result |) ]
                                 |)
                               |)
                             |)) in
@@ -48,12 +49,18 @@ Module num.
                             M.SubPointer.get_array_field (| result, n |),
                             Value.Tuple
                               [
-                                M.rust_cast (M.read (| isqrt_n |));
-                                M.rust_cast
+                                M.cast (Ty.path "u8") (M.read (| isqrt_n |));
+                                M.cast
+                                  (Ty.path "u8")
                                   (BinOp.Wrap.sub (|
                                     M.read (| n |),
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "usize", "pow", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "pow",
+                                        [],
+                                        []
+                                      |),
                                       [ M.read (| isqrt_n |); Value.Integer IntegerKind.U32 2 ]
                                     |)
                                   |))
@@ -79,6 +86,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "pow",
+                                            [],
                                             []
                                           |),
                                           [
@@ -139,7 +147,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.SubPointer.get_array_field (|
                 M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                M.alloc (| M.rust_cast (M.read (| n |)) |)
+                M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
               |),
               0
             |)
@@ -199,16 +207,26 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -224,10 +242,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i8")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u8", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -286,16 +305,26 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -311,10 +340,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i16")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u16", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -373,16 +403,26 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -398,10 +438,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i32")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u32", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -460,16 +501,26 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -485,10 +536,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i64")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u64", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -547,16 +599,26 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "Negative input inside `isqrt`."
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "Negative input inside `isqrt`."
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -572,10 +634,11 @@ Module num.
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
+              M.cast
+                (Ty.path "i128")
                 (M.call_closure (|
                   M.get_function (| "core::num::int_sqrt::u128", [], [] |),
-                  [ M.rust_cast (M.read (| n |)) ]
+                  [ M.cast (Ty.path "u128") (M.read (| n |)) ]
                 |))
             |)
           |)))
@@ -636,17 +699,26 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -671,7 +743,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -743,17 +815,26 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$s` is  zero in `last_stage!`."
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "`$s` is  zero in `last_stage!`."
+                                                                |)
+                                                              ]
                                                           |)
-                                                        ]
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -782,7 +863,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_or
                           (BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| r |)),
+                            M.cast (Ty.path "u16") (M.read (| r |)),
                             M.read (|
                               M.get_constant (| "core::num::int_sqrt::u16_stages::QUARTER_BITS" |)
                             |)
@@ -797,7 +878,7 @@ Module num.
                     let~ denominator :=
                       M.alloc (|
                         BinOp.Wrap.shl (|
-                          M.rust_cast (M.read (| s |)),
+                          M.cast (Ty.path "u16") (M.read (| s |)),
                           Value.Integer IntegerKind.I32 1
                         |)
                       |) in
@@ -808,7 +889,8 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         BinOp.Wrap.add (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shl (|
                               M.read (| s |),
                               M.read (|
@@ -821,7 +903,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "u16", "overflowing_mul", [] |),
+                          M.get_associated_function (| Ty.path "u16", "overflowing_mul", [], [] |),
                           [ M.read (| s |); M.read (| s |) ]
                         |)
                       |),
@@ -974,17 +1056,26 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1009,7 +1100,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -1082,17 +1173,26 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1109,7 +1209,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -1131,7 +1232,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
                               |)
@@ -1146,7 +1247,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -1161,7 +1262,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -1176,7 +1278,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -1224,6 +1331,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1315,17 +1423,26 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_const",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `last_stage!`."
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "`$s` is  zero in `last_stage!`."
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -1354,7 +1471,7 @@ Module num.
                               M.alloc (|
                                 BinOp.bit_or
                                   (BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| r |)),
+                                    M.cast (Ty.path "u32") (M.read (| r |)),
                                     M.read (|
                                       M.get_constant (|
                                         "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
@@ -1373,7 +1490,7 @@ Module num.
                             let~ denominator :=
                               M.alloc (|
                                 BinOp.Wrap.shl (|
-                                  M.rust_cast (M.read (| s |)),
+                                  M.cast (Ty.path "u32") (M.read (| s |)),
                                   Value.Integer IntegerKind.I32 1
                                 |)
                               |) in
@@ -1387,7 +1504,8 @@ Module num.
                             let~ s :=
                               M.alloc (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shl (|
                                       M.read (| s |),
                                       M.read (|
@@ -1405,6 +1523,7 @@ Module num.
                                   M.get_associated_function (|
                                     Ty.path "u32",
                                     "overflowing_mul",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |); M.read (| s |) ]
@@ -1618,17 +1737,26 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1653,7 +1781,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -1726,17 +1854,26 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1753,7 +1890,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -1775,7 +1913,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
                               |)
@@ -1790,7 +1928,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -1805,7 +1943,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -1820,7 +1959,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -1868,6 +2012,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1960,17 +2105,26 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "`$s` is  zero in `middle_stage!`."
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -1988,7 +2142,8 @@ Module num.
                                 |) in
                               let~ n :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
@@ -2012,7 +2167,7 @@ Module num.
                                 M.alloc (|
                                   BinOp.bit_or
                                     (BinOp.Wrap.shl (|
-                                      M.rust_cast (M.read (| r |)),
+                                      M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
                                         M.get_constant (|
                                           "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
@@ -2031,7 +2186,7 @@ Module num.
                               let~ denominator :=
                                 M.alloc (|
                                   BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| s |)),
+                                    M.cast (Ty.path "u32") (M.read (| s |)),
                                     Value.Integer IntegerKind.I32 1
                                   |)
                                 |) in
@@ -2052,7 +2207,8 @@ Module num.
                               let~ s :=
                                 M.alloc (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u32")
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
@@ -2070,6 +2226,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u32",
                                       "overflowing_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2119,6 +2276,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u32",
                                                         "wrapping_add",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2218,17 +2376,26 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `last_stage!`."
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String
+                                                                                    "`$s` is  zero in `last_stage!`."
+                                                                                |)
+                                                                              ]
                                                                           |)
-                                                                        ]
+                                                                        |)
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -2259,7 +2426,7 @@ Module num.
                                       M.alloc (|
                                         BinOp.bit_or
                                           (BinOp.Wrap.shl (|
-                                            M.rust_cast (M.read (| r |)),
+                                            M.cast (Ty.path "u64") (M.read (| r |)),
                                             M.read (|
                                               M.get_constant (|
                                                 "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
@@ -2278,7 +2445,7 @@ Module num.
                                     let~ denominator :=
                                       M.alloc (|
                                         BinOp.Wrap.shl (|
-                                          M.rust_cast (M.read (| s |)),
+                                          M.cast (Ty.path "u64") (M.read (| s |)),
                                           Value.Integer IntegerKind.I32 1
                                         |)
                                       |) in
@@ -2292,7 +2459,8 @@ Module num.
                                     let~ s :=
                                       M.alloc (|
                                         BinOp.Wrap.add (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.shl (|
                                               M.read (| s |),
                                               M.read (|
@@ -2310,6 +2478,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "u64",
                                             "overflowing_mul",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| s |); M.read (| s |) ]
@@ -2585,17 +2754,26 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "`$n` is  zero in `first_stage!`."
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "`$n` is  zero in `first_stage!`."
+                                                          |)
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -2620,7 +2798,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
-                  M.alloc (| M.rust_cast (M.read (| n |)) |)
+                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
                   fun γ =>
@@ -2693,17 +2871,26 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`$s` is  zero in `middle_stage!`."
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  |)
+                                                                ]
                                                             |)
-                                                          ]
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -2720,7 +2907,8 @@ Module num.
                         |) in
                       let~ n :=
                         M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u16")
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
@@ -2742,7 +2930,7 @@ Module num.
                         M.alloc (|
                           BinOp.bit_or
                             (BinOp.Wrap.shl (|
-                              M.rust_cast (M.read (| r |)),
+                              M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
                                 M.get_constant (|
                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS"
@@ -2761,7 +2949,7 @@ Module num.
                       let~ denominator :=
                         M.alloc (|
                           BinOp.Wrap.shl (|
-                            M.rust_cast (M.read (| s |)),
+                            M.cast (Ty.path "u16") (M.read (| s |)),
                             Value.Integer IntegerKind.I32 1
                           |)
                         |) in
@@ -2776,7 +2964,8 @@ Module num.
                       let~ s :=
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.rust_cast
+                            M.cast
+                              (Ty.path "u16")
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
@@ -2791,7 +2980,12 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "overflowing_sub", [] |),
+                            M.get_associated_function (|
+                              Ty.path "u16",
+                              "overflowing_sub",
+                              [],
+                              []
+                            |),
                             [
                               BinOp.bit_or
                                 (BinOp.Wrap.shl (|
@@ -2839,6 +3033,7 @@ Module num.
                                               M.get_associated_function (|
                                                 Ty.path "u16",
                                                 "wrapping_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2931,17 +3126,26 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "`$s` is  zero in `middle_stage!`."
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          |)
+                                                                        ]
                                                                     |)
-                                                                  ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -2959,7 +3163,8 @@ Module num.
                                 |) in
                               let~ n :=
                                 M.alloc (|
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "u32")
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
@@ -2983,7 +3188,7 @@ Module num.
                                 M.alloc (|
                                   BinOp.bit_or
                                     (BinOp.Wrap.shl (|
-                                      M.rust_cast (M.read (| r |)),
+                                      M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
                                         M.get_constant (|
                                           "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
@@ -3002,7 +3207,7 @@ Module num.
                               let~ denominator :=
                                 M.alloc (|
                                   BinOp.Wrap.shl (|
-                                    M.rust_cast (M.read (| s |)),
+                                    M.cast (Ty.path "u32") (M.read (| s |)),
                                     Value.Integer IntegerKind.I32 1
                                   |)
                                 |) in
@@ -3023,7 +3228,8 @@ Module num.
                               let~ s :=
                                 M.alloc (|
                                   BinOp.Wrap.add (|
-                                    M.rust_cast
+                                    M.cast
+                                      (Ty.path "u32")
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
@@ -3041,6 +3247,7 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u32",
                                       "overflowing_sub",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3090,6 +3297,7 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u32",
                                                         "wrapping_add",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3191,17 +3399,26 @@ Module num.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "`$s` is  zero in `middle_stage!`."
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                                  |)
+                                                                                ]
                                                                             |)
-                                                                          ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -3220,7 +3437,8 @@ Module num.
                                         |) in
                                       let~ n :=
                                         M.alloc (|
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.shr (|
                                               M.read (| n |),
                                               M.read (|
@@ -3244,7 +3462,7 @@ Module num.
                                         M.alloc (|
                                           BinOp.bit_or
                                             (BinOp.Wrap.shl (|
-                                              M.rust_cast (M.read (| r |)),
+                                              M.cast (Ty.path "u64") (M.read (| r |)),
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
@@ -3263,7 +3481,7 @@ Module num.
                                       let~ denominator :=
                                         M.alloc (|
                                           BinOp.Wrap.shl (|
-                                            M.rust_cast (M.read (| s |)),
+                                            M.cast (Ty.path "u64") (M.read (| s |)),
                                             Value.Integer IntegerKind.I32 1
                                           |)
                                         |) in
@@ -3284,7 +3502,8 @@ Module num.
                                       let~ s :=
                                         M.alloc (|
                                           BinOp.Wrap.add (|
-                                            M.rust_cast
+                                            M.cast
+                                              (Ty.path "u64")
                                               (BinOp.Wrap.shl (|
                                                 M.read (| s |),
                                                 M.read (|
@@ -3302,6 +3521,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "u64",
                                               "overflowing_sub",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3352,6 +3572,7 @@ Module num.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "wrapping_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3459,17 +3680,26 @@ Module num.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "`$s` is  zero in `last_stage!`."
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "`$s` is  zero in `last_stage!`."
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -3501,7 +3731,7 @@ Module num.
                                               M.alloc (|
                                                 BinOp.bit_or
                                                   (BinOp.Wrap.shl (|
-                                                    M.rust_cast (M.read (| r |)),
+                                                    M.cast (Ty.path "u128") (M.read (| r |)),
                                                     M.read (|
                                                       M.get_constant (|
                                                         "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
@@ -3520,7 +3750,7 @@ Module num.
                                             let~ denominator :=
                                               M.alloc (|
                                                 BinOp.Wrap.shl (|
-                                                  M.rust_cast (M.read (| s |)),
+                                                  M.cast (Ty.path "u128") (M.read (| s |)),
                                                   Value.Integer IntegerKind.I32 1
                                                 |)
                                               |) in
@@ -3534,7 +3764,8 @@ Module num.
                                             let~ s :=
                                               M.alloc (|
                                                 BinOp.Wrap.add (|
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "u128")
                                                     (BinOp.Wrap.shl (|
                                                       M.read (| s |),
                                                       M.read (|
@@ -3552,6 +3783,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "u128",
                                                     "overflowing_mul",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| s |); M.read (| s |) ]
@@ -3900,15 +4132,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u16")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u16")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u8", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u8") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -3917,7 +4152,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u16", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4022,15 +4257,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u32")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u32")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u16", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u16") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4039,7 +4277,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4144,15 +4382,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u32", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u32") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4161,7 +4402,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4266,15 +4507,18 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (M.call_closure (|
                           M.get_function (| "core::num::int_sqrt::u64", [], [] |),
-                          [ M.rust_cast (M.read (| n |)) ]
+                          [ M.cast (Ty.path "u64") (M.read (| n |)) ]
                         |))
                     |)));
                 fun γ =>
@@ -4283,7 +4527,7 @@ Module num.
                       M.alloc (|
                         BinOp.bit_and
                           (M.call_closure (|
-                            M.get_associated_function (| Ty.path "u128", "leading_zeros", [] |),
+                            M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
@@ -4343,15 +4587,23 @@ Module num.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (|
-                          Value.String "argument of integer square root cannot be negative"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String "argument of integer square root cannot be negative"
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 ]
               |)

@@ -19,7 +19,9 @@ Module hash.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| data |) ]
@@ -39,10 +41,17 @@ Module hash.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -66,10 +75,21 @@ Module hash.
                                           "core::hash::Hash",
                                           Self,
                                           [],
+                                          [],
                                           "hash",
+                                          [],
                                           [ H ]
                                         |),
-                                        [ M.read (| piece |); M.read (| state |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| piece |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| state |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -94,8 +114,16 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
-            [ M.read (| self |); M.alloc (| Value.Array [ M.read (| i |) ] |) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| i |) ] |) |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -108,13 +136,21 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
-              M.read (| self |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [] |),
-                  [ M.read (| i |) ]
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
+                        [ M.read (| i |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -130,13 +166,21 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
-              M.read (| self |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [] |),
-                  [ M.read (| i |) ]
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
+                        [ M.read (| i |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -152,13 +196,21 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
-              M.read (| self |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [] |),
-                  [ M.read (| i |) ]
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
+                        [ M.read (| i |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -174,13 +226,21 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
-              M.read (| self |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
-                  [ M.read (| i |) ]
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
+                        [ M.read (| i |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -202,13 +262,21 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
-              M.read (| self |);
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [] |),
-                  [ M.read (| i |) ]
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
+                        [ M.read (| i |) ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -225,8 +293,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "u8") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -239,8 +310,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u16", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u16", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "u16") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -253,8 +327,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u32", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u32", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "u32") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -267,8 +344,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u64", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u64", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "u64") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -281,8 +361,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u128", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u128", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "u128") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -301,8 +384,11 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
-            [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
+            M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_usize", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.cast (Ty.path "usize") (M.read (| i |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -324,8 +410,19 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
-                  [ M.read (| self |); M.read (| len |) ]
+                  M.get_trait_method (|
+                    "core::hash::Hasher",
+                    Self,
+                    [],
+                    [],
+                    "write_usize",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| len |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -345,12 +442,17 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
                   [
-                    M.read (| self |);
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                      [ M.read (| s |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -358,8 +460,11 @@ Module hash.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
-                  [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
+                  M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    Value.Integer IntegerKind.U8 255
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -385,8 +490,13 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "finish", [] |),
-            [ M.read (| M.read (| self |) |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "finish", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -404,8 +514,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -423,8 +539,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -442,8 +564,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -461,8 +589,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -480,8 +614,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -499,8 +639,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -518,8 +664,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -537,8 +689,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -556,8 +714,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -575,8 +739,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -594,8 +764,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -613,8 +789,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -632,8 +814,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| i |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| i |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -656,8 +844,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| len |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_length_prefix", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| len |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -675,8 +869,14 @@ Module hash.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| s |) ]
+            M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -720,21 +920,51 @@ Module hash.
             let~ hasher :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::BuildHasher", Self, [], "build_hasher", [] |),
-                  [ M.read (| self |) ]
+                  M.get_trait_method (|
+                    "core::hash::BuildHasher",
+                    Self,
+                    [],
+                    [],
+                    "build_hasher",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ Ty.associated ] |),
-                  [ x; hasher ]
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    T,
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ Ty.associated ]
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, x |);
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, hasher |) |)
+                    |)
+                  ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hasher", Ty.associated, [], "finish", [] |),
-                [ hasher ]
+                M.get_trait_method (|
+                  "core::hash::Hasher",
+                  Ty.associated,
+                  [],
+                  [],
+                  "finish",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, hasher |) ]
               |)
             |)
           |)))
@@ -796,17 +1026,28 @@ Module hash.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "BuildHasherDefault" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "BuildHasherDefault" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -842,7 +1083,7 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::default::Default", H, [], "default", [] |),
+            M.get_trait_method (| "core::default::Default", H, [], [], "default", [], [] |),
             []
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -909,6 +1150,7 @@ Module hash.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ],
               "new",
+              [],
               []
             |),
             []
@@ -979,8 +1221,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1011,29 +1256,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1066,8 +1322,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1098,29 +1357,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1153,8 +1423,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1185,29 +1458,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1240,8 +1524,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1272,29 +1559,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1327,8 +1625,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1359,29 +1660,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1414,8 +1726,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1446,29 +1761,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1501,8 +1827,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1533,29 +1862,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1588,8 +1928,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1620,29 +1963,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1675,8 +2029,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1707,29 +2064,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1762,8 +2130,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1794,29 +2165,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1849,8 +2231,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1881,29 +2266,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1936,8 +2332,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
-              [ M.read (| state |); M.read (| M.read (| self |) |) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.read (| M.deref (| M.read (| self |) |) |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1968,29 +2367,40 @@ Module hash.
                       [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ] ]
                     |),
-                    [ M.read (| data |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
               let~ ptr :=
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| data |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                     |))
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
+                  M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
-                    M.read (| state |);
-                    M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
-                      [ M.read (| ptr |); M.read (| newlen |) ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::raw::from_raw_parts",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
+                          [ M.read (| ptr |); M.read (| newlen |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -2023,8 +2433,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
-              [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2052,8 +2465,11 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
-              [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
+              M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2084,8 +2500,11 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
-                    [ M.read (| state |); M.read (| self |) ]
+                    M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2117,7 +2536,11 @@ Module hash.
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
               β1,
-              [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2170,7 +2593,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2179,8 +2602,19 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2217,7 +2651,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2228,15 +2662,37 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2273,7 +2729,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2286,22 +2742,55 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2338,7 +2827,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2353,29 +2842,73 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2417,7 +2950,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2434,36 +2967,91 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2505,7 +3093,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2524,43 +3112,109 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2602,7 +3256,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2623,50 +3277,127 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2708,7 +3439,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2731,57 +3462,145 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
-                            [ M.read (| value_H |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2823,7 +3642,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2848,64 +3667,163 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
-                            [ M.read (| value_H |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
-                            [ M.read (| value_I |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_I |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -2948,7 +3866,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2975,71 +3893,181 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
-                            [ M.read (| value_H |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
-                            [ M.read (| value_I |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_I |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
-                            [ M.read (| value_J |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_J |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -3082,7 +4110,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3111,78 +4139,199 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
-                            [ M.read (| value_H |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
-                            [ M.read (| value_I |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_I |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
-                            [ M.read (| value_J |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_J |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", K, [], "hash", [ S ] |),
-                            [ M.read (| value_K |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              K,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_K |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -3225,7 +4374,7 @@ Module hash.
             let state := M.alloc (| state |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3256,85 +4405,217 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ S ] |),
-                            [ M.read (| value_T |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              T,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_T |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", B, [], "hash", [ S ] |),
-                            [ M.read (| value_B |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              B,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_B |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", C, [], "hash", [ S ] |),
-                            [ M.read (| value_C |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              C,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_C |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", D, [], "hash", [ S ] |),
-                            [ M.read (| value_D |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              D,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", E, [], "hash", [ S ] |),
-                            [ M.read (| value_E |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              E,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", F, [], "hash", [ S ] |),
-                            [ M.read (| value_F |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              F,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", G, [], "hash", [ S ] |),
-                            [ M.read (| value_G |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              G,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", H, [], "hash", [ S ] |),
-                            [ M.read (| value_H |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              H,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", I, [], "hash", [ S ] |),
-                            [ M.read (| value_I |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              I,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_I |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", J, [], "hash", [ S ] |),
-                            [ M.read (| value_J |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              J,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_J |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", K, [], "hash", [ S ] |),
-                            [ M.read (| value_K |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              K,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_K |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hash", L, [], "hash", [ S ] |),
-                            [ M.read (| value_L |); M.read (| state |) ]
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              L,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ S ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_L |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -3373,24 +4654,36 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
+                    M.get_trait_method (|
+                      "core::hash::Hasher",
+                      H,
+                      [],
+                      [],
+                      "write_length_prefix",
+                      [],
+                      []
+                    |),
                     [
-                      M.read (| state |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", T, [], "hash_slice", [ H ] |),
-                  [ M.read (| self |); M.read (| state |) ]
+                  M.get_trait_method (| "core::hash::Hash", T, [], [], "hash_slice", [], [ H ] |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -3425,8 +4718,14 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
-                    [ M.read (| M.read (| self |) |); M.read (| state |) ]
+                    M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3462,8 +4761,14 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", T, [], "hash", [ H ] |),
-                    [ M.read (| M.read (| self |) |); M.read (| state |) ]
+                    M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3504,9 +4809,10 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "to_raw_parts",
+                      [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -3519,13 +4825,22 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+                            M.get_trait_method (|
+                              "core::hash::Hasher",
+                              H,
+                              [],
+                              [],
+                              "write_usize",
+                              [],
+                              []
+                            |),
                             [
-                              M.read (| state |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                                   "addr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| address |) ]
@@ -3540,10 +4855,15 @@ Module hash.
                               "core::hash::Hash",
                               Ty.associated,
                               [],
+                              [],
                               "hash",
+                              [],
                               [ H ]
                             |),
-                            [ metadata; M.read (| state |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, metadata |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -3586,9 +4906,10 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "to_raw_parts",
+                      [],
                       []
                     |),
-                    [ M.read (| M.read (| self |) |) ]
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -3601,13 +4922,22 @@ Module hash.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
+                            M.get_trait_method (|
+                              "core::hash::Hasher",
+                              H,
+                              [],
+                              [],
+                              "write_usize",
+                              [],
+                              []
+                            |),
                             [
-                              M.read (| state |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                                   "addr",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| address |) ]
@@ -3622,10 +4952,15 @@ Module hash.
                               "core::hash::Hash",
                               Ty.associated,
                               [],
+                              [],
                               "hash",
+                              [],
                               [ H ]
                             |),
-                            [ metadata; M.read (| state |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, metadata |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))

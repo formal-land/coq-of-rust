@@ -28,23 +28,49 @@ Module errmap.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ErrorDescription" |);
-              M.read (| Value.String "code_name" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::errmap::ErrorDescription",
-                "code_name"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ErrorDescription" |) |)
               |);
-              M.read (| Value.String "code_description" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::errmap::ErrorDescription",
-                  "code_description"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code_name" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::errmap::ErrorDescription",
+                      "code_name"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "code_description" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::errmap::ErrorDescription",
+                          "code_description"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -78,14 +104,24 @@ Module errmap.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::errmap::ErrorDescription",
-                      "code_name"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::errmap::ErrorDescription",
+                            "code_name"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -95,14 +131,24 @@ Module errmap.
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::errmap::ErrorDescription",
-                      "code_description"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::errmap::ErrorDescription",
+                            "code_description"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -141,7 +187,9 @@ Module errmap.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -149,7 +197,7 @@ Module errmap.
                               M.read (| Value.String "ErrorDescription" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -199,16 +247,29 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "code_name" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::errmap::ErrorDescription",
-                              "code_name"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::errmap::ErrorDescription",
+                                    "code_name"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -254,16 +315,29 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "code_description" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::errmap::ErrorDescription",
-                              "code_description"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::errmap::ErrorDescription",
+                                    "code_description"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -307,7 +381,9 @@ Module errmap.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -339,7 +415,9 @@ Module errmap.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::errmap::_'1::deserialize::__Visitor" ]
               |),
               [
@@ -388,7 +466,9 @@ Module errmap.
                               "serde::ser::Serializer",
                               __S,
                               [],
+                              [],
                               "serialize_struct",
+                              [],
                               []
                             |),
                             [
@@ -396,7 +476,7 @@ Module errmap.
                               M.read (| Value.String "ErrorMapping" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
-                                  M.rust_cast (Value.Bool false),
+                                  M.cast (Ty.path "usize") (Value.Bool false),
                                   Value.Integer IntegerKind.Usize 1
                                 |),
                                 Value.Integer IntegerKind.Usize 1
@@ -446,7 +526,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -459,12 +541,23 @@ Module errmap.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "error_categories" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::errmap::ErrorMapping",
-                              "error_categories"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::errmap::ErrorMapping",
+                                    "error_categories"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -510,7 +603,9 @@ Module errmap.
                             "serde::ser::SerializeStruct",
                             Ty.associated,
                             [],
+                            [],
                             "serialize_field",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -530,12 +625,23 @@ Module errmap.
                             ]
                           |),
                           [
-                            __serde_state;
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                            |);
                             M.read (| Value.String "module_error_maps" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::errmap::ErrorMapping",
-                              "module_error_maps"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_core_types::errmap::ErrorMapping",
+                                    "module_error_maps"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -579,7 +685,9 @@ Module errmap.
                         "serde::ser::SerializeStruct",
                         Ty.associated,
                         [],
+                        [],
                         "end",
+                        [],
                         []
                       |),
                       [ M.read (| __serde_state |) ]
@@ -611,7 +719,9 @@ Module errmap.
                 "serde::de::Deserializer",
                 __D,
                 [],
+                [],
                 "deserialize_struct",
+                [],
                 [ Ty.path "move_core_types::errmap::_'3::deserialize::__Visitor" ]
               |),
               [
@@ -690,23 +800,52 @@ Module errmap.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ErrorMapping" |);
-              M.read (| Value.String "error_categories" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_core_types::errmap::ErrorMapping",
-                "error_categories"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ErrorMapping" |) |)
               |);
-              M.read (| Value.String "module_error_maps" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::errmap::ErrorMapping",
-                  "module_error_maps"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "error_categories" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::errmap::ErrorMapping",
+                      "error_categories"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "module_error_maps" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::errmap::ErrorMapping",
+                          "module_error_maps"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -747,14 +886,24 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::errmap::ErrorMapping",
-                      "error_categories"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::errmap::ErrorMapping",
+                            "error_categories"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -778,14 +927,24 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_core_types::errmap::ErrorMapping",
-                      "module_error_maps"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_core_types::errmap::ErrorMapping",
+                            "module_error_maps"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -827,7 +986,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -852,7 +1013,9 @@ Module errmap.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -916,13 +1079,17 @@ Module errmap.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "move_core_types::errmap::ErrorMapping",
-                                    "error_categories"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::errmap::ErrorMapping",
+                                      "error_categories"
+                                    |)
                                   |);
                                   M.read (| category_id |);
                                   M.read (| description |)
@@ -969,110 +1136,162 @@ Module errmap.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Entry for category "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already taken by: "
-                                                                        |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
-                                                                            [ Ty.path "u64" ]
-                                                                          |),
-                                                                          [ category_id ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
                                                                             [
-                                                                              Ty.path
-                                                                                "move_core_types::errmap::ErrorDescription"
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Entry for category "
+                                                                              |);
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  " already taken by: "
+                                                                              |)
                                                                             ]
-                                                                          |),
-                                                                          [ previous_entry ]
                                                                         |)
-                                                                      ]
+                                                                      |)
+                                                                    |)
                                                                   |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Placeholder",
-                                                                            "new",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0;
-                                                                            Value.UnicodeChar 32;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                              [];
-                                                                            Value.Integer
-                                                                              IntegerKind.U32
-                                                                              0;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              [];
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              []
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Placeholder",
-                                                                            "new",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1;
-                                                                            Value.UnicodeChar 32;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                              [];
-                                                                            Value.Integer
-                                                                              IntegerKind.U32
-                                                                              4;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              [];
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              []
-                                                                          ]
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_display",
+                                                                                  [],
+                                                                                  [ Ty.path "u64" ]
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        category_id
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::errmap::ErrorDescription"
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        previous_entry
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
                                                                         |)
-                                                                      ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    0;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    4;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |);
                                                                   M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -1096,6 +1315,7 @@ Module errmap.
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -1107,10 +1327,22 @@ Module errmap.
                                                                 []
                                                                 [ Ty.path "alloc::string::String" ],
                                                               [],
+                                                              [],
                                                               "anyhow_kind",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.alloc (| error |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    error
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |);
                                                           M.read (| error |)
                                                         ]
@@ -1186,6 +1418,7 @@ Module errmap.
                             Ty.path "alloc::alloc::Global"
                           ],
                         "or_default",
+                        [],
                         []
                       |),
                       [
@@ -1207,23 +1440,29 @@ Module errmap.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "entry",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_core_types::errmap::ErrorMapping",
-                              "module_error_maps"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_core_types::errmap::ErrorMapping",
+                                "module_error_maps"
+                              |)
                             |);
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::language_storage::ModuleId",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ module_id ]
+                              [ M.borrow (| Pointer.Kind.Ref, module_id |) ]
                             |)
                           ]
                         |)
@@ -1249,10 +1488,14 @@ Module errmap.
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "insert",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.read (| module_error_map |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| module_error_map |) |)
+                                  |);
                                   M.read (| abort_code |);
                                   M.read (| description |)
                                 ]
@@ -1298,151 +1541,217 @@ Module errmap.
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Duplicate entry for abort code "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String " found in "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            ", previous entry: "
-                                                                        |)
-                                                                      ]
-                                                                  |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
-                                                                            [ Ty.path "u64" ]
-                                                                          |),
-                                                                          [ abort_code ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
                                                                             [
-                                                                              Ty.path
-                                                                                "move_core_types::language_storage::ModuleId"
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Duplicate entry for abort code "
+                                                                              |);
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  " found in "
+                                                                              |);
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  ", previous entry: "
+                                                                              |)
                                                                             ]
-                                                                          |),
-                                                                          [ module_id ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_debug",
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_core_types::errmap::ErrorDescription"
-                                                                            ]
-                                                                          |),
-                                                                          [ previous_entry ]
                                                                         |)
-                                                                      ]
+                                                                      |)
+                                                                    |)
                                                                   |);
-                                                                  M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Placeholder",
-                                                                            "new",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0;
-                                                                            Value.UnicodeChar 32;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                              [];
-                                                                            Value.Integer
-                                                                              IntegerKind.U32
-                                                                              0;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              [];
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              []
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Placeholder",
-                                                                            "new",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1;
-                                                                            Value.UnicodeChar 32;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                              [];
-                                                                            Value.Integer
-                                                                              IntegerKind.U32
-                                                                              0;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              [];
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              []
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Placeholder",
-                                                                            "new",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              2;
-                                                                            Value.UnicodeChar 32;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                              [];
-                                                                            Value.Integer
-                                                                              IntegerKind.U32
-                                                                              4;
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              [];
-                                                                            Value.StructTuple
-                                                                              "core::fmt::rt::Count::Implied"
-                                                                              []
-                                                                          ]
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_display",
+                                                                                  [],
+                                                                                  [ Ty.path "u64" ]
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        abort_code
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_display",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::language_storage::ModuleId"
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        module_id
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [],
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_core_types::errmap::ErrorDescription"
+                                                                                  ]
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        previous_entry
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
                                                                         |)
-                                                                      ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    0;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    0;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Placeholder",
+                                                                                  "new",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2;
+                                                                                  Value.UnicodeChar
+                                                                                    32;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Alignment::Unknown"
+                                                                                    [];
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U32
+                                                                                    4;
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    [];
+                                                                                  Value.StructTuple
+                                                                                    "core::fmt::rt::Count::Implied"
+                                                                                    []
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |);
                                                                   M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
                                                                       "new",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     []
@@ -1466,6 +1775,7 @@ Module errmap.
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -1477,10 +1787,22 @@ Module errmap.
                                                                 []
                                                                 [ Ty.path "alloc::string::String" ],
                                                               [],
+                                                              [],
                                                               "anyhow_kind",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.alloc (| error |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    error
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |);
                                                           M.read (| error |)
                                                         ]
@@ -1530,6 +1852,7 @@ Module errmap.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -1544,6 +1867,7 @@ Module errmap.
                       []
                       [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1552,33 +1876,43 @@ Module errmap.
                         "std::io::Read",
                         Ty.path "std::fs::File",
                         [],
+                        [],
                         "read_to_end",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                                "unwrap",
+                                [],
                                 []
-                                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                              "unwrap",
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "std::fs::File",
-                                  "open",
-                                  [ P ]
-                                |),
-                                [ M.read (| path |) ]
-                              |)
-                            ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::fs::File",
+                                    "open",
+                                    [],
+                                    [ P ]
+                                  |),
+                                  [ M.read (| path |) ]
+                                |)
+                              ]
+                            |)
                           |)
                         |);
-                        bytes
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                        |)
                       ]
                     |)
                   ]
@@ -1593,6 +1927,7 @@ Module errmap.
                     [ Ty.path "move_core_types::errmap::ErrorMapping"; Ty.path "bcs::error::Error"
                     ],
                   "unwrap",
+                  [],
                   []
                 |),
                 [
@@ -1603,18 +1938,30 @@ Module errmap.
                       [ Ty.path "move_core_types::errmap::ErrorMapping" ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [ bytes ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                              |)
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -1656,6 +2003,7 @@ Module errmap.
                         Ty.path "bcs::error::Error"
                       ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1665,7 +2013,7 @@ Module errmap.
                         [],
                         [ Ty.path "move_core_types::errmap::ErrorMapping" ]
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -1679,11 +2027,12 @@ Module errmap.
                       []
                       [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "std::fs::File", "create", [ P ] |),
+                      M.get_associated_function (| Ty.path "std::fs::File", "create", [], [ P ] |),
                       [ M.read (| path |) ]
                     |)
                   ]
@@ -1698,6 +2047,7 @@ Module errmap.
                       []
                       [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -1706,23 +2056,37 @@ Module errmap.
                         "std::io::Write",
                         Ty.path "std::fs::File",
                         [],
+                        [],
                         "write_all",
+                        [],
                         []
                       |),
                       [
-                        file;
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [ bytes ]
+                        M.borrow (| Pointer.Kind.MutRef, file |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                                |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -1771,6 +2135,7 @@ Module errmap.
                     ]
                 ],
               "and_then",
+              [],
               [
                 Ty.path "move_core_types::errmap::ErrorDescription";
                 Ty.function
@@ -1817,15 +2182,19 @@ Module errmap.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "get",
+                  [],
                   [ Ty.path "move_core_types::language_storage::ModuleId" ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::errmap::ErrorMapping",
-                    "module_error_maps"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_core_types::errmap::ErrorMapping",
+                      "module_error_maps"
+                    |)
                   |);
-                  M.read (| module |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |)
                 ]
               |);
               M.closure
@@ -1852,6 +2221,7 @@ Module errmap.
                                           [ Ty.path "move_core_types::errmap::ErrorDescription" ]
                                       ],
                                     "cloned",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1866,9 +2236,19 @@ Module errmap.
                                             Ty.path "alloc::alloc::Global"
                                           ],
                                         "get",
+                                        [],
                                         [ Ty.path "u64" ]
                                       |),
-                                      [ M.read (| module_map |); output_code ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| module_map |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.borrow (| Pointer.Kind.Ref, output_code |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)))

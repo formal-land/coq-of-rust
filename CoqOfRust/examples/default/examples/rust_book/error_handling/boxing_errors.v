@@ -34,8 +34,11 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "EmptyVec" |) |) |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -84,14 +87,22 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [
-                M.alloc (|
-                  Value.Array [ M.read (| Value.String "invalid first item to double" |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "invalid first item to double" |) ]
+                      |)
+                    |)
+                  |)
                 |)
               ]
             |)
@@ -144,6 +155,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
             ],
           "and_then",
+          [],
           [
             Ty.path "i32";
             Ty.function
@@ -171,6 +183,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ],
               "ok_or_else",
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -190,24 +203,32 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "first",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ vec ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, vec |) ]
+                      |)
+                    |)
                   |)
                 ]
               |);
@@ -226,6 +247,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   M.get_trait_method (|
                                     "core::convert::Into",
                                     Ty.path "boxing_errors::EmptyVec",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
@@ -236,6 +258,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         ]
                                     ],
                                     "into",
+                                    [],
                                     []
                                   |),
                                   [ Value.StructTuple "boxing_errors::EmptyVec" [] ]
@@ -274,6 +297,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       ]
                                   ],
                                 "map",
+                                [],
                                 [
                                   Ty.path "i32";
                                   Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
@@ -287,6 +311,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       []
                                       [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                     "map_err",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
@@ -311,9 +336,15 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       M.get_associated_function (|
                                         Ty.path "str",
                                         "parse",
+                                        [],
                                         [ Ty.path "i32" ]
                                       |),
-                                      [ M.read (| M.read (| s |) |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| M.deref (| M.read (| s |) |) |) |)
+                                        |)
+                                      ]
                                     |);
                                     M.closure
                                       (fun γ =>
@@ -331,6 +362,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                         M.get_trait_method (|
                                                           "core::convert::Into",
                                                           Ty.path "core::num::error::ParseIntError",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
@@ -345,6 +377,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                               ]
                                                           ],
                                                           "into",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| e |) ]
@@ -419,29 +452,52 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The first doubled is " |);
-                                  M.read (| Value.String "
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "The first doubled is " |);
+                                        M.read (| Value.String "
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ n ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, n |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -463,35 +519,60 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Error: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
+                                        M.read (| Value.String "Error: " |);
+                                        M.read (| Value.String "
+" |)
                                       ]
-                                    |),
-                                    [ e ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -529,6 +610,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -546,6 +628,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -553,8 +636,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "42" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]
@@ -572,6 +661,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -583,6 +673,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -600,6 +691,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -607,8 +699,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "tofu" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]

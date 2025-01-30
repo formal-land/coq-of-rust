@@ -51,50 +51,84 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "PeekMut" |) ]
-                      |)
-                    |);
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::index::Index",
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        [ Ty.path "usize" ],
-                        "index",
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::PeekMut",
-                              "heap"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "PeekMut" |) |)
+                                |)
+                              ]
                             |)
-                          |),
-                          "alloc::collections::binary_heap::BinaryHeap",
-                          "data"
+                          |)
                         |);
-                        Value.Integer IntegerKind.Usize 0
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::Index",
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                    [],
+                                    [ Ty.path "usize" ],
+                                    "index",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::binary_heap::PeekMut",
+                                              "heap"
+                                            |)
+                                          |)
+                                        |),
+                                        "alloc::collections::binary_heap::BinaryHeap",
+                                        "data"
+                                      |)
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
                       ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -143,7 +177,7 @@ Module collections.
                     ltac:(M.monadic
                       (let γ :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::binary_heap::PeekMut",
                           "original_len"
                         |) in
@@ -160,19 +194,25 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "set_len",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::binary_heap::PeekMut",
-                                    "heap"
-                                  |)
-                                |),
-                                "alloc::collections::binary_heap::BinaryHeap",
-                                "data"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::binary_heap::PeekMut",
+                                        "heap"
+                                      |)
+                                    |)
+                                  |),
+                                  "alloc::collections::binary_heap::BinaryHeap",
+                                  "data"
+                                |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -181,6 +221,7 @@ Module collections.
                                     []
                                     [ Ty.path "usize" ],
                                   "get",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| original_len |) ]
@@ -197,14 +238,20 @@ Module collections.
                                 []
                                 [ T; A ],
                               "sift_down",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::binary_heap::PeekMut",
-                                  "heap"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::binary_heap::PeekMut",
+                                      "heap"
+                                    |)
+                                  |)
                                 |)
                               |);
                               Value.Integer IntegerKind.Usize 0
@@ -277,14 +324,20 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "is_empty",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::binary_heap::PeekMut",
-                                                    "heap"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloc::collections::binary_heap::PeekMut",
+                                                        "heap"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -317,37 +370,55 @@ Module collections.
                   ]
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ T ],
-                    "get_unchecked",
-                    [ Ty.path "usize" ]
-                  |),
-                  [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
                     M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        "get_unchecked",
                         [],
-                        "deref",
-                        []
+                        [ Ty.path "usize" ]
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::PeekMut",
-                              "heap"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::binary_heap::PeekMut",
+                                          "heap"
+                                        |)
+                                      |)
+                                    |),
+                                    "alloc::collections::binary_heap::BinaryHeap",
+                                    "data"
+                                  |)
+                                |)
+                              ]
                             |)
-                          |),
-                          "alloc::collections::binary_heap::BinaryHeap",
-                          "data"
-                        |)
+                          |)
+                        |);
+                        Value.Integer IntegerKind.Usize 0
                       ]
-                    |);
-                    Value.Integer IntegerKind.Usize 0
-                  ]
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -402,189 +473,240 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "alloc::collections::binary_heap::BinaryHeap")
-                                                  []
-                                                  [ T; A ],
-                                                "is_empty",
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::binary_heap::PeekMut",
-                                                    "heap"
-                                                  |)
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ :=
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::binary_heap::BinaryHeap")
+                                                      []
+                                                      [ T; A ],
+                                                    "is_empty",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "alloc::collections::binary_heap::PeekMut",
+                                                            "heap"
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "assertion failed: !self.heap.is_empty()"
+                                              |)
+                                            ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: !self.heap.is_empty()"
-                                          |)
-                                        ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              let~ len :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
-                      "len",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::binary_heap::PeekMut",
-                          "heap"
-                        |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  let~ len :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                            []
+                            [ T; A ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::binary_heap::PeekMut",
+                                  "heap"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
-                  |)
-                |) in
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.gt (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.write (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::PeekMut",
-                              "original_len"
-                            |),
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
+                    |) in
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.gt (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ :=
+                              M.write (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::binary_heap::PeekMut",
+                                  "original_len"
+                                |),
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        "new_unchecked",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| len |) ]
+                                    |)
+                                  ]
+                              |) in
+                            let~ _ :=
+                              M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::num::nonzero::NonZero")
-                                      []
-                                      [ Ty.path "usize" ],
-                                    "new_unchecked",
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                    "set_len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| len |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::binary_heap::PeekMut",
+                                              "heap"
+                                            |)
+                                          |)
+                                        |),
+                                        "alloc::collections::binary_heap::BinaryHeap",
+                                        "data"
+                                      |)
+                                    |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
-                              ]
-                          |) in
-                        let~ _ :=
-                          M.alloc (|
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                "set_len",
-                                []
+                                Ty.apply (Ty.path "slice") [] [ T ],
+                                "get_unchecked_mut",
+                                [],
+                                [ Ty.path "usize" ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::binary_heap::PeekMut",
-                                      "heap"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::DerefMut",
+                                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                        [],
+                                        [],
+                                        "deref_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::binary_heap::PeekMut",
+                                                  "heap"
+                                                |)
+                                              |)
+                                            |),
+                                            "alloc::collections::binary_heap::BinaryHeap",
+                                            "data"
+                                          |)
+                                        |)
+                                      ]
                                     |)
-                                  |),
-                                  "alloc::collections::binary_heap::BinaryHeap",
-                                  "data"
+                                  |)
                                 |);
-                                Value.Integer IntegerKind.Usize 1
+                                Value.Integer IntegerKind.Usize 0
                               ]
                             |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ T ],
-                    "get_unchecked_mut",
-                    [ Ty.path "usize" ]
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        [],
-                        "deref_mut",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::PeekMut",
-                              "heap"
-                            |)
-                          |),
-                          "alloc::collections::binary_heap::BinaryHeap",
-                          "data"
+                          |)
                         |)
-                      ]
-                    |);
-                    Value.Integer IntegerKind.Usize 0
-                  ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -645,13 +767,17 @@ Module collections.
                                       [ Ty.path "usize" ]
                                   ],
                                 "take",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  this,
-                                  "alloc::collections::binary_heap::PeekMut",
-                                  "original_len"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    this,
+                                    "alloc::collections::binary_heap::PeekMut",
+                                    "original_len"
+                                  |)
                                 |)
                               ]
                             |)
@@ -669,19 +795,25 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "set_len",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      this,
-                                      "alloc::collections::binary_heap::PeekMut",
-                                      "heap"
-                                    |)
-                                  |),
-                                  "alloc::collections::binary_heap::BinaryHeap",
-                                  "data"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          this,
+                                          "alloc::collections::binary_heap::PeekMut",
+                                          "heap"
+                                        |)
+                                      |)
+                                    |),
+                                    "alloc::collections::binary_heap::BinaryHeap",
+                                    "data"
+                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -690,6 +822,7 @@ Module collections.
                                       []
                                       [ Ty.path "usize" ],
                                     "get",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| original_len |) ]
@@ -706,6 +839,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "unwrap",
+                    [],
                     []
                   |),
                   [
@@ -716,14 +850,20 @@ Module collections.
                           []
                           [ T; A ],
                         "pop",
+                        [],
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            this,
-                            "alloc::collections::binary_heap::PeekMut",
-                            "heap"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                this,
+                                "alloc::collections::binary_heap::PeekMut",
+                                "heap"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -764,14 +904,19 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |)
                     ]
                   |))
@@ -804,19 +949,32 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
+                      [],
                       "clone_from",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| source |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| source |) |),
+                              "alloc::collections::binary_heap::BinaryHeap",
+                              "data"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -863,6 +1021,7 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -899,41 +1058,53 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugList",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugList",
-                    "entries",
-                    [
-                      Ty.apply (Ty.path "&") [] [ T ];
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ]
-                    ]
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_list",
-                          []
-                        |),
-                        [ M.read (| f |) ]
-                      |)
-                    |);
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::binary_heap::BinaryHeap")
-                          []
-                          [ T; A ],
-                        "iter",
-                        []
+                        Ty.path "core::fmt::builders::DebugList",
+                        "entries",
+                        [],
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ]
+                        ]
                       |),
-                      [ M.read (| self |) ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_list",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
+                            |)
+                          |)
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                              []
+                              [ T; A ],
+                            "iter",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -987,19 +1158,25 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild_tail",
+                      [],
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::binary_heap::RebuildOnDrop",
-                          "heap"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::binary_heap::RebuildOnDrop",
+                              "heap"
+                            |)
+                          |)
                         |)
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::collections::binary_heap::RebuildOnDrop",
                           "rebuild_from"
                         |)
@@ -1046,6 +1223,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "new",
+                      [],
                       []
                     |),
                     []
@@ -1082,6 +1260,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
+                      [],
                       []
                     |),
                     [ M.read (| capacity |) ]
@@ -1118,6 +1297,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "new_in",
+                      [],
                       []
                     |),
                     [ M.read (| alloc |) ]
@@ -1155,6 +1335,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "with_capacity_in",
+                      [],
                       []
                     |),
                     [ M.read (| capacity |); M.read (| alloc |) ]
@@ -1194,9 +1375,10 @@ Module collections.
                                   []
                                   [ T; A ],
                                 "is_empty",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1210,7 +1392,11 @@ Module collections.
                             Value.StructRecord
                               "alloc::collections::binary_heap::PeekMut"
                               [
-                                ("heap", M.read (| self |));
+                                ("heap",
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |));
                                 ("original_len", Value.StructTuple "core::option::Option::None" [])
                               ]
                           ]
@@ -1247,6 +1433,7 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "map",
+                [],
                 [ T; Ty.function [ Ty.tuple [ T ] ] T ]
               |),
               [
@@ -1254,13 +1441,17 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "pop",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::binary_heap::BinaryHeap",
-                      "data"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |)
                     |)
                   ]
                 |);
@@ -1295,9 +1486,15 @@ Module collections.
                                                             []
                                                             [ T; A ],
                                                           "is_empty",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| self |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)
                                                   |)) in
@@ -1315,26 +1512,48 @@ Module collections.
                                                       [ T ]
                                                     |),
                                                     [
-                                                      item;
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::index::IndexMut",
-                                                          Ty.apply
-                                                            (Ty.path "alloc::vec::Vec")
-                                                            []
-                                                            [ T; A ],
-                                                          [ Ty.path "usize" ],
-                                                          "index_mut",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "alloc::collections::binary_heap::BinaryHeap",
-                                                            "data"
-                                                          |);
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        ]
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.MutRef, item |)
+                                                        |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::index::IndexMut",
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [ T; A ],
+                                                                  [],
+                                                                  [ Ty.path "usize" ],
+                                                                  "index_mut",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "alloc::collections::binary_heap::BinaryHeap",
+                                                                      "data"
+                                                                    |)
+                                                                  |);
+                                                                  Value.Integer IntegerKind.Usize 0
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1349,10 +1568,14 @@ Module collections.
                                                         []
                                                         [ T; A ],
                                                       "sift_down_to_bottom",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| self |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |);
                                                       Value.Integer IntegerKind.Usize 0
                                                     ]
                                                   |)
@@ -1399,9 +1622,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1410,13 +1634,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "push",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       M.read (| item |)
                     ]
@@ -1428,9 +1656,14 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_up",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| old_len |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      Value.Integer IntegerKind.Usize 0;
+                      M.read (| old_len |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1481,9 +1714,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
-                    [ self ]
+                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1520,13 +1754,17 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "as_mut_ptr",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "alloc::collections::binary_heap::BinaryHeap",
-                                        "data"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "alloc::collections::binary_heap::BinaryHeap",
+                                          "data"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1541,6 +1779,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| ptr |); M.read (| end_ |) ]
@@ -1558,9 +1797,14 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "sift_down_range",
+                                    [],
                                     []
                                   |),
-                                  [ self; Value.Integer IntegerKind.Usize 0; M.read (| end_ |) ]
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, self |);
+                                    Value.Integer IntegerKind.Usize 0;
+                                    M.read (| end_ |)
+                                  ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -1583,6 +1827,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                     "into_vec",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1635,24 +1880,40 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "new",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::BinaryHeap",
-                            "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::binary_heap::BinaryHeap",
+                                      "data"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |);
                       M.read (| pos |)
                     ]
@@ -1677,9 +1938,10 @@ Module collections.
                                           []
                                           [ T ],
                                         "pos",
+                                        [],
                                         []
                                       |),
-                                      [ hole ]
+                                      [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                                     |),
                                     M.read (| start |)
                                   |)
@@ -1697,9 +1959,10 @@ Module collections.
                                           []
                                           [ T ],
                                         "pos",
+                                        [],
                                         []
                                       |),
-                                      [ hole ]
+                                      [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                                     |),
                                     Value.Integer IntegerKind.Usize 1
                                   |),
@@ -1719,37 +1982,55 @@ Module collections.
                                               M.get_trait_method (|
                                                 "core::cmp::PartialOrd",
                                                 Ty.apply (Ty.path "&") [] [ T ],
+                                                [],
                                                 [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                 "le",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::binary_heap::Hole")
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::binary_heap::Hole")
+                                                          []
+                                                          [ T ],
+                                                        "element",
+                                                        [],
                                                         []
-                                                        [ T ],
-                                                      "element",
-                                                      []
-                                                    |),
-                                                    [ hole ]
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, hole |) ]
+                                                    |)
                                                   |)
                                                 |);
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::binary_heap::Hole")
-                                                        []
-                                                        [ T ],
-                                                      "get",
-                                                      []
-                                                    |),
-                                                    [ hole; M.read (| parent |) ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::binary_heap::Hole")
+                                                              []
+                                                              [ T ],
+                                                            "get",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (| Pointer.Kind.Ref, hole |);
+                                                            M.read (| parent |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -1775,9 +2056,10 @@ Module collections.
                                       []
                                       [ T ],
                                     "move_to",
+                                    [],
                                     []
                                   |),
-                                  [ hole; M.read (| parent |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, hole |); M.read (| parent |) ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -1800,9 +2082,10 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                     "pos",
+                    [],
                     []
                   |),
-                  [ hole ]
+                  [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                 |)
               |)
             |)))
@@ -1873,24 +2156,40 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                              [],
-                              "deref_mut",
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::binary_heap::BinaryHeap",
-                                "data"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::binary_heap::BinaryHeap",
+                                          "data"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |);
                           M.read (| pos |)
                         ]
@@ -1905,9 +2204,10 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                               "pos",
+                              [],
                               []
                             |),
-                            [ hole ]
+                            [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                           |)
                         |),
                         Value.Integer IntegerKind.Usize 1
@@ -1930,6 +2230,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "saturating_sub",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| end_ |); Value.Integer IntegerKind.Usize 2 ]
@@ -1947,48 +2248,67 @@ Module collections.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.apply (Ty.path "&") [] [ T ],
+                                            [],
                                             [ Ty.apply (Ty.path "&") [] [ T ] ],
                                             "le",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::binary_heap::Hole")
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::binary_heap::Hole")
+                                                      []
+                                                      [ T ],
+                                                    "get",
+                                                    [],
                                                     []
-                                                    [ T ],
-                                                  "get",
-                                                  []
-                                                |),
-                                                [ hole; M.read (| child |) ]
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, hole |);
+                                                    M.read (| child |)
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::binary_heap::Hole")
-                                                    []
-                                                    [ T ],
-                                                  "get",
-                                                  []
-                                                |),
-                                                [
-                                                  hole;
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| child |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::binary_heap::Hole")
+                                                          []
+                                                          [ T ],
+                                                        "get",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (| Pointer.Kind.Ref, hole |);
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| child |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
+                                                      ]
+                                                    |)
                                                   |)
-                                                ]
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -2008,37 +2328,58 @@ Module collections.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Ty.apply (Ty.path "&") [] [ T ],
+                                                    [],
                                                     [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                     "ge",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::binary_heap::Hole")
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::binary_heap::Hole")
+                                                              []
+                                                              [ T ],
+                                                            "element",
+                                                            [],
                                                             []
-                                                            [ T ],
-                                                          "element",
-                                                          []
-                                                        |),
-                                                        [ hole ]
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, hole |) ]
+                                                        |)
                                                       |)
                                                     |);
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::binary_heap::Hole")
-                                                            []
-                                                            [ T ],
-                                                          "get",
-                                                          []
-                                                        |),
-                                                        [ hole; M.read (| child |) ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::binary_heap::Hole")
+                                                                  []
+                                                                  [ T ],
+                                                                "get",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  hole
+                                                                |);
+                                                                M.read (| child |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)
                                                     |)
                                                   ]
@@ -2066,9 +2407,11 @@ Module collections.
                                           []
                                           [ T ],
                                         "move_to",
+                                        [],
                                         []
                                       |),
-                                      [ hole; M.read (| child |) ]
+                                      [ M.borrow (| Pointer.Kind.MutRef, hole |); M.read (| child |)
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -2084,9 +2427,10 @@ Module collections.
                                               []
                                               [ T ],
                                             "pos",
+                                            [],
                                             []
                                           |),
-                                          [ hole ]
+                                          [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                                         |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
@@ -2130,35 +2474,54 @@ Module collections.
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
                                         Ty.apply (Ty.path "&") [] [ T ],
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         "lt",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::binary_heap::Hole")
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::binary_heap::Hole")
+                                                  []
+                                                  [ T ],
+                                                "element",
+                                                [],
                                                 []
-                                                [ T ],
-                                              "element",
-                                              []
-                                            |),
-                                            [ hole ]
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, hole |) ]
+                                            |)
                                           |)
                                         |);
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::binary_heap::Hole")
-                                                []
-                                                [ T ],
-                                              "get",
-                                              []
-                                            |),
-                                            [ hole; M.read (| child |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::binary_heap::Hole")
+                                                      []
+                                                      [ T ],
+                                                    "get",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, hole |);
+                                                    M.read (| child |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -2176,9 +2539,10 @@ Module collections.
                                     []
                                     [ T ],
                                   "move_to",
+                                  [],
                                   []
                                 |),
-                                [ hole; M.read (| child |) ]
+                                [ M.borrow (| Pointer.Kind.MutRef, hole |); M.read (| child |) ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2216,9 +2580,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -2227,9 +2592,14 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_down_range",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| pos |); M.read (| len |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| pos |);
+                      M.read (| len |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2297,9 +2667,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ start := M.copy (| pos |) in
@@ -2309,24 +2680,40 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "new",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::BinaryHeap",
-                            "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::binary_heap::BinaryHeap",
+                                      "data"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |);
                       M.read (| pos |)
                     ]
@@ -2341,9 +2728,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                           "pos",
+                          [],
                           []
                         |),
-                        [ hole ]
+                        [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                       |)
                     |),
                     Value.Integer IntegerKind.Usize 1
@@ -2366,6 +2754,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "saturating_sub",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| end_ |); Value.Integer IntegerKind.Usize 2 ]
@@ -2380,46 +2769,66 @@ Module collections.
                                 β,
                                 BinOp.Wrap.add (|
                                   M.read (| β |),
-                                  M.rust_cast
+                                  M.cast
+                                    (Ty.path "usize")
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
                                         Ty.apply (Ty.path "&") [] [ T ],
+                                        [],
                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         "le",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::binary_heap::Hole")
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::binary_heap::Hole")
+                                                  []
+                                                  [ T ],
+                                                "get",
+                                                [],
                                                 []
-                                                [ T ],
-                                              "get",
-                                              []
-                                            |),
-                                            [ hole; M.read (| child |) ]
+                                              |),
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, hole |);
+                                                M.read (| child |)
+                                              ]
+                                            |)
                                           |)
                                         |);
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::binary_heap::Hole")
-                                                []
-                                                [ T ],
-                                              "get",
-                                              []
-                                            |),
-                                            [
-                                              hole;
-                                              BinOp.Wrap.add (|
-                                                M.read (| child |),
-                                                Value.Integer IntegerKind.Usize 1
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::binary_heap::Hole")
+                                                      []
+                                                      [ T ],
+                                                    "get",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, hole |);
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| child |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -2435,9 +2844,10 @@ Module collections.
                                       []
                                       [ T ],
                                     "move_to",
+                                    [],
                                     []
                                   |),
-                                  [ hole; M.read (| child |) ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, hole |); M.read (| child |) ]
                                 |)
                               |) in
                             let~ _ :=
@@ -2453,9 +2863,10 @@ Module collections.
                                           []
                                           [ T ],
                                         "pos",
+                                        [],
                                         []
                                       |),
-                                      [ hole ]
+                                      [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                                     |)
                                   |),
                                   Value.Integer IntegerKind.Usize 1
@@ -2501,9 +2912,10 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                                 "move_to",
+                                [],
                                 []
                               |),
-                              [ hole; M.read (| child |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, hole |); M.read (| child |) ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -2517,9 +2929,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "pos",
+                      [],
                       []
                     |),
-                    [ hole ]
+                    [ M.borrow (| Pointer.Kind.Ref, hole |) ]
                   |)
                 |) in
               let~ _ :=
@@ -2539,9 +2952,14 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_up",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| start |); M.read (| pos |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| start |);
+                      M.read (| pos |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2623,9 +3041,15 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -2647,9 +3071,10 @@ Module collections.
                               []
                               [ T; A ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |),
                         M.read (| start |)
                       |)
@@ -2691,9 +3116,15 @@ Module collections.
                                                     []
                                                     [ T; A ],
                                                   "len",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| self |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
                                               |),
                                               Value.Integer IntegerKind.Usize 2048
                                             |)
@@ -2715,9 +3146,15 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           BinOp.Wrap.mul (|
@@ -2726,6 +3163,7 @@ Module collections.
                                               M.get_associated_function (|
                                                 Self,
                                                 "log2_fast.rebuild_tail",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| start |) ]
@@ -2747,9 +3185,15 @@ Module collections.
                                                   []
                                                   [ T; A ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| self |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           BinOp.Wrap.mul (|
@@ -2780,9 +3224,15 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "rebuild",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2799,7 +3249,9 @@ Module collections.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2816,9 +3268,15 @@ Module collections.
                                                 []
                                                 [ T; A ],
                                               "len",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |))
                                       ]
                                   ]
@@ -2841,10 +3299,19 @@ Module collections.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -2877,10 +3344,14 @@ Module collections.
                                                             []
                                                             [ T; A ],
                                                           "sift_up",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.read (| self |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |);
                                                           Value.Integer IntegerKind.Usize 0;
                                                           M.read (| i |)
                                                         ]
@@ -2933,9 +3404,10 @@ Module collections.
                           []
                           [ T; A ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
                     Value.Integer IntegerKind.Usize 2
                   |)
@@ -2969,9 +3441,16 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "sift_down",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| n |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |);
+                                  M.read (| n |)
+                                ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -3035,9 +3514,11 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3046,9 +3527,15 @@ Module collections.
                                       []
                                       [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| other |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| other |) |)
+                                    |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -3067,7 +3554,10 @@ Module collections.
                                     [ T; A ]
                                 ]
                               |),
-                              [ M.read (| self |); M.read (| other |) ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| other |) |) |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -3080,13 +3570,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |)
                     ]
                   |)
@@ -3097,18 +3591,30 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "alloc::collections::binary_heap::BinaryHeap",
+                              "data"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -3119,9 +3625,13 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild_tail",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| start |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| start |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3151,7 +3661,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::DrainSorted"
-              [ ("inner", M.read (| self |)) ]))
+              [ ("inner", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3200,11 +3710,12 @@ Module collections.
                               []
                               [ T; A ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |));
-                      ("heap", M.read (| self |))
+                      ("heap", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
                     ]
                 |) in
               let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
@@ -3214,6 +3725,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "retain",
+                      [],
                       [
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
@@ -3221,16 +3733,21 @@ Module collections.
                       ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            guard,
-                            "alloc::collections::binary_heap::RebuildOnDrop",
-                            "heap"
-                          |)
-                        |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                guard,
+                                "alloc::collections::binary_heap::RebuildOnDrop",
+                                "heap"
+                              |)
+                            |)
+                          |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       M.closure
                         (fun γ =>
@@ -3251,11 +3768,22 @@ Module collections.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
-                                                [ f; Value.Tuple [ M.read (| e |) ] ]
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
+                                                  Value.Tuple
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| e |) |)
+                                                      |)
+                                                    ]
+                                                ]
                                               |)
                                             |) in
                                           let~ _ :=
@@ -3343,23 +3871,38 @@ Module collections.
               [
                 ("iter",
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter",
+                      [],
+                      []
+                    |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::BinaryHeap",
-                            "data"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::binary_heap::BinaryHeap",
+                                  "data"
+                                |)
+                              |)
+                            ]
                           |)
-                        ]
+                        |)
                       |)
                     ]
                   |))
@@ -3412,24 +3955,35 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ T ],
                 "get",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::binary_heap::BinaryHeap",
-                      "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                        [],
+                        [],
+                        "deref",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::BinaryHeap",
+                            "data"
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |);
                 Value.Integer IntegerKind.Usize 0
               ]
@@ -3456,13 +4010,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "capacity",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::BinaryHeap",
+                    "data"
+                  |)
                 |)
               ]
             |)))
@@ -3497,13 +4055,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "reserve_exact",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       M.read (| additional |)
                     ]
@@ -3537,13 +4099,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "reserve",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       M.read (| additional |)
                     ]
@@ -3579,13 +4145,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "try_reserve_exact",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::BinaryHeap",
+                    "data"
+                  |)
                 |);
                 M.read (| additional |)
               ]
@@ -3618,13 +4188,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "try_reserve",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::BinaryHeap",
+                    "data"
+                  |)
                 |);
                 M.read (| additional |)
               ]
@@ -3659,13 +4233,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "shrink_to_fit",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |)
                     ]
                   |)
@@ -3695,13 +4273,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "shrink_to",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::BinaryHeap",
+                    "data"
+                  |)
                 |);
                 M.read (| min_capacity |)
               ]
@@ -3724,19 +4306,28 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                "as_slice",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "as_slice",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3760,8 +4351,10 @@ Module collections.
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
+                [],
                 [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                 "into",
+                [],
                 []
               |),
               [ M.read (| self |) ]
@@ -3784,19 +4377,28 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::BinaryHeap",
+                        "data"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3820,13 +4422,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "len",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::BinaryHeap",
-                  "data"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::BinaryHeap",
+                    "data"
+                  |)
                 |)
               ]
             |)))
@@ -3853,9 +4459,10 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                   "len",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |),
               Value.Integer IntegerKind.Usize 0
             |)))
@@ -3885,13 +4492,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "drain",
+                      [],
                       [ Ty.path "core::ops::range::RangeFull" ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       Value.StructTuple "core::ops::range::RangeFull" []
                     ]
@@ -3922,9 +4533,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "drain",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3996,9 +4608,15 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| data |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| data |) |)
+                                                |)
+                                              ]
                                             |)
                                           |)
                                         |)
@@ -4032,13 +4650,22 @@ Module collections.
                   M.call_closure (|
                     M.get_function (| "core::ptr::read", [], [ T ] |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ T ],
-                          "get_unchecked",
-                          [ Ty.path "usize" ]
-                        |),
-                        [ M.read (| data |); M.read (| pos |) ]
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ T ],
+                              "get_unchecked",
+                              [],
+                              [ Ty.path "usize" ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                              M.read (| pos |)
+                            ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -4047,12 +4674,13 @@ Module collections.
                 Value.StructRecord
                   "alloc::collections::binary_heap::Hole"
                   [
-                    ("data", M.read (| data |));
+                    ("data", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |));
                     ("elt",
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| elt |) ]
@@ -4081,7 +4709,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "alloc::collections::binary_heap::Hole",
                 "pos"
               |)
@@ -4104,21 +4732,36 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::Deref",
-                Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                [],
-                "deref",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Hole",
-                  "elt"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::deref::Deref",
+                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
+                    [],
+                    [],
+                    "deref",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::Hole",
+                            "elt"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4165,7 +4808,7 @@ Module collections.
                                             M.read (| index |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "alloc::collections::binary_heap::Hole",
                                                 "pos"
                                               |)
@@ -4222,14 +4865,20 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::binary_heap::Hole",
-                                                    "data"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloc::collections::binary_heap::Hole",
+                                                        "data"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -4262,22 +4911,33 @@ Module collections.
                   ]
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ T ],
-                    "get_unchecked",
-                    [ Ty.path "usize" ]
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::Hole",
-                        "data"
-                      |)
-                    |);
-                    M.read (| index |)
-                  ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        "get_unchecked",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::binary_heap::Hole",
+                                "data"
+                              |)
+                            |)
+                          |)
+                        |);
+                        M.read (| index |)
+                      ]
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -4332,7 +4992,7 @@ Module collections.
                                             M.read (| index |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "alloc::collections::binary_heap::Hole",
                                                 "pos"
                                               |)
@@ -4389,14 +5049,20 @@ Module collections.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::binary_heap::Hole",
-                                                    "data"
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloc::collections::binary_heap::Hole",
+                                                        "data"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -4435,14 +5101,20 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::Hole",
-                            "data"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::collections::binary_heap::Hole",
+                                "data"
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -4456,6 +5128,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [ M.read (| ptr |); M.read (| index |) ]
@@ -4464,12 +5137,17 @@ Module collections.
                 let~ hole_ptr :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [
                         M.read (| ptr |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "alloc::collections::binary_heap::Hole",
                             "pos"
                           |)
@@ -4492,7 +5170,7 @@ Module collections.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::collections::binary_heap::Hole",
                     "pos"
                   |),
@@ -4531,7 +5209,7 @@ Module collections.
               let~ pos :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "alloc::collections::binary_heap::Hole",
                     "pos"
                   |)
@@ -4541,38 +5219,67 @@ Module collections.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::Hole",
-                            "elt"
-                          |)
-                        ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ T ],
-                          "get_unchecked_mut",
-                          [ Ty.path "usize" ]
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::Hole",
-                              "data"
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ T ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::binary_heap::Hole",
+                                      "elt"
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
-                          |);
-                          M.read (| pos |)
-                        ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.MutPointer,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ T ],
+                              "get_unchecked_mut",
+                              [],
+                              [ Ty.path "usize" ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::binary_heap::Hole",
+                                      "data"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.read (| pos |)
+                            ]
+                          |)
+                        |)
                       |);
                       Value.Integer IntegerKind.Usize 1
                     ]
@@ -4623,7 +5330,9 @@ Module collections.
                       "core::default::Default",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -4661,43 +5370,72 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "Iter" |) ]
-                      |)
-                    |);
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                          "as_slice",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::Iter",
-                            "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "Iter" |) |)
+                                |)
+                              ]
+                            |)
                           |)
-                        ]
-                      |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                    "as_slice",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::binary_heap::Iter",
+                                        "iter"
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -4737,14 +5475,19 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::Iter",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::Iter",
+                          "iter"
+                        |)
                       |)
                     ]
                   |))
@@ -4784,14 +5527,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Iter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Iter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -4814,14 +5562,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Iter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Iter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -4844,7 +5597,9 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "last",
+                [],
                 []
               |),
               [
@@ -4895,14 +5650,19 @@ Module collections.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Iter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Iter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -4938,14 +5698,19 @@ Module collections.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Iter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Iter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5002,14 +5767,24 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::IntoIter",
-                        "iter"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::binary_heap::IntoIter",
+                              "iter"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -5041,19 +5816,28 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIter",
-                  "iter"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::IntoIter",
+                        "iter"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5083,43 +5867,75 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
-                      |)
-                    |);
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
-                          "as_slice",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::binary_heap::IntoIter",
-                            "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                |)
+                              ]
+                            |)
                           |)
-                        ]
-                      |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      []
+                                      [ T; A ],
+                                    "as_slice",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::binary_heap::IntoIter",
+                                        "iter"
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -5158,14 +5974,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::IntoIter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5188,14 +6009,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::IntoIter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5236,14 +6062,19 @@ Module collections.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::IntoIter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5279,14 +6110,19 @@ Module collections.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIter",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::IntoIter",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5357,7 +6193,9 @@ Module collections.
                         []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -5394,7 +6232,10 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| self |)))
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -5429,6 +6270,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
+                  [],
                   []
                 |),
                 [ Value.Integer IntegerKind.Usize 1 ]
@@ -5449,6 +6291,7 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
+                  [],
                   []
                 |),
                 [ Value.Integer IntegerKind.Usize 1 ]
@@ -5494,10 +6337,23 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "alloc::collections::binary_heap::IntoIter",
-              "iter"
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::IntoIter",
+                        "iter"
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5545,14 +6401,24 @@ Module collections.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::IntoIterSorted",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::binary_heap::IntoIterSorted",
+                              "inner"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -5585,17 +6451,32 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "IntoIterSorted" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::binary_heap::IntoIterSorted",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "IntoIterSorted" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::IntoIterSorted",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -5627,19 +6508,28 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIterSorted",
-                  "inner"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::IntoIterSorted",
+                        "inner"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5671,13 +6561,17 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "pop",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::IntoIterSorted",
-                  "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::IntoIterSorted",
+                    "inner"
+                  |)
                 |)
               ]
             |)))
@@ -5703,13 +6597,17 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::binary_heap::IntoIterSorted",
-                        "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::binary_heap::IntoIterSorted",
+                          "inner"
+                        |)
                       |)
                     ]
                   |)
@@ -5802,17 +6700,29 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Drain" |);
-                M.read (| Value.String "iter" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::binary_heap::Drain",
-                    "iter"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Drain" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::Drain",
+                            "iter"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -5844,19 +6754,28 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Drain",
-                  "iter"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::Drain",
+                        "iter"
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5889,14 +6808,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
+                [],
                 "next",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Drain",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Drain",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5919,14 +6843,19 @@ Module collections.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Drain",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Drain",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -5967,14 +6896,19 @@ Module collections.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
+                [],
                 "next_back",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Drain",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Drain",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -6010,14 +6944,19 @@ Module collections.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
+                [],
                 "is_empty",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::collections::binary_heap::Drain",
-                  "iter"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::collections::binary_heap::Drain",
+                    "iter"
+                  |)
                 |)
               ]
             |)))
@@ -6077,17 +7016,32 @@ Module collections.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "DrainSorted" |);
-                M.read (| Value.String "inner" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::binary_heap::DrainSorted",
-                    "inner"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "DrainSorted" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::DrainSorted",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -6119,21 +7073,32 @@ Module collections.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
-                "allocator",
-                []
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::binary_heap::DrainSorted",
-                    "inner"
-                  |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
+                    "allocator",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::binary_heap::DrainSorted",
+                            "inner"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6187,14 +7152,20 @@ Module collections.
                                     []
                                     [ T; A ],
                                   "pop",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::binary_heap::DrainSorted",
-                                      "inner"
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::binary_heap::DrainSorted",
+                                          "inner"
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 ]
@@ -6211,7 +7182,12 @@ Module collections.
                             M.alloc (|
                               Value.StructTuple
                                 "alloc::collections::binary_heap::drop::DropGuard"
-                                [ M.read (| self |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
                             |) in
                           let~ _ :=
                             M.alloc (|
@@ -6286,14 +7262,20 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "pop",
+                [],
                 []
               |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::binary_heap::DrainSorted",
-                    "inner"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::collections::binary_heap::DrainSorted",
+                        "inner"
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -6320,14 +7302,20 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::binary_heap::DrainSorted",
-                          "inner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::binary_heap::DrainSorted",
+                              "inner"
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -6427,9 +7415,10 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild",
+                      [],
                       []
                     |),
-                    [ heap ]
+                    [ M.borrow (| Pointer.Kind.MutRef, heap |) ]
                   |)
                 |) in
               heap
@@ -6477,8 +7466,10 @@ Module collections.
                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ T ],
                 "from_iter",
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [ M.read (| arr |) ]
@@ -6554,8 +7545,10 @@ Module collections.
                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
+                [],
                 [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ],
                 "from",
+                [],
                 []
               |),
               [
@@ -6564,7 +7557,9 @@ Module collections.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "collect",
+                    [],
                     [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
                     ]
                   |),
@@ -6574,7 +7569,9 @@ Module collections.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -6626,7 +7623,9 @@ Module collections.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [
@@ -6686,9 +7685,10 @@ Module collections.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "iter",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6738,11 +7738,12 @@ Module collections.
                               []
                               [ T; A ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |));
-                      ("heap", M.read (| self |))
+                      ("heap", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
                     ]
                 |) in
               let~ _ :=
@@ -6751,21 +7752,28 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [ I ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            guard,
-                            "alloc::collections::binary_heap::RebuildOnDrop",
-                            "heap"
-                          |)
-                        |),
-                        "alloc::collections::binary_heap::BinaryHeap",
-                        "data"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                guard,
+                                "alloc::collections::binary_heap::RebuildOnDrop",
+                                "heap"
+                              |)
+                            |)
+                          |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |)
                       |);
                       M.read (| iter |)
                     ]
@@ -6800,9 +7808,13 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "push",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| item |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| item |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6834,9 +7846,13 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "reserve",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| additional |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| additional |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6881,8 +7897,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
+                      [],
                       [ T ],
                       "extend",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -6891,13 +7909,15 @@ Module collections.
                       ]
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ T ]
                         |),
                         [
@@ -6906,7 +7926,9 @@ Module collections.
                               "core::iter::traits::collect::IntoIterator",
                               I,
                               [],
+                              [],
                               "into_iter",
+                              [],
                               []
                             |),
                             [ M.read (| iter |) ]
@@ -6955,9 +7977,13 @@ Module collections.
                                 []
                                 [ T; A ],
                               "push",
+                              [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| item |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.read (| item |)
+                            ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)
@@ -6991,9 +8017,13 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "reserve",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| additional |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| additional |)
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

@@ -90,10 +90,12 @@ Module errors.
                               "core::clone::Clone",
                               Ty.path "move_core_types::language_storage::ModuleId",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -138,9 +140,16 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Undefined" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Undefined" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -158,9 +167,20 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Module" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Module" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -227,7 +247,7 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -238,14 +258,23 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_discr; __arg1_discr ]
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                    |)
+                  ]
                 |)
               |),
               [
@@ -281,10 +310,21 @@ Module errors.
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::language_storage::ModuleId",
                                   [],
+                                  [],
                                   "cmp",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __self_0 |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| __arg1_0 |) |)
+                                  |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -340,7 +380,7 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -351,7 +391,7 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -390,6 +430,7 @@ Module errors.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -397,9 +438,13 @@ Module errors.
                                       [ Ty.path "move_core_types::language_storage::ModuleId" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -439,7 +484,7 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -450,7 +495,7 @@ Module errors.
                     [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -481,11 +526,16 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::language_storage::ModuleId",
+                          [],
                           [ Ty.path "move_core_types::language_storage::ModuleId" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -495,11 +545,22 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
+                          [],
                           [ Ty.path "isize" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
-                        [ __self_discr; __arg1_discr ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -568,14 +629,24 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::ExecutionState",
-                      "stack_trace"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::ExecutionState",
+                            "stack_trace"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -605,17 +676,35 @@ Module errors.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ExecutionState" |);
-              M.read (| Value.String "stack_trace" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::errors::ExecutionState",
-                  "stack_trace"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "ExecutionState" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "stack_trace" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::errors::ExecutionState",
+                          "stack_trace"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -688,19 +777,37 @@ Module errors.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::ExecutionState",
+                      "stack_trace"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::errors::ExecutionState",
+                      "stack_trace"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -751,6 +858,7 @@ Module errors.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -766,18 +874,25 @@ Module errors.
                   ]
               ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::errors::ExecutionState",
+                  "stack_trace"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_binary_format::errors::ExecutionState",
+                  "stack_trace"
+                |)
               |)
             ]
           |)))
@@ -817,6 +932,7 @@ Module errors.
                     ];
                   Ty.path "alloc::alloc::Global"
                 ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -832,18 +948,35 @@ Module errors.
                   ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::ExecutionState",
+                      "stack_trace"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "move_binary_format::errors::ExecutionState",
-                "stack_trace"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::errors::ExecutionState",
+                      "stack_trace"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -889,10 +1022,18 @@ Module errors.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "move_binary_format::errors::ExecutionState",
-            "stack_trace"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::errors::ExecutionState",
+                  "stack_trace"
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -935,14 +1076,24 @@ Module errors.
                     [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_binary_format::errors::VMError",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::errors::VMError",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1007,19 +1158,37 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::VMError",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::errors::VMError",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1062,6 +1231,7 @@ Module errors.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -1069,18 +1239,25 @@ Module errors.
                   [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ]
               ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_binary_format::errors::VMError",
+                  0
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_binary_format::errors::VMError",
+                  0
+                |)
               |)
             ]
           |)))
@@ -1112,6 +1289,7 @@ Module errors.
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -1119,18 +1297,35 @@ Module errors.
                   [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::VMError",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::errors::VMError",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -1203,14 +1398,24 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1220,14 +1425,24 @@ Module errors.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "sub_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "sub_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1240,14 +1455,24 @@ Module errors.
                       []
                       [ Ty.path "alloc::string::String" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "message"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "message"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1260,14 +1485,24 @@ Module errors.
                       []
                       [ Ty.path "move_binary_format::errors::ExecutionState" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "exec_state"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "exec_state"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1277,14 +1512,24 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_binary_format::errors::Location",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "location"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "location"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1300,14 +1545,24 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "indices"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -1327,14 +1582,24 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "offsets"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "offsets"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -1445,19 +1710,37 @@ Module errors.
                     "core::cmp::Ord",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::errors::VMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::errors::VMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1473,19 +1756,37 @@ Module errors.
                             "core::cmp::Ord",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             [],
+                            [],
                             "cmp",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::errors::VMError_",
+                                    "sub_status"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::errors::VMError_",
+                                    "sub_status"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1504,19 +1805,37 @@ Module errors.
                                       []
                                       [ Ty.path "alloc::string::String" ],
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_binary_format::errors::VMError_",
-                                      "message"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::errors::VMError_",
+                                            "message"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "move_binary_format::errors::VMError_",
-                                      "message"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "move_binary_format::errors::VMError_",
+                                            "message"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1537,19 +1856,37 @@ Module errors.
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
                                             [],
+                                            [],
                                             "cmp",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_binary_format::errors::VMError_",
-                                              "exec_state"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::errors::VMError_",
+                                                    "exec_state"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "move_binary_format::errors::VMError_",
-                                              "exec_state"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "move_binary_format::errors::VMError_",
+                                                    "exec_state"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1569,19 +1906,37 @@ Module errors.
                                                     "core::cmp::Ord",
                                                     Ty.path "move_binary_format::errors::Location",
                                                     [],
+                                                    [],
                                                     "cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_binary_format::errors::VMError_",
-                                                      "location"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_binary_format::errors::VMError_",
+                                                            "location"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| other |),
-                                                      "move_binary_format::errors::VMError_",
-                                                      "location"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| other |) |),
+                                                            "move_binary_format::errors::VMError_",
+                                                            "location"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1612,19 +1967,39 @@ Module errors.
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
                                                             [],
+                                                            [],
                                                             "cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_binary_format::errors::VMError_",
-                                                              "indices"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "move_binary_format::errors::VMError_",
+                                                                    "indices"
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| other |),
-                                                              "move_binary_format::errors::VMError_",
-                                                              "indices"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (|
+                                                                      M.read (| other |)
+                                                                    |),
+                                                                    "move_binary_format::errors::VMError_",
+                                                                    "indices"
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -1654,19 +2029,41 @@ Module errors.
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
                                                                   [],
+                                                                  [],
                                                                   "cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "move_binary_format::errors::VMError_",
-                                                                    "offsets"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_binary_format::errors::VMError_",
+                                                                          "offsets"
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| other |),
-                                                                    "move_binary_format::errors::VMError_",
-                                                                    "offsets"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| other |)
+                                                                          |),
+                                                                          "move_binary_format::errors::VMError_",
+                                                                          "offsets"
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -1750,20 +2147,28 @@ Module errors.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "move_core_types::vm_status::StatusCode",
+                          [],
                           [ Ty.path "move_core_types::vm_status::StatusCode" ],
                           "eq",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::errors::VMError_",
-                            "major_status"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::errors::VMError_",
+                              "major_status"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::errors::VMError_",
-                            "major_status"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "move_binary_format::errors::VMError_",
+                              "major_status"
+                            |)
                           |)
                         ]
                       |),
@@ -1772,20 +2177,28 @@ Module errors.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            [],
                             [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                             "eq",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_binary_format::errors::VMError_",
+                                "sub_status"
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "move_binary_format::errors::VMError_",
+                                "sub_status"
+                              |)
                             |)
                           ]
                         |)))
@@ -1798,6 +2211,7 @@ Module errors.
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "alloc::string::String" ],
+                          [],
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1805,18 +2219,25 @@ Module errors.
                               [ Ty.path "alloc::string::String" ]
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::errors::VMError_",
-                            "message"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::errors::VMError_",
+                              "message"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "move_binary_format::errors::VMError_",
-                            "message"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "move_binary_format::errors::VMError_",
+                              "message"
+                            |)
                           |)
                         ]
                       |)))
@@ -1829,6 +2250,7 @@ Module errors.
                           (Ty.path "core::option::Option")
                           []
                           [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1836,18 +2258,25 @@ Module errors.
                             [ Ty.path "move_binary_format::errors::ExecutionState" ]
                         ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "move_binary_format::errors::VMError_",
-                          "exec_state"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "exec_state"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "move_binary_format::errors::VMError_",
-                          "exec_state"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::errors::VMError_",
+                            "exec_state"
+                          |)
                         |)
                       ]
                     |)))
@@ -1857,20 +2286,28 @@ Module errors.
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "move_binary_format::errors::Location",
+                      [],
                       [ Ty.path "move_binary_format::errors::Location" ],
                       "eq",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "move_binary_format::errors::VMError_",
-                        "location"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::errors::VMError_",
+                          "location"
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "move_binary_format::errors::VMError_",
-                        "location"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "move_binary_format::errors::VMError_",
+                          "location"
+                        |)
                       |)
                     ]
                   |)))
@@ -1886,6 +2323,7 @@ Module errors.
                         Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1896,18 +2334,25 @@ Module errors.
                         ]
                     ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError_",
+                        "indices"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::errors::VMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "move_binary_format::errors::VMError_",
+                        "indices"
+                      |)
                     |)
                   ]
                 |)))
@@ -1927,6 +2372,7 @@ Module errors.
                         ];
                       Ty.path "alloc::alloc::Global"
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1941,18 +2387,25 @@ Module errors.
                       ]
                   ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::errors::VMError_",
-                    "offsets"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::VMError_",
+                      "offsets"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "move_binary_format::errors::VMError_",
-                    "offsets"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::errors::VMError_",
+                      "offsets"
+                    |)
                   |)
                 ]
               |)))
@@ -1985,20 +2438,38 @@ Module errors.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::vm_status::StatusCode",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::VMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "move_binary_format::errors::VMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "move_binary_format::errors::VMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -2019,20 +2490,38 @@ Module errors.
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            [],
                             [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
                             "partial_cmp",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::errors::VMError_",
+                                    "sub_status"
+                                  |)
+                                |)
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "move_binary_format::errors::VMError_",
-                              "sub_status"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "move_binary_format::errors::VMError_",
+                                    "sub_status"
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -2056,6 +2545,7 @@ Module errors.
                                       (Ty.path "core::option::Option")
                                       []
                                       [ Ty.path "alloc::string::String" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -2063,18 +2553,35 @@ Module errors.
                                         [ Ty.path "alloc::string::String" ]
                                     ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_binary_format::errors::VMError_",
-                                      "message"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "move_binary_format::errors::VMError_",
+                                            "message"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "move_binary_format::errors::VMError_",
-                                      "message"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "move_binary_format::errors::VMError_",
+                                            "message"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -2100,6 +2607,7 @@ Module errors.
                                               []
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2110,18 +2618,35 @@ Module errors.
                                                 ]
                                             ],
                                             "partial_cmp",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "move_binary_format::errors::VMError_",
-                                              "exec_state"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "move_binary_format::errors::VMError_",
+                                                    "exec_state"
+                                                  |)
+                                                |)
+                                              |)
                                             |);
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| other |),
-                                              "move_binary_format::errors::VMError_",
-                                              "exec_state"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "move_binary_format::errors::VMError_",
+                                                    "exec_state"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -2146,21 +2671,39 @@ Module errors.
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Ty.path "move_binary_format::errors::Location",
+                                                    [],
                                                     [ Ty.path "move_binary_format::errors::Location"
                                                     ],
                                                     "partial_cmp",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_binary_format::errors::VMError_",
-                                                      "location"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "move_binary_format::errors::VMError_",
+                                                            "location"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| other |),
-                                                      "move_binary_format::errors::VMError_",
-                                                      "location"
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| other |) |),
+                                                            "move_binary_format::errors::VMError_",
+                                                            "location"
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -2196,6 +2739,7 @@ Module errors.
                                                                   ];
                                                                 Ty.path "alloc::alloc::Global"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -2211,18 +2755,37 @@ Module errors.
                                                                 ]
                                                             ],
                                                             "partial_cmp",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "move_binary_format::errors::VMError_",
-                                                              "indices"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "move_binary_format::errors::VMError_",
+                                                                    "indices"
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| other |),
-                                                              "move_binary_format::errors::VMError_",
-                                                              "indices"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (|
+                                                                      M.read (| other |)
+                                                                    |),
+                                                                    "move_binary_format::errors::VMError_",
+                                                                    "indices"
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -2257,6 +2820,7 @@ Module errors.
                                                                         ];
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "alloc::vec::Vec")
@@ -2273,18 +2837,39 @@ Module errors.
                                                                       ]
                                                                   ],
                                                                   "partial_cmp",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "move_binary_format::errors::VMError_",
-                                                                    "offsets"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_binary_format::errors::VMError_",
+                                                                          "offsets"
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| other |),
-                                                                    "move_binary_format::errors::VMError_",
-                                                                    "offsets"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| other |)
+                                                                          |),
+                                                                          "move_binary_format::errors::VMError_",
+                                                                          "offsets"
+                                                                        |)
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -2352,11 +2937,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_binary_format::errors::VMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::errors::VMError",
+                    0
+                  |)
                 |)
               |),
               "move_binary_format::errors::VMError_",
@@ -2380,11 +2967,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_binary_format::errors::VMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::errors::VMError",
+                    0
+                  |)
                 |)
               |),
               "move_binary_format::errors::VMError_",
@@ -2410,19 +2999,25 @@ Module errors.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "alloc::string::String" ],
               "as_ref",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_binary_format::errors::VMError",
-                    0
-                  |)
-                |),
-                "move_binary_format::errors::VMError_",
-                "message"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
+                    |)
+                  |),
+                  "move_binary_format::errors::VMError_",
+                  "message"
+                |)
               |)
             ]
           |)))
@@ -2448,19 +3043,25 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::ExecutionState" ],
               "as_ref",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_binary_format::errors::VMError",
-                    0
-                  |)
-                |),
-                "move_binary_format::errors::VMError_",
-                "exec_state"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
+                    |)
+                  |),
+                  "move_binary_format::errors::VMError_",
+                  "exec_state"
+                |)
               |)
             ]
           |)))
@@ -2483,11 +3084,13 @@ Module errors.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError",
-                      0
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
                     |)
                   |),
                   "move_binary_format::errors::VMError_",
@@ -2513,16 +3116,26 @@ Module errors.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
+                    |)
+                  |),
+                  "move_binary_format::errors::VMError_",
+                  "location"
+                |)
               |)
-            |),
-            "move_binary_format::errors::VMError_",
-            "location"
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2539,16 +3152,26 @@ Module errors.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
+                    |)
+                  |),
+                  "move_binary_format::errors::VMError_",
+                  "indices"
+                |)
               |)
-            |),
-            "move_binary_format::errors::VMError_",
-            "indices"
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2565,16 +3188,26 @@ Module errors.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
+                    |)
+                  |),
+                  "move_binary_format::errors::VMError_",
+                  "offsets"
+                |)
               |)
-            |),
-            "move_binary_format::errors::VMError_",
-            "offsets"
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2595,16 +3228,19 @@ Module errors.
             M.get_associated_function (|
               Ty.path "move_core_types::vm_status::StatusCode",
               "status_type",
+              [],
               []
             |),
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::VMError",
-                      0
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::errors::VMError",
+                        0
+                      |)
                     |)
                   |),
                   "move_binary_format::errors::VMError_",
@@ -2657,11 +3293,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  self,
-                  "move_binary_format::errors::VMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "move_binary_format::errors::VMError",
+                    0
+                  |)
                 |)
               |),
               [
@@ -2764,11 +3402,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  self,
-                  "move_binary_format::errors::VMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "move_binary_format::errors::VMError",
+                    0
+                  |)
                 |)
               |),
               [
@@ -2830,6 +3470,7 @@ Module errors.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -2878,16 +3519,26 @@ Module errors.
                 []
                 [ Ty.path "move_binary_format::errors::VMError_"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::VMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::VMError",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2993,98 +3644,235 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "finish",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugStruct",
-                              "field",
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::builders::DebugStruct",
-                                      "field",
-                                      []
-                                    |),
-                                    [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           "field",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::builders::DebugStruct",
-                                              "field",
-                                              []
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugStruct",
                                                   "field",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::builders::DebugStruct",
-                                                      "field",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::Formatter",
-                                                            "debug_struct",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.read (| f |);
-                                                            M.read (| Value.String "VMError" |)
-                                                          ]
-                                                        |)
-                                                      |);
-                                                      M.read (| Value.String "major_status" |);
-                                                      M.read (| major_status |)
-                                                    ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::fmt::builders::DebugStruct",
+                                                          "field",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                  "field",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::builders::DebugStruct",
+                                                                          "field",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.deref (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::builders::DebugStruct",
+                                                                                  "field",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Formatter",
+                                                                                          "debug_struct",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.MutRef,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                f
+                                                                                              |)
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                Value.String
+                                                                                                  "VMError"
+                                                                                              |)
+                                                                                            |)
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "major_status"
+                                                                                      |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        major_status
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "sub_status"
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                sub_status
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        Value.String "message"
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| message |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (| Value.String "exec_state" |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| exec_state |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |);
-                                                  M.read (| Value.String "sub_status" |);
-                                                  M.read (| sub_status |)
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (| Value.String "location" |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| location |) |)
+                                                  |)
                                                 ]
-                                              |);
-                                              M.read (| Value.String "message" |);
-                                              M.read (| message |)
-                                            ]
+                                              |)
+                                            |)
                                           |);
-                                          M.read (| Value.String "exec_state" |);
-                                          M.read (| exec_state |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "indices" |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| indices |) |)
+                                          |)
                                         ]
-                                      |);
-                                      M.read (| Value.String "location" |);
-                                      M.read (| location |)
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.read (| Value.String "indices" |);
-                                  M.read (| indices |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "offsets" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| offsets |) |)
+                                  |)
                                 ]
-                              |);
-                              M.read (| Value.String "offsets" |);
-                              M.read (| offsets |)
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -3152,14 +3940,24 @@ Module errors.
                       Ty.path "alloc::alloc::Global"
                     ],
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_binary_format::errors::PartialVMError",
-                    0
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::errors::PartialVMError",
+                          0
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -3232,14 +4030,24 @@ Module errors.
                     "core::clone::Clone",
                     Ty.path "move_core_types::vm_status::StatusCode",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "major_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "major_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3249,14 +4057,24 @@ Module errors.
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "sub_status"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "sub_status"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3269,14 +4087,24 @@ Module errors.
                       []
                       [ Ty.path "alloc::string::String" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "message"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "message"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3289,14 +4117,24 @@ Module errors.
                       []
                       [ Ty.path "move_binary_format::errors::ExecutionState" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "exec_state"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "exec_state"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3312,14 +4150,24 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "indices"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -3339,14 +4187,24 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "offsets"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "offsets"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -3401,11 +4259,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  self,
-                  "move_binary_format::errors::PartialVMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "move_binary_format::errors::PartialVMError",
+                    0
+                  |)
                 |)
               |),
               [
@@ -3501,11 +4361,13 @@ Module errors.
           let location := M.alloc (| location |) in
           M.read (|
             M.match_operator (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  self,
-                  "move_binary_format::errors::PartialVMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "move_binary_format::errors::PartialVMError",
+                    0
+                  |)
                 |)
               |),
               [
@@ -3567,6 +4429,7 @@ Module errors.
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "new",
+                              [],
                               []
                             |),
                             [
@@ -3623,6 +4486,7 @@ Module errors.
                       Ty.path "alloc::alloc::Global"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 [
@@ -3644,6 +4508,7 @@ Module errors.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -3664,6 +4529,7 @@ Module errors.
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
+                            [],
                             []
                           |),
                           []
@@ -3689,11 +4555,13 @@ Module errors.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_binary_format::errors::PartialVMError",
-                  0
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "move_binary_format::errors::PartialVMError",
+                    0
+                  |)
                 |)
               |),
               "move_binary_format::errors::PartialVMError_",
@@ -3744,19 +4612,25 @@ Module errors.
                                               []
                                               [ Ty.path "u64" ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  self,
-                                                  "move_binary_format::errors::PartialVMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::PartialVMError_",
-                                              "sub_status"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      self,
+                                                      "move_binary_format::errors::PartialVMError",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |),
+                                                "move_binary_format::errors::PartialVMError_",
+                                                "sub_status"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -3790,11 +4664,13 @@ Module errors.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "move_binary_format::errors::PartialVMError",
-                      0
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "move_binary_format::errors::PartialVMError",
+                        0
+                      |)
                     |)
                   |),
                   "move_binary_format::errors::PartialVMError_",
@@ -3849,19 +4725,25 @@ Module errors.
                                               []
                                               [ Ty.path "alloc::string::String" ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  self,
-                                                  "move_binary_format::errors::PartialVMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::PartialVMError_",
-                                              "message"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      self,
+                                                      "move_binary_format::errors::PartialVMError",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |),
+                                                "move_binary_format::errors::PartialVMError_",
+                                                "message"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -3894,11 +4776,13 @@ Module errors.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "move_binary_format::errors::PartialVMError",
-                      0
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "move_binary_format::errors::PartialVMError",
+                        0
+                      |)
                     |)
                   |),
                   "move_binary_format::errors::PartialVMError_",
@@ -3953,19 +4837,25 @@ Module errors.
                                               [ Ty.path "move_binary_format::errors::ExecutionState"
                                               ],
                                             "is_none",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  self,
-                                                  "move_binary_format::errors::PartialVMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::PartialVMError_",
-                                              "exec_state"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      self,
+                                                      "move_binary_format::errors::PartialVMError",
+                                                      0
+                                                    |)
+                                                  |)
+                                                |),
+                                                "move_binary_format::errors::PartialVMError_",
+                                                "exec_state"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -3999,11 +4889,13 @@ Module errors.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "move_binary_format::errors::PartialVMError",
-                      0
+                  M.deref (|
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "move_binary_format::errors::PartialVMError",
+                        0
+                      |)
                     |)
                   |),
                   "move_binary_format::errors::PartialVMError_",
@@ -4045,19 +4937,25 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "move_binary_format::errors::PartialVMError",
-                          0
-                        |)
-                      |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "move_binary_format::errors::PartialVMError",
+                              0
+                            |)
+                          |)
+                        |),
+                        "move_binary_format::errors::PartialVMError_",
+                        "indices"
+                      |)
                     |);
                     Value.Tuple [ M.read (| kind |); M.read (| index |) ]
                   ]
@@ -4095,8 +4993,10 @@ Module errors.
                         Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [ Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ] ],
                     "extend",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -4108,16 +5008,21 @@ Module errors.
                     ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "move_binary_format::errors::PartialVMError",
-                          0
-                        |)
-                      |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "indices"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "move_binary_format::errors::PartialVMError",
+                              0
+                            |)
+                          |)
+                        |),
+                        "move_binary_format::errors::PartialVMError_",
+                        "indices"
+                      |)
                     |);
                     M.read (| additional_indices |)
                   ]
@@ -4160,19 +5065,25 @@ Module errors.
                         Ty.path "alloc::alloc::Global"
                       ],
                     "push",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "move_binary_format::errors::PartialVMError",
-                          0
-                        |)
-                      |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "offsets"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "move_binary_format::errors::PartialVMError",
+                              0
+                            |)
+                          |)
+                        |),
+                        "move_binary_format::errors::PartialVMError_",
+                        "offsets"
+                      |)
                     |);
                     Value.Tuple [ M.read (| function |); M.read (| offset |) ]
                   ]
@@ -4218,6 +5129,7 @@ Module errors.
                           ];
                         Ty.path "alloc::alloc::Global"
                       ],
+                    [],
                     [
                       Ty.tuple
                         [
@@ -4226,6 +5138,7 @@ Module errors.
                         ]
                     ],
                     "extend",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -4241,16 +5154,21 @@ Module errors.
                     ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "move_binary_format::errors::PartialVMError",
-                          0
-                        |)
-                      |),
-                      "move_binary_format::errors::PartialVMError_",
-                      "offsets"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "move_binary_format::errors::PartialVMError",
+                              0
+                            |)
+                          |)
+                        |),
+                        "move_binary_format::errors::PartialVMError_",
+                        "offsets"
+                      |)
                     |);
                     M.read (| additional_offsets |)
                   ]
@@ -4304,19 +5222,25 @@ Module errors.
                         []
                         [ Ty.path "alloc::string::String" ],
                       "as_mut",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            self,
-                            "move_binary_format::errors::PartialVMError",
-                            0
-                          |)
-                        |),
-                        "move_binary_format::errors::PartialVMError_",
-                        "message"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "move_binary_format::errors::PartialVMError",
+                                0
+                              |)
+                            |)
+                          |),
+                          "move_binary_format::errors::PartialVMError_",
+                          "message"
+                        |)
                       |)
                     ]
                   |)
@@ -4345,9 +5269,15 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "alloc::string::String",
                                             "is_empty",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| msg |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| msg |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -4362,9 +5292,16 @@ Module errors.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| msg |); M.read (| separator |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| msg |) |)
+                                        |);
+                                        M.read (| separator |)
+                                      ]
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -4377,19 +5314,34 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "push_str",
+                              [],
                               []
                             |),
                             [
-                              M.read (| msg |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "alloc::string::String",
-                                  [],
-                                  "deref",
-                                  []
-                                |),
-                                [ additional_message ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| msg |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.path "alloc::string::String",
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (| Pointer.Kind.Ref, additional_message |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -4400,11 +5352,13 @@ Module errors.
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              self,
-                              "move_binary_format::errors::PartialVMError",
-                              0
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "move_binary_format::errors::PartialVMError",
+                                0
+                              |)
                             |)
                           |),
                           "move_binary_format::errors::PartialVMError_",
@@ -4459,17 +5413,31 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "UNDEFINED" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "UNDEFINED" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -4489,36 +5457,64 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
+                          [],
                           []
                         |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (| Value.Array [ M.read (| Value.String "Module " |) ] |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_core_types::language_storage::ModuleId"
-                                            ]
-                                        ]
-                                      |),
-                                      [ id ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "Module " |) ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::ModuleId"
+                                                  ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -4593,64 +5589,111 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1_formatted",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "PartialVMError with status " |) ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
                                               M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  M.read (| self |),
-                                                  "move_binary_format::errors::PartialVMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::PartialVMError_",
-                                              "major_status"
-                                            |)
-                                          ]
+                                                Value.String "PartialVMError with status "
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Placeholder",
-                                            "new",
-                                            []
-                                          |),
-                                          [
-                                            Value.Integer IntegerKind.Usize 0;
-                                            Value.UnicodeChar 32;
-                                            Value.StructTuple
-                                              "core::fmt::rt::Alignment::Unknown"
-                                              [];
-                                            Value.Integer IntegerKind.U32 4;
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                          ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "move_core_types::vm_status::StatusCode"
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "move_binary_format::errors::PartialVMError",
+                                                                0
+                                                              |)
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::errors::PartialVMError_",
+                                                          "major_status"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Placeholder",
+                                                  "new",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.Usize 0;
+                                                  Value.UnicodeChar 32;
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Alignment::Unknown"
+                                                    [];
+                                                  Value.Integer IntegerKind.U32 4;
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Count::Implied"
+                                                    [];
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Count::Implied"
+                                                    []
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::UnsafeArg",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -4673,11 +5716,13 @@ Module errors.
                     ltac:(M.monadic
                       (let γ :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::PartialVMError",
-                              0
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_binary_format::errors::PartialVMError",
+                                0
+                              |)
                             |)
                           |),
                           "move_binary_format::errors::PartialVMError_",
@@ -4710,36 +5755,77 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String " with sub status " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ status ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "u64" ]
-                                                    |),
-                                                    [ sub_status ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "" |);
+                                                        M.read (|
+                                                          Value.String " with sub status "
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "u64" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  sub_status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -4763,16 +5849,21 @@ Module errors.
                     ltac:(M.monadic
                       (let γ :=
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (|
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_binary_format::errors::PartialVMError",
-                                0
-                              |)
-                            |),
-                            "move_binary_format::errors::PartialVMError_",
-                            "message"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::errors::PartialVMError",
+                                    0
+                                  |)
+                                |)
+                              |),
+                              "move_binary_format::errors::PartialVMError_",
+                              "message"
+                            |)
                           |)
                         |) in
                       let γ := M.read (| γ |) in
@@ -4803,41 +5894,77 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String " and message " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ status ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [ Ty.path "alloc::string::String" ]
+                                                        M.read (| Value.String "" |);
+                                                        M.read (| Value.String " and message " |)
                                                       ]
-                                                    |),
-                                                    [ msg ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "alloc::string::String" ]
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (| Pointer.Kind.Ref, msg |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -4873,20 +6000,27 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::PartialVMError",
-                              0
-                            |)
-                          |),
-                          "move_binary_format::errors::PartialVMError_",
-                          "indices"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::errors::PartialVMError",
+                                  0
+                                |)
+                              |)
+                            |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "indices"
+                          |)
                         |)
                       ]
                     |)
@@ -4912,10 +6046,17 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -4963,66 +6104,120 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "" |);
-                                                                  M.read (|
-                                                                    Value.String " at index "
-                                                                  |);
-                                                                  M.read (| Value.String " for " |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "alloc::string::String"
+                                                                        M.read (|
+                                                                          Value.String ""
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String " at index "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String " for "
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ status ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u16" ]
-                                                                      ]
-                                                                    |),
-                                                                    [ index ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::IndexKind"
-                                                                          ]
-                                                                      ]
-                                                                    |),
-                                                                    [ kind ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  status
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  index
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::IndexKind"
+                                                                                ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  kind
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5066,20 +6261,27 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::PartialVMError",
-                              0
-                            |)
-                          |),
-                          "move_binary_format::errors::PartialVMError_",
-                          "offsets"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::errors::PartialVMError",
+                                  0
+                                |)
+                              |)
+                            |),
+                            "move_binary_format::errors::PartialVMError_",
+                            "offsets"
+                          |)
                         |)
                       ]
                     |)
@@ -5108,10 +6310,17 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5159,69 +6368,122 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "" |);
-                                                                  M.read (|
-                                                                    Value.String " at code offset "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      " in function definition "
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String ""
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " at code offset "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " in function definition "
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "alloc::string::String"
-                                                                      ]
-                                                                    |),
-                                                                    [ status ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u16" ]
-                                                                      ]
-                                                                    |),
-                                                                    [ code_offset ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
                                                                             Ty.path
-                                                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  status
+                                                                                |)
+                                                                              |)
+                                                                            |)
                                                                           ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  code_offset
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                                ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  fdef
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ fdef ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5242,25 +6504,52 @@ Module errors.
                 |)) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
-                  M.read (| f |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [ status ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, status |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -5335,63 +6624,107 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1_formatted",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "VMError with status " |) ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "move_core_types::vm_status::StatusCode" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  M.read (| self |),
-                                                  "move_binary_format::errors::VMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::VMError_",
-                                              "major_status"
-                                            |)
-                                          ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "VMError with status " |) ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
                                   |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Placeholder",
-                                            "new",
-                                            []
-                                          |),
-                                          [
-                                            Value.Integer IntegerKind.Usize 0;
-                                            Value.UnicodeChar 32;
-                                            Value.StructTuple
-                                              "core::fmt::rt::Alignment::Unknown"
-                                              [];
-                                            Value.Integer IntegerKind.U32 4;
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                            Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                          ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "move_core_types::vm_status::StatusCode"
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "move_binary_format::errors::VMError",
+                                                                0
+                                                              |)
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::errors::VMError_",
+                                                          "major_status"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Placeholder",
+                                                  "new",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.Usize 0;
+                                                  Value.UnicodeChar 32;
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Alignment::Unknown"
+                                                    [];
+                                                  Value.Integer IntegerKind.U32 4;
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Count::Implied"
+                                                    [];
+                                                  Value.StructTuple
+                                                    "core::fmt::rt::Count::Implied"
+                                                    []
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::UnsafeArg",
                                       "new",
+                                      [],
                                       []
                                     |),
                                     []
@@ -5414,11 +6747,13 @@ Module errors.
                     ltac:(M.monadic
                       (let γ :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError",
-                              0
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_binary_format::errors::VMError",
+                                0
+                              |)
                             |)
                           |),
                           "move_binary_format::errors::VMError_",
@@ -5451,36 +6786,77 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String " with sub status " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ status ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "u64" ]
-                                                    |),
-                                                    [ sub_status ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "" |);
+                                                        M.read (|
+                                                          Value.String " with sub status "
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "u64" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  sub_status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -5516,48 +6892,84 @@ Module errors.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " at location " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [ status ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "move_binary_format::errors::Location" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (|
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  M.read (| self |),
-                                                  "move_binary_format::errors::VMError",
-                                                  0
-                                                |)
-                                              |),
-                                              "move_binary_format::errors::VMError_",
-                                              "location"
-                                            |)
-                                          ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "" |);
+                                              M.read (| Value.String " at location " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, status |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [],
+                                                  [ Ty.path "move_binary_format::errors::Location" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "move_binary_format::errors::VMError",
+                                                                0
+                                                              |)
+                                                            |)
+                                                          |),
+                                                          "move_binary_format::errors::VMError_",
+                                                          "location"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -5577,16 +6989,21 @@ Module errors.
                     ltac:(M.monadic
                       (let γ :=
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (|
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_binary_format::errors::VMError",
-                                0
-                              |)
-                            |),
-                            "move_binary_format::errors::VMError_",
-                            "message"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "move_binary_format::errors::VMError",
+                                    0
+                                  |)
+                                |)
+                              |),
+                              "move_binary_format::errors::VMError_",
+                              "message"
+                            |)
                           |)
                         |) in
                       let γ := M.read (| γ |) in
@@ -5617,41 +7034,77 @@ Module errors.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String " and message " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ status ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [ Ty.path "alloc::string::String" ]
+                                                        M.read (| Value.String "" |);
+                                                        M.read (| Value.String " and message " |)
                                                       ]
-                                                    |),
-                                                    [ msg ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  status
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "alloc::string::String" ]
+                                                            ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (| Pointer.Kind.Ref, msg |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -5687,20 +7140,27 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError",
-                              0
-                            |)
-                          |),
-                          "move_binary_format::errors::VMError_",
-                          "indices"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::errors::VMError",
+                                  0
+                                |)
+                              |)
+                            |),
+                            "move_binary_format::errors::VMError_",
+                            "indices"
+                          |)
                         |)
                       ]
                     |)
@@ -5726,10 +7186,17 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5777,66 +7244,120 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "" |);
-                                                                  M.read (|
-                                                                    Value.String " at index "
-                                                                  |);
-                                                                  M.read (| Value.String " for " |)
-                                                                ]
-                                                            |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "alloc::string::String"
+                                                                        M.read (|
+                                                                          Value.String ""
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String " at index "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String " for "
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ status ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u16" ]
-                                                                      ]
-                                                                    |),
-                                                                    [ index ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::IndexKind"
-                                                                          ]
-                                                                      ]
-                                                                    |),
-                                                                    [ kind ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  status
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  index
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::IndexKind"
+                                                                                ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  kind
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5880,20 +7401,27 @@ Module errors.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "move_binary_format::errors::VMError",
-                              0
-                            |)
-                          |),
-                          "move_binary_format::errors::VMError_",
-                          "offsets"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_binary_format::errors::VMError",
+                                  0
+                                |)
+                              |)
+                            |),
+                            "move_binary_format::errors::VMError_",
+                            "offsets"
+                          |)
                         |)
                       ]
                     |)
@@ -5922,10 +7450,17 @@ Module errors.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5973,69 +7508,122 @@ Module errors.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "" |);
-                                                                  M.read (|
-                                                                    Value.String " at code offset "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      " in function definition "
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String ""
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " at code offset "
+                                                                        |);
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            " in function definition "
+                                                                        |)
+                                                                      ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |);
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    Value.Array
                                                                       [
-                                                                        Ty.path
-                                                                          "alloc::string::String"
-                                                                      ]
-                                                                    |),
-                                                                    [ status ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u16" ]
-                                                                      ]
-                                                                    |),
-                                                                    [ code_offset ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
                                                                             Ty.path
-                                                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.path
+                                                                                "alloc::string::String"
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  status
+                                                                                |)
+                                                                              |)
+                                                                            |)
                                                                           ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  code_offset
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
+                                                                            "new_display",
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                                ]
+                                                                            ]
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  fdef
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
+                                                                        |)
                                                                       ]
-                                                                    |),
-                                                                    [ fdef ]
                                                                   |)
-                                                                ]
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -6056,25 +7644,52 @@ Module errors.
                 |)) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
-                  M.read (| f |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "alloc::string::String" ]
-                              |),
-                              [ status ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, status |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -6141,66 +7756,126 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Index " |);
-                                      M.read (| Value.String " out of bounds for " |);
-                                      M.read (| Value.String " at bytecode offset " |);
-                                      M.read (| Value.String " in function " |);
-                                      M.read (| Value.String " while indexing " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [ target_offset ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [ target_pool_len ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "u16" ]
-                                        |),
-                                        [ cur_bytecode_offset ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
                                           [
-                                            Ty.path
-                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                            M.read (| Value.String "Index " |);
+                                            M.read (| Value.String " out of bounds for " |);
+                                            M.read (| Value.String " at bytecode offset " |);
+                                            M.read (| Value.String " in function " |);
+                                            M.read (| Value.String " while indexing " |)
                                           ]
-                                        |),
-                                        [ cur_function ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "move_binary_format::IndexKind" ]
-                                        |),
-                                        [ kind ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, target_offset |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, target_pool_len |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      cur_bytecode_offset
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, cur_function |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "move_binary_format::IndexKind" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, kind |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -6217,6 +7892,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
+                [],
                 []
               |),
               [
@@ -6224,6 +7900,7 @@ Module errors.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "with_message",
+                    [],
                     []
                   |),
                   [
@@ -6231,6 +7908,7 @@ Module errors.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::errors::PartialVMError",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| status |) ]
@@ -6294,45 +7972,82 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Index " |);
-                                      M.read (| Value.String " out of bounds for " |);
-                                      M.read (| Value.String " while indexing " |)
-                                    ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "u16" ]
-                                        |),
-                                        [ idx ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [ len ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "move_binary_format::IndexKind" ]
-                                        |),
-                                        [ kind ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (| Value.String "Index " |);
+                                            M.read (| Value.String " out of bounds for " |);
+                                            M.read (| Value.String " while indexing " |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, idx |) |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "usize" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "move_binary_format::IndexKind" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.Ref, kind |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -6349,6 +8064,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "with_message",
+                [],
                 []
               |),
               [
@@ -6356,6 +8072,7 @@ Module errors.
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "at_index",
+                    [],
                     []
                   |),
                   [
@@ -6363,6 +8080,7 @@ Module errors.
                       M.get_associated_function (|
                         Ty.path "move_binary_format::errors::PartialVMError",
                         "new",
+                        [],
                         []
                       |),
                       [ M.read (| status |) ]
@@ -6398,6 +8116,7 @@ Module errors.
           M.get_associated_function (|
             Ty.path "move_binary_format::errors::PartialVMError",
             "at_index",
+            [],
             []
           |),
           [
@@ -6405,6 +8124,7 @@ Module errors.
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "new",
+                [],
                 []
               |),
               [ M.read (| status |) ]
@@ -6444,16 +8164,26 @@ Module errors.
                   Ty.path "alloc::alloc::Global"
                 ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "move_binary_format::errors::PartialVMError",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::errors::PartialVMError",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6550,87 +8280,200 @@ Module errors.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "finish",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugStruct",
-                              "field",
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::builders::DebugStruct",
-                                      "field",
-                                      []
-                                    |),
-                                    [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           "field",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::builders::DebugStruct",
-                                              "field",
-                                              []
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::builders::DebugStruct",
                                                   "field",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Formatter",
-                                                        "debug_struct",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| f |);
-                                                        M.read (| Value.String "PartialVMError" |)
-                                                      ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::fmt::builders::DebugStruct",
+                                                          "field",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                  "field",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::builders::DebugStruct",
+                                                                          "field",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Formatter",
+                                                                                  "debug_struct",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.deref (|
+                                                                                      M.read (| f |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "PartialVMError"
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "major_status"
+                                                                              |)
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                major_status
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (|
+                                                                        Value.String "sub_status"
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| sub_status |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (| Value.String "message" |)
+                                                            |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| message |) |)
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
                                                   |);
-                                                  M.read (| Value.String "major_status" |);
-                                                  M.read (| major_status |)
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (| Value.String "exec_state" |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| exec_state |) |)
+                                                  |)
                                                 ]
-                                              |);
-                                              M.read (| Value.String "sub_status" |);
-                                              M.read (| sub_status |)
-                                            ]
+                                              |)
+                                            |)
                                           |);
-                                          M.read (| Value.String "message" |);
-                                          M.read (| message |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "indices" |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| indices |) |)
+                                          |)
                                         ]
-                                      |);
-                                      M.read (| Value.String "exec_state" |);
-                                      M.read (| exec_state |)
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.read (| Value.String "indices" |);
-                                  M.read (| indices |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "offsets" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| offsets |) |)
+                                  |)
                                 ]
-                              |);
-                              M.read (| Value.String "offsets" |);
-                              M.read (| offsets |)
-                            ]
+                              |)
+                            |)
                           |)
                         ]
                       |)

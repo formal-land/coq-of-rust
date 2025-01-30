@@ -44,17 +44,29 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| other |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| other |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -72,9 +84,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -90,29 +103,42 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| other |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -133,6 +159,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -140,9 +167,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -152,6 +183,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -159,9 +191,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))
@@ -225,17 +261,31 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| other |) |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| M.deref (| M.read (| other |) |) |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -253,9 +303,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -271,29 +322,44 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "slice") [] [ U ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.read (| other |) |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ U ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| other |) |) |)
+                                            |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -314,6 +380,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -321,9 +388,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -333,6 +404,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -340,9 +412,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))
@@ -406,17 +482,31 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| other |) |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| M.deref (| M.read (| other |) |) |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -434,9 +524,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -452,29 +543,44 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "slice") [] [ U ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.read (| other |) |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "slice") [] [ U ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| other |) |) |)
+                                            |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -495,6 +601,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -502,9 +609,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -514,6 +625,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -521,9 +633,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))
@@ -593,17 +709,29 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| other |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| other |) |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -621,9 +749,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -639,29 +768,42 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ N ] [ U ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| other |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "array") [ N ] [ U ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -682,6 +824,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -689,9 +832,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -701,6 +848,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -708,9 +856,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))
@@ -779,17 +931,31 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| other |) |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| M.deref (| M.read (| other |) |) |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -807,9 +973,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -825,29 +992,44 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ N ] [ U ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.read (| other |) |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "array") [ N ] [ U ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| other |) |) |)
+                                            |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -868,6 +1050,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -875,9 +1058,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -887,6 +1074,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -894,9 +1082,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))
@@ -966,17 +1158,31 @@ Module collections.
                                           []
                                           [ T; A ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |),
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| M.read (| other |) |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (| M.deref (| M.read (| other |) |) |)
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)) in
@@ -994,9 +1200,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
                     [
@@ -1012,29 +1219,44 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ N ] [ U ],
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.read (| other |) |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.apply (Ty.path "array") [ N ] [ U ],
+                                          [],
+                                          [ Ty.path "core::ops::range::RangeFull" ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| other |) |) |)
+                                            |)
+                                          |);
+                                          Value.StructTuple "core::ops::range::RangeFull" []
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| sa |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| sa |) |) |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -1055,6 +1277,7 @@ Module collections.
                                             (Ty.path "&")
                                             []
                                             [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1062,9 +1285,13 @@ Module collections.
                                               [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
+                                          [],
                                           []
                                         |),
-                                        [ sa; oa ]
+                                        [
+                                          M.borrow (| Pointer.Kind.Ref, sa |);
+                                          M.borrow (| Pointer.Kind.Ref, oa |)
+                                        ]
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
@@ -1074,6 +1301,7 @@ Module collections.
                                               (Ty.path "&")
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
@@ -1081,9 +1309,13 @@ Module collections.
                                                 [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ sb; ob ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, sb |);
+                                            M.borrow (| Pointer.Kind.Ref, ob |)
+                                          ]
                                         |)))
                                     |)
                                   |)))

@@ -23,16 +23,28 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Borrowed" |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "scoping_rules_lifetimes_structs::Borrowed",
-                0
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Borrowed" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "scoping_rules_lifetimes_structs::Borrowed",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -74,23 +86,46 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "NamedBorrowed" |);
-            M.read (| Value.String "x" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "scoping_rules_lifetimes_structs::NamedBorrowed",
-              "x"
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "NamedBorrowed" |) |)
             |);
-            M.read (| Value.String "y" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "scoping_rules_lifetimes_structs::NamedBorrowed",
-                "y"
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "scoping_rules_lifetimes_structs::NamedBorrowed",
+                    "x"
+                  |)
+                |)
+              |)
+            |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "y" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "scoping_rules_lifetimes_structs::NamedBorrowed",
+                        "y"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -156,9 +191,20 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "Num" |); __self_0 ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Num" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |)
+                      ]
                     |)
                   |)));
               fun γ =>
@@ -176,9 +222,20 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "Ref" |); __self_0 ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Ref" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |)
+                      ]
                     |)
                   |)))
             ]
@@ -219,15 +276,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ x := M.alloc (| Value.Integer IntegerKind.I32 18 |) in
         let~ y := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
         let~ single :=
-          M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Borrowed" [ x ] |) in
+          M.alloc (|
+            Value.StructTuple
+              "scoping_rules_lifetimes_structs::Borrowed"
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
+          |) in
         let~ double :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_lifetimes_structs::NamedBorrowed"
-              [ ("x", x); ("y", y) ]
+              [
+                ("x",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                  |));
+                ("y",
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |))
+              ]
           |) in
         let~ reference :=
-          M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Either::Ref" [ x ] |) in
+          M.alloc (|
+            Value.StructTuple
+              "scoping_rules_lifetimes_structs::Either::Ref"
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
+          |) in
         let~ number :=
           M.alloc (|
             Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ]
@@ -239,28 +312,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "x is borrowed in " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "x is borrowed in " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ]
-                              |),
-                              [ single ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, single |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -275,28 +375,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "x and y are borrowed in " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "x and y are borrowed in " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ]
-                              |),
-                              [ double ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, double |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -311,28 +438,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "x is borrowed in " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "x is borrowed in " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
-                              |),
-                              [ reference ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, reference |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -347,28 +501,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "y is *not* borrowed in " |);
-                            M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "y is *not* borrowed in " |);
+                                  M.read (| Value.String "
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
-                              |),
-                              [ number ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, number |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

@@ -33,32 +33,52 @@ Module num.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "copy_from_slice",
+                        [],
                         []
                       |),
                       [
-                        tmp;
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index",
-                            []
-                          |),
-                          [
-                            M.read (| self |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer IntegerKind.Usize 8) ]
-                          ]
+                        M.borrow (| Pointer.Kind.MutRef, tmp |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::Index",
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", Value.Integer IntegerKind.Usize 8) ]
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "from_le_bytes", [] |),
+                    M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
                     [ M.read (| tmp |) ]
                   |)
                 |)
@@ -81,28 +101,44 @@ Module num.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "copy_from_slice",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::IndexMut",
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-                      "index_mut",
-                      []
-                    |),
-                    [
-                      M.read (| self |);
-                      Value.StructRecord
-                        "core::ops::range::RangeTo"
-                        [ ("end_", Value.Integer IntegerKind.Usize 8) ]
-                    ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::IndexMut",
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          [],
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
+                          "index_mut",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                          Value.StructRecord
+                            "core::ops::range::RangeTo"
+                            [ ("end_", Value.Integer IntegerKind.Usize 8) ]
+                        ]
+                      |)
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
-                      [ M.read (| value |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
+                            [ M.read (| value |) ]
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -122,23 +158,27 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               BinOp.Wrap.sub (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "isize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)),
-                M.rust_cast
+                M.cast
+                  (Ty.path "isize")
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -183,9 +223,11 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "split_first",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| s |) ]
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                                    ]
                                   |)
                                 |) in
                               let γ0_0 :=
@@ -204,9 +246,13 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "u8",
                                       "wrapping_sub",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| M.read (| c |) |); M.read (| UnsupportedLiteral |) ]
+                                    [
+                                      M.read (| M.deref (| M.read (| c |) |) |);
+                                      M.read (| UnsupportedLiteral |)
+                                    ]
                                   |)
                                 |) in
                               M.match_operator (|
@@ -233,14 +279,26 @@ Module num.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut_u8_,
+                                              [],
                                               [ Ty.tuple [ Ty.path "u8" ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
-                                            [ func; Value.Tuple [ M.read (| c |) ] ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, func |);
+                                              Value.Tuple [ M.read (| c |) ]
+                                            ]
                                           |)
                                         |) in
-                                      let~ _ := M.write (| s, M.read (| s_next |) |) in
+                                      let~ _ :=
+                                        M.write (|
+                                          s,
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| s_next |) |)
+                                          |)
+                                        |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
@@ -265,7 +323,7 @@ Module num.
                         ]
                       |)))
                   |) in
-                M.alloc (| M.read (| s |) |)
+                M.alloc (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -300,14 +358,14 @@ Module num.
               let~ a :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                     [ M.read (| v |); Value.Integer IntegerKind.U64 5063812098665367110 ]
                   |)
                 |) in
               let~ b :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
+                    M.get_associated_function (| Ty.path "u64", "wrapping_sub", [], [] |),
                     [ M.read (| v |); Value.Integer IntegerKind.U64 3472328296227680304 ]
                   |)
                 |) in
@@ -347,23 +405,46 @@ Module num.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field2_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "BiasedFp" |);
-                  M.read (| Value.String "f" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::dec2flt::common::BiasedFp",
-                    "f"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "BiasedFp" |) |)
                   |);
-                  M.read (| Value.String "e" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::common::BiasedFp",
-                      "e"
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "f" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::common::BiasedFp",
+                          "f"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "e" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::dec2flt::common::BiasedFp",
+                              "e"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -407,7 +488,7 @@ Module num.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Value.DeclaredButUndefined,
-                          [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                          [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                         |)))
                   ]
                 |)
@@ -448,14 +529,14 @@ Module num.
                 BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
@@ -465,14 +546,14 @@ Module num.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
@@ -545,7 +626,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "u64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -556,7 +639,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "i32",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []

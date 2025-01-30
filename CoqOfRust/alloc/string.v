@@ -45,6 +45,7 @@ Module string.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -52,18 +53,25 @@ Module string.
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |)
             ]
           |)))
@@ -95,6 +103,7 @@ Module string.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              [],
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -102,18 +111,35 @@ Module string.
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -177,19 +203,37 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -234,23 +278,46 @@ Module string.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "FromUtf8Error" |);
-              M.read (| Value.String "bytes" |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::FromUtf8Error",
-                "bytes"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "FromUtf8Error" |) |)
               |);
-              M.read (| Value.String "error" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::string::FromUtf8Error",
-                  "error"
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::FromUtf8Error",
+                      "bytes"
+                    |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "error" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::FromUtf8Error",
+                          "error"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -295,6 +362,7 @@ Module string.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                [],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -302,18 +370,25 @@ Module string.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::string::FromUtf8Error",
-                  "bytes"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::string::FromUtf8Error",
+                    "bytes"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "alloc::string::FromUtf8Error",
-                  "bytes"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "alloc::string::FromUtf8Error",
+                    "bytes"
+                  |)
                 |)
               ]
             |),
@@ -322,20 +397,28 @@ Module string.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::str::error::Utf8Error",
+                  [],
                   [ Ty.path "core::str::error::Utf8Error" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::FromUtf8Error",
-                    "error"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::FromUtf8Error",
+                      "error"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "alloc::string::FromUtf8Error",
-                    "error"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "alloc::string::FromUtf8Error",
+                      "error"
+                    |)
                   |)
                 ]
               |)))
@@ -410,14 +493,24 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::FromUtf8Error",
-                      "bytes"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::string::FromUtf8Error",
+                            "bytes"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |));
@@ -427,14 +520,24 @@ Module string.
                     "core::clone::Clone",
                     Ty.path "core::str::error::Utf8Error",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::FromUtf8Error",
-                      "error"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::string::FromUtf8Error",
+                            "error"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -472,16 +575,31 @@ Module string.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "FromUtf16Error" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "alloc::string::FromUtf16Error",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "FromUtf16Error" |) |)
+              |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::FromUtf16Error",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -520,6 +638,7 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -551,6 +670,7 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ M.read (| capacity |) ]
@@ -598,7 +718,9 @@ Module string.
                                       Ty.path "alloc::collections::TryReserveError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -609,6 +731,7 @@ Module string.
                                         []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                       "try_with_capacity",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| capacity |) ]
@@ -640,6 +763,7 @@ Module string.
                                                   Ty.path "alloc::string::String";
                                                   Ty.path "alloc::collections::TryReserveError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -650,6 +774,7 @@ Module string.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -699,18 +824,30 @@ Module string.
                 M.call_closure (|
                   M.get_function (| "core::str::converts::from_utf8", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ vec ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, vec |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -791,9 +928,10 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "utf8_chunks",
+                        [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ first_valid :=
@@ -810,10 +948,12 @@ Module string.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.path "core::str::lossy::Utf8Chunks",
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                                 |)
                               |) in
                             let γ0_0 :=
@@ -829,9 +969,10 @@ Module string.
                                   M.get_associated_function (|
                                     Ty.path "core::str::lossy::Utf8Chunk",
                                     "valid",
+                                    [],
                                     []
                                   |),
-                                  [ chunk ]
+                                  [ M.borrow (| Pointer.Kind.Ref, chunk |) ]
                                 |)
                               |) in
                             let~ _ :=
@@ -847,16 +988,23 @@ Module string.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "is_empty",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::str::lossy::Utf8Chunk",
-                                                    "invalid",
-                                                    []
-                                                  |),
-                                                  [ chunk ]
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::str::lossy::Utf8Chunk",
+                                                        "invalid",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, chunk |) ]
+                                                    |)
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -887,27 +1035,49 @@ Module string.
                                                           M.alloc (|
                                                             Value.Tuple
                                                               [
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path "str",
-                                                                      "len",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| valid |) ]
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path "str",
+                                                                        "len",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| valid |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)
                                                                 |);
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ],
+                                                                        "len",
+                                                                        [],
                                                                         []
-                                                                        [ Ty.path "u8" ],
-                                                                      "len",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| v |) ]
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| v |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               ]
@@ -939,13 +1109,17 @@ Module string.
                                                                               UnOp.not (|
                                                                                 BinOp.eq (|
                                                                                   M.read (|
-                                                                                    M.read (|
-                                                                                      left_val
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        left_val
+                                                                                      |)
                                                                                     |)
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.read (|
-                                                                                      right_val
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        right_val
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -981,11 +1155,31 @@ Module string.
                                                                                     M.read (|
                                                                                       kind
                                                                                     |);
-                                                                                    M.read (|
-                                                                                      left_val
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              left_val
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
-                                                                                    M.read (|
-                                                                                      right_val
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              right_val
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
@@ -1013,7 +1207,12 @@ Module string.
                                             M.return_ (|
                                               Value.StructTuple
                                                 "alloc::borrow::Cow::Borrowed"
-                                                [ M.read (| valid |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| valid |) |)
+                                                  |)
+                                                ]
                                             |)
                                           |)
                                         |)
@@ -1030,7 +1229,12 @@ Module string.
                                   M.return_ (|
                                     Value.StructTuple
                                       "alloc::borrow::Cow::Borrowed"
-                                      [ M.read (| Value.String "" |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| Value.String "" |) |)
+                                        |)
+                                      ]
                                   |)
                                 |)
                               |)
@@ -1044,6 +1248,7 @@ Module string.
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "with_capacity",
+                        [],
                         []
                       |),
                       [
@@ -1051,9 +1256,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       ]
                     |)
@@ -1064,9 +1270,13 @@ Module string.
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "push_str",
+                        [],
                         []
                       |),
-                      [ res; M.read (| first_valid |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, res |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first_valid |) |) |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -1075,12 +1285,18 @@ Module string.
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "push_str",
+                        [],
                         []
                       |),
                       [
-                        res;
-                        M.read (|
-                          M.get_constant (| "alloc::string::from_utf8_lossy::REPLACEMENT" |)
+                        M.borrow (| Pointer.Kind.MutRef, res |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.get_constant (| "alloc::string::from_utf8_lossy::REPLACEMENT" |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -1094,7 +1310,9 @@ Module string.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.path "core::str::lossy::Utf8Chunks",
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -1114,10 +1332,17 @@ Module string.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.path "core::str::lossy::Utf8Chunks",
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1146,17 +1371,24 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push_str",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  res;
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::str::lossy::Utf8Chunk",
-                                                      "valid",
-                                                      []
-                                                    |),
-                                                    [ chunk ]
+                                                  M.borrow (| Pointer.Kind.MutRef, res |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::str::lossy::Utf8Chunk",
+                                                          "valid",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, chunk |) ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -1177,17 +1409,29 @@ Module string.
                                                                 []
                                                                 [ Ty.path "u8" ],
                                                               "is_empty",
+                                                              [],
                                                               []
                                                             |),
                                                             [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::str::lossy::Utf8Chunk",
-                                                                  "invalid",
-                                                                  []
-                                                                |),
-                                                                [ chunk ]
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::str::lossy::Utf8Chunk",
+                                                                      "invalid",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        chunk
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
@@ -1204,13 +1448,19 @@ Module string.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push_str",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          res;
-                                                          M.read (|
-                                                            M.get_constant (|
-                                                              "alloc::string::from_utf8_lossy::REPLACEMENT"
+                                                          M.borrow (| Pointer.Kind.MutRef, res |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "alloc::string::from_utf8_lossy::REPLACEMENT"
+                                                                |)
+                                                              |)
                                                             |)
                                                           |)
                                                         ]
@@ -1267,21 +1517,34 @@ Module string.
                           M.get_associated_function (|
                             Ty.path "alloc::string::String",
                             "from_utf8_lossy",
+                            [],
                             []
                           |),
                           [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                "deref",
-                                []
-                              |),
-                              [ v ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, v |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -1297,6 +1560,7 @@ Module string.
                         M.get_associated_function (|
                           Ty.path "alloc::string::String",
                           "from_utf8_unchecked",
+                          [],
                           []
                         |),
                         [ M.read (| v |) ]
@@ -1340,6 +1604,7 @@ Module string.
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "with_capacity",
+                        [],
                         []
                       |),
                       [
@@ -1347,9 +1612,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       ]
                     |)
@@ -1376,7 +1642,9 @@ Module string.
                                   ]
                               ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -1384,6 +1652,7 @@ Module string.
                               M.get_associated_function (|
                                 Ty.path "char",
                                 "decode_utf16",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -1405,7 +1674,9 @@ Module string.
                                       []
                                       [ Ty.path "u16" ],
                                     [],
+                                    [],
                                     "cloned",
+                                    [],
                                     [ Ty.path "u16" ]
                                   |),
                                   [
@@ -1413,9 +1684,15 @@ Module string.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "iter",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| v |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1451,10 +1728,17 @@ Module string.
                                                 ]
                                             ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -1496,9 +1780,13 @@ Module string.
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ ret; M.read (| c |) ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, ret |);
+                                                          M.read (| c |)
+                                                        ]
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -1576,7 +1864,9 @@ Module string.
                     (Ty.path "char")
                 ],
               [],
+              [],
               "collect",
+              [],
               [ Ty.path "alloc::string::String" ]
             |),
             [
@@ -1593,7 +1883,9 @@ Module string.
                         [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ] ]
                     ],
                   [],
+                  [],
                   "map",
+                  [],
                   [
                     Ty.path "char";
                     Ty.function
@@ -1614,6 +1906,7 @@ Module string.
                     M.get_associated_function (|
                       Ty.path "char",
                       "decode_utf16",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -1627,7 +1920,9 @@ Module string.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
                           [],
+                          [],
                           "cloned",
+                          [],
                           [ Ty.path "u16" ]
                         |),
                         [
@@ -1635,9 +1930,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                               "iter",
+                              [],
                               []
                             |),
-                            [ M.read (| v |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |)
                         ]
                       |)
@@ -1665,6 +1961,7 @@ Module string.
                                             Ty.path "core::char::decode::DecodeUtf16Error"
                                           ],
                                         "unwrap_or",
+                                        [],
                                         []
                                       |),
                                       [
@@ -1726,9 +2023,15 @@ Module string.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| v |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 2
                                   |),
@@ -1764,9 +2067,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "align_to",
+                            [],
                             [ Ty.path "u16" ]
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       ]
                   |),
@@ -1788,9 +2092,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "from_utf16",
+                              [],
                               []
                             |),
-                            [ M.read (| v |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -1806,6 +2111,7 @@ Module string.
                                   Ty.path "core::char::decode::DecodeUtf16Error"
                                 ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
@@ -1850,7 +2156,9 @@ Module string.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "collect",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -1866,6 +2174,7 @@ Module string.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "decode_utf16",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::map::Map")
@@ -1910,7 +2219,9 @@ Module string.
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
+                                          [],
                                           "map",
+                                          [],
                                           [
                                             Ty.path "u16";
                                             Ty.function
@@ -1937,7 +2248,9 @@ Module string.
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "copied",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "array")
@@ -1950,15 +2263,22 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "array_chunks",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| v |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| v |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |);
                                           M.get_associated_function (|
                                             Ty.path "u16",
                                             "from_le_bytes",
+                                            [],
                                             []
                                           |)
                                         ]
@@ -2027,9 +2347,10 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
+                        [],
                         [ Ty.path "u16" ]
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   ]
               |),
@@ -2051,9 +2372,10 @@ Module string.
                         M.get_associated_function (|
                           Ty.path "alloc::string::String",
                           "from_utf16_lossy",
+                          [],
                           []
                         |),
-                        [ M.read (| v |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -2075,8 +2397,10 @@ Module string.
                         M.get_trait_method (|
                           "core::ops::arith::Add",
                           Ty.path "alloc::string::String",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -2084,11 +2408,15 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "from_utf16_lossy",
+                              [],
                               []
                             |),
-                            [ M.read (| v |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |);
-                          M.read (| Value.String (String.String "253" "") |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -2100,9 +2428,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "array_chunks",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ string :=
@@ -2167,7 +2496,9 @@ Module string.
                                   (Ty.path "char")
                               ],
                             [],
+                            [],
                             "collect",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -2212,7 +2543,9 @@ Module string.
                                       ]
                                   ],
                                 [],
+                                [],
                                 "map",
+                                [],
                                 [
                                   Ty.path "char";
                                   Ty.function
@@ -2236,6 +2569,7 @@ Module string.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "decode_utf16",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map::Map")
@@ -2290,7 +2624,9 @@ Module string.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.path "u16";
                                           Ty.function
@@ -2322,7 +2658,9 @@ Module string.
                                                   [ Ty.path "u8" ]
                                               ],
                                             [],
+                                            [],
                                             "copied",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
@@ -2331,24 +2669,32 @@ Module string.
                                             ]
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                                  [ Ty.path "u8" ],
-                                                [],
-                                                "by_ref",
-                                                []
-                                              |),
-                                              [ iter ]
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::ArrayChunks")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ],
+                                                    [],
+                                                    [],
+                                                    "by_ref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |);
                                         M.get_associated_function (|
                                           Ty.path "u16",
                                           "from_le_bytes",
+                                          [],
                                           []
                                         |)
                                       ]
@@ -2378,6 +2724,7 @@ Module string.
                                                             "core::char::decode::DecodeUtf16Error"
                                                         ],
                                                       "unwrap_or",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2410,19 +2757,26 @@ Module string.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::slice::iter::ArrayChunks")
-                                            [ Value.Integer IntegerKind.Usize 2 ]
-                                            [ Ty.path "u8" ],
-                                          "remainder",
-                                          []
-                                        |),
-                                        [ iter ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::ArrayChunks")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "u8" ],
+                                              "remainder",
+                                              [ Value.Integer IntegerKind.Usize 2 ],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, iter |) ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2437,13 +2791,18 @@ Module string.
                                 M.get_trait_method (|
                                   "core::ops::arith::Add",
                                   Ty.path "alloc::string::String",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
                                   M.read (| string |);
-                                  M.read (| Value.String (String.String "253" "") |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                  |)
                                 ]
                               |)
                             |)))
@@ -2494,9 +2853,15 @@ Module string.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| v |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 2
                                   |),
@@ -2532,9 +2897,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "align_to",
+                            [],
                             [ Ty.path "u16" ]
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       ]
                   |),
@@ -2556,9 +2922,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "from_utf16",
+                              [],
                               []
                             |),
-                            [ M.read (| v |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -2574,6 +2941,7 @@ Module string.
                                   Ty.path "core::char::decode::DecodeUtf16Error"
                                 ],
                               "map_err",
+                              [],
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
@@ -2618,7 +2986,9 @@ Module string.
                                         ]
                                     ],
                                   [],
+                                  [],
                                   "collect",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -2634,6 +3004,7 @@ Module string.
                                     M.get_associated_function (|
                                       Ty.path "char",
                                       "decode_utf16",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::map::Map")
@@ -2678,7 +3049,9 @@ Module string.
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
+                                          [],
                                           "map",
+                                          [],
                                           [
                                             Ty.path "u16";
                                             Ty.function
@@ -2705,7 +3078,9 @@ Module string.
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               [],
+                                              [],
                                               "copied",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "array")
@@ -2718,15 +3093,22 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "array_chunks",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| v |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| v |) |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |);
                                           M.get_associated_function (|
                                             Ty.path "u16",
                                             "from_be_bytes",
+                                            [],
                                             []
                                           |)
                                         ]
@@ -2795,9 +3177,10 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
+                        [],
                         [ Ty.path "u16" ]
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   ]
               |),
@@ -2819,9 +3202,10 @@ Module string.
                         M.get_associated_function (|
                           Ty.path "alloc::string::String",
                           "from_utf16_lossy",
+                          [],
                           []
                         |),
-                        [ M.read (| v |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -2843,8 +3227,10 @@ Module string.
                         M.get_trait_method (|
                           "core::ops::arith::Add",
                           Ty.path "alloc::string::String",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -2852,11 +3238,15 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "from_utf16_lossy",
+                              [],
                               []
                             |),
-                            [ M.read (| v |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |);
-                          M.read (| Value.String (String.String "253" "") |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -2868,9 +3258,10 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "array_chunks",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ string :=
@@ -2935,7 +3326,9 @@ Module string.
                                   (Ty.path "char")
                               ],
                             [],
+                            [],
                             "collect",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -2980,7 +3373,9 @@ Module string.
                                       ]
                                   ],
                                 [],
+                                [],
                                 "map",
+                                [],
                                 [
                                   Ty.path "char";
                                   Ty.function
@@ -3004,6 +3399,7 @@ Module string.
                                   M.get_associated_function (|
                                     Ty.path "char",
                                     "decode_utf16",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map::Map")
@@ -3058,7 +3454,9 @@ Module string.
                                               ]
                                           ],
                                         [],
+                                        [],
                                         "map",
+                                        [],
                                         [
                                           Ty.path "u16";
                                           Ty.function
@@ -3090,7 +3488,9 @@ Module string.
                                                   [ Ty.path "u8" ]
                                               ],
                                             [],
+                                            [],
                                             "copied",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
@@ -3099,24 +3499,32 @@ Module string.
                                             ]
                                           |),
                                           [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                                  [ Ty.path "u8" ],
-                                                [],
-                                                "by_ref",
-                                                []
-                                              |),
-                                              [ iter ]
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::ArrayChunks")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ],
+                                                    [],
+                                                    [],
+                                                    "by_ref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |);
                                         M.get_associated_function (|
                                           Ty.path "u16",
                                           "from_be_bytes",
+                                          [],
                                           []
                                         |)
                                       ]
@@ -3146,6 +3554,7 @@ Module string.
                                                             "core::char::decode::DecodeUtf16Error"
                                                         ],
                                                       "unwrap_or",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3178,19 +3587,26 @@ Module string.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::slice::iter::ArrayChunks")
-                                            [ Value.Integer IntegerKind.Usize 2 ]
-                                            [ Ty.path "u8" ],
-                                          "remainder",
-                                          []
-                                        |),
-                                        [ iter ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::ArrayChunks")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "u8" ],
+                                              "remainder",
+                                              [ Value.Integer IntegerKind.Usize 2 ],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, iter |) ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3205,13 +3621,18 @@ Module string.
                                 M.get_trait_method (|
                                   "core::ops::arith::Add",
                                   Ty.path "alloc::string::String",
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
                                   M.read (| string |);
-                                  M.read (| Value.String (String.String "253" "") |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                  |)
                                 ]
                               |)
                             |)))
@@ -3243,6 +3664,7 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "into_raw_parts",
+              [],
               []
             |),
             [
@@ -3280,6 +3702,7 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "from_raw_parts",
+                    [],
                     []
                   |),
                   [ M.read (| buf |); M.read (| length |); M.read (| capacity |) ]
@@ -3336,15 +3759,22 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3361,15 +3791,27 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::DerefMut",
-              Ty.path "alloc::string::String",
-              [],
-              "deref_mut",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3394,17 +3836,26 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "extend_from_slice",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                [ M.read (| string |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| string |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -3447,9 +3898,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "len",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |))
                       ]
                   ]
@@ -3487,18 +3939,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| start |)
                                         ]
@@ -3540,18 +4005,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| end_ |)
                                         ]
@@ -3587,13 +4065,17 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "extend_from_within",
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::string::String",
-                              "vec"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::string::String",
+                                "vec"
+                              |)
                             |);
                             M.read (| src |)
                           ]
@@ -3626,13 +4108,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "capacity",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |)
             ]
           |)))
@@ -3659,13 +4145,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "reserve",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
               M.read (| additional |)
             ]
@@ -3693,13 +4183,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "reserve_exact",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
               M.read (| additional |)
             ]
@@ -3728,13 +4222,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "try_reserve",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
               M.read (| additional |)
             ]
@@ -3762,13 +4260,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "try_reserve_exact",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
               M.read (| additional |)
             ]
@@ -3796,13 +4298,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "shrink_to_fit",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |)
             ]
           |)))
@@ -3830,13 +4336,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "shrink_to",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |);
               M.read (| min_capacity |)
             ]
@@ -3864,7 +4374,7 @@ Module string.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                  M.get_associated_function (| Ty.path "char", "len_utf8", [], [] |),
                   [ M.read (| ch |) ]
                 |)
               |),
@@ -3884,15 +4394,19 @@ Module string.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "push",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::string::String",
-                            "vec"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::String",
+                              "vec"
+                            |)
                           |);
-                          M.rust_cast (M.read (| ch |))
+                          M.cast (Ty.path "u8") (M.read (| ch |))
                         ]
                       |)
                     |)));
@@ -3906,30 +4420,57 @@ Module string.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "extend_from_slice",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::string::String",
-                            "vec"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::String",
+                              "vec"
+                            |)
                           |);
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
+                                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                                 [
-                                  M.read (| ch |);
-                                  M.alloc (|
-                                    repeat (|
-                                      Value.Integer IntegerKind.U8 0,
-                                      Value.Integer IntegerKind.Usize 4
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "char",
+                                          "encode_utf8",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (| ch |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  repeat (|
+                                                    Value.Integer IntegerKind.U8 0,
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -3952,24 +4493,39 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              [],
-              "deref",
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::String",
+                          "vec"
+                        |)
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4005,9 +4561,10 @@ Module string.
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "len",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)
                         |)) in
@@ -4026,18 +4583,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| new_len |)
                                         ]
@@ -4073,13 +4643,17 @@ Module string.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "truncate",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::string::String",
-                            "vec"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::String",
+                              "vec"
+                            |)
                           |);
                           M.read (| new_len |)
                         ]
@@ -4121,7 +4695,9 @@ Module string.
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -4133,36 +4709,60 @@ Module string.
                                   []
                                   [ Ty.path "core::str::iter::Chars" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.path "core::str::iter::Chars",
-                                      [],
-                                      "rev",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (| Ty.path "str", "chars", [] |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
-                                          |)
-                                        ]
-                                      |)
-                                    ]
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.path "core::str::iter::Chars",
+                                        [],
+                                        [],
+                                        "rev",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "str",
+                                            "chars",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "alloc::string::String",
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               ]
@@ -4191,6 +4791,7 @@ Module string.
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.path "char" ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -4198,6 +4799,7 @@ Module string.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -4223,11 +4825,16 @@ Module string.
                   M.alloc (|
                     BinOp.Wrap.sub (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
-                        [ M.read (| self |) ]
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                        M.get_associated_function (| Ty.path "char", "len_utf8", [], [] |),
                         [ M.read (| ch |) ]
                       |)
                     |)
@@ -4242,13 +4849,17 @@ Module string.
                             []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "set_len",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::string::String",
-                            "vec"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::String",
+                              "vec"
+                            |)
                           |);
                           M.read (| newlen |)
                         ]
@@ -4295,35 +4906,50 @@ Module string.
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::Chars",
                         [],
+                        [],
                         "next",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "chars", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.path "alloc::string::String",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  []
-                                |),
-                                [
-                                  M.read (| self |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", M.read (| idx |)) ]
-                                ]
-                              |)
-                            ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "chars", [], [] |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::index::Index",
+                                        Ty.path "alloc::string::String",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeFrom")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                        "index",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        Value.StructRecord
+                                          "core::ops::range::RangeFrom"
+                                          [ ("start", M.read (| idx |)) ]
+                                      ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           |)
                         |)
                       ]
@@ -4352,17 +4978,26 @@ Module string.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "cannot remove a char from the end of a string"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "cannot remove a char from the end of a string"
+                                                |)
+                                              ]
                                           |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -4378,7 +5013,7 @@ Module string.
                 BinOp.Wrap.add (|
                   M.read (| idx |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                    M.get_associated_function (| Ty.path "char", "len_utf8", [], [] |),
                     [ M.read (| ch |) ]
                   |)
                 |)
@@ -4386,8 +5021,8 @@ Module string.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
-                  [ M.read (| self |) ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -4400,6 +5035,7 @@ Module string.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -4410,13 +5046,17 @@ Module string.
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               "as_ptr",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::string::String",
-                                "vec"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::string::String",
+                                  "vec"
+                                |)
                               |)
                             ]
                           |);
@@ -4427,6 +5067,7 @@ Module string.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -4437,13 +5078,17 @@ Module string.
                                 []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::string::String",
-                                "vec"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::string::String",
+                                  "vec"
+                                |)
                               |)
                             ]
                           |);
@@ -4463,13 +5108,17 @@ Module string.
                         []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "set_len",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::string::String",
-                        "vec"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::String",
+                          "vec"
+                        |)
                       |);
                       BinOp.Wrap.sub (|
                         M.read (| len |),
@@ -4552,20 +5201,29 @@ Module string.
                         "core::str::pattern::Pattern",
                         P,
                         [],
+                        [],
                         "into_searcher",
+                        [],
                         []
                       |),
                       [
                         M.read (| pat |);
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.path "alloc::string::String",
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.path "alloc::string::String",
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -4588,7 +5246,9 @@ Module string.
                                 [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ])
                           ],
                         [],
+                        [],
                         "collect",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -4641,7 +5301,9 @@ Module string.
                                                                 [ Ty.path "usize"; Ty.path "usize" ]
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4650,10 +5312,17 @@ Module string.
                                                               "core::str::pattern::Searcher",
                                                               Ty.associated,
                                                               [],
+                                                              [],
                                                               "next_match",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ searcher ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                searcher
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -4686,6 +5355,7 @@ Module string.
                                                                               Ty.path "usize"
                                                                             ]
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4697,6 +5367,7 @@ Module string.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -4764,7 +5435,9 @@ Module string.
                           Ty.path "alloc::alloc::Global"
                         ],
                       [],
+                      [],
                       "chain",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::iter::sources::once::Once")
@@ -4784,7 +5457,9 @@ Module string.
                               Ty.path "alloc::alloc::Global"
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| rejections |) ]
@@ -4803,9 +5478,10 @@ Module string.
                                 M.get_associated_function (|
                                   Ty.path "alloc::string::String",
                                   "len",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             ]
                         ]
@@ -4824,13 +5500,17 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |)
                   ]
                 |)
@@ -4859,7 +5539,9 @@ Module string.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| rejections |) ]
@@ -4894,10 +5576,17 @@ Module string.
                                             [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -4961,6 +5650,7 @@ Module string.
                                                                 []
                                                                 [ Ty.path "u8" ],
                                                               "add",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| ptr |); M.read (| start |) ]
@@ -4972,6 +5662,7 @@ Module string.
                                                               []
                                                               [ Ty.path "u8" ],
                                                             "add",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| ptr |); M.read (| len |) ]
@@ -5006,13 +5697,17 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |);
                     M.read (| len |)
                   ]
@@ -5090,8 +5785,8 @@ Module string.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
-                  [ M.read (| self |) ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ guard :=
@@ -5099,7 +5794,7 @@ Module string.
                 Value.StructRecord
                   "alloc::string::retain::SetLenOnDrop"
                   [
-                    ("s", M.read (| self |));
+                    ("s", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                     ("idx", Value.Integer IntegerKind.Usize 0);
                     ("del_bytes", Value.Integer IntegerKind.Usize 0)
                   ]
@@ -5134,6 +5829,7 @@ Module string.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                                   "unwrap_unchecked",
+                                  [],
                                   []
                                 |),
                                 [
@@ -5142,64 +5838,88 @@ Module string.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.path "core::str::iter::Chars",
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "str",
-                                            "chars",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "str",
-                                                "get_unchecked",
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    []
-                                                    [ Ty.path "usize" ]
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloc::string::String",
-                                                    [],
-                                                    "deref",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        guard,
-                                                        "alloc::string::retain::SetLenOnDrop",
-                                                        "s"
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                Value.StructRecord
-                                                  "core::ops::range::Range"
-                                                  [
-                                                    ("start",
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          guard,
-                                                          "alloc::string::retain::SetLenOnDrop",
-                                                          "idx"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "chars",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "get_unchecked",
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path "alloc::string::String",
+                                                              [],
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      guard,
+                                                                      "alloc::string::retain::SetLenOnDrop",
+                                                                      "s"
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
-                                                      |));
-                                                    ("end_", M.read (| len |))
-                                                  ]
-                                              ]
-                                            |)
-                                          ]
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::Range"
+                                                        [
+                                                          ("start",
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                guard,
+                                                                "alloc::string::retain::SetLenOnDrop",
+                                                                "idx"
+                                                              |)
+                                                            |));
+                                                          ("end_", M.read (| len |))
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -5210,7 +5930,7 @@ Module string.
                           let~ ch_len :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
+                                M.get_associated_function (| Ty.path "char", "len_utf8", [], [] |),
                                 [ M.read (| ch |) ]
                               |)
                             |) in
@@ -5228,11 +5948,16 @@ Module string.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
+                                                [],
                                                 [ Ty.tuple [ Ty.path "char" ] ],
                                                 "call_mut",
+                                                [],
                                                 []
                                               |),
-                                              [ f; Value.Tuple [ M.read (| ch |) ] ]
+                                              [
+                                                M.borrow (| Pointer.Kind.MutRef, f |);
+                                                Value.Tuple [ M.read (| ch |) ]
+                                              ]
                                             |)
                                           |)
                                         |)) in
@@ -5285,81 +6010,108 @@ Module string.
                                                   M.get_associated_function (|
                                                     Ty.path "char",
                                                     "encode_utf8",
+                                                    [],
                                                     []
                                                   |),
                                                   [
                                                     M.read (| ch |);
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::slice::raw::from_raw_parts_mut",
-                                                        [],
-                                                        [ Ty.path "u8" ]
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "*mut")
-                                                              []
-                                                              [ Ty.path "u8" ],
-                                                            "add",
-                                                            []
-                                                          |),
-                                                          [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
                                                             M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "str",
-                                                                "as_mut_ptr",
-                                                                []
+                                                              M.get_function (|
+                                                                "core::slice::raw::from_raw_parts_mut",
+                                                                [],
+                                                                [ Ty.path "u8" ]
                                                               |),
                                                               [
                                                                 M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::deref::DerefMut",
-                                                                    Ty.path "alloc::string::String",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*mut")
+                                                                      []
+                                                                      [ Ty.path "u8" ],
+                                                                    "add",
                                                                     [],
-                                                                    "deref_mut",
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        guard,
-                                                                        "alloc::string::retain::SetLenOnDrop",
-                                                                        "s"
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path "str",
+                                                                        "as_mut_ptr",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::DerefMut",
+                                                                                Ty.path
+                                                                                  "alloc::string::String",
+                                                                                [],
+                                                                                [],
+                                                                                "deref_mut",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        guard,
+                                                                                        "alloc::string::retain::SetLenOnDrop",
+                                                                                        "s"
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |);
+                                                                    BinOp.Wrap.sub (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          guard,
+                                                                          "alloc::string::retain::SetLenOnDrop",
+                                                                          "idx"
+                                                                        |)
+                                                                      |),
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          guard,
+                                                                          "alloc::string::retain::SetLenOnDrop",
+                                                                          "del_bytes"
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "char",
+                                                                    "len_utf8",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| ch |) ]
                                                                 |)
                                                               ]
-                                                            |);
-                                                            BinOp.Wrap.sub (|
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  guard,
-                                                                  "alloc::string::retain::SetLenOnDrop",
-                                                                  "idx"
-                                                                |)
-                                                              |),
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  guard,
-                                                                  "alloc::string::retain::SetLenOnDrop",
-                                                                  "del_bytes"
-                                                                |)
-                                                              |)
                                                             |)
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "char",
-                                                            "len_utf8",
-                                                            []
-                                                          |),
-                                                          [ M.read (| ch |) ]
+                                                          |)
                                                         |)
-                                                      ]
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -5447,18 +6199,31 @@ Module string.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.path "alloc::string::String",
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloc::string::String",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| idx |)
                                 ]
@@ -5488,11 +6253,22 @@ Module string.
             let~ bits :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                  M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                      [ M.read (| ch |); bits ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                          [
+                            M.read (| ch |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, bits |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -5503,9 +6279,14 @@ Module string.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "insert_bytes",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| idx |); M.read (| bits |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| idx |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bits |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5539,8 +6320,8 @@ Module string.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
-                  [ M.read (| self |) ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "len", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ amt :=
@@ -5549,9 +6330,10 @@ Module string.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| bytes |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -5563,13 +6345,17 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "reserve",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |);
                     M.read (| amt |)
                   ]
@@ -5584,6 +6370,7 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -5594,13 +6381,17 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "as_ptr",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::string::String",
-                              "vec"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::string::String",
+                                "vec"
+                              |)
                             |)
                           ]
                         |);
@@ -5611,6 +6402,7 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -5621,13 +6413,17 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::string::String",
-                              "vec"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::string::String",
+                                "vec"
+                              |)
                             |)
                           ]
                         |);
@@ -5651,14 +6447,16 @@ Module string.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| bytes |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -5669,13 +6467,17 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::string::String",
-                              "vec"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::string::String",
+                                "vec"
+                              |)
                             |)
                           ]
                         |);
@@ -5695,13 +6497,17 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |);
                     BinOp.Wrap.add (| M.read (| len |), M.read (| amt |) |)
                   ]
@@ -5745,18 +6551,31 @@ Module string.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.path "alloc::string::String",
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloc::string::String",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| idx |)
                                 ]
@@ -5785,14 +6604,20 @@ Module string.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "insert_bytes",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (| idx |);
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                      [ M.read (| string |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| string |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -5814,10 +6639,23 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
-            "alloc::string::String",
-            "vec"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::String",
+                      "vec"
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5841,13 +6679,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "len",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |)
             ]
           |)))
@@ -5868,8 +6710,8 @@ Module string.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
-              [ M.read (| self |) ]
+              M.get_associated_function (| Ty.path "alloc::string::String", "len", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -5906,18 +6748,31 @@ Module string.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.path "alloc::string::String",
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloc::string::String",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
                                   |);
                                   M.read (| at_ |)
                                 ]
@@ -5949,13 +6804,17 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "split_off",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |);
                     M.read (| at_ |)
                   ]
@@ -5966,6 +6825,7 @@ Module string.
                 M.get_associated_function (|
                   Ty.path "alloc::string::String",
                   "from_utf8_unchecked",
+                  [],
                   []
                 |),
                 [ M.read (| other |) ]
@@ -5994,13 +6854,17 @@ Module string.
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               "clear",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::String",
-                "vec"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::String",
+                  "vec"
+                |)
               |)
             ]
           |)))
@@ -6054,9 +6918,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "len",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |))
                       ]
                   ]
@@ -6093,18 +6958,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| start |)
                                         ]
@@ -6146,18 +7024,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| end_ |)
                                         ]
@@ -6184,38 +7075,62 @@ Module string.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let~ self_ptr := M.copy (| M.use (M.alloc (| M.read (| self |) |)) |) in
+                    let~ self_ptr :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| self |) |) |)
+                          |))
+                      |) in
                     let~ chars_iter :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "chars", [] |),
+                          M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "get_unchecked",
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ]
-                                ]
-                              |),
-                              [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
                                 M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.path "alloc::string::String",
+                                  M.get_associated_function (|
+                                    Ty.path "str",
+                                    "get_unchecked",
                                     [],
-                                    "deref",
-                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
                                   |),
-                                  [ M.read (| self |) ]
-                                |);
-                                Value.StructRecord
-                                  "core::ops::range::Range"
-                                  [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
-                              ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.path "alloc::string::String",
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                                  ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -6283,11 +7198,13 @@ Module string.
                   M.get_trait_method (|
                     "core::ops::range::RangeBounds",
                     R,
+                    [],
                     [ Ty.path "usize" ],
                     "start_bound",
+                    [],
                     []
                   |),
-                  [ range ]
+                  [ M.borrow (| Pointer.Kind.Ref, range |) ]
                 |)
               |) in
             let~ _ :=
@@ -6317,18 +7234,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| n |)
                                         ]
@@ -6378,18 +7308,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           BinOp.Wrap.add (|
                                             M.read (| n |),
@@ -6432,11 +7375,13 @@ Module string.
                   M.get_trait_method (|
                     "core::ops::range::RangeBounds",
                     R,
+                    [],
                     [ Ty.path "usize" ],
                     "end_bound",
+                    [],
                     []
                   |),
-                  [ range ]
+                  [ M.borrow (| Pointer.Kind.Ref, range |) ]
                 |)
               |) in
             let~ _ :=
@@ -6466,18 +7411,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           BinOp.Wrap.add (|
                                             M.read (| n |),
@@ -6531,18 +7489,31 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |);
                                           M.read (| n |)
                                         ]
@@ -6584,6 +7555,7 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "splice",
+                    [],
                     [
                       Ty.tuple
                         [
@@ -6600,18 +7572,24 @@ Module string.
                     ]
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "alloc::string::String",
-                        "as_mut_vec",
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "alloc::string::String",
+                            "as_mut_vec",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |);
                     Value.Tuple [ M.read (| start |); M.read (| end_ |) ];
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "bytes", [] |),
-                      [ M.read (| replace_with |) ]
+                      M.get_associated_function (| Ty.path "str", "bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| replace_with |) |) |) ]
                     |)
                   ]
                 |)
@@ -6645,6 +7623,7 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     "into_boxed_slice",
+                    [],
                     []
                   |),
                   [
@@ -6682,33 +7661,53 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ slice :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    "leak",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "alloc::string::String",
-                        "vec"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ slice :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                        "leak",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::string::String",
+                            "vec"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::str::converts::from_utf8_unchecked_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
+                          |)
+                        |)
                       |)
                     |)
-                  ]
+                  |)
                 |)
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
-                [ M.read (| slice |) ]
               |)
             |)
           |)))
@@ -6731,25 +7730,40 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              [ Ty.path "core::ops::range::RangeFull" ],
-              "index",
-              []
-            |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::FromUtf8Error",
-                "bytes"
-              |);
-              Value.StructTuple "core::ops::range::RangeFull" []
-            ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::FromUtf8Error",
+                          "bytes"
+                        |)
+                      |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6802,6 +7816,7 @@ Module string.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "with_capacity",
+                        [],
                         []
                       |),
                       [
@@ -6812,13 +7827,17 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "len",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::string::FromUtf8Error",
-                              "bytes"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::string::FromUtf8Error",
+                                "bytes"
+                              |)
                             |)
                           ]
                         |)
@@ -6834,48 +7853,72 @@ Module string.
                           []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
+                        [],
                         []
                       |),
                       [
-                        v;
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
-                            ],
-                            "index",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::string::FromUtf8Error",
-                              "bytes"
-                            |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [
-                                ("end_",
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::str::error::Utf8Error",
-                                      "valid_up_to",
+                        M.borrow (| Pointer.Kind.MutRef, v |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::Index",
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
                                       []
-                                    |),
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                    [],
                                     [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
                                       M.SubPointer.get_struct_record_field (|
                                         self,
                                         "alloc::string::FromUtf8Error",
-                                        "error"
+                                        "bytes"
                                       |)
-                                    ]
-                                  |))
-                              ]
-                          ]
+                                    |);
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [
+                                        ("end_",
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::str::error::Utf8Error",
+                                              "valid_up_to",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::string::FromUtf8Error",
+                                                  "error"
+                                                |)
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                  ]
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -6885,6 +7928,7 @@ Module string.
                     M.get_associated_function (|
                       Ty.path "alloc::string::String",
                       "from_utf8_unchecked",
+                      [],
                       []
                     |),
                     [ M.read (| v |) ]
@@ -6897,46 +7941,66 @@ Module string.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "utf8_chunks",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::index::Index",
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-                        "index",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "alloc::string::FromUtf8Error",
-                          "bytes"
-                        |);
-                        Value.StructRecord
-                          "core::ops::range::RangeFrom"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeFrom")
+                                []
+                                [ Ty.path "usize" ]
+                            ],
+                            "index",
+                            [],
+                            []
+                          |),
                           [
-                            ("start",
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::str::error::Utf8Error",
-                                  "valid_up_to",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "alloc::string::FromUtf8Error",
-                                    "error"
-                                  |)
-                                ]
-                              |))
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "alloc::string::FromUtf8Error",
+                                "bytes"
+                              |)
+                            |);
+                            Value.StructRecord
+                              "core::ops::range::RangeFrom"
+                              [
+                                ("start",
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::str::error::Utf8Error",
+                                      "valid_up_to",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "alloc::string::FromUtf8Error",
+                                          "error"
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
                           ]
-                      ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6950,7 +8014,9 @@ Module string.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.path "core::str::lossy::Utf8Chunks",
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -6970,10 +8036,17 @@ Module string.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.path "core::str::lossy::Utf8Chunks",
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -6999,17 +8072,24 @@ Module string.
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "push_str",
+                                              [],
                                               []
                                             |),
                                             [
-                                              res;
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::str::lossy::Utf8Chunk",
-                                                  "valid",
-                                                  []
-                                                |),
-                                                [ chunk ]
+                                              M.borrow (| Pointer.Kind.MutRef, res |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::str::lossy::Utf8Chunk",
+                                                      "valid",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, chunk |) ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -7030,16 +8110,29 @@ Module string.
                                                             []
                                                             [ Ty.path "u8" ],
                                                           "is_empty",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::str::lossy::Utf8Chunk",
-                                                              "invalid",
-                                                              []
-                                                            |),
-                                                            [ chunk ]
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::str::lossy::Utf8Chunk",
+                                                                  "invalid",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    chunk
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -7056,13 +8149,19 @@ Module string.
                                                     M.get_associated_function (|
                                                       Ty.path "alloc::string::String",
                                                       "push_str",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      res;
-                                                      M.read (|
-                                                        M.get_constant (|
-                                                          "alloc::string::into_utf8_lossy::REPLACEMENT"
+                                                      M.borrow (| Pointer.Kind.MutRef, res |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.get_constant (|
+                                                              "alloc::string::into_utf8_lossy::REPLACEMENT"
+                                                            |)
+                                                          |)
                                                         |)
                                                       |)
                                                     ]
@@ -7116,7 +8215,7 @@ Module string.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "alloc::string::FromUtf8Error",
               "error"
             |)
@@ -7146,16 +8245,26 @@ Module string.
               "core::fmt::Display",
               Ty.path "core::str::error::Utf8Error",
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::FromUtf8Error",
-                "error"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::FromUtf8Error",
+                      "error"
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7184,8 +8293,14 @@ Module string.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
-            [ M.read (| Value.String "invalid utf-16: lone surrogate found" |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "invalid utf-16: lone surrogate found" |) |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7211,7 +8326,7 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "invalid utf-8" |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "invalid utf-8" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7236,7 +8351,10 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| Value.String "invalid utf-16" |)))
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (| M.read (| Value.String "invalid utf-16" |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7273,14 +8391,19 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |)
                   ]
                 |))
@@ -7310,19 +8433,32 @@ Module string.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
+                    [],
                     "clone_from",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::string::String",
+                        "vec"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| source |),
-                      "alloc::string::String",
-                      "vec"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| source |) |),
+                            "alloc::string::String",
+                            "vec"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7360,7 +8496,7 @@ Module string.
             let~ buf :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -7370,11 +8506,13 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
+                    [],
                     [ Ty.path "char" ],
                     "extend",
+                    [],
                     [ I ]
                   |),
-                  [ buf; M.read (| iter |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iter |) ]
                 |)
               |) in
             buf
@@ -7409,7 +8547,7 @@ Module string.
             let~ buf :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -7419,11 +8557,13 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ],
                     "extend",
+                    [],
                     [ I ]
                   |),
-                  [ buf; M.read (| iter |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iter |) ]
                 |)
               |) in
             buf
@@ -7458,7 +8598,7 @@ Module string.
             let~ buf :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -7468,11 +8608,13 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "extend",
+                    [],
                     [ I ]
                   |),
-                  [ buf; M.read (| iter |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iter |) ]
                 |)
               |) in
             buf
@@ -7520,7 +8662,9 @@ Module string.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -7533,10 +8677,12 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |),
-                  [ iterator ]
+                  [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                 |)
               |),
               [
@@ -7545,7 +8691,12 @@ Module string.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "new",
+                          [],
+                          []
+                        |),
                         []
                       |)
                     |)));
@@ -7564,11 +8715,13 @@ Module string.
                           M.get_trait_method (|
                             "core::iter::traits::collect::Extend",
                             Ty.path "alloc::string::String",
+                            [],
                             [ Ty.path "alloc::string::String" ],
                             "extend",
+                            [],
                             [ Ty.associated ]
                           |),
-                          [ buf; M.read (| iterator |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iterator |) ]
                         |)
                       |) in
                     buf))
@@ -7606,7 +8759,7 @@ Module string.
             let~ buf :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
@@ -7616,11 +8769,13 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
+                    [],
                     [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ],
                     "extend",
+                    [],
                     [ I ]
                   |),
-                  [ buf; M.read (| iter |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iter |) ]
                 |)
               |) in
             buf
@@ -7671,7 +8826,9 @@ Module string.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -7684,10 +8841,12 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "next",
+                    [],
                     []
                   |),
-                  [ iterator ]
+                  [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                 |)
               |),
               [
@@ -7696,7 +8855,12 @@ Module string.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "new",
+                          [],
+                          []
+                        |),
                         []
                       |)
                     |)));
@@ -7715,6 +8879,7 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                             "into_owned",
+                            [],
                             []
                           |),
                           [ M.read (| cow |) ]
@@ -7726,11 +8891,13 @@ Module string.
                           M.get_trait_method (|
                             "core::iter::traits::collect::Extend",
                             Ty.path "alloc::string::String",
+                            [],
                             [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                             "extend",
+                            [],
                             [ Ty.associated ]
                           |),
-                          [ buf; M.read (| iterator |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iterator |) ]
                         |)
                       |) in
                     buf))
@@ -7774,7 +8941,9 @@ Module string.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| iter |) ]
@@ -7787,10 +8956,12 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "size_hint",
+                    [],
                     []
                   |),
-                  [ iterator ]
+                  [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                 |)
               |),
               [
@@ -7805,9 +8976,13 @@ Module string.
                           M.get_associated_function (|
                             Ty.path "alloc::string::String",
                             "reserve",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| lower_bound |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| lower_bound |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -7817,7 +8992,9 @@ Module string.
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
                             [],
+                            [],
                             "for_each",
+                            [],
                             [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.tuple []) ]
                           |),
                           [
@@ -7838,9 +9015,16 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| self |); M.read (| c |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| c |)
+                                                ]
                                               |)))
                                         ]
                                       |)))
@@ -7871,8 +9055,11 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [] |),
-                  [ M.read (| self |); M.read (| c |) ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| c |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7895,8 +9082,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "reserve", [] |),
-                  [ M.read (| self |); M.read (| additional |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "reserve",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| additional |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7938,19 +9133,23 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
+                    [],
                     [ Ty.path "char" ],
                     "extend",
+                    [],
                     [ Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ Ty.associated ]
                     ]
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.associated,
                         [],
+                        [],
                         "cloned",
+                        [],
                         [ Ty.path "char" ]
                       |),
                       [
@@ -7959,7 +9158,9 @@ Module string.
                             "core::iter::traits::collect::IntoIterator",
                             I,
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -7999,9 +9200,13 @@ Module string.
                           M.get_associated_function (|
                             Ty.path "alloc::string::String",
                             "push",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| c |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| c |)
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -8026,8 +9231,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "reserve", [] |),
-                  [ M.read (| self |); M.read (| additional |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "reserve",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| additional |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -8070,7 +9283,9 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "for_each",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
@@ -8083,7 +9298,9 @@ Module string.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -8104,9 +9321,19 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |); M.read (| s |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| s |) |)
+                                          |)
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -8135,8 +9362,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
-                  [ M.read (| self |); M.read (| s |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -8177,7 +9412,9 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "for_each",
+                    [],
                     [
                       Ty.function
                         [
@@ -8193,7 +9430,9 @@ Module string.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -8214,9 +9453,23 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |); M.read (| s |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -8262,7 +9515,9 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "for_each",
+                    [],
                     [ Ty.function [ Ty.tuple [ Ty.path "alloc::string::String" ] ] (Ty.tuple []) ]
                   |),
                   [
@@ -8271,7 +9526,9 @@ Module string.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -8292,19 +9549,35 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.path "alloc::string::String",
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ s ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloc::string::String",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)))
@@ -8335,18 +9608,35 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
                   [
-                    M.read (| self |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.path "alloc::string::String",
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ s ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloc::string::String",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8388,7 +9678,9 @@ Module string.
                     "core::iter::traits::iterator::Iterator",
                     Ty.associated,
                     [],
+                    [],
                     "for_each",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
@@ -8402,7 +9694,9 @@ Module string.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -8423,22 +9717,38 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.path "alloc::string::String",
                                           "push_str",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.read (| self |);
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
-                                              Ty.apply
-                                                (Ty.path "alloc::borrow::Cow")
-                                                []
-                                                [ Ty.path "str" ],
-                                              [],
-                                              "deref",
-                                              []
-                                            |),
-                                            [ s ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path "alloc::borrow::Cow")
+                                                    []
+                                                    [ Ty.path "str" ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)))
@@ -8469,18 +9779,35 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
                   [
-                    M.read (| self |);
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ s ]
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                            |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -8523,21 +9850,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "into_searcher",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8559,21 +9898,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "is_contained_in",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8595,21 +9946,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "is_prefix_of",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8631,21 +9994,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "strip_prefix_of",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8670,21 +10045,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "is_suffix_of",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8709,21 +10096,33 @@ Module string.
               "core::str::pattern::Pattern",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               [],
+              [],
               "strip_suffix_of",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |);
-              M.read (| haystack |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| haystack |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8764,30 +10163,62 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8809,30 +10240,62 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8865,30 +10328,62 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8910,30 +10405,62 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8966,33 +10493,65 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.read (| M.read (| other |) |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9014,33 +10573,65 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.read (| M.read (| other |) |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9073,31 +10664,65 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| M.read (| self |) |); Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9119,31 +10744,65 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| M.read (| self |) |); Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9176,42 +10835,78 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9233,42 +10928,78 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9301,42 +11032,79 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9358,42 +11126,79 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9427,45 +11232,81 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.read (| M.read (| other |) |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9487,45 +11328,81 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.read (| M.read (| other |) |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| other |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9558,43 +11435,82 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| M.read (| self |) |); Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9616,43 +11532,82 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| M.read (| self |) |); Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9686,42 +11641,78 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9743,42 +11734,78 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9811,42 +11838,79 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "eq",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9868,42 +11932,79 @@ Module string.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
+              [],
               [ Ty.path "str" ],
               "ne",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| other |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::index::Index",
+                          Ty.path "str",
+                          [],
+                          [ Ty.path "core::ops::range::RangeFull" ],
+                          "index",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructTuple "core::ops::range::RangeFull" []
+                        ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -9932,7 +12033,7 @@ Module string.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+            M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
             []
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9961,19 +12062,31 @@ Module string.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10002,19 +12115,31 @@ Module string.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10043,19 +12168,26 @@ Module string.
           (let self := M.alloc (| self |) in
           let hasher := M.alloc (| hasher |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], "hash", [ H ] |),
+            M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], [], "hash", [], [ H ] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.read (| hasher |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| hasher |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10091,8 +12223,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
-                  [ self; M.read (| other |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, self |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |) in
             self
@@ -10126,8 +12266,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
-                  [ M.read (| self |); M.read (| other |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -10161,21 +12309,38 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::slice::index::SliceIndex",
-              I,
-              [ Ty.path "str" ],
-              "index",
-              []
-            |),
-            [
-              M.read (| index |);
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [] |),
-                [ M.read (| self |) ]
+                M.get_trait_method (|
+                  "core::slice::index::SliceIndex",
+                  I,
+                  [],
+                  [ Ty.path "str" ],
+                  "index",
+                  [],
+                  []
+                |),
+                [
+                  M.read (| index |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "as_str",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10205,21 +12370,43 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::slice::index::SliceIndex",
-              I,
-              [ Ty.path "str" ],
-              "index_mut",
-              []
-            |),
-            [
-              M.read (| index |);
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "alloc::string::String", "as_mut_str", [] |),
-                [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::slice::index::SliceIndex",
+                      I,
+                      [],
+                      [ Ty.path "str" ],
+                      "index_mut",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| index |);
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "alloc::string::String",
+                              "as_mut_str",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10249,29 +12436,49 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref",
-                  []
-                |),
+                M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::String",
-                    "vec"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::string::String",
+                                  "vec"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10309,29 +12516,59 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::String",
-                    "vec"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::DerefMut",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                      [],
+                                      [],
+                                      "deref_mut",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::string::String",
+                                          "vec"
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10369,8 +12606,10 @@ Module string.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "from",
+                  [],
                   []
                 |),
                 [ M.read (| s |) ]
@@ -10414,15 +12653,20 @@ Module string.
             let~ buf :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
             let~ formatter :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
-                  [ buf ]
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                    |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -10434,15 +12678,27 @@ Module string.
                       []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
-                      [ M.read (| self |); formatter ]
+                      M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, formatter |) |)
+                        |)
+                      ]
                     |);
-                    M.read (|
-                      Value.String "a Display implementation returned an error unexpectedly"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          Value.String "a Display implementation returned an error unexpectedly"
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -10475,15 +12731,29 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
+            M.get_trait_method (|
+              "alloc::borrow::ToOwned",
+              Ty.path "str",
+              [],
+              [],
+              "to_owned",
+              [],
+              []
+            |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::ascii::ascii_char::AsciiChar",
-                  "as_str",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::ascii::ascii_char::AsciiChar",
+                      "as_str",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -10515,17 +12785,30 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
+                M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                 [
-                  M.read (| M.read (| self |) |);
-                  M.alloc (|
-                    repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                  M.read (| M.deref (| M.read (| self |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          repeat (|
+                            Value.Integer IntegerKind.U8 0,
+                            Value.Integer IntegerKind.Usize 4
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -10559,8 +12842,10 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
@@ -10570,11 +12855,18 @@ Module string.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.read (| self |)) in
+                        (let γ := M.use (M.deref (| M.read (| self |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         Value.String "true"));
-                    fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "false" |) |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "false" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -10622,12 +12914,13 @@ Module string.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.Usize 3 ]
                 |)
               |) in
-            let~ n := M.copy (| M.read (| self |) |) in
+            let~ n := M.copy (| M.deref (| M.read (| self |) |) |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -10665,11 +12958,13 @@ Module string.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
+                                        [],
                                         []
                                       |),
                                       [
-                                        buf;
-                                        M.rust_cast
+                                        M.borrow (| Pointer.Kind.MutRef, buf |);
+                                        M.cast
+                                          (Ty.path "char")
                                           (BinOp.Wrap.add (|
                                             M.read (| UnsupportedLiteral |),
                                             BinOp.Wrap.div (|
@@ -10699,11 +12994,13 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "push",
+                              [],
                               []
                             |),
                             [
-                              buf;
-                              M.rust_cast
+                              M.borrow (| Pointer.Kind.MutRef, buf |);
+                              M.cast
+                                (Ty.path "char")
                                 (BinOp.Wrap.add (|
                                   M.read (| UnsupportedLiteral |),
                                   BinOp.Wrap.div (|
@@ -10727,10 +13024,11 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                   [
-                    buf;
-                    M.rust_cast
+                    M.borrow (| Pointer.Kind.MutRef, buf |);
+                    M.cast
+                      (Ty.path "char")
                       (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)
@@ -10782,6 +13080,7 @@ Module string.
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "with_capacity",
+                    [],
                     []
                   |),
                   [ Value.Integer IntegerKind.Usize 4 ]
@@ -10797,8 +13096,8 @@ Module string.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "i8", "is_negative", [] |),
-                              [ M.read (| M.read (| self |) |) ]
+                              M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
+                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -10808,9 +13107,10 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "push",
+                              [],
                               []
                             |),
-                            [ buf; Value.UnicodeChar 45 ]
+                            [ M.borrow (| Pointer.Kind.MutRef, buf |); Value.UnicodeChar 45 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -10820,8 +13120,8 @@ Module string.
             let~ n :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "unsigned_abs", [] |),
-                  [ M.read (| M.read (| self |) |) ]
+                  M.get_associated_function (| Ty.path "i8", "unsigned_abs", [], [] |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -10861,9 +13161,13 @@ Module string.
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
+                                        [],
                                         []
                                       |),
-                                      [ buf; Value.UnicodeChar 49 ]
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, buf |);
+                                        Value.UnicodeChar 49
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -10885,11 +13189,13 @@ Module string.
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "push",
+                              [],
                               []
                             |),
                             [
-                              buf;
-                              M.rust_cast
+                              M.borrow (| Pointer.Kind.MutRef, buf |);
+                              M.cast
+                                (Ty.path "char")
                                 (BinOp.Wrap.add (|
                                   M.read (| UnsupportedLiteral |),
                                   BinOp.Wrap.div (|
@@ -10913,10 +13219,11 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [] |),
+                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                   [
-                    buf;
-                    M.rust_cast
+                    M.borrow (| Pointer.Kind.MutRef, buf |);
+                    M.cast
+                      (Ty.path "char")
                       (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)
@@ -11005,20 +13312,52 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
+                M.deref (|
                   M.read (|
-                    M.read (|
+                    M.deref (|
                       M.read (|
-                        M.read (|
+                        M.deref (|
                           M.read (|
-                            M.read (|
-                              M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.deref (| M.read (| self |) |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)
                         |)
@@ -11106,19 +13445,47 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
+                M.deref (|
                   M.read (|
-                    M.read (|
+                    M.deref (|
                       M.read (|
-                        M.read (|
+                        M.deref (|
                           M.read (|
-                            M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.deref (|
+                                                      M.read (| M.deref (| M.read (| self |) |) |)
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
                           |)
                         |)
                       |)
@@ -11200,18 +13567,44 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
+                M.deref (|
                   M.read (|
-                    M.read (|
+                    M.deref (|
                       M.read (|
-                        M.read (|
-                          M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (|
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| self |) |) |)
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
                         |)
                       |)
                     |)
@@ -11287,17 +13680,41 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
+                M.deref (|
                   M.read (|
-                    M.read (|
+                    M.deref (|
                       M.read (|
-                        M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| self |) |) |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
                       |)
                     |)
                   |)
@@ -11367,16 +13784,36 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
+                M.deref (|
                   M.read (|
-                    M.read (|
-                      M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (|
+                                      M.read (|
+                                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 |)
@@ -11436,14 +13873,34 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (|
-                  M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |)
+                M.deref (|
+                  M.read (|
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (|
+                                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -11495,13 +13952,31 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [
               M.read (|
-                M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |)
+                M.deref (|
+                  M.read (|
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.read (|
+                            M.deref (|
+                              M.read (|
+                                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -11547,11 +14022,27 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
-            [ M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |) ]
+            [
+              M.read (|
+                M.deref (|
+                  M.read (|
+                    M.deref (|
+                      M.read (|
+                        M.deref (|
+                          M.read (| M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |) |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11590,11 +14081,23 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
-            [ M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) ]
+            [
+              M.read (|
+                M.deref (|
+                  M.read (|
+                    M.deref (|
+                      M.read (| M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |) |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11628,11 +14131,19 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
-            [ M.read (| M.read (| M.read (| M.read (| self |) |) |) |) ]
+            [
+              M.read (|
+                M.deref (|
+                  M.read (| M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |) |)
+                |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11663,11 +14174,13 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
-            [ M.read (| M.read (| M.read (| self |) |) |) ]
+            [ M.read (| M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11697,11 +14210,13 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11731,8 +14246,10 @@ Module string.
             M.get_trait_method (|
               "core::convert::From",
               Ty.path "alloc::string::String",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -11762,29 +14279,51 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
+            M.get_trait_method (|
+              "alloc::borrow::ToOwned",
+              Ty.path "str",
+              [],
+              [],
+              "to_owned",
+              [],
+              []
+            |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "str",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
                   M.call_closure (|
                     M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                      "core::ops::index::Index",
+                      Ty.path "str",
                       [],
-                      "deref",
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.StructTuple "core::ops::range::RangeFull" []
-                ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
+                      |);
+                      Value.StructTuple "core::ops::range::RangeFull" []
+                    ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -11817,10 +14356,12 @@ Module string.
               "alloc::borrow::ToOwned",
               Ty.path "alloc::string::String",
               [],
+              [],
               "to_owned",
+              [],
               []
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11848,7 +14389,7 @@ Module string.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "alloc::fmt::format", [], [] |),
-            [ M.read (| M.read (| self |) |) ]
+            [ M.read (| M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11874,15 +14415,22 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.path "alloc::string::String",
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.path "alloc::string::String",
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11908,15 +14456,27 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::DerefMut",
-              Ty.path "alloc::string::String",
-              [],
-              "deref_mut",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.path "alloc::string::String",
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11942,9 +14502,14 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "as_bytes", [] |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "alloc::string::String", "as_bytes", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11971,8 +14536,16 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-            [ M.read (| s |) ]
+            M.get_trait_method (|
+              "alloc::borrow::ToOwned",
+              Ty.path "str",
+              [],
+              [],
+              "to_owned",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11999,8 +14572,16 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
-            [ M.read (| s |) ]
+            M.get_trait_method (|
+              "alloc::borrow::ToOwned",
+              Ty.path "str",
+              [],
+              [],
+              "to_owned",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12031,10 +14612,12 @@ Module string.
               "core::clone::Clone",
               Ty.path "alloc::string::String",
               [],
+              [],
               "clone",
+              [],
               []
             |),
-            [ M.read (| s |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12062,7 +14645,7 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "into_string", [] |),
+            M.get_associated_function (| Ty.path "str", "into_string", [], [] |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12098,7 +14681,12 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            M.get_associated_function (|
+              Ty.path "alloc::string::String",
+              "into_boxed_str",
+              [],
+              []
+            |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12129,6 +14717,7 @@ Module string.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
               "into_owned",
+              [],
               []
             |),
             [ M.read (| s |) ]
@@ -12158,7 +14747,9 @@ Module string.
       | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
-          Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
+          Value.StructTuple
+            "alloc::borrow::Cow::Borrowed"
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -12211,9 +14802,19 @@ Module string.
           Value.StructTuple
             "alloc::borrow::Cow::Borrowed"
             [
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [] |),
-                [ M.read (| s |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "alloc::string::String",
+                      "as_str",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                  |)
+                |)
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12248,8 +14849,10 @@ Module string.
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.path "char" ],
                   "from_iter",
+                  [],
                   [ I ]
                 |),
                 [ M.read (| it |) ]
@@ -12286,8 +14889,10 @@ Module string.
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "from_iter",
+                  [],
                   [ I ]
                 |),
                 [ M.read (| it |) ]
@@ -12324,8 +14929,10 @@ Module string.
                 M.get_trait_method (|
                   "core::iter::traits::collect::FromIterator",
                   Ty.path "alloc::string::String",
+                  [],
                   [ Ty.path "alloc::string::String" ],
                   "from_iter",
+                  [],
                   [ I ]
                 |),
                 [ M.read (| it |) ]
@@ -12357,7 +14964,7 @@ Module string.
         ltac:(M.monadic
           (let string := M.alloc (| string |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [] |),
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [], [] |),
             [ M.read (| string |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12390,8 +14997,16 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
-                  [ M.read (| self |); M.read (| s |) ]
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "push_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -12415,8 +15030,11 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [] |),
-                  [ M.read (| self |); M.read (| c |) ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| c |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -12465,32 +15083,66 @@ Module string.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::builders::DebugTuple", "finish", [] |),
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugTuple",
+              "finish",
+              [],
+              []
+            |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::builders::DebugTuple",
-                  "field",
-                  []
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_tuple",
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "Drain" |) ]
-                    |)
-                  |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [] |),
-                      [ M.read (| self |) ]
-                    |)
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugTuple",
+                      "field",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Formatter",
+                              "debug_tuple",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Drain" |) |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "alloc::string::Drain",
+                                  "as_str",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -12551,13 +15203,23 @@ Module string.
             let~ self_vec :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "as_mut_vec", [] |),
+                  M.get_associated_function (|
+                    Ty.path "alloc::string::String",
+                    "as_mut_vec",
+                    [],
+                    []
+                  |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::string::Drain",
-                        "string"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::string::Drain",
+                            "string"
+                          |)
+                        |)
                       |)
                     |)
                   ]
@@ -12575,14 +15237,14 @@ Module string.
                             BinOp.le (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::string::Drain",
                                   "start"
                                 |)
                               |),
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::string::Drain",
                                   "end"
                                 |)
@@ -12592,7 +15254,7 @@ Module string.
                               (BinOp.le (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::string::Drain",
                                     "end"
                                   |)
@@ -12604,9 +15266,15 @@ Module string.
                                       []
                                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                     "len",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self_vec |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self_vec |) |)
+                                    |)
+                                  ]
                                 |)
                               |)))
                           |)
@@ -12621,17 +15289,18 @@ Module string.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             "drain",
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
                           [
-                            M.read (| self_vec |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self_vec |) |) |);
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
                                 ("start",
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::string::Drain",
                                       "start"
                                     |)
@@ -12639,7 +15308,7 @@ Module string.
                                 ("end_",
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::string::Drain",
                                       "end"
                                     |)
@@ -12677,15 +15346,23 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
-            [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::Drain",
-                "iter"
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::Drain",
+                      "iter"
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12706,9 +15383,14 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [] |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12734,14 +15416,29 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [] |),
-                [ M.read (| self |) ]
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::Drain",
+                          "as_str",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12775,14 +15472,19 @@ Module string.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::str::iter::Chars",
               [],
+              [],
               "next",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::Drain",
-                "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::Drain",
+                  "iter"
+                |)
               |)
             ]
           |)))
@@ -12804,14 +15506,19 @@ Module string.
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::str::iter::Chars",
               [],
+              [],
               "size_hint",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::Drain",
-                "iter"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::Drain",
+                  "iter"
+                |)
               |)
             ]
           |)))
@@ -12833,10 +15540,12 @@ Module string.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "alloc::string::Drain",
               [],
+              [],
               "next_back",
+              [],
               []
             |),
-            [ self ]
+            [ M.borrow (| Pointer.Kind.MutRef, self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12873,14 +15582,19 @@ Module string.
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::str::iter::Chars",
               [],
+              [],
               "next_back",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::string::Drain",
-                "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::string::Drain",
+                  "iter"
+                |)
               |)
             ]
           |)))
@@ -12920,8 +15634,16 @@ Module string.
         ltac:(M.monadic
           (let c := M.alloc (| c |) in
           M.call_closure (|
-            M.get_trait_method (| "alloc::string::ToString", Ty.path "char", [], "to_string", [] |),
-            [ c ]
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.path "char",
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, c |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -33,6 +33,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
@@ -41,27 +42,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Command", "output", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Command", "output", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::process::Command",
-                        "arg",
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                      |),
-                      [
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "std::process::Command",
-                              "new",
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [ M.read (| Value.String "rustc" |) ]
-                          |)
-                        |);
-                        M.read (| Value.String "--version" |)
-                      ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "std::process::Command",
+                            "arg",
+                            [],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::process::Command",
+                                    "new",
+                                    [],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                  |),
+                                  [ M.read (| Value.String "rustc" |) ]
+                                |)
+                              |)
+                            |);
+                            M.read (| Value.String "--version" |)
+                          ]
+                        |)
+                      |)
                     |)
                   ]
                 |);
@@ -85,29 +96,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "failed to execute process: "
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String "failed to execute process: "
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "std::io::error::Error" ]
-                                                    |),
-                                                    [ e ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "std::io::error::Error" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (| Pointer.Kind.Ref, e |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -133,13 +169,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "std::process::ExitStatus",
                           "success",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            output,
-                            "std::process::Output",
-                            "status"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              output,
+                              "std::process::Output",
+                              "status"
+                            |)
                           |)
                         ]
                       |)
@@ -151,27 +191,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              output,
-                              "std::process::Output",
-                              "stdout"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        output,
+                                        "std::process::Output",
+                                        "stdout"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -186,31 +242,58 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "rustc succeeded and stdout was:
-" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
                                         [
-                                          Ty.apply
-                                            (Ty.path "alloc::borrow::Cow")
-                                            []
-                                            [ Ty.path "str" ]
+                                          M.read (|
+                                            Value.String "rustc succeeded and stdout was:
+"
+                                          |)
                                         ]
-                                      |),
-                                      [ s ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::borrow::Cow")
+                                                  []
+                                                  [ Ty.path "str" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -227,27 +310,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              output,
-                              "std::process::Output",
-                              "stderr"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        output,
+                                        "std::process::Output",
+                                        "stderr"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -262,31 +361,55 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "rustc failed and stderr was:
-" |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::borrow::Cow")
-                                            []
-                                            [ Ty.path "str" ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "rustc failed and stderr was:
+" |)
                                         ]
-                                      |),
-                                      [ s ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::borrow::Cow")
+                                                  []
+                                                  [ Ty.path "str" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)

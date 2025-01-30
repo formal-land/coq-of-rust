@@ -39,9 +39,10 @@ Module slice.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "split_last_mut",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -66,7 +67,9 @@ Module slice.
                                     []
                                     [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| elems |) ]
@@ -89,10 +92,19 @@ Module slice.
                                                   []
                                                   [ T ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -122,10 +134,23 @@ Module slice.
                                                         "core::clone::Clone",
                                                         T,
                                                         [],
+                                                        [],
                                                         "clone_from",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ M.read (| el |); value ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| el |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.Ref, value |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)))
@@ -135,7 +160,7 @@ Module slice.
                                   |)))
                             ]
                           |)) in
-                      M.write (| M.read (| last |), M.read (| value |) |)));
+                      M.write (| M.deref (| M.read (| last |) |), M.read (| value |) |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |)
@@ -178,7 +203,9 @@ Module slice.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -186,9 +213,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "iter_mut",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       ]
                     |)
@@ -207,10 +235,17 @@ Module slice.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -231,7 +266,10 @@ Module slice.
                                         |) in
                                       let item := M.copy (| γ0_0 |) in
                                       let~ _ :=
-                                        M.write (| M.read (| item |), M.read (| value |) |) in
+                                        M.write (|
+                                          M.deref (| M.read (| item |) |),
+                                          M.read (| value |)
+                                        |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in

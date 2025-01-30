@@ -16,8 +16,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         M.get_trait_method (|
           "core::ops::arith::Mul",
           Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+          [],
           [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
           "mul",
+          [],
           []
         |),
         [ M.read (| first |); M.read (| second |) ]
@@ -38,7 +40,13 @@ Definition choose_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
     ltac:(M.monadic
       (let first := M.alloc (| first |) in
       let β1 := M.alloc (| β1 |) in
-      M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| first |))) ] |)))
+      M.match_operator (|
+        β1,
+        [
+          fun γ =>
+            ltac:(M.monadic (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first |) |) |)))
+        ]
+      |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -72,39 +80,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "The product is " |);
-                              M.read (| Value.String "
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "The product is " |);
+                                    M.read (| Value.String "
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "scoping_rules_lifetimes_coercion::multiply",
-                                        [],
-                                        []
-                                      |),
-                                      [ first; second ]
-                                    |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "scoping_rules_lifetimes_coercion::multiply",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, first |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, second |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -119,39 +170,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " is the first
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "" |);
+                                    M.read (| Value.String " is the first
 " |)
-                            ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "scoping_rules_lifetimes_coercion::choose_first",
-                                        [],
-                                        []
-                                      |),
-                                      [ first; second ]
-                                    |)
-                                  |)
-                                ]
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "scoping_rules_lifetimes_coercion::choose_first",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, first |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, second |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)

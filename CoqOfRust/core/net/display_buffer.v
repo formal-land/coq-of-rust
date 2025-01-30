@@ -45,6 +45,7 @@ Module net.
                           []
                           [ Ty.path "u8" ],
                         "uninit",
+                        [],
                         []
                       |),
                       []
@@ -88,52 +89,78 @@ Module net.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "slice_assume_init_ref",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply
-                            (Ty.path "array")
-                            [ SIZE ]
-                            [
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [ Ty.path "u8" ]
-                            ],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-                          "index",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::net::display_buffer::DisplayBuffer",
-                            "buf"
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::RangeTo"
-                            [
-                              ("end_",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::net::display_buffer::DisplayBuffer",
-                                    "len"
-                                  |)
-                                |))
-                            ]
-                        ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::index::Index",
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ SIZE ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeTo")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::net::display_buffer::DisplayBuffer",
+                                      "buf"
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::RangeTo"
+                                    [
+                                      ("end_",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::net::display_buffer::DisplayBuffer",
+                                            "len"
+                                          |)
+                                        |))
+                                    ]
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               |)
             |)))
@@ -178,8 +205,8 @@ Module net.
               let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                    [ M.read (| s |) ]
+                    M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -201,14 +228,18 @@ Module net.
                                     [ Ty.path "u8" ]
                                 ],
                               "get_mut",
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ]
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::net::display_buffer::DisplayBuffer",
-                                "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::net::display_buffer::DisplayBuffer",
+                                  "buf"
+                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::Range"
@@ -216,7 +247,7 @@ Module net.
                                   ("start",
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::net::display_buffer::DisplayBuffer",
                                         "len"
                                       |)
@@ -225,7 +256,7 @@ Module net.
                                     BinOp.Wrap.add (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::net::display_buffer::DisplayBuffer",
                                           "len"
                                         |)
@@ -234,9 +265,15 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| bytes |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| bytes |) |)
+                                          |)
+                                        ]
                                       |)
                                     |))
                                 ]
@@ -259,15 +296,19 @@ Module net.
                                 []
                                 [ Ty.path "u8" ],
                               "copy_from_slice",
+                              [],
                               []
                             |),
-                            [ M.read (| buf |); M.read (| bytes |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::net::display_buffer::DisplayBuffer",
                             "len"
                           |) in
@@ -279,9 +320,10 @@ Module net.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
+                                [],
                                 []
                               |),
-                              [ M.read (| bytes |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
                             |)
                           |)
                         |) in

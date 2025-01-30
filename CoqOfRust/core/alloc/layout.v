@@ -59,7 +59,7 @@ Module alloc.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -89,23 +89,43 @@ Module alloc.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Layout" |);
-                M.read (| Value.String "size" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::alloc::layout::Layout",
-                  "size"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Layout" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "size" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::alloc::layout::Layout",
+                        "size"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "align" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::alloc::layout::Layout",
-                    "align"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "align" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::alloc::layout::Layout",
+                            "align"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -146,14 +166,14 @@ Module alloc.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
@@ -164,20 +184,28 @@ Module alloc.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "core::ptr::alignment::Alignment",
+                    [],
                     [ Ty.path "core::ptr::alignment::Alignment" ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::alloc::layout::Layout",
-                      "align"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::alloc::layout::Layout",
+                        "align"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::alloc::layout::Layout",
-                      "align"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::alloc::layout::Layout",
+                        "align"
+                      |)
                     |)
                   ]
                 |)))
@@ -249,16 +277,26 @@ Module alloc.
                       "core::hash::Hash",
                       Ty.path "usize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::alloc::layout::Layout",
-                        "size"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::alloc::layout::Layout",
+                              "size"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -268,16 +306,26 @@ Module alloc.
                     "core::hash::Hash",
                     Ty.path "core::ptr::alignment::Alignment",
                     [],
+                    [],
                     "hash",
+                    [],
                     [ __H ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::alloc::layout::Layout",
-                      "align"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::alloc::layout::Layout",
+                            "align"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -325,6 +373,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "is_size_align_valid",
+                                [],
                                 []
                               |),
                               [ M.read (| size |); M.read (| align |) ]
@@ -391,6 +440,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "new",
+                          [],
                           []
                         |),
                         [ M.read (| align |) ]
@@ -421,6 +471,7 @@ Module alloc.
                                               M.get_associated_function (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 "max_size_for_align",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| align |) ]
@@ -482,13 +533,14 @@ Module alloc.
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
-                  M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::MAX" |) |)),
                   Value.Integer IntegerKind.Usize 1
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
+                    [],
                     []
                   |),
                   [ M.read (| align |) ]
@@ -535,6 +587,7 @@ Module alloc.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| align |) ]
@@ -622,6 +675,7 @@ Module alloc.
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.from_size_align_unchecked",
+                                [],
                                 []
                               |),
                               [ M.read (| size |); M.read (| align |) ]
@@ -666,7 +720,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::alloc::layout::Layout",
                 "size"
               |)
@@ -690,12 +744,13 @@ Module alloc.
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_usize",
+                [],
                 []
               |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::alloc::layout::Layout",
                     "align"
                   |)
@@ -740,6 +795,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -772,11 +828,11 @@ Module alloc.
                     [
                       M.call_closure (|
                         M.get_function (| "core::mem::size_of_val", [], [ T ] |),
-                        [ M.read (| t |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                       |);
                       M.call_closure (|
                         M.get_function (| "core::mem::align_of_val", [], [ T ] |),
-                        [ M.read (| t |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                       |)
                     ]
                 |),
@@ -792,6 +848,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -845,6 +902,7 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
+                            [],
                             []
                           |),
                           [ M.read (| size |); M.read (| align |) ]
@@ -874,6 +932,7 @@ Module alloc.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "new_unchecked",
+                [],
                 []
               |),
               [
@@ -884,9 +943,10 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -924,6 +984,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::ptr::alignment::Alignment",
                               "new",
+                              [],
                               []
                             |),
                             [ M.read (| align |) ]
@@ -941,12 +1002,13 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
+                            [],
                             []
                           |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::alloc::layout::Layout",
                                 "size"
                               |)
@@ -955,12 +1017,13 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "max",
+                                [],
                                 []
                               |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::alloc::layout::Layout",
                                     "align"
                                   |)
@@ -1008,6 +1071,7 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| align |) ]
@@ -1029,9 +1093,13 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "size_rounded_up_to_custom_align",
+                              [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| align |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| align |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -1045,7 +1113,7 @@ Module alloc.
                             M.read (| len_rounded_up |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::alloc::layout::Layout",
                                 "size"
                               |)
@@ -1109,6 +1177,7 @@ Module alloc.
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "as_usize",
+                          [],
                           []
                         |),
                         [ M.read (| align |) ]
@@ -1129,7 +1198,7 @@ Module alloc.
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::alloc::layout::Layout",
                             "size"
                           |)
@@ -1174,13 +1243,14 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::alloc::layout::Layout",
                           "align"
                         |)
@@ -1193,6 +1263,7 @@ Module alloc.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_align_unchecked",
+                    [],
                     []
                   |),
                   [
@@ -1201,9 +1272,10 @@ Module alloc.
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -1238,9 +1310,10 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "pad_to_align",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -1254,9 +1327,10 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "repeat_packed",
+                              [],
                               []
                             |),
-                            [ padded; M.read (| n |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, padded |); M.read (| n |) ]
                           |)
                         |) in
                       let γ0_0 :=
@@ -1277,9 +1351,10 @@ Module alloc.
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "size",
+                                    [],
                                     []
                                   |),
-                                  [ padded ]
+                                  [ M.borrow (| Pointer.Kind.Ref, padded |) ]
                                 |)
                               ]
                           ]
@@ -1330,12 +1405,13 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "max",
+                      [],
                       []
                     |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::alloc::layout::Layout",
                           "align"
                         |)
@@ -1356,10 +1432,11 @@ Module alloc.
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           next,
@@ -1397,6 +1474,7 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "from_size_alignment",
+                              [],
                               []
                             |),
                             [ M.read (| new_size |); M.read (| new_align |) ]
@@ -1454,11 +1532,11 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "usize", "checked_mul", [] |),
+                            M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::alloc::layout::Layout",
                                   "size"
                                 |)
@@ -1479,13 +1557,14 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
+                            [],
                             []
                           |),
                           [
                             M.read (| size |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::alloc::layout::Layout",
                                 "align"
                               |)
@@ -1532,7 +1611,7 @@ Module alloc.
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::alloc::layout::Layout",
                           "size"
                         |)
@@ -1552,13 +1631,14 @@ Module alloc.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_alignment",
+                    [],
                     []
                   |),
                   [
                     M.read (| new_size |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::alloc::layout::Layout",
                         "align"
                       |)
@@ -1616,7 +1696,7 @@ Module alloc.
                   M.read (|
                     M.return_ (|
                       M.call_closure (|
-                        M.get_associated_function (| Self, "inner.array", [] |),
+                        M.get_associated_function (| Self, "inner.array", [], [] |),
                         [
                           M.read (|
                             M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |)
@@ -1736,8 +1816,14 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "LayoutError" |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1776,10 +1862,15 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
-                M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

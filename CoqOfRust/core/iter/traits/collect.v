@@ -37,7 +37,9 @@ Module iter.
                         "core::default::Default",
                         Ty.tuple [ A; B ],
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -49,11 +51,13 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Ty.tuple [ A; B ],
+                        [],
                         [ Ty.tuple [ AE; BE ] ],
                         "extend",
+                        [],
                         [ I ]
                       |),
-                      [ res; M.read (| iter |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, res |); M.read (| iter |) ]
                     |)
                   |) in
                 res
@@ -131,12 +135,14 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
+                        [],
                         [ A ],
                         "extend",
+                        [],
                         [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
                       |),
                       [
-                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                         Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
                       ]
                     |)
@@ -193,11 +199,16 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
+                        [],
                         [ A ],
                         "extend_one",
+                        [],
                         []
                       |),
-                      [ M.read (| self |); M.read (| item |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| item |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -232,7 +243,9 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
                   [],
+                  [],
                   "for_each",
+                  [],
                   [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
                 |),
                 [
@@ -241,7 +254,9 @@ Module iter.
                       "core::iter::traits::collect::IntoIterator",
                       T,
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
                     [ M.read (| iter |) ]
@@ -315,7 +330,9 @@ Module iter.
                                 "core::iter::traits::collect::IntoIterator",
                                 T,
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [ M.read (| into_iter |) ]
@@ -327,11 +344,17 @@ Module iter.
                               M.get_trait_method (|
                                 "core::iter::traits::collect::SpecTupleExtend",
                                 Ty.associated,
+                                [],
                                 [ ExtendA; ExtendB ],
                                 "extend",
+                                [],
                                 []
                               |),
-                              [ M.read (| iter |); M.read (| a |); M.read (| b |) ]
+                              [
+                                M.read (| iter |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)))
@@ -366,12 +389,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_one",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
                       ]
                     |)
@@ -382,12 +410,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_one",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
                       ]
                     |)
@@ -422,12 +455,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_reserve",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| additional |)
                       ]
                     |)
@@ -438,12 +476,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_reserve",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| additional |)
                       ]
                     |)
@@ -481,12 +524,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
+                        [],
                         [ A ],
                         "extend_one_unchecked",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
                       ]
                     |)
@@ -497,12 +545,17 @@ Module iter.
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
+                        [],
                         [ B ],
                         "extend_one_unchecked",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                        |);
                         M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
                       ]
                     |)
@@ -571,10 +624,12 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       impl_Iterator_Item____A__B__,
                       [],
+                      [],
                       "size_hint",
+                      [],
                       []
                     |),
-                    [ iter ]
+                    [ M.borrow (| Pointer.Kind.Ref, iter |) ]
                   |)
                 |),
                 [
@@ -608,11 +663,19 @@ Module iter.
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendA,
+                                        [],
                                         [ A ],
                                         "extend_reserve",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| a |); M.read (| lower_bound |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| a |) |)
+                                        |);
+                                        M.read (| lower_bound |)
+                                      ]
                                     |)
                                   |) in
                                 let~ _ :=
@@ -621,11 +684,19 @@ Module iter.
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendB,
+                                        [],
                                         [ B ],
                                         "extend_reserve",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| b |); M.read (| lower_bound |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| b |) |)
+                                        |);
+                                        M.read (| lower_bound |)
+                                      ]
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -639,7 +710,9 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               impl_Iterator_Item____A__B__,
                               [],
+                              [],
                               "fold",
+                              [],
                               [ Ty.tuple []; Ty.associated ]
                             |),
                             [
@@ -651,7 +724,10 @@ Module iter.
                                   [],
                                   []
                                 |),
-                                [ M.read (| a |); M.read (| b |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                                ]
                               |)
                             ]
                           |)
@@ -711,11 +787,19 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_A_,
+                                                  [],
                                                   [ A ],
                                                   "extend_one",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| a |); M.read (| t |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| a |) |)
+                                                  |);
+                                                  M.read (| t |)
+                                                ]
                                               |)
                                             |) in
                                           let~ _ :=
@@ -724,11 +808,19 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_B_,
+                                                  [],
                                                   [ B ],
                                                   "extend_one",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| b |); M.read (| u |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| b |) |)
+                                                  |);
+                                                  M.read (| u |)
+                                                ]
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)
@@ -783,7 +875,11 @@ Module iter.
                         [],
                         [ A; B; ExtendA; ExtendB; Iter ]
                       |),
-                      [ M.read (| self |); M.read (| a |); M.read (| b |) ]
+                      [
+                        M.read (| self |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                      ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -856,10 +952,12 @@ Module iter.
                             "core::iter::traits::iterator::Iterator",
                             Iter,
                             [],
+                            [],
                             "size_hint",
+                            [],
                             []
                           |),
-                          [ self ]
+                          [ M.borrow (| Pointer.Kind.Ref, self |) ]
                         |)
                       |),
                       [
@@ -885,9 +983,10 @@ Module iter.
                                                   []
                                                   [ Ty.path "usize" ],
                                                 "is_none",
+                                                [],
                                                 []
                                               |),
-                                              [ upper_bound ]
+                                              [ M.borrow (| Pointer.Kind.Ref, upper_bound |) ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -908,8 +1007,14 @@ Module iter.
                                                   |),
                                                   [
                                                     M.read (| self |);
-                                                    M.read (| a |);
-                                                    M.read (| b |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| a |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| b |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -945,11 +1050,19 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendA,
+                                              [],
                                               [ A ],
                                               "extend_reserve",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| a |); M.read (| lower_bound |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| a |) |)
+                                              |);
+                                              M.read (| lower_bound |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
@@ -958,11 +1071,19 @@ Module iter.
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendB,
+                                              [],
                                               [ B ],
                                               "extend_reserve",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| b |); M.read (| lower_bound |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| b |) |)
+                                              |);
+                                              M.read (| lower_bound |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -976,15 +1097,26 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     Iter,
                                     [],
+                                    [],
                                     "fold",
+                                    [],
                                     [ Ty.tuple []; Ty.associated ]
                                   |),
                                   [
                                     M.read (| self |);
                                     Value.Tuple [];
                                     M.call_closure (|
-                                      M.get_associated_function (| Self, "extend.extend", [] |),
-                                      [ M.read (| a |); M.read (| b |) ]
+                                      M.get_associated_function (| Self, "extend.extend", [], [] |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| a |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| b |) |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)

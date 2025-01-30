@@ -26,8 +26,10 @@ Module ops.
             M.get_trait_method (|
               "core::ops::try_trait::FromResidual",
               T,
+              [],
               [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ Y ] ],
               "from_residual",
+              [],
               []
             |),
             [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
@@ -86,11 +88,16 @@ Module ops.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       impl_FnMut_A__arrow_T,
+                                      [],
                                       [ Ty.tuple [ A ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| a |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| a |) ]
+                                    ]
                                   |)
                                 ]))
                         ]
@@ -140,11 +147,16 @@ Module ops.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut_A__B__arrow_T,
+                                              [],
                                               [ Ty.tuple [ A; B ] ],
                                               "call_mut",
+                                              [],
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, f |);
+                                              Value.Tuple [ M.read (| a |); M.read (| b |) ]
+                                            ]
                                           |)
                                         ]))
                                 ]
@@ -309,16 +321,28 @@ Module ops.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Yeet" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::ops::try_trait::Yeet",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Yeet" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ops::try_trait::Yeet",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]

@@ -48,7 +48,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "example05::Foo", "plus1", [] |),
+              M.get_associated_function (| Ty.path "example05::Foo", "plus1", [], [] |),
               [ M.read (| foo |) ]
             |)
           |) in

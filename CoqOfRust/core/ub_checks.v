@@ -828,6 +828,7 @@ Module ub_checks.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 "is_null",
+                [],
                 []
               |),
               [ M.read (| ptr |) ]
@@ -838,6 +839,7 @@ Module ub_checks.
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 "is_aligned_to",
+                [],
                 []
               |),
               [ M.read (| ptr |); M.read (| align |) ]
@@ -880,7 +882,9 @@ Module ub_checks.
                     ltac:(M.monadic
                       (M.alloc (|
                         BinOp.Wrap.div (|
-                          M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (| M.get_constant (| "core::num::MAX" |) |)),
                           M.read (| size |)
                         |)
                       |)))
@@ -1009,6 +1013,7 @@ Module ub_checks.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     "addr",
+                    [],
                     []
                   |),
                   [ M.read (| src |) ]
@@ -1020,6 +1025,7 @@ Module ub_checks.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     "addr",
+                    [],
                     []
                   |),
                   [ M.read (| dst |) ]
@@ -1028,7 +1034,7 @@ Module ub_checks.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                   [ M.read (| size |); M.read (| count |) ]
                 |)
               |),
@@ -1045,7 +1051,7 @@ Module ub_checks.
                     let~ diff :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "usize", "abs_diff", [] |),
+                          M.get_associated_function (| Ty.path "usize", "abs_diff", [], [] |),
                           [ M.read (| src_usize |); M.read (| dst_usize |) ]
                         |)
                       |) in
@@ -1140,17 +1146,21 @@ Module char.
                                       Ty.path "core::char::convert::CharTryFromError"
                                     ],
                                   "is_ok",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::char::convert::char_try_from_u32",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| i |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::char::convert::char_try_from_u32",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| i |) ]
+                                      |)
                                     |)
                                   |)
                                 ]

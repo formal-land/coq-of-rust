@@ -130,13 +130,17 @@ Module char.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "is_some",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_digit", [] |),
-                    [ M.read (| self |); M.read (| radix |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "to_digit", [], [] |),
+                      [ M.read (| self |); M.read (| radix |) ]
+                    |)
                   |)
                 |)
               ]
@@ -174,8 +178,11 @@ Module char.
                   let~ digit :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
-                        [ M.rust_cast (M.read (| self |)); M.rust_cast (Value.UnicodeChar 48) ]
+                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
+                        [
+                          M.cast (Ty.path "u32") (M.read (| self |));
+                          M.cast (Ty.path "u32") (Value.UnicodeChar 48)
+                        ]
                       |)
                     |) in
                   let~ _ :=
@@ -228,17 +235,26 @@ Module char.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "to_digit: radix is too high (maximum 36)"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "to_digit: radix is too high (maximum 36)"
+                                                              |)
+                                                            ]
                                                         |)
-                                                      ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -289,6 +305,7 @@ Module char.
                                   M.get_associated_function (|
                                     Ty.path "u32",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -296,13 +313,14 @@ Module char.
                                       M.get_associated_function (|
                                         Ty.path "u32",
                                         "wrapping_sub",
+                                        [],
                                         []
                                       |),
                                       [
                                         BinOp.bit_or
-                                          (M.rust_cast (M.read (| self |)))
+                                          (M.cast (Ty.path "u32") (M.read (| self |)))
                                           (Value.Integer IntegerKind.U32 32);
-                                        M.rust_cast (Value.UnicodeChar 97)
+                                        M.cast (Ty.path "u32") (Value.UnicodeChar 97)
                                       ]
                                     |);
                                     Value.Integer IntegerKind.U32 10
@@ -351,7 +369,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [] |),
+              M.get_associated_function (| Ty.path "core::char::EscapeUnicode", "new", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -398,6 +416,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
@@ -412,6 +431,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
@@ -426,6 +446,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
@@ -440,6 +461,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
@@ -454,6 +476,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [
@@ -479,6 +502,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::QuotationMark" []
@@ -501,6 +525,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" [] ]
@@ -521,6 +546,7 @@ Module char.
                             M.get_associated_function (|
                               Ty.path "char",
                               "is_grapheme_extended",
+                              [],
                               []
                             |),
                             [ M.read (| self |) ]
@@ -532,6 +558,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -552,6 +579,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "printable",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -564,6 +592,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -589,7 +618,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "char", "escape_debug_ext", [] |),
+              M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
               [
                 M.read (| self |);
                 M.read (| M.get_constant (| "core::char::methods::ESCAPE_ALL" |) |)
@@ -632,6 +661,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
@@ -646,6 +676,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
@@ -660,6 +691,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "backslash",
+                            [],
                             []
                           |),
                           [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
@@ -695,45 +727,47 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::char::EscapeDefault",
-                                        "backslash",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                            "unwrap",
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::char::EscapeDefault",
+                                      "backslash",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
                                             []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "char",
-                                                "as_ascii",
-                                                []
-                                              |),
-                                              [ self ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                          "unwrap",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "char",
+                                              "as_ascii",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -742,6 +776,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "printable",
+                            [],
                             []
                           |),
                           [
@@ -752,12 +787,18 @@ Module char.
                                   []
                                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                 "unwrap",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "char", "as_ascii", [] |),
-                                  [ self ]
+                                  M.get_associated_function (|
+                                    Ty.path "char",
+                                    "as_ascii",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                                 |)
                               ]
                             |)
@@ -771,6 +812,7 @@ Module char.
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
                             "unicode",
+                            [],
                             []
                           |),
                           [ M.read (| self |) ]
@@ -797,7 +839,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf8", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -816,7 +858,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::char::methods::len_utf16", [], [] |),
-              [ M.rust_cast (M.read (| self |)) ]
+              [ M.cast (Ty.path "u32") (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -835,14 +877,48 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
-            M.call_closure (|
-              M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
-              [
-                M.call_closure (|
-                  M.get_function (| "core::char::methods::encode_utf8_raw", [], [] |),
-                  [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::str::converts::from_utf8_unchecked_mut",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "core::char::methods::encode_utf8_raw",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.cast (Ty.path "u32") (M.read (| self |));
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| dst |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -860,9 +936,22 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
-            M.call_closure (|
-              M.get_function (| "core::char::methods::encode_utf16_raw", [], [] |),
-              [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_function (| "core::char::methods::encode_utf16_raw", [], [] |),
+                      [
+                        M.cast (Ty.path "u32") (M.read (| self |));
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
+                      ]
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -895,13 +984,12 @@ Module char.
                           fun γ => ltac:(M.monadic (Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1049,13 +1137,12 @@ Module char.
                               Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1095,12 +1182,12 @@ Module char.
             (let self := M.alloc (| self |) in
             LogicalOp.or (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "is_alphabetic", [] |),
+                M.get_associated_function (| Ty.path "char", "is_alphabetic", [], [] |),
                 [ M.read (| self |) ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "char", "is_numeric", [] |),
+                  M.get_associated_function (| Ty.path "char", "is_numeric", [], [] |),
                   [ M.read (| self |) ]
                 |)))
             |)))
@@ -1202,7 +1289,12 @@ Module char.
               "core::char::ToLowercase"
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::char::CaseMappingIter",
+                    "new",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_function (|
@@ -1235,7 +1327,12 @@ Module char.
               "core::char::ToUppercase"
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::char::CaseMappingIter",
+                    "new",
+                    [],
+                    []
+                  |),
                   [
                     M.call_closure (|
                       M.get_function (|
@@ -1265,7 +1362,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.le (|
-              M.rust_cast (M.read (| M.read (| self |) |)),
+              M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |)),
               Value.Integer IntegerKind.U32 127
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1298,8 +1395,8 @@ Module char.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "is_ascii", [] |),
-                              [ M.read (| self |) ]
+                              M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1311,9 +1408,11 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "core::ascii::ascii_char::AsciiChar",
                                 "from_u8_unchecked",
+                                [],
                                 []
                               |),
-                              [ M.rust_cast (M.read (| M.read (| self |) |)) ]
+                              [ M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
+                              ]
                             |)
                           ]
                       |)));
@@ -1355,24 +1454,36 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "char",
                                 "is_ascii_lowercase",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "char")
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
+                              [],
                               []
                             |),
-                            [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.cast
+                                    (Ty.path "u8")
+                                    (M.read (| M.deref (| M.read (| self |) |) |))
+                                |)
+                              |)
+                            ]
                           |))
                       |)));
-                  fun γ => ltac:(M.monadic (M.read (| self |)))
+                  fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |)))
                 ]
               |)
             |)))
@@ -1409,24 +1520,36 @@ Module char.
                               M.get_associated_function (|
                                 Ty.path "char",
                                 "is_ascii_uppercase",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.rust_cast
+                        M.cast
+                          (Ty.path "char")
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "u8",
                               "ascii_change_case_unchecked",
+                              [],
                               []
                             |),
-                            [ M.alloc (| M.rust_cast (M.read (| M.read (| self |) |)) |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.cast
+                                    (Ty.path "u8")
+                                    (M.read (| M.deref (| M.read (| self |) |) |))
+                                |)
+                              |)
+                            ]
                           |))
                       |)));
-                  fun γ => ltac:(M.monadic (M.read (| self |)))
+                  fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |)))
                 ]
               |)
             |)))
@@ -1449,12 +1572,12 @@ Module char.
             let other := M.alloc (| other |) in
             BinOp.eq (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
-                [ M.read (| self |) ]
+                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |),
               M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
-                [ M.read (| other |) ]
+                M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1476,10 +1599,10 @@ Module char.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_ascii_uppercase", [] |),
-                    [ M.read (| self |) ]
+                    M.get_associated_function (| Ty.path "char", "to_ascii_uppercase", [], [] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1503,10 +1626,10 @@ Module char.
             M.read (|
               let~ _ :=
                 M.write (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [] |),
-                    [ M.read (| self |) ]
+                    M.get_associated_function (| Ty.path "char", "to_ascii_lowercase", [], [] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1529,7 +1652,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1539,13 +1662,12 @@ Module char.
                           fun γ => ltac:(M.monadic (Value.Tuple []));
                           fun γ => ltac:(M.monadic (Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1569,7 +1691,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1594,7 +1716,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1621,7 +1743,7 @@ Module char.
               (BinOp.bit_or
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1630,7 +1752,7 @@ Module char.
                 |))
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1639,7 +1761,7 @@ Module char.
                 |)))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1664,7 +1786,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1689,7 +1811,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1716,7 +1838,7 @@ Module char.
               (BinOp.bit_or
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1725,7 +1847,7 @@ Module char.
                 |))
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1734,7 +1856,7 @@ Module char.
                 |)))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1765,7 +1887,7 @@ Module char.
                 (BinOp.bit_or
                   (M.read (|
                     M.match_operator (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       [
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1774,7 +1896,7 @@ Module char.
                   |))
                   (M.read (|
                     M.match_operator (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       [
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1783,7 +1905,7 @@ Module char.
                   |)))
                 (M.read (|
                   M.match_operator (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     [
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1792,7 +1914,7 @@ Module char.
                 |)))
               (M.read (|
                 M.match_operator (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   [
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1817,7 +1939,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -1842,7 +1964,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1890,13 +2012,12 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1920,7 +2041,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1937,13 +2058,12 @@ Module char.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -2107,256 +2227,302 @@ Module char.
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           let dst := M.alloc (| dst |) in
-          M.read (|
-            let~ len :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::char::methods::len_utf8", [], [] |),
-                  [ M.read (| code |) ]
-                |)
-              |) in
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| len |); M.read (| dst |) ] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 1
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let~ _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 2
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let b := M.alloc (| γ2_1 |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| a |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 6
-                                |))
-                                (Value.Integer IntegerKind.U32 31)))
-                            (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| b |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (M.read (| code |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 3
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
-                      let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 3, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let b := M.alloc (| γ2_1 |) in
-                      let c := M.alloc (| γ2_2 |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| a |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 12
-                                |))
-                                (Value.Integer IntegerKind.U32 15)))
-                            (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| b |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 6
-                                |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| c |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (M.read (| code |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 4
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
-                      let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
-                      let γ2_3 := M.SubPointer.get_slice_index (| γ0_1, 3 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 4, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let b := M.alloc (| γ2_1 |) in
-                      let c := M.alloc (| γ2_2 |) in
-                      let d := M.alloc (| γ2_3 |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| a |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 18
-                                |))
-                                (Value.Integer IntegerKind.U32 7)))
-                            (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| b |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 12
-                                |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| c |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (BinOp.Wrap.shr (|
-                                  M.read (| code |),
-                                  Value.Integer IntegerKind.I32 6
-                                |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| d |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (M.read (| code |))
-                                (Value.Integer IntegerKind.U32 63)))
-                            (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [],
-                            [
-                              Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
-                              Ty.function
-                                [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                (Ty.tuple []);
-                              Ty.function
-                                [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
-                          [
-                            Value.Tuple
-                              [
-                                M.read (| code |);
-                                M.read (| len |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| dst |) ]
-                                |)
-                              ];
-                            M.get_function (|
-                              "core::char::methods::encode_utf8_raw.panic_at_const",
-                              [],
-                              []
-                            |);
-                            M.get_function (|
-                              "core::char::methods::encode_utf8_raw.panic_at_rt",
-                              [],
-                              []
-                            |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ Ty.path "u8" ] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      "as_mut_ptr",
-                      []
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ len :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::char::methods::len_utf8", [], [] |),
+                      [ M.read (| code |) ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.read (| len |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
+                        ]
                     |),
-                    [ M.read (| dst |) ]
-                  |);
-                  M.read (| len |)
-                ]
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 1
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              M.cast (Ty.path "u8") (M.read (| code |))
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 2
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let b := M.alloc (| γ2_1 |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 6
+                                    |))
+                                    (Value.Integer IntegerKind.U32 31)))
+                                (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| b |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (M.read (| code |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 3
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                          let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 3, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let b := M.alloc (| γ2_1 |) in
+                          let c := M.alloc (| γ2_2 |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 12
+                                    |))
+                                    (Value.Integer IntegerKind.U32 15)))
+                                (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| b |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 6
+                                    |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| c |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (M.read (| code |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 4
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                          let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
+                          let γ2_3 := M.SubPointer.get_slice_index (| γ0_1, 3 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 4, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let b := M.alloc (| γ2_1 |) in
+                          let c := M.alloc (| γ2_2 |) in
+                          let d := M.alloc (| γ2_3 |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 18
+                                    |))
+                                    (Value.Integer IntegerKind.U32 7)))
+                                (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| b |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 12
+                                    |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| c |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (BinOp.Wrap.shr (|
+                                      M.read (| code |),
+                                      Value.Integer IntegerKind.I32 6
+                                    |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| d |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u8")
+                                  (BinOp.bit_and
+                                    (M.read (| code |))
+                                    (Value.Integer IntegerKind.U32 63)))
+                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::intrinsics::const_eval_select",
+                                [],
+                                [
+                                  Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
+                                  Ty.function
+                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
+                                    (Ty.tuple []);
+                                  Ty.function
+                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
+                                    (Ty.tuple []);
+                                  Ty.tuple []
+                                ]
+                              |),
+                              [
+                                Value.Tuple
+                                  [
+                                    M.read (| code |);
+                                    M.read (| len |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| dst |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ];
+                                M.get_function (|
+                                  "core::char::methods::encode_utf8_raw.panic_at_const",
+                                  [],
+                                  []
+                                |);
+                                M.get_function (|
+                                  "core::char::methods::encode_utf8_raw.panic_at_rt",
+                                  [],
+                                  []
+                                |)
+                              ]
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::slice::raw::from_raw_parts_mut",
+                              [],
+                              [ Ty.path "u8" ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
+                                ]
+                              |);
+                              M.read (| len |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -2385,16 +2551,29 @@ Module char.
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String
-                                "encode_utf8: buffer does not have enough bytes to encode code point"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      "encode_utf8: buffer does not have enough bytes to encode code point"
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -2429,102 +2608,149 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1_formatted",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "encode_utf8: need " |);
-                            M.read (| Value.String " bytes to encode U+" |);
-                            M.read (| Value.String " but buffer has just " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ len ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_upper_hex",
-                                [ Ty.path "u32" ]
-                              |),
-                              [ code ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ dst_len ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "encode_utf8: need " |);
+                                  M.read (| Value.String " bytes to encode U+" |);
+                                  M.read (| Value.String " but buffer has just " |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 0;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 0;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 1;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 8;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple
-                                  "core::fmt::rt::Count::Is"
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 2;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 0;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_upper_hex",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 0;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 1;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 8;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple
+                                        "core::fmt::rt::Count::Is"
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
                           "new",
+                          [],
                           []
                         |),
                         []
@@ -2576,137 +2802,179 @@ Module char.
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           let dst := M.alloc (| dst |) in
-          M.read (|
-            let~ len :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::char::methods::len_utf16", [], [] |),
-                  [ M.read (| code |) ]
-                |)
-              |) in
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| len |); M.read (| dst |) ] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 1
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let~ _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.Usize 2
-                        |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
-                      let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
-                      let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
-                      let a := M.alloc (| γ2_0 |) in
-                      let b := M.alloc (| γ2_1 |) in
-                      let~ _ :=
-                        let β := code in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.U32 65536 |)
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| a |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.Wrap.shr (|
-                                M.read (| code |),
-                                Value.Integer IntegerKind.I32 10
-                              |)))
-                            (Value.Integer IntegerKind.U16 55296)
-                        |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| b |),
-                          BinOp.bit_or
-                            (M.rust_cast
-                              (BinOp.bit_and
-                                (M.read (| code |))
-                                (Value.Integer IntegerKind.U32 1023)))
-                            (Value.Integer IntegerKind.U16 56320)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [],
-                            [
-                              Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
-                              Ty.function
-                                [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                (Ty.tuple []);
-                              Ty.function
-                                [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
-                          [
-                            Value.Tuple
-                              [
-                                M.read (| code |);
-                                M.read (| len |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| dst |) ]
-                                |)
-                              ];
-                            M.get_function (|
-                              "core::char::methods::encode_utf16_raw.panic_at_const",
-                              [],
-                              []
-                            |);
-                            M.get_function (|
-                              "core::char::methods::encode_utf16_raw.panic_at_rt",
-                              [],
-                              []
-                            |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ Ty.path "u16" ] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                      "as_mut_ptr",
-                      []
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ len :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::char::methods::len_utf16", [], [] |),
+                      [ M.read (| code |) ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.read (| len |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
+                        ]
                     |),
-                    [ M.read (| dst |) ]
-                  |);
-                  M.read (| len |)
-                ]
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 1
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              M.cast (Ty.path "u16") (M.read (| code |))
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ0_0 |),
+                              Value.Integer IntegerKind.Usize 2
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
+                          let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
+                          let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
+                          let a := M.alloc (| γ2_0 |) in
+                          let b := M.alloc (| γ2_1 |) in
+                          let~ _ :=
+                            let β := code in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.sub (|
+                                M.read (| β |),
+                                Value.Integer IntegerKind.U32 65536
+                              |)
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| a |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u16")
+                                  (BinOp.Wrap.shr (|
+                                    M.read (| code |),
+                                    Value.Integer IntegerKind.I32 10
+                                  |)))
+                                (Value.Integer IntegerKind.U16 55296)
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.deref (| M.read (| b |) |),
+                              BinOp.bit_or
+                                (M.cast
+                                  (Ty.path "u16")
+                                  (BinOp.bit_and
+                                    (M.read (| code |))
+                                    (Value.Integer IntegerKind.U32 1023)))
+                                (Value.Integer IntegerKind.U16 56320)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::intrinsics::const_eval_select",
+                                [],
+                                [
+                                  Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
+                                  Ty.function
+                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
+                                    (Ty.tuple []);
+                                  Ty.function
+                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
+                                    (Ty.tuple []);
+                                  Ty.tuple []
+                                ]
+                              |),
+                              [
+                                Value.Tuple
+                                  [
+                                    M.read (| code |);
+                                    M.read (| len |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| dst |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ];
+                                M.get_function (|
+                                  "core::char::methods::encode_utf16_raw.panic_at_const",
+                                  [],
+                                  []
+                                |);
+                                M.get_function (|
+                                  "core::char::methods::encode_utf16_raw.panic_at_rt",
+                                  [],
+                                  []
+                                |)
+                              ]
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::slice::raw::from_raw_parts_mut",
+                              [],
+                              [ Ty.path "u16" ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dst |) |) |)
+                                ]
+                              |);
+                              M.read (| len |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -2735,16 +3003,29 @@ Module char.
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String
-                                "encode_utf16: buffer does not have enough bytes to encode code point"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      "encode_utf16: buffer does not have enough bytes to encode code point"
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -2779,102 +3060,149 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1_formatted",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "encode_utf16: need " |);
-                            M.read (| Value.String " bytes to encode U+" |);
-                            M.read (| Value.String " but buffer has just " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ len ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_upper_hex",
-                                [ Ty.path "u32" ]
-                              |),
-                              [ code ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ dst_len ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "encode_utf16: need " |);
+                                  M.read (| Value.String " bytes to encode U+" |);
+                                  M.read (| Value.String " but buffer has just " |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 0;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 0;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 1;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 8;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple
-                                  "core::fmt::rt::Count::Is"
-                                  [ Value.Integer IntegerKind.Usize 4 ]
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer IntegerKind.Usize 2;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer IntegerKind.U32 0;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_upper_hex",
+                                      [],
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 0;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 1;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 8;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple
+                                        "core::fmt::rt::Count::Is"
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
                           "new",
+                          [],
                           []
                         |),
                         []

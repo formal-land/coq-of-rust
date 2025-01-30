@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
           "constructors_return_value::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -48,7 +56,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -141,8 +149,14 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "ConstructorError" |) ]
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+          [
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "ConstructorError" |) |)
+            |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -248,6 +262,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                           M.get_associated_function (|
                             Ty.path "constructors_return_value::ConstructorsReturnValue",
                             "new",
+                            [],
                             []
                           |),
                           [ Value.Bool true ]
@@ -302,35 +317,46 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 M.get_associated_function (|
                   Ty.path "constructors_return_value::ReturnFlags",
                   "new_with_reverted",
+                  [],
                   []
                 |),
                 [ Value.Bool true ]
               |);
-              M.alloc (|
-                Value.StructTuple
-                  "core::result::Result::Ok"
-                  [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::convert::From",
-                        Ty.path "constructors_return_value::AccountId",
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
                         [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 32 ]
-                            [ Ty.path "u8" ]
-                        ],
-                        "from",
-                        []
-                      |),
-                      [
-                        repeat (|
-                          Value.Integer IntegerKind.U8 0,
-                          Value.Integer IntegerKind.Usize 32
-                        |)
-                      ]
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::From",
+                              Ty.path "constructors_return_value::AccountId",
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ]
+                              ],
+                              "from",
+                              [],
+                              []
+                            |),
+                            [
+                              repeat (|
+                                Value.Integer IntegerKind.U8 0,
+                                Value.Integer IntegerKind.Usize 32
+                              |)
+                            ]
+                          |)
+                        ]
                     |)
-                  ]
+                  |)
+                |)
               |)
             ]
           |)
@@ -380,6 +406,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "constructors_return_value::AccountId",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "array")
@@ -387,6 +414,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                         [ Ty.path "u8" ]
                                     ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -440,11 +468,15 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                     M.get_associated_function (|
                       Ty.path "constructors_return_value::ReturnFlags",
                       "new_with_reverted",
+                      [],
                       []
                     |),
                     [ Value.Bool true ]
                   |);
-                  value
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                  |)
                 ]
               |)
             |)
@@ -468,7 +500,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "constructors_return_value::ConstructorsReturnValue",
             "value"
           |)

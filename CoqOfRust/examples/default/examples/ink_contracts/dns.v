@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -161,7 +165,15 @@ Module Impl_core_default_Default_for_dns_AccountId.
           "dns::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -188,7 +200,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -232,10 +244,18 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "dns::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "dns::AccountId",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "dns::AccountId",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -365,7 +385,11 @@ Module Impl_dns_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "dns::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "dns::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -422,8 +446,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.get_trait_method (|
           "core::convert::Into",
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+          [],
           [ Ty.path "dns::AccountId" ],
           "into",
+          [],
           []
         |),
         [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
@@ -470,6 +496,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -490,10 +517,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
+                  [],
                   []
                 |),
                 [
-                  name_to_address;
+                  M.borrow (| Pointer.Kind.MutRef, name_to_address |);
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
@@ -502,7 +530,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -526,6 +556,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -546,10 +577,11 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                       Ty.path "dns::AccountId"
                     ],
                   "insert",
+                  [],
                   []
                 |),
                 [
-                  name_to_owner;
+                  M.borrow (| Pointer.Kind.MutRef, name_to_owner |);
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
@@ -558,7 +590,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [ Ty.path "u8" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -640,7 +674,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
                   [],
                   [ Ty.path "dns::Error" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -651,7 +685,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
                   [],
                   [ Ty.path "dns::Error" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -721,7 +755,7 @@ Module Impl_dns_DomainNameService.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [] |),
+          M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -743,7 +777,9 @@ Module Impl_dns_DomainNameService.
             "core::default::Default",
             Ty.path "dns::DomainNameService",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -779,16 +815,20 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -816,15 +856,22 @@ Module Impl_dns_DomainNameService.
                                       Ty.path "dns::AccountId"
                                     ],
                                   "contains",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "dns::DomainNameService",
-                                    "name_to_owner"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "dns::DomainNameService",
+                                      "name_to_owner"
+                                    |)
                                   |);
-                                  name
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                                  |)
                                 ]
                               |)
                             |)) in
@@ -859,13 +906,17 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "dns::DomainNameService",
+                          "name_to_owner"
+                        |)
                       |);
                       M.read (| name |);
                       M.read (| caller |)
@@ -875,16 +926,20 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -922,6 +977,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -938,20 +994,24 @@ Module Impl_dns_DomainNameService.
                     Ty.path "dns::AccountId"
                   ],
                 "get",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "dns::DomainNameService",
-                  "name_to_owner"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "dns::DomainNameService",
+                    "name_to_owner"
+                  |)
                 |);
-                name
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |) |)
               ]
             |);
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "dns::DomainNameService",
                 "default_address"
               |)
@@ -997,16 +1057,20 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1018,9 +1082,13 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.path "dns::DomainNameService",
                       "get_owner_or_default",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| name |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| name |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1036,11 +1104,16 @@ Module Impl_dns_DomainNameService.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "dns::AccountId",
+                                  [],
                                   [ Ty.path "dns::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
-                                [ caller; owner ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, caller |);
+                                  M.borrow (| Pointer.Kind.Ref, owner |)
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -1074,15 +1147,22 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "dns::DomainNameService",
+                          "name_to_address"
+                        |)
                       |);
-                      name
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -1101,13 +1181,17 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_address"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "dns::DomainNameService",
+                          "name_to_address"
+                        |)
                       |);
                       M.read (| name |);
                       M.read (| new_address |)
@@ -1117,16 +1201,20 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1186,16 +1274,20 @@ Module Impl_dns_DomainNameService.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1207,9 +1299,13 @@ Module Impl_dns_DomainNameService.
                     M.get_associated_function (|
                       Ty.path "dns::DomainNameService",
                       "get_owner_or_default",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| name |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| name |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1225,11 +1321,16 @@ Module Impl_dns_DomainNameService.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "dns::AccountId",
+                                  [],
                                   [ Ty.path "dns::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
-                                [ caller; owner ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, caller |);
+                                  M.borrow (| Pointer.Kind.Ref, owner |)
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -1263,15 +1364,22 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "dns::DomainNameService",
+                          "name_to_owner"
+                        |)
                       |);
-                      name
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |)
+                      |)
                     ]
                   |)
                 |) in
@@ -1290,13 +1398,17 @@ Module Impl_dns_DomainNameService.
                           Ty.path "dns::AccountId"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "dns::DomainNameService",
-                        "name_to_owner"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "dns::DomainNameService",
+                          "name_to_owner"
+                        |)
                       |);
                       M.read (| name |);
                       M.read (| to |)
@@ -1306,16 +1418,20 @@ Module Impl_dns_DomainNameService.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "dns::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "dns::DomainNameService",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "dns::DomainNameService",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1358,6 +1474,7 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -1374,20 +1491,24 @@ Module Impl_dns_DomainNameService.
                     Ty.path "dns::AccountId"
                   ],
                 "get",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "dns::DomainNameService",
-                  "name_to_address"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "dns::DomainNameService",
+                    "name_to_address"
+                  |)
                 |);
-                name
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, name |) |) |)
               ]
             |);
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "dns::DomainNameService",
                 "default_address"
               |)
@@ -1415,9 +1536,10 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.path "dns::DomainNameService",
             "get_address_or_default",
+            [],
             []
           |),
-          [ M.read (| self |); M.read (| name |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| name |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1439,9 +1561,10 @@ Module Impl_dns_DomainNameService.
           M.get_associated_function (|
             Ty.path "dns::DomainNameService",
             "get_owner_or_default",
+            [],
             []
           |),
-          [ M.read (| self |); M.read (| name |) ]
+          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| name |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

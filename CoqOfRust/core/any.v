@@ -20,7 +20,7 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
+            M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
             []
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -53,17 +53,25 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -98,17 +106,25 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -148,17 +164,25 @@ Module any.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -198,7 +222,7 @@ Module any.
             let~ t :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
+                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
                   []
                 |)
               |) in
@@ -209,10 +233,12 @@ Module any.
                     "core::any::Any",
                     Ty.dyn [ ("core::any::Any::Trait", []) ],
                     [],
+                    [],
                     "type_id",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -220,11 +246,13 @@ Module any.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::any::TypeId",
+                  [],
                   [ Ty.path "core::any::TypeId" ],
                   "eq",
+                  [],
                   []
                 |),
-                [ t; concrete ]
+                [ M.borrow (| Pointer.Kind.Ref, t |); M.borrow (| Pointer.Kind.Ref, concrete |) ]
               |)
             |)
           |)))
@@ -263,9 +291,10 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -273,13 +302,19 @@ Module any.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
-                              "downcast_ref_unchecked",
-                              [ T ]
-                            |),
-                            [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                  "downcast_ref_unchecked",
+                                  [],
+                                  [ T ]
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -323,9 +358,10 @@ Module any.
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
+                              [],
                               [ T ]
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -333,13 +369,24 @@ Module any.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
-                              "downcast_mut_unchecked",
-                              [ T ]
-                            |),
-                            [ M.read (| self |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                  "downcast_mut_unchecked",
+                                  [],
+                                  [ T ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                     |)));
@@ -388,9 +435,15 @@ Module any.
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
+                                            [],
                                             [ T ]
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)) in
@@ -415,7 +468,29 @@ Module any.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
+            M.alloc (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
+                        (M.read (|
+                          M.use
+                            (M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.ConstPointer,
+                                M.deref (| M.read (| self |) |)
+                              |)
+                            |))
+                        |))
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -435,57 +510,99 @@ Module any.
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.not (|
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ :=
+                            M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          UnOp.not (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                                "is",
+                                                [],
+                                                [ T ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.dyn [ ("core::any::Any::Trait", []) ],
-                                            "is",
-                                            [ T ]
-                                          |),
-                                          [ M.read (| self |) ]
+                                          M.get_function (| "core::panicking::panic", [], [] |),
+                                          [
+                                            M.read (|
+                                              Value.String "assertion failed: self.is::<T>()"
+                                            |)
+                                          ]
                                         |)
                                       |)
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
+                                (M.read (|
+                                  M.use
+                                    (M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutPointer,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    |))
+                                |))
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -509,8 +626,13 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ M.read (| self |) ]
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "is",
+              [],
+              [ T ]
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -531,9 +653,10 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -554,9 +677,10 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -574,13 +698,19 @@ Module any.
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref_unchecked",
-              [ T ]
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                  "downcast_ref_unchecked",
+                  [],
+                  [ T ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -599,13 +729,29 @@ Module any.
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut_unchecked",
-              [ T ]
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.dyn [ ("core::any::Any::Trait", []) ],
+                          "downcast_mut_unchecked",
+                          [],
+                          [ T ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -634,8 +780,13 @@ Module any.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ M.read (| self |) ]
+            M.get_associated_function (|
+              Ty.dyn [ ("core::any::Any::Trait", []) ],
+              "is",
+              [],
+              [ T ]
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -656,9 +807,10 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_ref",
+              [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -679,9 +831,10 @@ Module any.
             M.get_associated_function (|
               Ty.dyn [ ("core::any::Any::Trait", []) ],
               "downcast_mut",
+              [],
               [ T ]
             |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -699,13 +852,19 @@ Module any.
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_ref_unchecked",
-              [ T ]
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                  "downcast_ref_unchecked",
+                  [],
+                  [ T ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -724,13 +883,29 @@ Module any.
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.dyn [ ("core::any::Any::Trait", []) ],
-              "downcast_mut_unchecked",
-              [ T ]
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.dyn [ ("core::any::Any::Trait", []) ],
+                          "downcast_mut_unchecked",
+                          [],
+                          [ T ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -759,7 +934,7 @@ Module any.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -829,20 +1004,38 @@ Module any.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [],
               [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::any::TypeId",
+                      "t"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::any::TypeId",
+                      "t"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -872,19 +1065,37 @@ Module any.
               "core::cmp::Ord",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::any::TypeId",
+                      "t"
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::any::TypeId",
+                      "t"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -917,20 +1128,28 @@ Module any.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+              [],
               [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::any::TypeId",
+                  "t"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "core::any::TypeId",
-                "t"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::any::TypeId",
+                  "t"
+                |)
               |)
             ]
           |)))
@@ -968,9 +1187,11 @@ Module any.
               |) in
             let~ t1 :=
               M.alloc (|
-                M.rust_cast (BinOp.Wrap.shr (| M.read (| t |), Value.Integer IntegerKind.I32 64 |))
+                M.cast
+                  (Ty.path "u64")
+                  (BinOp.Wrap.shr (| M.read (| t |), Value.Integer IntegerKind.I32 64 |))
               |) in
-            let~ t2 := M.alloc (| M.rust_cast (M.read (| t |)) |) in
+            let~ t2 := M.alloc (| M.cast (Ty.path "u64") (M.read (| t |)) |) in
             M.alloc (|
               Value.StructRecord
                 "core::any::TypeId"
@@ -998,8 +1219,10 @@ Module any.
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "u128",
+                  [],
                   [ Ty.path "u64" ],
                   "from",
+                  [],
                   []
                 |),
                 [
@@ -1017,8 +1240,10 @@ Module any.
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "u128",
+                [],
                 [ Ty.path "u64" ],
                 "from",
+                [],
                 []
               |),
               [
@@ -1066,17 +1291,28 @@ Module any.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ H ]
+                  |),
                   [
-                    M.SubPointer.get_tuple_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::any::TypeId",
-                        "t"
-                      |),
-                      1
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_tuple_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::any::TypeId",
+                          "t"
+                        |),
+                        1
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -1108,68 +1344,109 @@ Module any.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::fmt::Arguments",
                   "new_v1_formatted",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [ M.read (| Value.String "TypeId(" |); M.read (| Value.String ")" |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "TypeId(" |); M.read (| Value.String ")" |) ]
+                        |)
+                      |)
+                    |)
                   |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_lower_hex",
-                            [ Ty.path "u128" ]
-                          |),
-                          [
-                            M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::any::TypeId",
-                                  "as_u128",
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_lower_hex",
+                                  [],
+                                  [ Ty.path "u128" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::any::TypeId",
+                                              "as_u128",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Placeholder",
+                                  "new",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| M.read (| self |) |) ]
+                                [
+                                  Value.Integer IntegerKind.Usize 0;
+                                  Value.UnicodeChar 32;
+                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                  Value.Integer IntegerKind.U32 12;
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 34 ]
+                                ]
                               |)
-                            |)
-                          ]
+                            ]
                         |)
-                      ]
-                  |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Placeholder",
-                            "new",
-                            []
-                          |),
-                          [
-                            Value.Integer IntegerKind.Usize 0;
-                            Value.UnicodeChar 32;
-                            Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                            Value.Integer IntegerKind.U32 12;
-                            Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                            Value.StructTuple
-                              "core::fmt::rt::Count::Is"
-                              [ Value.Integer IntegerKind.Usize 34 ]
-                          ]
-                        |)
-                      ]
+                      |)
+                    |)
                   |);
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::rt::UnsafeArg",
+                      "new",
+                      [],
+                      []
+                    |),
                     []
                   |)
                 ]

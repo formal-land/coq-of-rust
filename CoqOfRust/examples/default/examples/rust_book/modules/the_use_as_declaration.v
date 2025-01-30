@@ -18,9 +18,25 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
-" |) ] |)
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "called `function()`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -56,13 +72,26 @@ Module deeply.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `deeply::nested::function()`
-" |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "called `deeply::nested::function()`
+"
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -120,9 +149,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "Entering block
-" |) ] |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Entering block
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
                 ]
               |)
@@ -146,10 +192,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
-                      [ M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
-" |) ] |) ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "Leaving block
+" |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
                   ]
                 |)

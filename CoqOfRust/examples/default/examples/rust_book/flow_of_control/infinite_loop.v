@@ -42,11 +42,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "Let's count until infinity!
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "Let's count until infinity!
 " |) ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -87,12 +101,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "three
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Value.Array [ M.read (| Value.String "three
 " |) ]
+                                                |)
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -117,26 +140,49 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "" |); M.read (| Value.String "
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                          |);
-                          M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [ count ]
                                 |)
-                              ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "u32" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, count |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -168,13 +214,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "OK, that's enough
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String "OK, that's enough
 " |) ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)

@@ -84,9 +84,15 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| slice |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| slice |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -112,9 +118,15 @@ Module instructions.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| slice |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| slice |) |)
+                                        |)
+                                      ]
                                     |),
                                     Value.Integer IntegerKind.Usize 32
                                   |)
@@ -131,11 +143,21 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "slice too long" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "slice too long" |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -154,9 +176,10 @@ Module instructions.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| slice |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                         |),
                         Value.Integer IntegerKind.Usize 31
                       |),
@@ -169,22 +192,33 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [],
+                                "as_limbs_mut",
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
                               ]
-                              [],
-                            "as_limbs_mut",
-                            []
-                          |),
-                          [ M.read (| dest |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -196,9 +230,13 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "chunks_exact",
+                        [],
                         []
                       |),
-                      [ M.read (| slice |); Value.Integer IntegerKind.Usize 32 ]
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
+                        Value.Integer IntegerKind.Usize 32
+                      ]
                     |)
                   |) in
                 let~ partial_last_word :=
@@ -207,9 +245,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
+                        [],
                         []
                       |),
-                      [ words ]
+                      [ M.borrow (| Pointer.Kind.Ref, words |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -221,7 +260,9 @@ Module instructions.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| words |) ]
@@ -244,10 +285,17 @@ Module instructions.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -281,7 +329,9 @@ Module instructions.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -292,10 +342,14 @@ Module instructions.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "rchunks_exact",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| word |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| word |) |)
+                                                        |);
                                                         Value.Integer IntegerKind.Usize 8
                                                       ]
                                                     |)
@@ -320,10 +374,22 @@ Module instructions.
                                                                     []
                                                                     [ Ty.path "u8" ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -357,6 +423,7 @@ Module instructions.
                                                                             []
                                                                             [ Ty.path "u64" ],
                                                                           "write",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -367,6 +434,7 @@ Module instructions.
                                                                                 []
                                                                                 [ Ty.path "u64" ],
                                                                               "add",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -378,6 +446,7 @@ Module instructions.
                                                                             M.get_associated_function (|
                                                                               Ty.path "u64",
                                                                               "from_be_bytes",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -404,6 +473,7 @@ Module instructions.
                                                                                         "core::array::TryFromSliceError"
                                                                                     ],
                                                                                   "unwrap",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -424,6 +494,7 @@ Module instructions.
                                                                                                 "u8"
                                                                                             ]
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -439,9 +510,18 @@ Module instructions.
                                                                                           ]
                                                                                       ],
                                                                                       "try_into",
+                                                                                      [],
                                                                                       []
                                                                                     |),
-                                                                                    [ M.read (| l |)
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            l
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     ]
                                                                                   |)
                                                                                 ]
@@ -488,9 +568,15 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| partial_last_word |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| partial_last_word |) |)
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -507,9 +593,16 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "rchunks_exact",
+                        [],
                         []
                       |),
-                      [ M.read (| partial_last_word |); Value.Integer IntegerKind.Usize 8 ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| partial_last_word |) |)
+                        |);
+                        Value.Integer IntegerKind.Usize 8
+                      ]
                     |)
                   |) in
                 let~ partial_last_limb :=
@@ -518,9 +611,10 @@ Module instructions.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
+                        [],
                         []
                       |),
-                      [ limbs ]
+                      [ M.borrow (| Pointer.Kind.Ref, limbs |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -535,7 +629,9 @@ Module instructions.
                               []
                               [ Ty.path "u8" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [ M.read (| limbs |) ]
@@ -558,10 +654,17 @@ Module instructions.
                                             []
                                             [ Ty.path "u8" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -590,6 +693,7 @@ Module instructions.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                                   "write",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -600,6 +704,7 @@ Module instructions.
                                                         []
                                                         [ Ty.path "u64" ],
                                                       "add",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| dst |); M.read (| i |) ]
@@ -608,6 +713,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "from_be_bytes",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -626,6 +732,7 @@ Module instructions.
                                                                 "core::array::TryFromSliceError"
                                                             ],
                                                           "unwrap",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -641,6 +748,7 @@ Module instructions.
                                                                     []
                                                                     [ Ty.path "u8" ]
                                                                 ],
+                                                              [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "array")
@@ -652,9 +760,15 @@ Module instructions.
                                                                   [ Ty.path "u8" ]
                                                               ],
                                                               "try_into",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ M.read (| l |) ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| l |) |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -693,9 +807,15 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| partial_last_limb |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| partial_last_limb |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -714,46 +834,66 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "copy_from_slice",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::IndexMut",
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 8 ]
-                                        [ Ty.path "u8" ],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::RangeFrom")
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::IndexMut",
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                            [ Ty.path "u8" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeFrom")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index_mut",
+                                          [],
                                           []
-                                          [ Ty.path "usize" ]
-                                      ],
-                                      "index_mut",
-                                      []
-                                    |),
-                                    [
-                                      tmp;
-                                      Value.StructRecord
-                                        "core::ops::range::RangeFrom"
+                                        |),
                                         [
-                                          ("start",
-                                            BinOp.Wrap.sub (|
-                                              Value.Integer IntegerKind.Usize 8,
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [ M.read (| partial_last_limb |) ]
-                                              |)
-                                            |))
+                                          M.borrow (| Pointer.Kind.MutRef, tmp |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeFrom"
+                                            [
+                                              ("start",
+                                                BinOp.Wrap.sub (|
+                                                  Value.Integer IntegerKind.Usize 8,
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| partial_last_limb |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |))
+                                            ]
                                         ]
-                                    ]
+                                      |)
+                                    |)
                                   |);
-                                  M.read (| partial_last_limb |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| partial_last_limb |) |)
+                                  |)
                                 ]
                               |)
                             |) in
@@ -763,6 +903,7 @@ Module instructions.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                   "write",
+                                  [],
                                   []
                                 |),
                                 [
@@ -770,6 +911,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| dst |); M.read (| i |) ]
@@ -778,6 +920,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "from_be_bytes",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| tmp |) ]
@@ -809,16 +952,19 @@ Module instructions.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    M.alloc (|
-                                      BinOp.Wrap.div (|
-                                        BinOp.Wrap.add (|
-                                          M.read (| i |),
-                                          Value.Integer IntegerKind.Usize 3
-                                        |),
-                                        Value.Integer IntegerKind.Usize 4
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        BinOp.Wrap.div (|
+                                          BinOp.Wrap.add (|
+                                            M.read (| i |),
+                                            Value.Integer IntegerKind.Usize 3
+                                          |),
+                                          Value.Integer IntegerKind.Usize 4
+                                        |)
                                       |)
                                     |);
-                                    n_words
+                                    M.borrow (| Pointer.Kind.Ref, n_words |)
                                   ]
                               |),
                               [
@@ -838,8 +984,12 @@ Module instructions.
                                                 (M.alloc (|
                                                   UnOp.not (|
                                                     BinOp.eq (|
-                                                      M.read (| M.read (| left_val |) |),
-                                                      M.read (| M.read (| right_val |) |)
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |),
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -866,8 +1016,24 @@ Module instructions.
                                                       |),
                                                       [
                                                         M.read (| kind |);
-                                                        M.read (| left_val |);
-                                                        M.read (| right_val |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
+                                                          |)
+                                                        |);
                                                         Value.StructTuple
                                                           "core::option::Option::Some"
                                                           [
@@ -875,17 +1041,26 @@ Module instructions.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_const",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "wrote too much"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "wrote too much"
+                                                                            |)
+                                                                          ]
                                                                       |)
-                                                                    ]
+                                                                    |)
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -927,6 +1102,7 @@ Module instructions.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                 "write_bytes",
+                                [],
                                 []
                               |),
                               [
@@ -934,6 +1110,7 @@ Module instructions.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| dst |); M.read (| i |) ]
@@ -982,7 +1159,9 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [],
                 [],
+                [],
                 "into_u256",
+                [],
                 []
               |),
               [
@@ -990,9 +1169,10 @@ Module instructions.
                   M.get_associated_function (|
                     Ty.path "alloy_primitives::bits::address::Address",
                     "into_word",
+                    [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               ]
             |)))
@@ -1031,6 +1211,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_be_bytes",
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                 []
               |),
               [
@@ -1078,6 +1259,7 @@ Module instructions.
               M.get_associated_function (|
                 Ty.path "alloy_primitives::bits::address::Address",
                 "from_word",
+                [],
                 []
               |),
               [
@@ -1088,6 +1270,7 @@ Module instructions.
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                       [ Value.Integer IntegerKind.Usize 32 ]
                       [],
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -1095,6 +1278,7 @@ Module instructions.
                         [ Ty.path "u8" ]
                     ],
                     "from",
+                    [],
                     []
                   |),
                   [
@@ -1105,9 +1289,10 @@ Module instructions.
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
                         "to_be_bytes",
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
                         []
                       |),
-                      [ self ]
+                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
                     |)
                   ]
                 |)

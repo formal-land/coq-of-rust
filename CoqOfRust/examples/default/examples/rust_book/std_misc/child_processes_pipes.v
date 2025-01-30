@@ -51,51 +51,69 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [] |),
+                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "std::process::Command",
-                        "stdout",
-                        [ Ty.path "std::process::Stdio" ]
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "std::process::Command",
-                            "stdin",
+                            "stdout",
+                            [],
                             [ Ty.path "std::process::Stdio" ]
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "std::process::Command",
-                                  "new",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [ M.read (| Value.String "wc" |) ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "std::process::Command",
+                                    "stdin",
+                                    [],
+                                    [ Ty.path "std::process::Stdio" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "std::process::Command",
+                                            "new",
+                                            [],
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                          |),
+                                          [ M.read (| Value.String "wc" |) ]
+                                        |)
+                                      |)
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "std::process::Stdio",
+                                        "piped",
+                                        [],
+                                        []
+                                      |),
+                                      []
+                                    |)
+                                  ]
+                                |)
                               |)
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "std::process::Stdio",
                                 "piped",
+                                [],
                                 []
                               |),
                               []
                             |)
                           ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "std::process::Stdio",
-                            "piped",
-                            []
-                          |),
-                          []
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -115,24 +133,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "couldn't spawn wc: " |) ]
-                                |);
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "std::io::error::Error" ]
-                                        |),
-                                        [ why ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [ M.read (| Value.String "couldn't spawn wc: " |) ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [],
+                                                [ Ty.path "std::io::error::Error" ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, why |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -157,38 +199,56 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "std::io::Write",
                   Ty.path "std::process::ChildStdin",
                   [],
+                  [],
                   "write_all",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "std::process::ChildStdin" ],
+                          "unwrap",
+                          [],
                           []
-                          [ Ty.path "std::process::ChildStdin" ],
-                        "unwrap",
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            process,
-                            "std::process::Child",
-                            "stdin"
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              process,
+                              "std::process::Child",
+                              "stdin"
+                            |)
                           |)
-                        |)
-                      ]
+                        ]
+                      |)
                     |)
                   |);
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                    [
-                      M.read (|
-                        M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |) |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.deref (|
+                                  M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |) |)
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)
@@ -208,25 +268,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "std::io::error::Error" ]
-                                      |),
-                                      [ why ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "std::io::error::Error" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, why |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -247,12 +330,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "sent pangram to wc
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "sent pangram to wc
 " |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -265,7 +358,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ s :=
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
+              M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
               []
             |)
           |) in
@@ -276,32 +369,41 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "std::io::Read",
                 Ty.path "std::process::ChildStdout",
                 [],
+                [],
                 "read_to_string",
+                [],
                 []
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "std::process::ChildStdout" ],
+                        "unwrap",
+                        [],
                         []
-                        [ Ty.path "std::process::ChildStdout" ],
-                      "unwrap",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          process,
-                          "std::process::Child",
-                          "stdout"
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            process,
+                            "std::process::Child",
+                            "stdout"
+                          |)
                         |)
-                      |)
-                    ]
+                      ]
+                    |)
                   |)
                 |);
-                s
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (| M.borrow (| Pointer.Kind.MutRef, s |) |)
+                |)
               ]
             |)
           |),
@@ -320,24 +422,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "couldn't read wc stdout: " |) ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "std::io::error::Error" ]
-                                    |),
-                                    [ why ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [ M.read (| Value.String "couldn't read wc stdout: " |) ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "std::io::error::Error" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, why |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -358,25 +484,48 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "wc responded with:
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array [ M.read (| Value.String "wc responded with:
 " |) ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "alloc::string::String" ]
-                                    |),
-                                    [ s ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)

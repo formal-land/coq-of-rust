@@ -36,7 +36,15 @@ Module kzg_point_evaluation.
     M.run
       ltac:(M.monadic
         (M.alloc (|
-          M.get_constant (| "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES" |)
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.get_constant (| "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES" |)
+              |)
+            |)
+          |)
         |))).
   
   (*
@@ -110,8 +118,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -142,18 +152,31 @@ Module kzg_point_evaluation.
                                   M.get_associated_function (|
                                     Ty.path "bytes::bytes::Bytes",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                        [],
-                                        "deref",
-                                        []
-                                      |),
-                                      [ M.read (| input |) ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.path "alloy_primitives::bytes_::Bytes",
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |),
@@ -173,8 +196,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -193,81 +218,133 @@ Module kzg_point_evaluation.
                 |) in
               let~ versioned_hash :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::Index",
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-                      "index",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
                       M.call_closure (|
                         M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "bytes::bytes::Bytes",
+                          "core::ops::index::Index",
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           [],
-                          "deref",
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
+                          "index",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [ M.read (| input |) ]
-                          |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.path "bytes::bytes::Bytes",
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructRecord
+                            "core::ops::range::RangeTo"
+                            [ ("end_", Value.Integer IntegerKind.Usize 32) ]
                         ]
-                      |);
-                      Value.StructRecord
-                        "core::ops::range::RangeTo"
-                        [ ("end_", Value.Integer IntegerKind.Usize 32) ]
-                    ]
+                      |)
+                    |)
                   |)
                 |) in
               let~ commitment :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::Index",
-                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                      "index",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
                       M.call_closure (|
                         M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.path "bytes::bytes::Bytes",
+                          "core::ops::index::Index",
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           [],
-                          "deref",
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+                          "index",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [ M.read (| input |) ]
-                          |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.path "bytes::bytes::Bytes",
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| input |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          Value.StructRecord
+                            "core::ops::range::Range"
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 96);
+                              ("end_", Value.Integer IntegerKind.Usize 144)
+                            ]
                         ]
-                      |);
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 96);
-                          ("end_", Value.Integer IntegerKind.Usize 144)
-                        ]
-                    ]
+                      |)
+                    |)
                   |)
                 |) in
               let~ _ :=
@@ -286,6 +363,7 @@ Module kzg_point_evaluation.
                                     (Ty.path "array")
                                     [ Value.Integer IntegerKind.Usize 32 ]
                                     [ Ty.path "u8" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -293,20 +371,29 @@ Module kzg_point_evaluation.
                                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| commitment |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| commitment |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  versioned_hash
+                                  M.borrow (| Pointer.Kind.Ref, versioned_hash |)
                                 ]
                               |)
                             |)) in
@@ -323,8 +410,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -349,7 +438,7 @@ Module kzg_point_evaluation.
                       [],
                       []
                     |),
-                    [ M.read (| commitment |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| commitment |) |) |) ]
                   |)
                 |) in
               let~ z :=
@@ -361,43 +450,79 @@ Module kzg_point_evaluation.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                          "index",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "bytes::bytes::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  "core::ops::index::Index",
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   [],
-                                  "deref",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| input |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "bytes::bytes::Bytes",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| input |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 32);
+                                      ("end_", Value.Integer IntegerKind.Usize 64)
+                                    ]
+                                ]
                               |)
-                            ]
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer IntegerKind.Usize 32);
-                              ("end_", Value.Integer IntegerKind.Usize 64)
-                            ]
-                        ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -411,43 +536,79 @@ Module kzg_point_evaluation.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                          "index",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "bytes::bytes::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  "core::ops::index::Index",
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   [],
-                                  "deref",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| input |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "bytes::bytes::Bytes",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| input |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 64);
+                                      ("end_", Value.Integer IntegerKind.Usize 96)
+                                    ]
+                                ]
                               |)
-                            ]
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer IntegerKind.Usize 64);
-                              ("end_", Value.Integer IntegerKind.Usize 96)
-                            ]
-                        ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -461,43 +622,79 @@ Module kzg_point_evaluation.
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                          "index",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "bytes::bytes::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  "core::ops::index::Index",
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   [],
-                                  "deref",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                  "index",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| input |) ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "bytes::bytes::Bytes",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| input |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 144);
+                                      ("end_", Value.Integer IntegerKind.Usize 192)
+                                    ]
+                                ]
                               |)
-                            ]
-                          |);
-                          Value.StructRecord
-                            "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer IntegerKind.Usize 144);
-                              ("end_", Value.Integer IntegerKind.Usize 192)
-                            ]
-                        ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -519,10 +716,16 @@ Module kzg_point_evaluation.
                                     []
                                   |),
                                   [
-                                    M.read (| commitment |);
-                                    M.read (| z |);
-                                    M.read (| y |);
-                                    M.read (| proof |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| commitment |) |)
+                                    |);
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |);
+                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| y |) |) |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| proof |) |)
+                                    |)
                                   ]
                                 |)
                               |)
@@ -540,8 +743,10 @@ Module kzg_point_evaluation.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -566,6 +771,7 @@ Module kzg_point_evaluation.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -584,14 +790,21 @@ Module kzg_point_evaluation.
                                   [ Value.Integer IntegerKind.Usize 64 ]
                                   [ Ty.path "u8" ]
                               ],
+                            [],
                             [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                             "into",
+                            [],
                             []
                           |),
                           [
-                            M.read (|
-                              M.get_constant (|
-                                "revm_precompile::kzg_point_evaluation::RETURN_VALUE"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  M.get_constant (|
+                                    "revm_precompile::kzg_point_evaluation::RETURN_VALUE"
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -668,6 +881,7 @@ Module kzg_point_evaluation.
                           Ty.path "typenum::bit::B0"
                         ]
                     ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "array")
@@ -675,6 +889,7 @@ Module kzg_point_evaluation.
                       [ Ty.path "u8" ]
                   ],
                   "into",
+                  [],
                   []
                 |),
                 [
@@ -731,7 +946,9 @@ Module kzg_point_evaluation.
                             ]
                         ],
                       [],
+                      [],
                       "digest",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       ]
                     |),
@@ -799,6 +1016,7 @@ Module kzg_point_evaluation.
                   []
                   [ Ty.path "bool"; Ty.path "c_kzg::bindings::Error" ],
                 "unwrap_or",
+                [],
                 []
               |),
               [
@@ -806,14 +1024,15 @@ Module kzg_point_evaluation.
                   M.get_associated_function (|
                     Ty.path "c_kzg::bindings::KZGProof",
                     "verify_kzg_proof",
+                    [],
                     []
                   |),
                   [
-                    M.read (| commitment |);
-                    M.read (| z |);
-                    M.read (| y |);
-                    M.read (| proof |);
-                    M.read (| kzg_settings |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| commitment |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| y |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| proof |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| kzg_settings |) |) |)
                   ]
                 |);
                 Value.Bool false
@@ -847,6 +1066,7 @@ Module kzg_point_evaluation.
                 Ty.path "core::array::TryFromSliceError"
               ],
             "expect",
+            [],
             []
           |),
           [
@@ -854,13 +1074,18 @@ Module kzg_point_evaluation.
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] ],
                 "try_into",
+                [],
                 []
               |),
-              [ M.read (| bytes |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
             |);
-            M.read (| Value.String "slice with incorrect length" |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (| M.read (| Value.String "slice with incorrect length" |) |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -879,31 +1104,48 @@ Module kzg_point_evaluation.
     | [], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
-        M.call_closure (|
-          M.get_associated_function (|
-            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-            "cast",
-            [ Ty.path "c_kzg::bindings::Bytes32" ]
-          |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                "as_ptr",
-                []
-              |),
-              [
+        M.borrow (|
+          Pointer.Kind.Ref,
+          M.deref (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_function (|
-                    "revm_precompile::kzg_point_evaluation::as_array",
-                    [ Value.Integer IntegerKind.Usize 32 ],
-                    []
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                    "cast",
+                    [],
+                    [ Ty.path "c_kzg::bindings::Bytes32" ]
                   |),
-                  [ M.read (| bytes |) ]
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "revm_precompile::kzg_point_evaluation::as_array",
+                                [ Value.Integer IntegerKind.Usize 32 ],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)
-          ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -922,31 +1164,48 @@ Module kzg_point_evaluation.
     | [], [], [ bytes ] =>
       ltac:(M.monadic
         (let bytes := M.alloc (| bytes |) in
-        M.call_closure (|
-          M.get_associated_function (|
-            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-            "cast",
-            [ Ty.path "c_kzg::bindings::Bytes48" ]
-          |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                "as_ptr",
-                []
-              |),
-              [
+        M.borrow (|
+          Pointer.Kind.Ref,
+          M.deref (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
                 M.call_closure (|
-                  M.get_function (|
-                    "revm_precompile::kzg_point_evaluation::as_array",
-                    [ Value.Integer IntegerKind.Usize 48 ],
-                    []
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                    "cast",
+                    [],
+                    [ Ty.path "c_kzg::bindings::Bytes48" ]
                   |),
-                  [ M.read (| bytes |) ]
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "revm_precompile::kzg_point_evaluation::as_array",
+                                [ Value.Integer IntegerKind.Usize 48 ],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
+                            |)
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |)
-              ]
+              |)
             |)
-          ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -38,10 +38,18 @@ Module Impl_incrementer_Incrementer.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "incrementer::Incrementer", "new", [] |),
+          M.get_associated_function (| Ty.path "incrementer::Incrementer", "new", [], [] |),
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "i32", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "i32",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]
@@ -66,7 +74,7 @@ Module Impl_incrementer_Incrementer.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "incrementer::Incrementer",
                 "value"
               |) in
@@ -90,7 +98,7 @@ Module Impl_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "incrementer::Incrementer",
             "value"
           |)

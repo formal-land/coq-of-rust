@@ -227,7 +227,7 @@ Module instruction_result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -261,9 +261,9 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -276,7 +276,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::Continue"
                           |) in
-                        M.alloc (| M.read (| Value.String "Continue" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Continue" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -285,7 +290,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::Stop"
                           |) in
-                        M.alloc (| M.read (| Value.String "Stop" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Stop" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -294,7 +304,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::Return"
                           |) in
-                        M.alloc (| M.read (| Value.String "Return" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Return" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -303,7 +318,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                           |) in
-                        M.alloc (| M.read (| Value.String "SelfDestruct" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SelfDestruct" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -312,7 +332,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                           |) in
-                        M.alloc (| M.read (| Value.String "ReturnContract" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ReturnContract" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -321,7 +346,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::Revert"
                           |) in
-                        M.alloc (| M.read (| Value.String "Revert" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Revert" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -330,7 +360,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                           |) in
-                        M.alloc (| M.read (| Value.String "CallTooDeep" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CallTooDeep" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -339,7 +374,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                           |) in
-                        M.alloc (| M.read (| Value.String "OutOfFunds" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OutOfFunds" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -348,7 +388,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -357,7 +402,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidEOFInitCode" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidEOFInitCode" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -366,7 +416,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -375,7 +430,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                           |) in
-                        M.alloc (| M.read (| Value.String "CallOrCreate" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CallOrCreate" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -384,7 +444,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                           |) in
-                        M.alloc (| M.read (| Value.String "OutOfGas" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OutOfGas" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -393,7 +458,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                           |) in
-                        M.alloc (| M.read (| Value.String "MemoryOOG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MemoryOOG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -402,7 +472,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                           |) in
-                        M.alloc (| M.read (| Value.String "MemoryLimitOOG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "MemoryLimitOOG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -411,7 +486,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                           |) in
-                        M.alloc (| M.read (| Value.String "PrecompileOOG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PrecompileOOG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -420,7 +500,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidOperandOOG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidOperandOOG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -429,7 +514,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                           |) in
-                        M.alloc (| M.read (| Value.String "ReentrancySentryOOG" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ReentrancySentryOOG" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -438,7 +528,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                           |) in
-                        M.alloc (| M.read (| Value.String "OpcodeNotFound" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OpcodeNotFound" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -447,7 +542,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                           |) in
-                        M.alloc (| M.read (| Value.String "CallNotAllowedInsideStatic" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CallNotAllowedInsideStatic" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -456,7 +556,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                           |) in
-                        M.alloc (| M.read (| Value.String "StateChangeDuringStaticCall" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "StateChangeDuringStaticCall" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -465,7 +570,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidFEOpcode" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidFEOpcode" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -474,7 +584,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidJump" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidJump" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -483,7 +598,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                           |) in
-                        M.alloc (| M.read (| Value.String "NotActivated" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NotActivated" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -492,7 +612,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "StackUnderflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "StackUnderflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -501,7 +626,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "StackOverflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "StackOverflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -510,7 +640,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                           |) in
-                        M.alloc (| M.read (| Value.String "OutOfOffset" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OutOfOffset" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -519,7 +654,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateCollision" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateCollision" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -528,7 +668,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                           |) in
-                        M.alloc (| M.read (| Value.String "OverflowPayment" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OverflowPayment" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -537,7 +682,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                           |) in
-                        M.alloc (| M.read (| Value.String "PrecompileError" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "PrecompileError" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -546,7 +696,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "NonceOverflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "NonceOverflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -555,7 +710,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateContractSizeLimit" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateContractSizeLimit" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -564,7 +724,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateContractStartingWithEF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateContractStartingWithEF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -573,7 +738,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -582,7 +752,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
                           |) in
-                        M.alloc (| M.read (| Value.String "FatalExternalError" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FatalExternalError" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -591,7 +766,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                           |) in
-                        M.alloc (| M.read (| Value.String "ReturnContractInNotInitEOF" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "ReturnContractInNotInitEOF" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -600,7 +780,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                           |) in
-                        M.alloc (| M.read (| Value.String "EOFOpcodeDisabledInLegacy" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EOFOpcodeDisabledInLegacy" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -609,7 +794,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "SubRoutineStackOverflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "SubRoutineStackOverflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -618,7 +808,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "EofAuxDataOverflow" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EofAuxDataOverflow" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -627,7 +822,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                           |) in
-                        M.alloc (| M.read (| Value.String "EofAuxDataTooSmall" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "EofAuxDataTooSmall" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -636,7 +836,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidEXTCALLTarget" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidEXTCALLTarget" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -705,7 +910,7 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -716,7 +921,7 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -777,13 +982,27 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                [ __self_discr; M.read (| state |) ]
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "u8",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -932,13 +1151,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1014,13 +1232,12 @@ Module instruction_result.
                                       |) in
                                     Value.Tuple []))
                               ],
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [] => ltac:(M.monadic (Value.Tuple []))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1076,22 +1293,20 @@ Module instruction_result.
                                       |) in
                                     Value.Tuple []))
                               ],
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [] => ltac:(M.monadic (Value.Tuple []))
-                                    | _ => M.impossible "wrong number of arguments"
-                                    end))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [] => ltac:(M.monadic (Value.Tuple []))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end)
                             |)))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1202,13 +1417,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1471,13 +1685,12 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -2030,9 +2243,9 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -2045,7 +2258,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InternalResult::InternalContinue"
                           |) in
-                        M.alloc (| M.read (| Value.String "InternalContinue" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InternalContinue" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2054,7 +2272,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate"
                           |) in
-                        M.alloc (| M.read (| Value.String "InternalCallOrCreate" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InternalCallOrCreate" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2063,7 +2286,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InternalResult::CreateInitCodeStartingEF00"
                           |) in
-                        M.alloc (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2072,7 +2300,12 @@ Module instruction_result.
                             γ,
                             "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
                           |) in
-                        M.alloc (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -2109,7 +2342,7 @@ Module instruction_result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2151,7 +2384,7 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -2162,7 +2395,7 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -2223,13 +2456,27 @@ Module instruction_result.
                     [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_discr; M.read (| state |) ]
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |)
             |)
           |)))
@@ -2332,10 +2579,12 @@ Module instruction_result.
                               "core::clone::Clone",
                               Ty.path "revm_context_interface::result::SuccessReason",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2371,10 +2620,12 @@ Module instruction_result.
                               "core::clone::Clone",
                               HaltReasonT,
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)));
@@ -2410,10 +2661,12 @@ Module instruction_result.
                               "core::clone::Clone",
                               Ty.path "revm_interpreter::instruction_result::InternalResult",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| __self_0 |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |)
                         ]
                     |)))
@@ -2463,9 +2716,20 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Success" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Success" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2481,9 +2745,16 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Revert" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Revert" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2501,9 +2772,20 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Halt" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Halt" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2519,9 +2801,16 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "FatalExternalError" |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "FatalExternalError" |) |)
+                          |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2539,9 +2828,20 @@ Module instruction_result.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Internal" |); __self_0 ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Internal" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
                       |)
                     |)))
               ]
@@ -2598,7 +2898,7 @@ Module instruction_result.
                         [ HaltReasonT ]
                     ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -2614,7 +2914,7 @@ Module instruction_result.
                         [ HaltReasonT ]
                     ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -2653,6 +2953,7 @@ Module instruction_result.
                                     (Ty.path "&")
                                     []
                                     [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2660,9 +2961,13 @@ Module instruction_result.
                                       [ Ty.path "revm_context_interface::result::SuccessReason" ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -2690,11 +2995,16 @@ Module instruction_result.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ HaltReasonT ],
+                                  [],
                                   [ Ty.apply (Ty.path "&") [] [ HaltReasonT ] ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ =>
@@ -2726,6 +3036,7 @@ Module instruction_result.
                                     []
                                     [ Ty.path "revm_interpreter::instruction_result::InternalResult"
                                     ],
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
@@ -2736,9 +3047,13 @@ Module instruction_result.
                                       ]
                                   ],
                                   "eq",
+                                  [],
                                   []
                                 |),
-                                [ __self_0; __arg1_0 ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -2843,14 +3158,28 @@ Module instruction_result.
                         [ HaltReasonT ]
                     ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_discr; M.read (| state |) ]
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
@@ -2872,10 +3201,15 @@ Module instruction_result.
                           "core::hash::Hash",
                           Ty.path "revm_context_interface::result::SuccessReason",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2894,10 +3228,15 @@ Module instruction_result.
                           "core::hash::Hash",
                           HaltReasonT,
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -2916,10 +3255,15 @@ Module instruction_result.
                           "core::hash::Hash",
                           Ty.path "revm_interpreter::instruction_result::InternalResult",
                           [],
+                          [],
                           "hash",
+                          [],
                           [ __H ]
                         |),
-                        [ M.read (| __self_0 |); M.read (| state |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3178,8 +3522,10 @@ Module instruction_result.
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.path "revm_context_interface::result::HaltReason",
+                  [],
                   [ HALT ],
                   "into",
+                  [],
                   []
                 |),
                 [ M.read (| reason |) ]
@@ -3414,8 +3760,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3441,8 +3789,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3468,8 +3818,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3499,8 +3851,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3530,8 +3884,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3561,8 +3917,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3592,8 +3950,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3623,8 +3983,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3661,34 +4023,35 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_context_interface::result::HaltReason",
-                                          [ HaltReasonT ],
-                                          "into",
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_context_interface::result::HaltReason",
+                                        [],
+                                        [ HaltReasonT ],
+                                        "into",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_context_interface::result::HaltReason::OpcodeNotFound"
                                           []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_context_interface::result::HaltReason::OpcodeNotFound"
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                      ]
+                                    |)
+                                  ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3705,8 +4068,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3732,8 +4097,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3759,8 +4126,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3786,8 +4155,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3813,8 +4184,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3840,8 +4213,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3867,8 +4242,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3894,8 +4271,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3921,8 +4300,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3948,8 +4329,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -3975,8 +4358,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4002,8 +4387,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4036,34 +4423,35 @@ Module instruction_result.
                               |) in
                             Value.Tuple []))
                       ],
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Value.StructTuple
-                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::convert::Into",
-                                          Ty.path "revm_context_interface::result::HaltReason",
-                                          [ HaltReasonT ],
-                                          "into",
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.StructTuple
+                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_context_interface::result::HaltReason",
+                                        [],
+                                        [ HaltReasonT ],
+                                        "into",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
                                           []
-                                        |),
-                                        [
-                                          Value.StructTuple
-                                            "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end))
+                                      ]
+                                    |)
+                                  ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4080,8 +4468,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4131,8 +4521,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4158,8 +4550,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4201,8 +4595,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4228,8 +4624,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [
@@ -4255,8 +4653,10 @@ Module instruction_result.
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
+                              [],
                               [ HaltReasonT ],
                               "into",
+                              [],
                               []
                             |),
                             [

@@ -45,9 +45,16 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_str",
+                        [],
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "EmptyVec" |) ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "EmptyVec" |) |)
+                        |)
+                      ]
                     |)
                   |)));
               fun γ =>
@@ -65,9 +72,20 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_tuple_field1_finish",
+                        [],
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "Parse" |); __self_0 ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Parse" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |)
+                      ]
                     |)
                   |)))
             ]
@@ -110,7 +128,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
         let f := M.alloc (| f |) in
         M.read (|
           M.match_operator (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -120,24 +138,35 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
-                        M.read (| f |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "please use a vector with at least one element"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "please use a vector with at least one element"
+                                        |)
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -152,24 +181,35 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
+                        [],
                         []
                       |),
                       [
-                        M.read (| f |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "the provided string could not be parsed as int"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "the provided string could not be parsed as int"
+                                        |)
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -211,7 +251,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -226,7 +266,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
                       0
                     |) in
                   let e := M.alloc (| γ0_0 |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ] |)))
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |) ]
+                  |)))
             ]
           |)
         |)))
@@ -302,7 +346,9 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                             Ty.path "wrapping_errors::DoubleError"
                           ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -318,6 +364,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               ],
                             "ok_or",
+                            [],
                             [ Ty.path "wrapping_errors::DoubleError" ]
                           |),
                           [
@@ -328,24 +375,32 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   []
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "first",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    "deref",
-                                    []
-                                  |),
-                                  [ vec ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, vec |) ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |);
@@ -376,6 +431,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -386,6 +442,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -419,13 +476,25 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
-                          [ M.read (| M.read (| first |) |) ]
+                          M.get_associated_function (|
+                            Ty.path "str",
+                            "parse",
+                            [],
+                            [ Ty.path "i32" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -451,6 +520,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -461,6 +531,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -530,29 +601,52 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The first doubled is " |);
-                                  M.read (| Value.String "
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "The first doubled is " |);
+                                        M.read (| Value.String "
 " |)
-                                ]
-                            |);
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ n ]
+                                      ]
                                   |)
-                                ]
+                                |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, n |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -575,29 +669,52 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Error: " |);
-                                    M.read (| Value.String "
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (| Value.String "Error: " |);
+                                          M.read (| Value.String "
 " |)
-                                  ]
-                              |);
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "wrapping_errors::DoubleError" ]
-                                      |),
-                                      [ e ]
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [],
+                                              [ Ty.path "wrapping_errors::DoubleError" ]
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -617,10 +734,12 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::error::Error",
                                 Ty.path "wrapping_errors::DoubleError",
                                 [],
+                                [],
                                 "source",
+                                [],
                                 []
                               |),
-                              [ e ]
+                              [ M.borrow (| Pointer.Kind.Ref, e |) ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -640,34 +759,62 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "  Caused by: " |);
-                                            M.read (| Value.String "
-" |)
-                                          ]
-                                      |);
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                "new_display",
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                                  M.read (| Value.String "  Caused by: " |);
+                                                  M.read (| Value.String "
+" |)
                                                 ]
-                                              |),
-                                              [ source ]
                                             |)
-                                          ]
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.dyn
+                                                              [ ("core::error::Error::Trait", []) ]
+                                                          ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, source |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -709,6 +856,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -726,6 +874,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -733,8 +882,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "42" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]
@@ -752,6 +907,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               []
@@ -763,6 +919,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
+                [],
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -780,6 +937,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ],
                       "new",
+                      [],
                       []
                     |),
                     [
@@ -787,8 +945,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Array
                           [
                             M.read (| Value.String "tofu" |);
-                            M.read (| Value.String "93" |);
-                            M.read (| Value.String "18" |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "93" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "18" |) |)
+                            |)
                           ]
                       |)
                     ]

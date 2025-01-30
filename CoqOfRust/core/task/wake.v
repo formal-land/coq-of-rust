@@ -40,14 +40,14 @@ Module task.
               BinOp.eq (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
                 |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
+                    M.deref (| M.read (| other |) |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
@@ -58,20 +58,28 @@ Module task.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ] ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |)
                   ]
                 |)))
@@ -101,23 +109,43 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "RawWaker" |);
-                M.read (| Value.String "data" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::RawWaker",
-                  "data"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "RawWaker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::RawWaker",
+                        "data"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "vtable" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::task::wake::RawWaker",
-                    "vtable"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "vtable" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -176,13 +204,21 @@ Module task.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.call_closure (|
                     M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
                     []
                   |);
-                  M.get_constant (| "core::task::wake::NOOP::VTABLE" |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.get_constant (| "core::task::wake::NOOP::VTABLE" |)
+                      |)
+                    |)
+                  |)
                 ]
               |)
             |))).
@@ -235,14 +271,14 @@ Module task.
                   BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
@@ -252,14 +288,14 @@ Module task.
                     (BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
@@ -270,14 +306,14 @@ Module task.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
@@ -288,14 +324,14 @@ Module task.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
@@ -351,7 +387,10 @@ Module task.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Value.DeclaredButUndefined,
-                                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic (M.deref (| M.read (| self |) |)))
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -385,35 +424,77 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "RawWakerVTable" |);
-                M.read (| Value.String "clone" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::RawWakerVTable",
-                  "clone"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "RawWakerVTable" |) |)
                 |);
-                M.read (| Value.String "wake" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::RawWakerVTable",
-                  "wake"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "clone" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::RawWakerVTable",
+                        "clone"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "wake_by_ref" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::RawWakerVTable",
-                  "wake_by_ref"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "wake" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::RawWakerVTable",
+                        "wake"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "drop" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::task::wake::RawWakerVTable",
-                    "drop"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "wake_by_ref" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::RawWakerVTable",
+                        "wake_by_ref"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drop" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::task::wake::RawWakerVTable",
+                            "drop"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -516,9 +597,20 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Some" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -536,9 +628,20 @@ Module task.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "None" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "None" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -603,6 +706,7 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::task::wake::ContextBuilder",
                 "build",
+                [],
                 []
               |),
               [
@@ -610,9 +714,10 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::task::wake::ContextBuilder",
                     "from_waker",
+                    [],
                     []
                   |),
-                  [ M.read (| waker |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| waker |) |) |) ]
                 |)
               ]
             |)))
@@ -631,11 +736,21 @@ Module task.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::task::wake::Context",
-                "waker"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.read (|
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::Context",
+                        "waker"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -653,11 +768,21 @@ Module task.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::task::wake::Context",
-                "local_waker"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.read (|
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::Context",
+                        "local_waker"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -680,43 +805,63 @@ Module task.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::task::wake::Context",
-                      "ext"
-                    |),
-                    "core::panic::unwind_safe::AssertUnwindSafe",
-                    0
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.read (|
+                      M.match_operator (|
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::Context",
+                                "ext"
+                              |),
+                              "core::panic::unwind_safe::AssertUnwindSafe",
+                              0
+                            |)
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.read (| γ |) in
+                              let γ1_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::task::wake::ExtData::Some",
+                                  0
+                                |) in
+                              let data := M.alloc (| γ1_0 |) in
+                              M.alloc (|
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| M.deref (| M.read (| data |) |) |) |)
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.read (| γ |) in
+                              let γ1_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::task::wake::ExtData::None",
+                                  0
+                                |) in
+                              let unit_ := M.alloc (| γ1_0 |) in
+                              M.alloc (|
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| unit_ |) |) |)
+                              |)))
+                        ]
+                      |)
+                    |)
                   |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::wake::ExtData::Some",
-                          0
-                        |) in
-                      let data := M.alloc (| γ1_0 |) in
-                      M.alloc (| M.read (| M.read (| data |) |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::wake::ExtData::None",
-                          0
-                        |) in
-                      let unit_ := M.alloc (| γ1_0 |) in
-                      M.alloc (| M.read (| unit_ |) |)))
-                ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -743,33 +888,61 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugStruct",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "Context" |) ]
-                      |)
-                    |);
-                    M.read (| Value.String "waker" |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::task::wake::Context",
-                      "waker"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugStruct",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_struct",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "Context" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "waker" |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::Context",
+                                "waker"
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -825,41 +998,91 @@ Module task.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ContextBuilder" |);
-                M.read (| Value.String "waker" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::ContextBuilder",
-                  "waker"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ContextBuilder" |) |)
                 |);
-                M.read (| Value.String "local_waker" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::ContextBuilder",
-                  "local_waker"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "waker" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::ContextBuilder",
+                        "waker"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "ext" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::ContextBuilder",
-                  "ext"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "local_waker" |) |)
                 |);
-                M.read (| Value.String "_marker" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::task::wake::ContextBuilder",
-                  "_marker"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::ContextBuilder",
+                        "local_waker"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "_marker2" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::task::wake::ContextBuilder",
-                    "_marker2"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ext" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::ContextBuilder",
+                        "ext"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::task::wake::ContextBuilder",
+                        "_marker"
+                      |)
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker2" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::task::wake::ContextBuilder",
+                            "_marker2"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -953,14 +1176,17 @@ Module task.
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| cx |),
-                          "core::task::wake::Context",
-                          "ext"
-                        |),
-                        "core::panic::unwind_safe::AssertUnwindSafe",
-                        0
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| cx |) |),
+                            "core::task::wake::Context",
+                            "ext"
+                          |),
+                          "core::panic::unwind_safe::AssertUnwindSafe",
+                          0
+                        |)
                       |)
                     |),
                     [
@@ -977,7 +1203,12 @@ Module task.
                           M.alloc (|
                             Value.StructTuple
                               "core::task::wake::ExtData::Some"
-                              [ M.read (| M.read (| ext |) |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| M.deref (| M.read (| ext |) |) |) |)
+                                |)
+                              ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -999,19 +1230,29 @@ Module task.
                   "core::task::wake::ContextBuilder"
                   [
                     ("waker",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| cx |),
-                          "core::task::wake::Context",
-                          "waker"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| cx |) |),
+                              "core::task::wake::Context",
+                              "waker"
+                            |)
+                          |)
                         |)
                       |));
                     ("local_waker",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| cx |),
-                          "core::task::wake::Context",
-                          "local_waker"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| cx |) |),
+                              "core::task::wake::Context",
+                              "local_waker"
+                            |)
+                          |)
                         |)
                       |));
                     ("ext", M.read (| ext |));
@@ -1074,7 +1315,11 @@ Module task.
             let data := M.alloc (| data |) in
             M.struct_record_update
               (M.read (| self |))
-              [ ("ext", Value.StructTuple "core::task::wake::ExtData::Some" [ M.read (| data |) ])
+              [
+                ("ext",
+                  Value.StructTuple
+                    "core::task::wake::ExtData::Some"
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| data |) |) |) ])
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1137,8 +1382,13 @@ Module task.
                         Value.StructRecord
                           "core::task::wake::Context"
                           [
-                            ("waker", M.read (| waker |));
-                            ("local_waker", M.read (| local_waker |));
+                            ("waker",
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| waker |) |) |));
+                            ("local_waker",
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| local_waker |) |)
+                              |));
                             ("ext",
                               Value.StructTuple
                                 "core::panic::unwind_safe::AssertUnwindSafe"
@@ -1229,6 +1479,7 @@ Module task.
                         []
                         [ Ty.path "core::task::wake::Waker" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1239,27 +1490,33 @@ Module task.
                   M.call_closure (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ Ty.path "core::task::wake::Waker" ],
-                                  [],
-                                  "deref",
-                                  []
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                        []
+                                        [ Ty.path "core::task::wake::Waker" ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                  |)
                                 |),
-                                [ this ]
+                                "core::task::wake::Waker",
+                                "waker"
                               |),
-                              "core::task::wake::Waker",
-                              "waker"
-                            |),
-                            "core::task::wake::RawWaker",
-                            "vtable"
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
                           |)
                         |),
                         "core::task::wake::RawWakerVTable",
@@ -1270,18 +1527,22 @@ Module task.
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.path "core::task::wake::Waker" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
                                   []
-                                  [ Ty.path "core::task::wake::Waker" ],
-                                [],
-                                "deref",
-                                []
-                              |),
-                              [ this ]
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                              |)
                             |),
                             "core::task::wake::Waker",
                             "waker"
@@ -1317,15 +1578,17 @@ Module task.
             M.call_closure (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::task::wake::Waker",
-                        "waker"
-                      |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::task::wake::Waker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |)
                   |),
                   "core::task::wake::RawWakerVTable",
@@ -1336,7 +1599,7 @@ Module task.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::task::wake::Waker",
                       "waker"
                     |),
@@ -1369,7 +1632,7 @@ Module task.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
                   "waker"
                 |),
@@ -1392,7 +1655,7 @@ Module task.
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::task::wake::Waker",
                           "waker"
                         |),
@@ -1423,7 +1686,16 @@ Module task.
                                         [],
                                         [ Ty.path "core::task::wake::RawWakerVTable" ]
                                       |),
-                                      [ M.read (| a_vtable |); M.read (| b_vtable |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| a_vtable |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| b_vtable |) |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)))
@@ -1505,7 +1777,7 @@ Module task.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
                   "waker"
                 |),
@@ -1531,7 +1803,7 @@ Module task.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
                   "waker"
                 |),
@@ -1570,15 +1842,17 @@ Module task.
                   M.call_closure (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::task::wake::Waker",
-                              "waker"
-                            |),
-                            "core::task::wake::RawWaker",
-                            "vtable"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::Waker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
                           |)
                         |),
                         "core::task::wake::RawWakerVTable",
@@ -1589,7 +1863,7 @@ Module task.
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::task::wake::Waker",
                             "waker"
                           |),
@@ -1630,25 +1904,31 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::Waker",
                                   "will_wake",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| source |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                                ]
                               |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "core::task::wake::Waker",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| source |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1688,15 +1968,17 @@ Module task.
             M.call_closure (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::task::wake::Waker",
-                        "waker"
-                      |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::task::wake::Waker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |)
                   |),
                   "core::task::wake::RawWakerVTable",
@@ -1707,7 +1989,7 @@ Module task.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::task::wake::Waker",
                       "waker"
                     |),
@@ -1751,15 +2033,20 @@ Module task.
                 M.copy (|
                   M.use
                     (M.alloc (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::task::wake::Waker",
-                            "waker"
-                          |),
-                          "core::task::wake::RawWaker",
-                          "vtable"
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::Waker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
+                          |)
                         |)
                       |)
                     |))
@@ -1769,48 +2056,91 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::builders::DebugStruct",
-                        "field",
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Formatter",
-                                  "debug_struct",
-                                  []
-                                |),
-                                [ M.read (| f |); M.read (| Value.String "Waker" |) ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::builders::DebugStruct",
+                                    "field",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "debug_struct",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| f |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| Value.String "Waker" |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| Value.String "data" |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::task::wake::Waker",
+                                              "waker"
+                                            |),
+                                            "core::task::wake::RawWaker",
+                                            "data"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |);
-                            M.read (| Value.String "data" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::task::wake::Waker",
-                                "waker"
-                              |),
-                              "core::task::wake::RawWaker",
-                              "data"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "vtable" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)
                             |)
                           ]
-                        |);
-                        M.read (| Value.String "vtable" |);
-                        vtable_ptr
-                      ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1878,6 +2208,7 @@ Module task.
                         []
                         [ Ty.path "core::task::wake::LocalWaker" ],
                       "new",
+                      [],
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1888,27 +2219,33 @@ Module task.
                   M.call_closure (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ Ty.path "core::task::wake::LocalWaker" ],
-                                  [],
-                                  "deref",
-                                  []
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                        []
+                                        [ Ty.path "core::task::wake::LocalWaker" ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                  |)
                                 |),
-                                [ this ]
+                                "core::task::wake::LocalWaker",
+                                "waker"
                               |),
-                              "core::task::wake::LocalWaker",
-                              "waker"
-                            |),
-                            "core::task::wake::RawWaker",
-                            "vtable"
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
                           |)
                         |),
                         "core::task::wake::RawWakerVTable",
@@ -1919,18 +2256,22 @@ Module task.
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.path "core::task::wake::LocalWaker" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
                                   []
-                                  [ Ty.path "core::task::wake::LocalWaker" ],
-                                [],
-                                "deref",
-                                []
-                              |),
-                              [ this ]
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                              |)
                             |),
                             "core::task::wake::LocalWaker",
                             "waker"
@@ -1966,15 +2307,17 @@ Module task.
             M.call_closure (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::task::wake::LocalWaker",
-                        "waker"
-                      |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::task::wake::LocalWaker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |)
                   |),
                   "core::task::wake::RawWakerVTable",
@@ -1985,7 +2328,7 @@ Module task.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::task::wake::LocalWaker",
                       "waker"
                     |),
@@ -2018,7 +2361,7 @@ Module task.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
                   "waker"
                 |),
@@ -2041,7 +2384,7 @@ Module task.
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::task::wake::LocalWaker",
                           "waker"
                         |),
@@ -2072,7 +2415,16 @@ Module task.
                                         [],
                                         [ Ty.path "core::task::wake::RawWakerVTable" ]
                                       |),
-                                      [ M.read (| a_vtable |); M.read (| b_vtable |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| a_vtable |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| b_vtable |) |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)))
@@ -2154,7 +2506,7 @@ Module task.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
                   "waker"
                 |),
@@ -2180,7 +2532,7 @@ Module task.
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
                   "waker"
                 |),
@@ -2219,15 +2571,17 @@ Module task.
                   M.call_closure (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::task::wake::LocalWaker",
-                              "waker"
-                            |),
-                            "core::task::wake::RawWaker",
-                            "vtable"
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::LocalWaker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
                           |)
                         |),
                         "core::task::wake::RawWakerVTable",
@@ -2238,7 +2592,7 @@ Module task.
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::task::wake::LocalWaker",
                             "waker"
                           |),
@@ -2279,25 +2633,31 @@ Module task.
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::LocalWaker",
                                   "will_wake",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |); M.read (| source |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                                ]
                               |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "core::task::wake::LocalWaker",
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ M.read (| source |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2373,15 +2733,17 @@ Module task.
             M.call_closure (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
+                  M.deref (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::task::wake::LocalWaker",
-                        "waker"
-                      |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::task::wake::LocalWaker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |)
                     |)
                   |),
                   "core::task::wake::RawWakerVTable",
@@ -2392,7 +2754,7 @@ Module task.
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::task::wake::LocalWaker",
                       "waker"
                     |),
@@ -2436,15 +2798,20 @@ Module task.
                 M.copy (|
                   M.use
                     (M.alloc (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::task::wake::LocalWaker",
-                            "waker"
-                          |),
-                          "core::task::wake::RawWaker",
-                          "vtable"
+                      M.borrow (|
+                        Pointer.Kind.ConstPointer,
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::task::wake::LocalWaker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "vtable"
+                            |)
+                          |)
                         |)
                       |)
                     |))
@@ -2454,48 +2821,91 @@ Module task.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::builders::DebugStruct",
-                        "field",
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Formatter",
-                                  "debug_struct",
-                                  []
-                                |),
-                                [ M.read (| f |); M.read (| Value.String "LocalWaker" |) ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::builders::DebugStruct",
+                                    "field",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "debug_struct",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| f |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| Value.String "LocalWaker" |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| Value.String "data" |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::task::wake::LocalWaker",
+                                              "waker"
+                                            |),
+                                            "core::task::wake::RawWaker",
+                                            "data"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |);
-                            M.read (| Value.String "data" |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::task::wake::LocalWaker",
-                                "waker"
-                              |),
-                              "core::task::wake::RawWaker",
-                              "data"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "vtable" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)
                             |)
                           ]
-                        |);
-                        M.read (| Value.String "vtable" |);
-                        vtable_ptr
-                      ]
+                        |)
+                      |)
                     |)
                   ]
                 |)

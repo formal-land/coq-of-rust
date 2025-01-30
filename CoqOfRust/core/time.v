@@ -49,7 +49,7 @@ Module time.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -98,14 +98,14 @@ Module time.
           BinOp.eq (|
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::Nanoseconds",
                 0
               |)
             |),
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
+                M.deref (| M.read (| other |) |),
                 "core::time::Nanoseconds",
                 0
               |)
@@ -167,20 +167,38 @@ Module time.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "u32",
+              [],
               [ Ty.path "u32" ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -206,17 +224,33 @@ Module time.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| other |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -242,14 +276,22 @@ Module time.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
-            M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+            M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], [], "hash", [], [ __H ] |),
             [
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "core::time::Nanoseconds",
-                0
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Nanoseconds",
+                      0
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -325,7 +367,7 @@ Module time.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                      [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
               ]
             |)
@@ -377,14 +419,14 @@ Module time.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
+                  M.deref (| M.read (| other |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -395,20 +437,28 @@ Module time.
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::time::Nanoseconds",
+                  [],
                   [ Ty.path "core::time::Nanoseconds" ],
                   "eq",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::time::Duration",
+                      "nanos"
+                    |)
                   |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::time::Duration",
+                      "nanos"
+                    |)
                   |)
                 ]
               |)))
@@ -479,20 +529,38 @@ Module time.
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "u64",
+                    [],
                     [ Ty.path "u64" ],
                     "partial_cmp",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -512,20 +580,38 @@ Module time.
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "core::time::Nanoseconds",
+                          [],
                           [ Ty.path "core::time::Nanoseconds" ],
                           "partial_cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -562,17 +648,33 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
+                  M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -587,19 +689,37 @@ Module time.
                           "core::cmp::Ord",
                           Ty.path "core::time::Nanoseconds",
                           [],
+                          [],
                           "cmp",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "core::time::Duration",
-                            "nanos"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "core::time::Duration",
+                                  "nanos"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -636,14 +756,30 @@ Module time.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u64",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::Duration",
-                      "secs"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::Duration",
+                            "secs"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |) in
@@ -653,16 +789,26 @@ Module time.
                   "core::hash::Hash",
                   Ty.path "core::time::Nanoseconds",
                   [],
+                  [],
                   "hash",
+                  [],
                   [ __H ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::time::Duration",
-                    "nanos"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::time::Duration",
+                          "nanos"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| state |)
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |)
             |)
@@ -695,7 +841,9 @@ Module time.
                     "core::default::Default",
                     Ty.path "u64",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -706,7 +854,9 @@ Module time.
                     "core::default::Default",
                     Ty.path "core::time::Nanoseconds",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -733,7 +883,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -747,7 +897,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -762,7 +912,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -777,7 +927,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |)
           |))).
@@ -792,7 +942,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
               [ Value.Integer IntegerKind.U64 0 ]
             |)
           |))).
@@ -806,7 +956,7 @@ Module time.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
+              M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
               [
                 M.read (| M.get_constant (| "core::num::MAX" |) |);
                 BinOp.Wrap.sub (|
@@ -873,10 +1023,11 @@ Module time.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                               [
                                 M.read (| secs |);
-                                M.rust_cast
+                                M.cast
+                                  (Ty.path "u64")
                                   (BinOp.Wrap.div (|
                                     M.read (| nanos |),
                                     M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
@@ -907,16 +1058,25 @@ Module time.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "overflow in Duration::new"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String "overflow in Duration::new"
+                                                        |)
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -998,7 +1158,8 @@ Module time.
               |) in
             let~ subsec_millis :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| millis |),
                     M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
@@ -1052,7 +1213,8 @@ Module time.
               |) in
             let~ subsec_micros :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| micros |),
                     M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
@@ -1106,7 +1268,8 @@ Module time.
               |) in
             let~ subsec_nanos :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| nanos |),
                     M.read (| M.get_constant (| "core::time::from_nanos::NANOS_PER_SEC" |) |)
@@ -1180,13 +1343,25 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_weeks" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_weeks"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1199,7 +1374,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1271,13 +1446,25 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_days" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_days"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1290,7 +1477,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1356,13 +1543,25 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_hours" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_hours"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1375,7 +1574,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
@@ -1435,13 +1634,25 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "overflow in Duration::from_mins" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "overflow in Duration::from_mins"
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1454,7 +1665,7 @@ Module time.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),
+                M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
                 [
                   BinOp.Wrap.mul (|
                     M.read (| mins |),
@@ -1483,7 +1694,7 @@ Module time.
             BinOp.eq (|
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
@@ -1495,7 +1706,7 @@ Module time.
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1523,7 +1734,7 @@ Module time.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::time::Duration",
               "secs"
             |)
@@ -1547,7 +1758,7 @@ Module time.
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "nanos"
                 |),
@@ -1577,7 +1788,7 @@ Module time.
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "nanos"
                 |),
@@ -1606,7 +1817,7 @@ Module time.
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::Duration",
                 "nanos"
               |),
@@ -1631,22 +1842,26 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (BinOp.Wrap.div (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1674,22 +1889,26 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (BinOp.Wrap.div (|
                 M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -1717,21 +1936,25 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "u128")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |),
-            M.rust_cast
+            M.cast
+              (Ty.path "u128")
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "nanos"
                   |),
@@ -1768,6 +1991,7 @@ Module time.
                           M.get_associated_function (|
                             Ty.path "core::time::Duration",
                             "checked_sub",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| other |) ]
@@ -1791,6 +2015,7 @@ Module time.
                             []
                             [ Ty.path "core::time::Duration" ],
                           "unwrap",
+                          [],
                           []
                         |),
                         [
@@ -1798,6 +2023,7 @@ Module time.
                             M.get_associated_function (|
                               Ty.path "core::time::Duration",
                               "checked_sub",
+                              [],
                               []
                             |),
                             [ M.read (| other |); M.read (| self |) ]
@@ -1849,7 +2075,7 @@ Module time.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -1945,6 +2171,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| secs |); Value.Integer IntegerKind.U64 1
@@ -2045,6 +2272,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2081,7 +2309,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_add", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_add",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2144,7 +2377,7 @@ Module time.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "checked_sub", [] |),
+                              M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -2249,6 +2482,7 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_sub",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2383,6 +2617,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2419,7 +2654,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_sub", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_sub",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2475,7 +2715,8 @@ Module time.
                 let~ total_nanos :=
                   M.alloc (|
                     BinOp.Wrap.mul (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u64")
                         (M.read (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.SubPointer.get_struct_record_field (|
@@ -2487,22 +2728,27 @@ Module time.
                             0
                           |)
                         |)),
-                      M.rust_cast (M.read (| rhs |))
+                      M.cast (Ty.path "u64") (M.read (| rhs |))
                     |)
                   |) in
                 let~ extra_secs :=
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| total_nanos |),
-                      M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                      M.cast
+                        (Ty.path "u64")
+                        (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                     |)
                   |) in
                 let~ nanos :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u32")
                       (BinOp.Wrap.rem (|
                         M.read (| total_nanos |),
-                        M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                        M.cast
+                          (Ty.path "u64")
+                          (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                       |))
                   |) in
                 let~ _ :=
@@ -2514,7 +2760,12 @@ Module time.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Ty.path "u64", "checked_mul", [] |),
+                                M.get_associated_function (|
+                                  Ty.path "u64",
+                                  "checked_mul",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2523,7 +2774,7 @@ Module time.
                                       "secs"
                                     |)
                                   |);
-                                  M.rust_cast (M.read (| rhs |))
+                                  M.cast (Ty.path "u64") (M.read (| rhs |))
                                 ]
                               |)
                             |) in
@@ -2545,6 +2796,7 @@ Module time.
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "checked_add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| s |); M.read (| extra_secs |) ]
@@ -2632,6 +2884,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "core::time::Duration",
                                                   "new",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -2673,7 +2926,12 @@ Module time.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "checked_mul", [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "checked_mul",
+                    [],
+                    []
+                  |),
                   [ M.read (| self |); M.read (| rhs |) ]
                 |)
               |),
@@ -2745,7 +3003,7 @@ Module time.
                                   "secs"
                                 |)
                               |),
-                              M.rust_cast (M.read (| rhs |))
+                              M.cast (Ty.path "u64") (M.read (| rhs |))
                             |);
                             BinOp.Wrap.rem (|
                               M.read (|
@@ -2755,7 +3013,7 @@ Module time.
                                   "secs"
                                 |)
                               |),
-                              M.rust_cast (M.read (| rhs |))
+                              M.cast (Ty.path "u64") (M.read (| rhs |))
                             |)
                           ]
                       |),
@@ -2813,21 +3071,23 @@ Module time.
                                         β,
                                         BinOp.Wrap.add (|
                                           M.read (| β |),
-                                          M.rust_cast
+                                          M.cast
+                                            (Ty.path "u32")
                                             (BinOp.Wrap.div (|
                                               BinOp.Wrap.add (|
                                                 BinOp.Wrap.mul (|
                                                   M.read (| extra_secs |),
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "u64")
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |))
                                                 |),
-                                                M.rust_cast (M.read (| extra_nanos |))
+                                                M.cast (Ty.path "u64") (M.read (| extra_nanos |))
                                               |),
-                                              M.rust_cast (M.read (| rhs |))
+                                              M.cast (Ty.path "u64") (M.read (| rhs |))
                                             |))
                                         |)
                                       |) in
@@ -2902,6 +3162,7 @@ Module time.
                                             M.get_associated_function (|
                                               Ty.path "core::time::Duration",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| secs |); M.read (| nanos |) ]
@@ -2933,20 +3194,22 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
-            M.rust_cast
+            M.cast
+              (Ty.path "f64")
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
               |)),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -2954,7 +3217,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f64") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2973,20 +3236,22 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
-            M.rust_cast
+            M.cast
+              (Ty.path "f32")
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::time::Duration",
                   "secs"
                 |)
               |)),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -2994,7 +3259,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f32") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3015,22 +3280,26 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f64")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3038,7 +3307,9 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3060,22 +3331,26 @@ Module time.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.add (|
             BinOp.Wrap.mul (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::time::Duration",
                     "secs"
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
             |),
             BinOp.Wrap.div (|
-              M.rust_cast
+              M.cast
+                (Ty.path "f32")
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::time::Duration",
                       "nanos"
                     |),
@@ -3083,7 +3358,9 @@ Module time.
                     0
                   |)
                 |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3112,6 +3389,7 @@ Module time.
                   M.get_associated_function (|
                     Ty.path "core::time::Duration",
                     "try_from_secs_f64",
+                    [],
                     []
                   |),
                   [ M.read (| secs |) ]
@@ -3135,17 +3413,27 @@ Module time.
                           M.get_associated_function (|
                             Self,
                             "panic_cold_display.from_secs_f64",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::time::TryFromFloatSecsError",
-                                  "description",
-                                  []
-                                |),
-                                [ e ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::time::TryFromFloatSecsError",
+                                        "description",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, e |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -3181,6 +3469,7 @@ Module time.
                   M.get_associated_function (|
                     Ty.path "core::time::Duration",
                     "try_from_secs_f32",
+                    [],
                     []
                   |),
                   [ M.read (| secs |) ]
@@ -3204,17 +3493,27 @@ Module time.
                           M.get_associated_function (|
                             Self,
                             "panic_cold_display.from_secs_f32",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::time::TryFromFloatSecsError",
-                                  "description",
-                                  []
-                                |),
-                                [ e ]
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::time::TryFromFloatSecsError",
+                                        "description",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, e |) ]
+                                    |)
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -3242,13 +3541,18 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [], [] |),
             [
               BinOp.Wrap.mul (|
                 M.read (| rhs |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
-                  [ self ]
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f64",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               |)
             ]
@@ -3270,13 +3574,18 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [], [] |),
             [
               BinOp.Wrap.mul (|
                 M.read (| rhs |),
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
-                  [ self ]
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f32",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |)
               |)
             ]
@@ -3298,12 +3607,17 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [], [] |),
             [
               BinOp.Wrap.div (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
-                  [ self ]
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f64",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |),
                 M.read (| rhs |)
               |)
@@ -3326,12 +3640,17 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [], [] |),
             [
               BinOp.Wrap.div (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
-                  [ self ]
+                  M.get_associated_function (|
+                    Ty.path "core::time::Duration",
+                    "as_secs_f32",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |),
                 M.read (| rhs |)
               |)
@@ -3360,7 +3679,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -3368,9 +3688,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f64")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3388,7 +3711,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f64")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           rhs,
@@ -3396,9 +3720,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f64")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3438,7 +3765,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f32")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -3446,9 +3774,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f32")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3466,7 +3797,8 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.Wrap.mul (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "f32")
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           rhs,
@@ -3474,9 +3806,12 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                   |),
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "f32")
                     (M.read (|
                       M.SubPointer.get_struct_tuple_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -3556,7 +3891,7 @@ Module time.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
@@ -3578,7 +3913,8 @@ Module time.
                 let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
                           (M.read (|
@@ -3631,8 +3967,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u64",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| mant |) ]
@@ -3657,8 +3995,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [
@@ -3671,8 +4011,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u64" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| t |) ]
@@ -3681,7 +4023,8 @@ Module time.
                                     |) in
                                   let~ nanos :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u32")
                                         (BinOp.Wrap.shr (|
                                           M.read (| nanos_tmp |),
                                           M.read (| nanos_offset |)
@@ -3750,7 +4093,7 @@ Module time.
                                     M.alloc (|
                                       BinOp.Wrap.add (|
                                         M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
+                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -3824,8 +4167,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3845,8 +4190,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -3872,8 +4219,10 @@ Module time.
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u64",
+                                                    [],
                                                     [ Ty.path "u32" ],
                                                     "from",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3889,7 +4238,8 @@ Module time.
                                             |) in
                                           let~ nanos :=
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u32")
                                                 (BinOp.Wrap.shr (|
                                                   M.read (| nanos_tmp |),
                                                   M.read (| nanos_offset |)
@@ -3963,7 +4313,7 @@ Module time.
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
+                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
                                               |)
                                             |) in
                                           M.match_operator (|
@@ -4040,8 +4390,10 @@ Module time.
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
+                                                            [],
                                                             [ Ty.path "u32" ],
                                                             "from",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
@@ -4104,6 +4456,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -4179,7 +4532,7 @@ Module time.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
@@ -4201,7 +4554,8 @@ Module time.
                 let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
                           (M.read (|
@@ -4254,8 +4608,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u64" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| mant |) ]
@@ -4280,8 +4636,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u32" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4294,8 +4652,10 @@ Module time.
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
+                                            [],
                                             [ Ty.path "u128" ],
                                             "from",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| t |) ]
@@ -4304,7 +4664,8 @@ Module time.
                                     |) in
                                   let~ nanos :=
                                     M.alloc (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "u32")
                                         (BinOp.Wrap.shr (|
                                           M.read (| nanos_tmp |),
                                           M.read (| nanos_offset |)
@@ -4373,7 +4734,7 @@ Module time.
                                     M.alloc (|
                                       BinOp.Wrap.add (|
                                         M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
+                                        M.cast (Ty.path "u32") (M.read (| add_ns |))
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -4447,8 +4808,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u64",
+                                                  [],
                                                   [ Ty.path "u64" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4468,8 +4831,10 @@ Module time.
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path "u128",
+                                                  [],
                                                   [ Ty.path "u64" ],
                                                   "from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -4495,8 +4860,10 @@ Module time.
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u128",
+                                                    [],
                                                     [ Ty.path "u32" ],
                                                     "from",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -4512,7 +4879,8 @@ Module time.
                                             |) in
                                           let~ nanos :=
                                             M.alloc (|
-                                              M.rust_cast
+                                              M.cast
+                                                (Ty.path "u32")
                                                 (BinOp.Wrap.shr (|
                                                   M.read (| nanos_tmp |),
                                                   M.read (| nanos_offset |)
@@ -4586,7 +4954,7 @@ Module time.
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
+                                                M.cast (Ty.path "u32") (M.read (| add_ns |))
                                               |)
                                             |) in
                                           M.match_operator (|
@@ -4663,8 +5031,10 @@ Module time.
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
+                                                            [],
                                                             [ Ty.path "u64" ],
                                                             "from",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
@@ -4727,6 +5097,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::time::Duration",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| secs |); M.read (| nanos |) ]
@@ -4765,14 +5136,23 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_add", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_add",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when adding durations" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "overflow when adding durations" |) |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4803,16 +5183,18 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Add",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "core::time::Duration" ],
                     "add",
+                    [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4849,14 +5231,23 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_sub", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_sub",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when subtracting durations" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "overflow when subtracting durations" |) |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4887,16 +5278,18 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Sub",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "core::time::Duration" ],
                     "sub",
+                    [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -4933,14 +5326,25 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_mul", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_mul",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "overflow when multiplying duration by scalar" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (| Value.String "overflow when multiplying duration by scalar" |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4975,8 +5379,10 @@ Module time.
             M.get_trait_method (|
               "core::ops::arith::Mul",
               Ty.path "core::time::Duration",
+              [],
               [ Ty.path "u32" ],
               "mul",
+              [],
               []
             |),
             [ M.read (| rhs |); M.read (| self |) ]
@@ -5009,16 +5415,18 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Mul",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "u32" ],
                     "mul",
+                    [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5055,14 +5463,25 @@ Module time.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::time::Duration" ],
               "expect",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "checked_div", [] |),
+                M.get_associated_function (|
+                  Ty.path "core::time::Duration",
+                  "checked_div",
+                  [],
+                  []
+                |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5093,16 +5512,18 @@ Module time.
           M.read (|
             let~ _ :=
               M.write (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::arith::Div",
                     Ty.path "core::time::Duration",
+                    [],
                     [ Ty.path "u32" ],
                     "div",
+                    [],
                     []
                   |),
-                  [ M.read (| M.read (| self |) |); M.read (| rhs |) ]
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5143,7 +5564,9 @@ Module time.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -5163,10 +5586,17 @@ Module time.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5196,6 +5626,7 @@ Module time.
                                                 []
                                                 [ Ty.path "u64" ],
                                               "expect",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5203,6 +5634,7 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5216,8 +5648,14 @@ Module time.
                                                   |)
                                                 ]
                                               |);
-                                              M.read (|
-                                                Value.String "overflow in iter::sum over durations"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    Value.String
+                                                      "overflow in iter::sum over durations"
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -5232,11 +5670,13 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_add",
+                                                    [],
                                                     []
                                                   |),
                                                   [
                                                     M.read (| total_nanos |);
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "u64")
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
@@ -5279,6 +5719,7 @@ Module time.
                                                               []
                                                               [ Ty.path "u64" ],
                                                             "expect",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5286,13 +5727,15 @@ Module time.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
                                                                 M.read (| total_secs |);
                                                                 BinOp.Wrap.div (|
                                                                   M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
@@ -5301,9 +5744,14 @@ Module time.
                                                                 |)
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              Value.String
-                                                                "overflow in iter::sum over durations"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "overflow in iter::sum over durations"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5312,14 +5760,16 @@ Module time.
                                                       BinOp.Wrap.add (|
                                                         BinOp.Wrap.rem (|
                                                           M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "u64")
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
                                                             |))
                                                         |),
-                                                        M.rust_cast
+                                                        M.cast
+                                                          (Ty.path "u64")
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -5351,21 +5801,26 @@ Module time.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                       [
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
                           M.read (| total_nanos |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                         |)
                       ]
                     |);
-                    M.read (| Value.String "overflow in iter::sum over durations" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "overflow in iter::sum over durations" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -5374,13 +5829,15 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast
+                    (Ty.path "u64")
+                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
-                [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
+                M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
+                [ M.read (| total_secs |); M.cast (Ty.path "u32") (M.read (| total_nanos |)) ]
               |)
             |)
           |)))
@@ -5420,7 +5877,9 @@ Module time.
                         "core::iter::traits::collect::IntoIterator",
                         I,
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -5440,10 +5899,17 @@ Module time.
                                       "core::iter::traits::iterator::Iterator",
                                       I,
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5473,6 +5939,7 @@ Module time.
                                                 []
                                                 [ Ty.path "u64" ],
                                               "expect",
+                                              [],
                                               []
                                             |),
                                             [
@@ -5480,21 +5947,28 @@ Module time.
                                                 M.get_associated_function (|
                                                   Ty.path "u64",
                                                   "checked_add",
+                                                  [],
                                                   []
                                                 |),
                                                 [
                                                   M.read (| total_secs |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
-                                                      M.read (| entry |),
+                                                      M.deref (| M.read (| entry |) |),
                                                       "core::time::Duration",
                                                       "secs"
                                                     |)
                                                   |)
                                                 ]
                                               |);
-                                              M.read (|
-                                                Value.String "overflow in iter::sum over durations"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    Value.String
+                                                      "overflow in iter::sum over durations"
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -5509,15 +5983,17 @@ Module time.
                                                   M.get_associated_function (|
                                                     Ty.path "u64",
                                                     "checked_add",
+                                                    [],
                                                     []
                                                   |),
                                                   [
                                                     M.read (| total_nanos |);
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.path "u64")
                                                       (M.read (|
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| entry |),
+                                                            M.deref (| M.read (| entry |) |),
                                                             "core::time::Duration",
                                                             "nanos"
                                                           |),
@@ -5556,6 +6032,7 @@ Module time.
                                                               []
                                                               [ Ty.path "u64" ],
                                                             "expect",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5563,13 +6040,15 @@ Module time.
                                                               M.get_associated_function (|
                                                                 Ty.path "u64",
                                                                 "checked_add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
                                                                 M.read (| total_secs |);
                                                                 BinOp.Wrap.div (|
                                                                   M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                  M.cast
+                                                                    (Ty.path "u64")
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
@@ -5578,9 +6057,14 @@ Module time.
                                                                 |)
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              Value.String
-                                                                "overflow in iter::sum over durations"
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "overflow in iter::sum over durations"
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -5589,18 +6073,20 @@ Module time.
                                                       BinOp.Wrap.add (|
                                                         BinOp.Wrap.rem (|
                                                           M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "u64")
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
                                                             |))
                                                         |),
-                                                        M.rust_cast
+                                                        M.cast
+                                                          (Ty.path "u64")
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| entry |),
+                                                                M.deref (| M.read (| entry |) |),
                                                                 "core::time::Duration",
                                                                 "nanos"
                                                               |),
@@ -5628,21 +6114,26 @@ Module time.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "expect",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                       [
                         M.read (| total_secs |);
                         BinOp.Wrap.div (|
                           M.read (| total_nanos |),
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                         |)
                       ]
                     |);
-                    M.read (| Value.String "overflow in iter::sum over durations" |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "overflow in iter::sum over durations" |) |)
+                    |)
                   ]
                 |)
               |) in
@@ -5651,13 +6142,15 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast
+                    (Ty.path "u64")
+                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
-                [ M.read (| total_secs |); M.rust_cast (M.read (| total_nanos |)) ]
+                M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
+                [ M.read (| total_secs |); M.cast (Ty.path "u32") (M.read (| total_nanos |)) ]
               |)
             |)
           |)))
@@ -5886,15 +6379,23 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "sign_plus",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| f |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         Value.String "+"));
-                    fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "" |) |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |) in
@@ -5909,7 +6410,7 @@ Module time.
                           BinOp.gt (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::time::Duration",
                                 "secs"
                               |)
@@ -5920,12 +6421,12 @@ Module time.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                        M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                         [
-                          M.read (| f |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::time::Duration",
                               "secs"
                             |)
@@ -5933,7 +6434,7 @@ Module time.
                           M.read (|
                             M.SubPointer.get_struct_tuple_field (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::time::Duration",
                                 "nanos"
                               |),
@@ -5945,8 +6446,11 @@ Module time.
                             M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
                             Value.Integer IntegerKind.U32 10
                           |);
-                          M.read (| prefix |);
-                          M.read (| Value.String "s" |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "s" |) |)
+                          |)
                         ]
                       |)
                     |)));
@@ -5964,7 +6468,7 @@ Module time.
                                     M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::time::Duration",
                                           "nanos"
                                         |),
@@ -5979,15 +6483,16 @@ Module time.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                M.get_associated_function (| Self, "fmt_decimal.fmt", [], [] |),
                                 [
-                                  M.read (| f |);
-                                  M.rust_cast
+                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                  M.cast
+                                    (Ty.path "u64")
                                     (BinOp.Wrap.div (|
                                       M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::time::Duration",
                                             "nanos"
                                           |),
@@ -6003,7 +6508,7 @@ Module time.
                                     M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::time::Duration",
                                           "nanos"
                                         |),
@@ -6017,8 +6522,14 @@ Module time.
                                     M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |),
                                     Value.Integer IntegerKind.U32 10
                                   |);
-                                  M.read (| prefix |);
-                                  M.read (| Value.String "ms" |)
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| prefix |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "ms" |) |)
+                                  |)
                                 ]
                               |)
                             |)));
@@ -6036,7 +6547,7 @@ Module time.
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6056,15 +6567,24 @@ Module time.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                        M.get_associated_function (|
+                                          Self,
+                                          "fmt_decimal.fmt",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          M.read (| f |);
-                                          M.rust_cast
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.cast
+                                            (Ty.path "u64")
                                             (BinOp.Wrap.div (|
                                               M.read (|
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::time::Duration",
                                                     "nanos"
                                                   |),
@@ -6080,7 +6600,7 @@ Module time.
                                             M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6098,8 +6618,16 @@ Module time.
                                             |),
                                             Value.Integer IntegerKind.U32 10
                                           |);
-                                          M.read (| prefix |);
-                                          M.read (| Value.String (String.String "181" "s") |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| prefix |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| Value.String (String.String "181" "s") |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |)));
@@ -6107,14 +6635,23 @@ Module time.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Self, "fmt_decimal.fmt", [] |),
+                                        M.get_associated_function (|
+                                          Self,
+                                          "fmt_decimal.fmt",
+                                          [],
+                                          []
+                                        |),
                                         [
-                                          M.read (| f |);
-                                          M.rust_cast
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.cast
+                                            (Ty.path "u64")
                                             (M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::time::Duration",
                                                   "nanos"
                                                 |),
@@ -6124,8 +6661,14 @@ Module time.
                                             |));
                                           Value.Integer IntegerKind.U32 0;
                                           Value.Integer IntegerKind.U32 1;
-                                          M.read (| prefix |);
-                                          M.read (| Value.String "ns" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| prefix |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "ns" |) |)
+                                          |)
                                         ]
                                       |)
                                     |)))
@@ -6169,17 +6712,32 @@ Module time.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "TryFromFloatSecsError" |);
-              M.read (| Value.String "kind" |);
-              M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::time::TryFromFloatSecsError",
-                  "kind"
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| Value.String "TryFromFloatSecsError" |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::time::TryFromFloatSecsError",
+                          "kind"
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -6213,14 +6771,24 @@ Module time.
                     "core::clone::Clone",
                     Ty.path "core::time::TryFromFloatSecsErrorKind",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::time::TryFromFloatSecsError",
-                      "kind"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::time::TryFromFloatSecsError",
+                            "kind"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |))
@@ -6261,20 +6829,28 @@ Module time.
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "core::time::TryFromFloatSecsErrorKind",
+              [],
               [ Ty.path "core::time::TryFromFloatSecsErrorKind" ],
               "eq",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::time::TryFromFloatSecsError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::time::TryFromFloatSecsError",
+                  "kind"
+                |)
               |);
-              M.SubPointer.get_struct_record_field (|
-                M.read (| other |),
-                "core::time::TryFromFloatSecsError",
-                "kind"
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| other |) |),
+                  "core::time::TryFromFloatSecsError",
+                  "kind"
+                |)
               |)
             ]
           |)))
@@ -6343,7 +6919,7 @@ Module time.
           M.read (|
             M.match_operator (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::time::TryFromFloatSecsError",
                 "kind"
               |),
@@ -6389,17 +6965,23 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::time::TryFromFloatSecsError",
-                  "description",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::time::TryFromFloatSecsError",
+                      "description",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6445,9 +7027,9 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -6460,7 +7042,12 @@ Module time.
                             γ,
                             "core::time::TryFromFloatSecsErrorKind::Negative"
                           |) in
-                        M.alloc (| M.read (| Value.String "Negative" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Negative" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -6469,7 +7056,12 @@ Module time.
                             γ,
                             "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
                           |) in
-                        M.alloc (| M.read (| Value.String "OverflowOrNan" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OverflowOrNan" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -6565,7 +7157,7 @@ Module time.
                     [],
                     [ Ty.path "core::time::TryFromFloatSecsErrorKind" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -6576,7 +7168,7 @@ Module time.
                     [],
                     [ Ty.path "core::time::TryFromFloatSecsErrorKind" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)

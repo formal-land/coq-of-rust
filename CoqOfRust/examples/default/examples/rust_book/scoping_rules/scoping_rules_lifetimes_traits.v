@@ -23,17 +23,29 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field1_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Borrowed" |);
-            M.read (| Value.String "x" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "scoping_rules_lifetimes_traits::Borrowed",
-                "x"
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Borrowed" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "scoping_rules_lifetimes_traits::Borrowed",
+                        "x"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -63,7 +75,15 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", M.alloc (| Value.Integer IntegerKind.I32 10 |)) ]))
+          [
+            ("x",
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 10 |) |)
+                |)
+              |))
+          ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -93,7 +113,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::default::Default",
                 Ty.path "scoping_rules_lifetimes_traits::Borrowed",
                 [],
+                [],
                 "default",
+                [],
                 []
               |),
               []
@@ -106,25 +128,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "b is " |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "b is " |); M.read (| Value.String "
 " |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
-                              |),
-                              [ b ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, b |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

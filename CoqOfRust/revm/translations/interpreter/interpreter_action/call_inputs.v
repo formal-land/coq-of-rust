@@ -43,14 +43,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "input"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "input"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -60,25 +70,51 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "return_memory_offset"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "return_memory_offset"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
                 ("gas_limit",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "gas_limit"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "gas_limit"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -88,14 +124,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "bytecode_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "bytecode_address"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -105,14 +151,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "target_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "target_address"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -122,14 +178,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "caller"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -139,14 +205,24 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
@@ -156,36 +232,78 @@ Module interpreter_action.
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "scheme"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "scheme"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
                 ("is_static",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "bool",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "is_static"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "is_static"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |));
                 ("is_eof",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "bool", [], "clone", [] |),
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.path "bool",
+                      [],
+                      [],
+                      "clone",
+                      [],
+                      []
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "is_eof"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "is_eof"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -215,80 +333,206 @@ Module interpreter_action.
             M.read (|
               let~ names :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "input" |);
-                        M.read (| Value.String "return_memory_offset" |);
-                        M.read (| Value.String "gas_limit" |);
-                        M.read (| Value.String "bytecode_address" |);
-                        M.read (| Value.String "target_address" |);
-                        M.read (| Value.String "caller" |);
-                        M.read (| Value.String "value" |);
-                        M.read (| Value.String "scheme" |);
-                        M.read (| Value.String "is_static" |);
-                        M.read (| Value.String "is_eof" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "input" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "return_memory_offset" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "gas_limit" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "bytecode_address" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "target_address" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "caller" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "value" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "scheme" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "is_static" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "is_eof" |) |)
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 |) in
               let~ values :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "input"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "return_memory_offset"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "gas_limit"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "bytecode_address"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "target_address"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "caller"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "value"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "scheme"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "is_static"
-                        |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                            "is_eof"
-                          |)
+                          Value.Array
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "input"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "return_memory_offset"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "gas_limit"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "bytecode_address"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "target_address"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "caller"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "value"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "scheme"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "is_static"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                          "is_eof"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -296,13 +540,17 @@ Module interpreter_action.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct_fields_finish",
+                    [],
                     []
                   |),
                   [
-                    M.read (| f |);
-                    M.read (| Value.String "CallInputs" |);
-                    M.read (| names |);
-                    M.read (| values |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "CallInputs" |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
               |)
@@ -354,20 +602,28 @@ Module interpreter_action.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
+                                  [],
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   "eq",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                    "input"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "input"
+                                    |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| other |),
-                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                    "input"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| other |) |),
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                      "input"
+                                    |)
                                   |)
                                 ]
                               |),
@@ -379,6 +635,7 @@ Module interpreter_action.
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
@@ -386,18 +643,25 @@ Module interpreter_action.
                                         [ Ty.path "usize" ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                      "return_memory_offset"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "return_memory_offset"
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                      "return_memory_offset"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| other |) |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "return_memory_offset"
+                                      |)
                                     |)
                                   ]
                                 |)))
@@ -406,14 +670,14 @@ Module interpreter_action.
                               (BinOp.eq (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                                     "gas_limit"
                                   |)
                                 |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| other |),
+                                    M.deref (| M.read (| other |) |),
                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                                     "gas_limit"
                                   |)
@@ -425,20 +689,28 @@ Module interpreter_action.
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "alloy_primitives::bits::address::Address",
+                                [],
                                 [ Ty.path "alloy_primitives::bits::address::Address" ],
                                 "eq",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                  "bytecode_address"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                    "bytecode_address"
+                                  |)
                                 |);
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| other |),
-                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                  "bytecode_address"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                    "bytecode_address"
+                                  |)
                                 |)
                               ]
                             |)))
@@ -448,20 +720,28 @@ Module interpreter_action.
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "alloy_primitives::bits::address::Address",
+                              [],
                               [ Ty.path "alloy_primitives::bits::address::Address" ],
                               "eq",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                "target_address"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                  "target_address"
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                "target_address"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| other |) |),
+                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                  "target_address"
+                                |)
                               |)
                             ]
                           |)))
@@ -471,20 +751,28 @@ Module interpreter_action.
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.path "alloy_primitives::bits::address::Address",
+                            [],
                             [ Ty.path "alloy_primitives::bits::address::Address" ],
                             "eq",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "caller"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                "caller"
+                              |)
                             |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "caller"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                "caller"
+                              |)
                             |)
                           ]
                         |)))
@@ -494,21 +782,29 @@ Module interpreter_action.
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
+                          [],
                           [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue"
                           ],
                           "eq",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                            "value"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "value"
+                            |)
                           |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                            "value"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "value"
+                            |)
                           |)
                         ]
                       |)))
@@ -518,20 +814,28 @@ Module interpreter_action.
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
+                        [],
                         [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ],
                         "eq",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "scheme"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                            "scheme"
+                          |)
                         |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
-                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                          "scheme"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                            "scheme"
+                          |)
                         |)
                       ]
                     |)))
@@ -540,14 +844,14 @@ Module interpreter_action.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                         "is_static"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                         "is_static"
                       |)
@@ -558,14 +862,14 @@ Module interpreter_action.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                       "is_eof"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                       "is_eof"
                     |)
@@ -682,16 +986,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bytes_::Bytes",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "input"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "input"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -702,30 +1016,56 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "return_memory_offset"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "return_memory_offset"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u64",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "gas_limit"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "gas_limit"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -736,16 +1076,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "bytecode_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "bytecode_address"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -756,16 +1106,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "target_address"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "target_address"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -776,16 +1136,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "caller"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "caller"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -796,16 +1166,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "value"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "value"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -816,16 +1196,26 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "scheme"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "scheme"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
@@ -836,29 +1226,55 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "bool",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                        "is_static"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                              "is_static"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "bool",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                      "is_eof"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                            "is_eof"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -900,6 +1316,7 @@ Module interpreter_action.
                       []
                   ],
                 "is_some_and",
+                [],
                 [
                   Ty.function
                     [
@@ -920,13 +1337,17 @@ Module interpreter_action.
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                     "transfer",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                      "value"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                        "value"
+                      |)
                     |)
                   ]
                 |);
@@ -952,6 +1373,7 @@ Module interpreter_action.
                                           Value.Integer IntegerKind.Usize 4
                                         ]
                                         [],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -962,9 +1384,16 @@ Module interpreter_action.
                                           []
                                       ],
                                       "gt",
+                                      [],
                                       []
                                     |),
-                                    [ x; M.get_constant (| "ruint::ZERO" |) ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, x |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.get_constant (| "ruint::ZERO" |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -992,13 +1421,17 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "transfer",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                    "value"
+                  |)
                 |)
               ]
             |)))
@@ -1022,13 +1455,17 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "apparent",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                    "value"
+                  |)
                 |)
               ]
             |)))
@@ -1050,7 +1487,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                 "caller"
               |)
@@ -1073,7 +1510,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                 "target_address"
               |)
@@ -1097,13 +1534,17 @@ Module interpreter_action.
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue",
                 "get",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                  "value"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                    "value"
+                  |)
                 |)
               ]
             |)))
@@ -1169,7 +1610,7 @@ Module interpreter_action.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1205,9 +1646,9 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -1220,7 +1661,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call"
                             |) in
-                          M.alloc (| M.read (| Value.String "Call" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Call" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1229,7 +1675,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode"
                             |) in
-                          M.alloc (| M.read (| Value.String "CallCode" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "CallCode" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1238,7 +1689,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "DelegateCall" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "DelegateCall" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1247,7 +1703,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "StaticCall" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "StaticCall" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1256,7 +1717,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "ExtCall" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "ExtCall" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1265,7 +1731,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "ExtStaticCall" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "ExtStaticCall" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -1274,7 +1745,12 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "ExtDelegateCall" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "ExtDelegateCall" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -1323,7 +1799,7 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -1334,7 +1810,7 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -1397,13 +1873,27 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_discr; M.read (| state |) ]
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "isize",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -1472,13 +1962,12 @@ Module interpreter_action.
                                 |) in
                               Value.Tuple []))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -1597,10 +2086,13 @@ Module interpreter_action.
                                   ]
                                   [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)));
@@ -1629,10 +2121,13 @@ Module interpreter_action.
                                   ]
                                   [],
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| __self_0 |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
+                              ]
                             |)
                           ]
                       |)))
@@ -1680,9 +2175,20 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Transfer" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Transfer" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1700,9 +2206,20 @@ Module interpreter_action.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
+                            [],
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Apparent" |); __self_0 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Apparent" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
                         |)
                       |)))
                 ]
@@ -1751,7 +2268,7 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -1762,7 +2279,7 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (|
@@ -1809,6 +2326,7 @@ Module interpreter_action.
                                           ]
                                           []
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -1824,9 +2342,13 @@ Module interpreter_action.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -1865,6 +2387,7 @@ Module interpreter_action.
                                           ]
                                           []
                                       ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -1880,9 +2403,13 @@ Module interpreter_action.
                                         ]
                                     ],
                                     "eq",
+                                    [],
                                     []
                                   |),
-                                  [ __self_0; __arg1_0 ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -1964,7 +2491,7 @@ Module interpreter_action.
                       [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1974,10 +2501,18 @@ Module interpreter_action.
                       "core::hash::Hash",
                       Ty.path "isize",
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
-                    [ __self_discr; M.read (| state |) ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -2005,10 +2540,15 @@ Module interpreter_action.
                               ]
                               [],
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -2033,10 +2573,15 @@ Module interpreter_action.
                               ]
                               [],
                             [],
+                            [],
                             "hash",
+                            [],
                             [ __H ]
                           |),
-                          [ M.read (| __self_0 |); M.read (| state |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                          ]
                         |)
                       |)))
                 ]
@@ -2098,7 +2643,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2126,13 +2671,12 @@ Module interpreter_action.
                               let value := M.copy (| γ0_0 |) in
                               Value.Tuple [ value ]))
                         ],
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ value ] => ltac:(M.monadic value)
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
+                        fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ value ] => ltac:(M.monadic value)
+                            | _ => M.impossible "wrong number of arguments"
+                            end)
                       |)))
                 ]
               |)
@@ -2157,7 +2701,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2236,7 +2780,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic

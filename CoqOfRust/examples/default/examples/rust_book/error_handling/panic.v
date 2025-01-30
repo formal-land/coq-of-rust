@@ -30,11 +30,16 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "eq",
+                            [],
                             []
                           |),
-                          [ beverage; Value.String "lemonade" ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, beverage |);
+                            M.borrow (| Pointer.Kind.Ref, Value.String "lemonade" |)
+                          ]
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -60,28 +65,55 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "Some refreshing " |);
-                            M.read (| Value.String " is all I need.
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Some refreshing " |);
+                                  M.read (| Value.String " is all I need.
 " |)
-                          ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              |),
-                              [ beverage ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, beverage |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -111,14 +143,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::drink", [], [] |),
-              [ M.read (| Value.String "water" |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "water" |) |) |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::drink", [], [] |),
-              [ M.read (| Value.String "lemonade" |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "lemonade" |) |) |)
+              ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

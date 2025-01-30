@@ -30,7 +30,9 @@ Module bls12_381.
               [ Value.Integer IntegerKind.Usize 9 ]
               [ Ty.path "revm_precompile::PrecompileWithAddress" ],
             [],
+            [],
             "into_iter",
+            [],
             []
           |),
           [

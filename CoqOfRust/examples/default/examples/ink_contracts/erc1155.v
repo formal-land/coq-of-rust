@@ -31,7 +31,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -42,7 +44,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -150,7 +154,15 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
           "erc1155::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -177,7 +189,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -221,10 +233,18 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
         let other := M.alloc (| other |) in
         BinOp.eq (|
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| self |) |),
+              "erc1155::AccountId",
+              0
+            |)
           |),
           M.read (|
-            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
+            M.SubPointer.get_struct_tuple_field (|
+              M.deref (| M.read (| other |) |),
+              "erc1155::AccountId",
+              0
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -280,8 +300,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.get_trait_method (|
           "core::convert::Into",
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+          [],
           [ Ty.path "erc1155::AccountId" ],
           "into",
+          [],
           []
         |),
         [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
@@ -390,7 +412,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                   [],
                   [ Ty.path "erc1155::Error" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -401,7 +423,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                   [],
                   [ Ty.path "erc1155::Error" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -534,7 +556,11 @@ Module Impl_erc1155_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "erc1155::Env",
+            "caller"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -593,7 +619,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -610,7 +638,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                       Ty.tuple []
                     ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -621,7 +651,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
                   "core::default::Default",
                   Ty.path "u128",
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -661,7 +693,7 @@ Module Impl_erc1155_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [] |),
+          M.get_associated_function (| Ty.path "erc1155::Contract", "init_env", [], [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -683,7 +715,9 @@ Module Impl_erc1155_Contract.
             "core::default::Default",
             Ty.path "erc1155::Contract",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -724,12 +758,15 @@ Module Impl_erc1155_Contract.
           let~ caller :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -738,7 +775,7 @@ Module Impl_erc1155_Contract.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "erc1155::Contract",
                 "token_id_nonce"
               |) in
@@ -755,20 +792,24 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "erc1155::Contract",
+                      "balances"
+                    |)
                   |);
                   Value.Tuple
                     [
                       M.read (| caller |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "erc1155::Contract",
                           "token_id_nonce"
                         |)
@@ -781,12 +822,15 @@ Module Impl_erc1155_Contract.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -834,7 +878,7 @@ Module Impl_erc1155_Contract.
                           ("token_id",
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "erc1155::Contract",
                                 "token_id_nonce"
                               |)
@@ -846,7 +890,7 @@ Module Impl_erc1155_Contract.
               |)
             |) in
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "erc1155::Contract",
             "token_id_nonce"
           |)
@@ -899,7 +943,7 @@ Module Impl_erc1155_Contract.
                                   M.read (| token_id |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "erc1155::Contract",
                                       "token_id_nonce"
                                     |)
@@ -920,8 +964,10 @@ Module Impl_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::UnexistentToken" [] ]
@@ -937,12 +983,20 @@ Module Impl_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -958,13 +1012,17 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "insert",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "erc1155::Contract",
+                          "balances"
+                        |)
                       |);
                       Value.Tuple [ M.read (| caller |); M.read (| token_id |) ];
                       M.read (| value |)
@@ -974,12 +1032,20 @@ Module Impl_erc1155_Contract.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1057,6 +1123,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -1068,19 +1135,36 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "erc1155::Contract",
+                          "balances"
+                        |)
                       |);
-                      M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
+                          |)
+                        |)
+                      |)
                     ]
                   |);
-                  M.read (|
-                    Value.String "Caller should have ensured that `from` holds `token_id`."
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.read (|
+                        Value.String "Caller should have ensured that `from` holds `token_id`."
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -1097,13 +1181,17 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "erc1155::Contract",
+                      "balances"
+                    |)
                   |);
                   Value.Tuple [ M.read (| from |); M.read (| token_id |) ];
                   M.read (| sender_balance |)
@@ -1116,6 +1204,7 @@ Module Impl_erc1155_Contract.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                   "unwrap_or",
+                  [],
                   []
                 |),
                 [
@@ -1127,15 +1216,27 @@ Module Impl_erc1155_Contract.
                         [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128"
                         ],
                       "get",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "erc1155::Contract",
-                        "balances"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "erc1155::Contract",
+                          "balances"
+                        |)
                       |);
-                      M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
+                          |)
+                        |)
+                      |)
                     ]
                   |);
                   M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |)
@@ -1154,13 +1255,17 @@ Module Impl_erc1155_Contract.
                     []
                     [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                   "insert",
+                  [],
                   []
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "erc1155::Contract",
-                    "balances"
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "erc1155::Contract",
+                      "balances"
+                    |)
                   |);
                   Value.Tuple [ M.read (| to |); M.read (| token_id |) ];
                   M.read (| recipient_balance |)
@@ -1170,12 +1275,15 @@ Module Impl_erc1155_Contract.
           let~ caller :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |)
                 ]
@@ -1184,12 +1292,15 @@ Module Impl_erc1155_Contract.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                      [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "erc1155::Contract", "env", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
                     |)
                   |);
                   Value.StructTuple
@@ -1334,15 +1445,27 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "erc1155::AccountId" ]; Ty.tuple []
               ],
             "contains",
+            [],
             []
           |),
           [
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "erc1155::Contract",
-              "approvals"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "erc1155::Contract",
+                "approvals"
+              |)
             |);
-            M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
+                |)
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1364,6 +1487,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or",
+            [],
             []
           |),
           [
@@ -1374,15 +1498,27 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                   []
                   [ Ty.tuple [ Ty.path "erc1155::AccountId"; Ty.path "u128" ]; Ty.path "u128" ],
                 "get",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "erc1155::Contract",
-                  "balances"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "erc1155::Contract",
+                    "balances"
+                  |)
                 |);
-                M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
+                    |)
+                  |)
+                |)
               ]
             |);
             M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |)
@@ -1432,12 +1568,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1456,11 +1600,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc1155::AccountId",
+                                  [],
                                   [ Ty.path "erc1155::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
-                                [ caller; from ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, caller |);
+                                  M.borrow (| Pointer.Kind.Ref, from |)
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -1480,11 +1629,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
                                               [],
+                                              [],
                                               "is_approved_for_all",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.read (| self |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
@@ -1507,8 +1661,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.get_trait_method (|
                                                   "core::convert::Into",
                                                   Ty.path "erc1155::Error",
+                                                  [],
                                                   [ Ty.path "erc1155::Error" ],
                                                   "into",
+                                                  [],
                                                   []
                                                 |),
                                                 [ Value.StructTuple "erc1155::Error::NotApproved" []
@@ -1540,16 +1696,21 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
-                                    to;
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (| "erc1155::zero_address", [], [] |),
-                                        []
+                                    M.borrow (| Pointer.Kind.Ref, to |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "erc1155::zero_address", [], [] |),
+                                          []
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -1569,8 +1730,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
@@ -1590,10 +1753,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       "erc1155::Erc1155",
                       Ty.path "erc1155::Contract",
                       [],
+                      [],
                       "balance_of",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| from |); M.read (| token_id |) ]
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                      M.read (| from |);
+                      M.read (| token_id |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -1620,8 +1789,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::InsufficientBalance" [] ]
@@ -1640,10 +1811,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "perform_transfer",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.read (| from |);
                       M.read (| to |);
                       M.read (| token_id |);
@@ -1657,10 +1829,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "transfer_acceptance_check",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.read (| caller |);
                       M.read (| from |);
                       M.read (| to |);
@@ -1730,12 +1903,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1754,11 +1935,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc1155::AccountId",
+                                  [],
                                   [ Ty.path "erc1155::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
-                                [ caller; from ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, caller |);
+                                  M.borrow (| Pointer.Kind.Ref, from |)
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -1778,11 +1964,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               "erc1155::Erc1155",
                                               Ty.path "erc1155::Contract",
                                               [],
+                                              [],
                                               "is_approved_for_all",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.read (| self |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
                                               M.read (| from |);
                                               M.read (| caller |)
                                             ]
@@ -1805,8 +1996,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.get_trait_method (|
                                                   "core::convert::Into",
                                                   Ty.path "erc1155::Error",
+                                                  [],
                                                   [ Ty.path "erc1155::Error" ],
                                                   "into",
+                                                  [],
                                                   []
                                                 |),
                                                 [ Value.StructTuple "erc1155::Error::NotApproved" []
@@ -1838,16 +2031,21 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
                                   [
-                                    to;
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (| "erc1155::zero_address", [], [] |),
-                                        []
+                                    M.borrow (| Pointer.Kind.Ref, to |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "erc1155::zero_address", [], [] |),
+                                          []
+                                        |)
                                       |)
                                     |)
                                   ]
@@ -1867,8 +2065,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::ZeroAddressTransfer" [] ]
@@ -1899,9 +2099,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "is_empty",
+                                      [],
                                       []
                                     |),
-                                    [ token_ids ]
+                                    [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
                                   |)
                                 |)
                               |)
@@ -1919,8 +2120,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
@@ -1952,9 +2155,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ token_ids ]
+                                    [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1963,9 +2167,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         []
                                         [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ values ]
+                                    [ M.borrow (| Pointer.Kind.Ref, values |) ]
                                   |)
                                 |)
                               |)
@@ -1983,8 +2188,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::BatchTransferMismatch" []
@@ -2005,7 +2212,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ],
                       [],
+                      [],
                       "zip",
+                      [],
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ] ]
                     |),
                     [
@@ -2013,21 +2222,29 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [ token_ids ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
+                              |)
+                            |)
                           |)
                         ]
                       |);
@@ -2035,21 +2252,29 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                           "iter",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [ values ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, values |) ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -2071,7 +2296,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [
@@ -2089,10 +2316,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                                 ],
                               [],
+                              [],
                               "clone",
+                              [],
                               []
                             |),
-                            [ transfers ]
+                            [ M.borrow (| Pointer.Kind.Ref, transfers |) ]
                           |)
                         ]
                       |)
@@ -2123,10 +2352,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -2158,11 +2394,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 "erc1155::Erc1155",
                                                 Ty.path "erc1155::Contract",
                                                 [],
+                                                [],
                                                 "balance_of",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| self |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
                                                 M.read (| from |);
                                                 M.read (| id |)
                                               ]
@@ -2200,8 +2441,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                 M.get_trait_method (|
                                                                   "core::convert::Into",
                                                                   Ty.path "erc1155::Error",
+                                                                  [],
                                                                   [ Ty.path "erc1155::Error" ],
                                                                   "into",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2241,7 +2484,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u128" ]
                             ],
                           [],
+                          [],
                           "into_iter",
+                          [],
                           []
                         |),
                         [ M.read (| transfers |) ]
@@ -2273,10 +2518,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               [ Ty.path "u128" ]
                                           ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
-                                      [ iter ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                        |)
+                                      ]
                                     |)
                                   |),
                                   [
@@ -2307,10 +2559,14 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               M.get_associated_function (|
                                                 Ty.path "erc1155::Contract",
                                                 "perform_transfer",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| self |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
                                                 M.read (| from |);
                                                 M.read (| to |);
                                                 M.read (| id |);
@@ -2331,41 +2587,56 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     M.get_associated_function (|
                       Ty.path "erc1155::Contract",
                       "transfer_acceptance_check",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.read (| caller |);
                       M.read (| from |);
                       M.read (| to |);
                       M.read (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::index::Index",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [ Ty.path "usize" ],
+                              "index",
+                              [],
                               []
-                              [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                            [ Ty.path "usize" ],
-                            "index",
-                            []
-                          |),
-                          [ token_ids; Value.Integer IntegerKind.Usize 0 ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, token_ids |);
+                              Value.Integer IntegerKind.Usize 0
+                            ]
+                          |)
                         |)
                       |);
                       M.read (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::index::Index",
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::index::Index",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [ Ty.path "usize" ],
+                              "index",
+                              [],
                               []
-                              [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                            [ Ty.path "usize" ],
-                            "index",
-                            []
-                          |),
-                          [ values; Value.Integer IntegerKind.Usize 0 ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, values |);
+                              Value.Integer IntegerKind.Usize 0
+                            ]
+                          |)
                         |)
                       |);
                       M.read (| data |)
@@ -2407,6 +2678,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     []
                     [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 []
@@ -2429,10 +2701,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             [ Ty.path "erc1155::AccountId"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
+                      [],
                       "into_iter",
+                      [],
                       []
                     |),
-                    [ owners ]
+                    [ M.borrow (| Pointer.Kind.Ref, owners |) ]
                   |)
                 |),
                 [
@@ -2452,10 +2726,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       []
                                       [ Ty.path "erc1155::AccountId" ],
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
-                                  [ iter ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
                                 |)
                               |),
                               [
@@ -2490,10 +2771,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                     ]
                                                 ],
                                               [],
+                                              [],
                                               "into_iter",
+                                              [],
                                               []
                                             |),
-                                            [ token_ids ]
+                                            [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
                                           |)
                                         |),
                                         [
@@ -2513,10 +2796,22 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                               []
                                                               [ Ty.path "u128" ],
                                                             [],
+                                                            [],
                                                             "next",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ iter ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  iter
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       |),
                                                       [
@@ -2548,13 +2843,24 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                     "erc1155::Erc1155",
                                                                     Ty.path "erc1155::Contract",
                                                                     [],
+                                                                    [],
                                                                     "balance_of",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| self |);
-                                                                    M.read (| M.read (| o |) |);
-                                                                    M.read (| M.read (| t |) |)
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (| M.read (| o |) |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (| M.read (| t |) |)
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               |) in
@@ -2571,9 +2877,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                           "alloc::alloc::Global"
                                                                       ],
                                                                     "push",
+                                                                    [],
                                                                     []
                                                                   |),
-                                                                  [ output; M.read (| amount |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      output
+                                                                    |);
+                                                                    M.read (| amount |)
+                                                                  ]
                                                                 |)
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)))
@@ -2627,12 +2940,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ caller :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "caller", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -2652,11 +2973,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "erc1155::AccountId",
+                                    [],
                                     [ Ty.path "erc1155::AccountId" ],
                                     "ne",
+                                    [],
                                     []
                                   |),
-                                  [ operator; caller ]
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, operator |);
+                                    M.borrow (| Pointer.Kind.Ref, caller |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -2673,8 +2999,10 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "erc1155::Error",
+                                        [],
                                         [ Ty.path "erc1155::Error" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [ Value.StructTuple "erc1155::Error::SelfApproval" [] ]
@@ -2710,13 +3038,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     Ty.tuple []
                                   ],
                                 "insert",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc1155::Contract",
-                                  "approvals"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc1155::Contract",
+                                    "approvals"
+                                  |)
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ];
                                 Value.Tuple []
@@ -2740,13 +3072,17 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     Ty.tuple []
                                   ],
                                 "remove",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "erc1155::Contract",
-                                  "approvals"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc1155::Contract",
+                                    "approvals"
+                                  |)
                                 |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ]
                               ]
@@ -2758,12 +3094,20 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
+                    M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [], [] |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "erc1155::Contract", "env", [] |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "erc1155::Contract",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -2843,21 +3187,42 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (|
-                          Value.String
-                            "not implemented: This smart contract does not accept token transfer."
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "not implemented: This smart contract does not accept token transfer."
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
-                      []
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
+                              [],
+                              []
+                            |),
+                            []
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -2906,21 +3271,42 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (|
-                          Value.String
-                            "not implemented: This smart contract does not accept batch token transfers."
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "not implemented: This smart contract does not accept batch token transfers."
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
-                      []
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
+                              [],
+                              []
+                            |),
+                            []
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]

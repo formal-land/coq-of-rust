@@ -33,34 +33,58 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::scan::Scan",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
                   ("f",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "f"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::scan::Scan",
+                                "f"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
                   ("state",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", St, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", St, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "state"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::scan::Scan",
+                                "state"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -126,48 +150,96 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Formatter",
-                                "debug_struct",
-                                []
-                              |),
-                              [ M.read (| f |); M.read (| Value.String "Scan" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugStruct",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "debug_struct",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "Scan" |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "iter" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::scan::Scan",
+                                          "iter"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
-                          M.read (| Value.String "iter" |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::scan::Scan",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "state" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::scan::Scan",
+                                  "state"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.read (| Value.String "state" |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::scan::Scan",
-                        "state"
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -219,7 +291,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -228,14 +302,19 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     I,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::scan::Scan",
-                                      "iter"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::scan::Scan",
+                                        "iter"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -260,6 +339,7 @@ Module iter.
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ B ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -267,6 +347,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -293,22 +374,35 @@ Module iter.
                         M.get_trait_method (|
                           "core::ops::function::FnMut",
                           F,
+                          [],
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ St ]; Ty.associated ] ],
                           "call_mut",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::scan::Scan",
-                            "f"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::scan::Scan",
+                              "f"
+                            |)
                           |);
                           Value.Tuple
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::scan::Scan",
-                                "state"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::scan::Scan",
+                                      "state"
+                                    |)
+                                  |)
+                                |)
                               |);
                               M.read (| a |)
                             ]
@@ -345,14 +439,19 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::scan::Scan",
+                            "iter"
+                          |)
                         |)
                       ]
                     |)
@@ -411,18 +510,24 @@ Module iter.
               M.read (|
                 let~ state :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::scan::Scan",
-                      "state"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::scan::Scan",
+                        "state"
+                      |)
                     |)
                   |) in
                 let~ f :=
                   M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::scan::Scan",
-                      "f"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::scan::Scan",
+                        "f"
+                      |)
                     |)
                   |) in
                 M.alloc (|
@@ -433,6 +538,7 @@ Module iter.
                         []
                         [ R; Ty.associated ],
                       "into_try",
+                      [],
                       []
                     |),
                     [
@@ -441,7 +547,9 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           I,
                           [],
+                          [],
                           "try_fold",
+                          [],
                           [
                             Acc;
                             Ty.associated;
@@ -449,15 +557,22 @@ Module iter.
                           ]
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::scan::Scan",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::scan::Scan",
+                              "iter"
+                            |)
                           |);
                           M.read (| init |);
                           M.call_closure (|
-                            M.get_associated_function (| Self, "scan.try_fold", [] |),
-                            [ M.read (| state |); M.read (| f |); M.read (| fold |) ]
+                            M.get_associated_function (| Self, "scan.try_fold", [], [] |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.read (| fold |)
+                            ]
                           |)
                         ]
                       |)
@@ -499,7 +614,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::iter::adapters::scan::Scan") [] [ I; St; F ],
                         [],
+                        [],
                         "try_fold",
+                        [],
                         [
                           AAA;
                           Ty.associated;
@@ -507,12 +624,13 @@ Module iter.
                         ]
                       |),
                       [
-                        self;
+                        M.borrow (| Pointer.Kind.MutRef, self |);
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
+                            [],
                             [ AAA; B; FFF ]
                           |),
                           [ M.read (| fold |) ]
@@ -567,15 +685,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::scan::Scan",
-                    "iter"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              I,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::scan::Scan",
+                                      "iter"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

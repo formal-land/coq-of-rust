@@ -153,7 +153,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| M.rust_cast (M.read (| v |)) |)
+                M.alloc (| M.cast (Ty.path "f32") (M.read (| v |)) |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -169,9 +169,10 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
+                M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                 [
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u32")
                     (BinOp.bit_and (M.read (| v |)) (Value.Integer IntegerKind.U64 4294967295))
                 ]
               |)))
@@ -223,7 +224,7 @@ Module num.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -254,7 +255,8 @@ Module num.
                   |) in
                 let~ exponent :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i16")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
                         (Value.Integer IntegerKind.U32 255))
@@ -310,7 +312,10 @@ Module num.
                   |) in
                 M.alloc (|
                   Value.Tuple
-                    [ M.rust_cast (M.read (| mantissa |)); M.read (| exponent |); M.read (| sign |)
+                    [
+                      M.cast (Ty.path "u64") (M.read (| mantissa |));
+                      M.read (| exponent |);
+                      M.read (| sign |)
                     ]
                 |)
               |)))
@@ -328,7 +333,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f32", "classify", [] |),
+                M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -513,7 +518,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                M.alloc (| M.rust_cast (M.read (| v |)) |)
+                M.alloc (| M.cast (Ty.path "f64") (M.read (| v |)) |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -529,7 +534,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f64", "from_bits", [] |),
+                M.get_associated_function (| Ty.path "f64", "from_bits", [], [] |),
                 [ M.read (| v |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -584,7 +589,7 @@ Module num.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -615,7 +620,8 @@ Module num.
                   |) in
                 let~ exponent :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "i16")
                       (BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
                         (Value.Integer IntegerKind.U64 2047))
@@ -687,7 +693,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f64", "classify", [] |),
+                M.get_associated_function (| Ty.path "f64", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

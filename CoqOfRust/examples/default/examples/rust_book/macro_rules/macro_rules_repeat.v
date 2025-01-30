@@ -20,18 +20,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (| Value.Array [ M.read (| Value.String "1
-" |) ] |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "none",
-                            []
-                          |),
-                          []
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (| Value.Array [ M.read (| Value.String "1
+" |) ] |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "none",
+                                  [],
+                                  []
+                                |),
+                                []
+                              |)
+                            |)
+                          |)
                         |)
                       |)
                     ]
@@ -47,37 +69,72 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [], [ Ty.path "i32" ] |),
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
                                     [
-                                      BinOp.Wrap.add (|
-                                        Value.Integer IntegerKind.I32 1,
-                                        Value.Integer IntegerKind.I32 2
-                                      |);
-                                      Value.Integer IntegerKind.I32 2
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "core::cmp::min",
+                                                  [],
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                                [
+                                                  BinOp.Wrap.add (|
+                                                    Value.Integer IntegerKind.I32 1,
+                                                    Value.Integer IntegerKind.I32 2
+                                                  |);
+                                                  Value.Integer IntegerKind.I32 2
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -92,47 +149,82 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
+                            |)
+                          |)
+                        |)
                       |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [], [ Ty.path "i32" ] |),
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
                                     [
-                                      Value.Integer IntegerKind.I32 5;
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "core::cmp::min",
-                                          [],
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          BinOp.Wrap.mul (|
-                                            Value.Integer IntegerKind.I32 2,
-                                            Value.Integer IntegerKind.I32 3
-                                          |);
-                                          Value.Integer IntegerKind.I32 4
-                                        ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "core::cmp::min",
+                                                  [],
+                                                  [ Ty.path "i32" ]
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.I32 5;
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::cmp::min",
+                                                      [],
+                                                      [ Ty.path "i32" ]
+                                                    |),
+                                                    [
+                                                      BinOp.Wrap.mul (|
+                                                        Value.Integer IntegerKind.I32 2,
+                                                        Value.Integer IntegerKind.I32 3
+                                                      |);
+                                                      Value.Integer IntegerKind.I32 4
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
-                                |)
-                              ]
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
                       |)
                     ]
                   |)

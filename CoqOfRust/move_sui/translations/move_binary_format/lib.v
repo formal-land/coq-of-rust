@@ -123,7 +123,7 @@ Module Impl_core_clone_Clone_for_move_binary_format_IndexKind.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -146,9 +146,9 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -158,13 +158,23 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ModuleHandle" |) in
-                      M.alloc (| M.read (| Value.String "ModuleHandle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "ModuleHandle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::StructHandle" |) in
-                      M.alloc (| M.read (| Value.String "StructHandle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "StructHandle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -173,13 +183,23 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionHandle"
                         |) in
-                      M.alloc (| M.read (| Value.String "FunctionHandle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FunctionHandle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::FieldHandle" |) in
-                      M.alloc (| M.read (| Value.String "FieldHandle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FieldHandle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -188,7 +208,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FriendDeclaration"
                         |) in
-                      M.alloc (| M.read (| Value.String "FriendDeclaration" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FriendDeclaration" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -197,7 +222,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "FunctionInstantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FunctionInstantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -206,7 +236,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FieldInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "FieldInstantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FieldInstantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -215,7 +250,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::StructDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "StructDefinition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "StructDefinition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -224,7 +264,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::StructDefInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "StructDefInstantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "StructDefInstantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -233,7 +278,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "FunctionDefinition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FunctionDefinition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -242,19 +292,34 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FieldDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "FieldDefinition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "FieldDefinition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Signature" |) in
-                      M.alloc (| M.read (| Value.String "Signature" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Signature" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Identifier" |) in
-                      M.alloc (| M.read (| Value.String "Identifier" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Identifier" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -263,19 +328,34 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::AddressIdentifier"
                         |) in
-                      M.alloc (| M.read (| Value.String "AddressIdentifier" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "AddressIdentifier" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ConstantPool" |) in
-                      M.alloc (| M.read (| Value.String "ConstantPool" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "ConstantPool" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::LocalPool" |) in
-                      M.alloc (| M.read (| Value.String "LocalPool" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "LocalPool" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -284,19 +364,34 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::CodeDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "CodeDefinition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "CodeDefinition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::TypeParameter" |) in
-                      M.alloc (| M.read (| Value.String "TypeParameter" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "TypeParameter" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::MemberCount" |) in
-                      M.alloc (| M.read (| Value.String "MemberCount" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "MemberCount" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -358,13 +453,27 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-              [ __self_discr; M.read (| state |) ]
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "isize",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+              ]
             |)
           |)
         |)))
@@ -398,7 +507,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -409,13 +518,22 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_discr; __arg1_discr ]
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -460,7 +578,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -471,7 +589,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -506,7 +624,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -517,7 +635,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
                   [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -525,11 +643,22 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
-              [ __self_discr; __arg1_discr ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -578,28 +707,36 @@ Module Impl_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (M.alloc (|
-          Value.Array
-            [
-              Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
-              Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
-              Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
-              Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
-              Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
-              Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
-              Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
-              Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
-              Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
-              Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
-              Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
-              Value.StructTuple "move_binary_format::IndexKind::Signature" [];
-              Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
-              Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
-              Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
-              Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
-              Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
-              Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
-            ]
+        (M.borrow (|
+          Pointer.Kind.Ref,
+          M.deref (|
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [];
+                    Value.StructTuple "move_binary_format::IndexKind::StructHandle" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FunctionHandle" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FieldHandle" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FriendDeclaration" [];
+                    Value.StructTuple "move_binary_format::IndexKind::StructDefInstantiation" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FunctionInstantiation" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FieldInstantiation" [];
+                    Value.StructTuple "move_binary_format::IndexKind::StructDefinition" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FunctionDefinition" [];
+                    Value.StructTuple "move_binary_format::IndexKind::FieldDefinition" [];
+                    Value.StructTuple "move_binary_format::IndexKind::Signature" [];
+                    Value.StructTuple "move_binary_format::IndexKind::Identifier" [];
+                    Value.StructTuple "move_binary_format::IndexKind::ConstantPool" [];
+                    Value.StructTuple "move_binary_format::IndexKind::LocalPool" [];
+                    Value.StructTuple "move_binary_format::IndexKind::CodeDefinition" [];
+                    Value.StructTuple "move_binary_format::IndexKind::TypeParameter" [];
+                    Value.StructTuple "move_binary_format::IndexKind::MemberCount" []
+                  ]
+              |)
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -662,7 +799,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::StructHandle" |) in
-                      M.alloc (| M.read (| Value.String "struct handle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "struct handle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -671,13 +813,23 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionHandle"
                         |) in
-                      M.alloc (| M.read (| Value.String "function handle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "function handle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::FieldHandle" |) in
-                      M.alloc (| M.read (| Value.String "field handle" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "field handle" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -686,7 +838,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FriendDeclaration"
                         |) in
-                      M.alloc (| M.read (| Value.String "friend declaration" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "friend declaration" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -695,7 +852,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::StructDefInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "struct instantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "struct instantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -704,7 +866,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "function instantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "function instantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -713,7 +880,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FieldInstantiation"
                         |) in
-                      M.alloc (| M.read (| Value.String "field instantiation" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "field instantiation" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -722,7 +894,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::StructDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "struct definition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "struct definition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -731,7 +908,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FunctionDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "function definition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "function definition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -740,19 +922,34 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::FieldDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "field definition" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "field definition" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Signature" |) in
-                      M.alloc (| M.read (| Value.String "signature" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "signature" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Identifier" |) in
-                      M.alloc (| M.read (| Value.String "identifier" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "identifier" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -761,19 +958,34 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::AddressIdentifier"
                         |) in
-                      M.alloc (| M.read (| Value.String "address identifier" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "address identifier" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ConstantPool" |) in
-                      M.alloc (| M.read (| Value.String "constant pool" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "constant pool" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::LocalPool" |) in
-                      M.alloc (| M.read (| Value.String "local pool" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "local pool" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -782,26 +994,44 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           γ,
                           "move_binary_format::IndexKind::CodeDefinition"
                         |) in
-                      M.alloc (| M.read (| Value.String "code definition pool" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "code definition pool" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::TypeParameter" |) in
-                      M.alloc (| M.read (| Value.String "type parameter" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "type parameter" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::MemberCount" |) in
-                      M.alloc (| M.read (| Value.String "field offset" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "field offset" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| desc |) ]
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| desc |) |) |)
+              ]
             |)
           |)
         |)))
@@ -858,7 +1088,7 @@ Module Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.read (| self |) |)))
+        M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -881,9 +1111,9 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+          M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
-            M.read (| f |);
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
                 self,
@@ -896,7 +1126,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::Value"
                         |) in
-                      M.alloc (| M.read (| Value.String "Value" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Value" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -905,7 +1140,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::Reference"
                         |) in
-                      M.alloc (| M.read (| Value.String "Reference" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "Reference" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -914,7 +1154,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::MutableReference"
                         |) in
-                      M.alloc (| M.read (| Value.String "MutableReference" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "MutableReference" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |)
@@ -976,7 +1221,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -987,13 +1232,22 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_discr; __arg1_discr ]
+              M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -1038,7 +1292,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1049,7 +1303,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -1084,7 +1338,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -1095,7 +1349,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
                   [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (|
@@ -1103,11 +1357,22 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
+                [],
                 [ Ty.path "isize" ],
                 "partial_cmp",
+                [],
                 []
               |),
-              [ __self_discr; __arg1_discr ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                |)
+              ]
             |)
           |)
         |)))
@@ -1167,7 +1432,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::Reference"
                         |) in
-                      M.alloc (| M.read (| Value.String "reference" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "reference" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -1176,14 +1446,22 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::MutableReference"
                         |) in
-                      M.alloc (| M.read (| Value.String "mutable reference" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "mutable reference" |) |)
+                        |)
+                      |)))
                 ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| desc |) ]
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| desc |) |) |)
+              ]
             |)
           |)
         |)))

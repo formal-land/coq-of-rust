@@ -80,8 +80,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "from",
+                [],
                 []
               |),
               [ M.read (| Value.String "green" |) ]
@@ -110,29 +112,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "`color`: " |);
-                                                  M.read (| Value.String "
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (| Value.String "`color`: " |);
+                                                        M.read (| Value.String "
 " |)
-                                                ]
-                                            |);
-                                            M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [ color ]
+                                                      ]
                                                   |)
-                                                ]
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  color
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -152,25 +182,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call",
+                [],
                 []
               |),
-              [ print; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
-        let~ _reborrow := M.alloc (| color |) in
+        let~ _reborrow := M.alloc (| M.borrow (| Pointer.Kind.Ref, color |) |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call",
+                [],
                 []
               |),
-              [ print; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
         let~ _color_moved := M.copy (| color |) in
@@ -208,29 +242,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "`count`: " |);
-                                                    M.read (| Value.String "
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "`count`: " |);
+                                                          M.read (| Value.String "
 " |)
-                                                  ]
-                                              |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [ Ty.path "i32" ]
-                                                      |),
-                                                      [ count ]
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "i32" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    count
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -251,11 +313,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_mut",
+                [],
                 []
               |),
-              [ inc; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
         let~ _ :=
@@ -264,14 +328,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_mut",
+                [],
                 []
               |),
-              [ inc; Value.Tuple [] ]
+              [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
-        let~ _count_reborrowed := M.alloc (| count |) in
+        let~ _count_reborrowed := M.alloc (| M.borrow (| Pointer.Kind.MutRef, count |) |) in
         let~ movable :=
           M.alloc (|
             M.call_closure (|
@@ -281,6 +347,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 3 ]
@@ -310,37 +377,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "`movable`: " |);
-                                                    M.read (| Value.String "
-" |)
-                                                  ]
-                                              |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_debug",
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "alloc::boxed::Box")
-                                                            []
-                                                            [
-                                                              Ty.path "i32";
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ]
+                                                          M.read (| Value.String "`movable`: " |);
+                                                          M.read (| Value.String "
+" |)
                                                         ]
-                                                      |),
-                                                      [ movable ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::boxed::Box")
+                                                                  []
+                                                                  [
+                                                                    Ty.path "i32";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    movable
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -377,8 +472,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                [],
                 [ Ty.tuple [] ],
                 "call_once",
+                [],
                 []
               |),
               [ M.read (| consume |); Value.Tuple [] ]

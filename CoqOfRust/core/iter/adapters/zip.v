@@ -35,23 +35,39 @@ Module iter.
                 [
                   ("a",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "a"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
                   ("b",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", B, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", B, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "b"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "b"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -61,14 +77,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "index"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "index"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -78,14 +104,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "len"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "len"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -95,14 +131,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "usize",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "a_len"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a_len"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -139,8 +185,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]
@@ -196,10 +244,17 @@ Module iter.
                                             []
                                             [ A; B ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -301,8 +356,10 @@ Module iter.
                   (Ty.path "core::iter::adapters::zip::Zip")
                   []
                   [ Ty.associated; Ty.associated ],
+                [],
                 [ Ty.associated; Ty.associated ],
                 "new",
+                [],
                 []
               |),
               [
@@ -311,7 +368,9 @@ Module iter.
                     "core::iter::traits::collect::IntoIterator",
                     A,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| a |) ]
@@ -321,7 +380,9 @@ Module iter.
                     "core::iter::traits::collect::IntoIterator",
                     B,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| b |) ]
@@ -355,11 +416,13 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "next",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -384,11 +447,13 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "size_hint",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -409,11 +474,16 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "nth",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -438,8 +508,10 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -473,11 +545,16 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "get_unchecked",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| idx |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| idx |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -523,11 +600,13 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "next_back",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -606,7 +685,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -615,14 +696,19 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     A,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "a"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "a"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -650,6 +736,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -657,6 +744,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -687,7 +775,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -696,14 +786,19 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     B,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "b"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "b"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -731,6 +826,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -738,6 +834,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -785,9 +882,13 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -842,14 +943,19 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "a"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |)
                         |)
                       ]
                     |)
@@ -861,14 +967,19 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "b"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::zip::Zip",
+                            "b"
+                          |)
                         |)
                       ]
                     |)
@@ -910,7 +1021,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -944,10 +1057,22 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -978,14 +1103,21 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::iter::adapters::zip::Zip",
-                                                                    "a"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::iter::adapters::zip::Zip",
+                                                                      "a"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -1010,7 +1142,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1044,10 +1178,22 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -1078,14 +1224,21 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::iter::adapters::zip::Zip",
-                                                                    "b"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::iter::adapters::zip::Zip",
+                                                                      "b"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -1111,14 +1264,19 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "a"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a"
+                              |)
                             |)
                           ]
                         |);
@@ -1127,14 +1285,19 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "b"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "b"
+                              |)
                             |)
                           ]
                         |)
@@ -1224,14 +1387,19 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         A,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "a"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |)
                         |)
                       ]
                     |)
@@ -1250,14 +1418,19 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 B,
                                 [],
+                                [],
                                 "size_hint",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::zip::Zip",
-                                  "b"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::zip::Zip",
+                                    "b"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1417,25 +1590,47 @@ Module iter.
                   M.get_function (| "core::panicking::panic_fmt", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "internal error: entered unreachable code: Always specialized"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String
+                                        "internal error: entered unreachable code: Always specialized"
+                                    |)
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
                         |);
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "none",
-                              []
-                            |),
-                            []
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "none",
+                                    [],
+                                    []
+                                  |),
+                                  []
+                                |)
+                              |)
+                            |)
                           |)
                         |)
                       ]
@@ -1467,7 +1662,9 @@ Module iter.
                   "core::iter::adapters::zip::SpecFold",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   [],
+                  [],
                   "spec_fold",
+                  [],
                   [ Acc; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
@@ -1553,7 +1750,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1562,14 +1761,19 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     A,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "a"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "a"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1597,6 +1801,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1604,6 +1809,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1634,7 +1840,9 @@ Module iter.
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
+                                [],
                                 "branch",
+                                [],
                                 []
                               |),
                               [
@@ -1643,14 +1851,19 @@ Module iter.
                                     "core::iter::traits::iterator::Iterator",
                                     B,
                                     [],
+                                    [],
                                     "next",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "b"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "b"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1678,6 +1891,7 @@ Module iter.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.tuple [ Ty.associated; Ty.associated ] ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1685,6 +1899,7 @@ Module iter.
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| residual |) ]
@@ -1732,9 +1947,13 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| n |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1789,14 +2008,19 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "a"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |)
                         |)
                       ]
                     |)
@@ -1808,14 +2032,19 @@ Module iter.
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "b"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::zip::Zip",
+                            "b"
+                          |)
                         |)
                       ]
                     |)
@@ -1857,7 +2086,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1891,10 +2122,22 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -1925,14 +2168,21 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::iter::adapters::zip::Zip",
-                                                                    "a"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::iter::adapters::zip::Zip",
+                                                                      "a"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -1957,7 +2207,9 @@ Module iter.
                                               []
                                               [ Ty.path "usize" ],
                                             [],
+                                            [],
                                             "into_iter",
+                                            [],
                                             []
                                           |),
                                           [
@@ -1991,10 +2243,22 @@ Module iter.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           [],
+                                                          [],
                                                           "next",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ iter ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                iter
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -2025,14 +2289,21 @@ Module iter.
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
                                                                   [],
+                                                                  [],
                                                                   "next_back",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::iter::adapters::zip::Zip",
-                                                                    "b"
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::iter::adapters::zip::Zip",
+                                                                      "b"
+                                                                    |)
                                                                   |)
                                                                 ]
                                                               |)
@@ -2058,14 +2329,19 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "a"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a"
+                              |)
                             |)
                           ]
                         |);
@@ -2074,14 +2350,19 @@ Module iter.
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
                             [],
+                            [],
                             "next_back",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "b"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "b"
+                              |)
                             |)
                           ]
                         |)
@@ -2163,14 +2444,19 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             A,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "a"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a"
+                              |)
                             |)
                           ]
                         |);
@@ -2179,14 +2465,19 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "b"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "b"
+                              |)
                             |)
                           ]
                         |)
@@ -2230,7 +2521,7 @@ Module iter.
                     BinOp.Wrap.add (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
@@ -2246,14 +2537,19 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           A,
                           [],
+                          [],
                           "__iterator_get_unchecked",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::zip::Zip",
-                            "a"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::zip::Zip",
+                              "a"
+                            |)
                           |);
                           M.read (| idx |)
                         ]
@@ -2263,14 +2559,19 @@ Module iter.
                           "core::iter::traits::iterator::Iterator",
                           B,
                           [],
+                          [],
                           "__iterator_get_unchecked",
+                          [],
                           []
                         |),
                         [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::zip::Zip",
-                            "b"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::zip::Zip",
+                              "b"
+                            |)
                           |);
                           M.read (| idx |)
                         ]
@@ -2317,11 +2618,18 @@ Module iter.
                           M.get_trait_method (|
                             "core::iter::adapters::zip::ZipImpl",
                             Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                            [],
                             [ A; B ],
                             "size_hint",
+                            [],
                             []
                           |),
-                          [ self ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                            |)
+                          ]
                         |)
                       |),
                       0
@@ -2336,7 +2644,9 @@ Module iter.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -2366,10 +2676,17 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2399,6 +2716,7 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
+                                                  [],
                                                   [
                                                     Ty.tuple
                                                       [
@@ -2407,10 +2725,11 @@ Module iter.
                                                       ]
                                                   ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  f;
+                                                  M.borrow (| Pointer.Kind.MutRef, f |);
                                                   Value.Tuple
                                                     [
                                                       M.read (| accum |);
@@ -2422,11 +2741,16 @@ Module iter.
                                                               "core::iter::adapters::zip::Zip")
                                                             []
                                                             [ A; B ],
+                                                          [],
                                                           [ A; B ],
                                                           "get_unchecked",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ self; M.read (| i |) ]
+                                                        [
+                                                          M.borrow (| Pointer.Kind.MutRef, self |);
+                                                          M.read (| i |)
+                                                        ]
                                                       |)
                                                     ]
                                                 ]
@@ -2488,10 +2812,12 @@ Module iter.
                         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                         A,
                         [],
+                        [],
                         "size",
+                        [],
                         []
                       |),
-                      [ a ]
+                      [ M.borrow (| Pointer.Kind.Ref, a |) ]
                     |)
                   |) in
                 let~ len :=
@@ -2505,10 +2831,12 @@ Module iter.
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
                             [],
+                            [],
                             "size",
+                            [],
                             []
                           |),
-                          [ b ]
+                          [ M.borrow (| Pointer.Kind.Ref, b |) ]
                         |)
                       ]
                     |)
@@ -2573,14 +2901,14 @@ Module iter.
                               BinOp.lt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |)
                                 |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "len"
                                   |)
@@ -2592,7 +2920,7 @@ Module iter.
                         let~ i :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "index"
                             |)
@@ -2600,7 +2928,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "index"
                             |) in
@@ -2619,14 +2947,19 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       A,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::zip::Zip",
-                                        "a"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::zip::Zip",
+                                          "a"
+                                        |)
                                       |);
                                       M.read (| i |)
                                     ]
@@ -2636,14 +2969,19 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       B,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::zip::Zip",
-                                        "b"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::zip::Zip",
+                                          "b"
+                                        |)
                                       |);
                                       M.read (| i |)
                                     ]
@@ -2671,14 +3009,14 @@ Module iter.
                                           (BinOp.lt (|
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::iter::adapters::zip::Zip",
                                                 "index"
                                               |)
                                             |),
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::iter::adapters::zip::Zip",
                                                 "a_len"
                                               |)
@@ -2694,7 +3032,7 @@ Module iter.
                                 let~ i :=
                                   M.copy (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::zip::Zip",
                                       "index"
                                     |)
@@ -2702,7 +3040,7 @@ Module iter.
                                 let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::zip::Zip",
                                       "index"
                                     |) in
@@ -2716,7 +3054,7 @@ Module iter.
                                 let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::zip::Zip",
                                       "len"
                                     |) in
@@ -2735,14 +3073,19 @@ Module iter.
                                           "core::iter::traits::iterator::Iterator",
                                           A,
                                           [],
+                                          [],
                                           "__iterator_get_unchecked",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::zip::Zip",
-                                            "a"
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::zip::Zip",
+                                              "a"
+                                            |)
                                           |);
                                           M.read (| i |)
                                         ]
@@ -2784,14 +3127,14 @@ Module iter.
                     BinOp.Wrap.sub (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::zip::Zip",
                           "len"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
@@ -2854,14 +3197,14 @@ Module iter.
                         BinOp.Wrap.sub (|
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "len"
                             |)
                           |),
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "index"
                             |)
@@ -2875,7 +3218,7 @@ Module iter.
                     BinOp.Wrap.add (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
@@ -2897,7 +3240,7 @@ Module iter.
                                     BinOp.lt (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::iter::adapters::zip::Zip",
                                           "index"
                                         |)
@@ -2913,7 +3256,7 @@ Module iter.
                               let~ i :=
                                 M.copy (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |)
@@ -2921,7 +3264,7 @@ Module iter.
                               let~ _ :=
                                 let β :=
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |) in
@@ -2955,14 +3298,19 @@ Module iter.
                                                 "core::iter::traits::iterator::Iterator",
                                                 A,
                                                 [],
+                                                [],
                                                 "__iterator_get_unchecked",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::iter::adapters::zip::Zip",
-                                                  "a"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::iter::adapters::zip::Zip",
+                                                    "a"
+                                                  |)
                                                 |);
                                                 M.read (| i |)
                                               ]
@@ -2994,14 +3342,19 @@ Module iter.
                                               "core::iter::traits::iterator::Iterator",
                                               B,
                                               [],
+                                              [],
                                               "__iterator_get_unchecked",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::iter::adapters::zip::Zip",
-                                                "b"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::zip::Zip",
+                                                  "b"
+                                                |)
                                               |);
                                               M.read (| i |)
                                             ]
@@ -3032,9 +3385,13 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                       "super_nth",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); BinOp.Wrap.sub (| M.read (| n |), M.read (| delta |) |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      BinOp.Wrap.sub (| M.read (| n |), M.read (| delta |) |)
+                    ]
                   |)
                 |)
               |)))
@@ -3132,14 +3489,19 @@ Module iter.
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   A,
                                   [],
+                                  [],
                                   "size",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::zip::Zip",
-                                    "a"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "a"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3151,14 +3513,19 @@ Module iter.
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   B,
                                   [],
+                                  [],
                                   "size",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::zip::Zip",
-                                    "b"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "b"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3185,14 +3552,19 @@ Module iter.
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           A,
                                           [],
+                                          [],
                                           "size",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::zip::Zip",
-                                            "a"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::zip::Zip",
+                                              "a"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -3217,7 +3589,7 @@ Module iter.
                                                         M.read (| sz_a |),
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::iter::adapters::zip::Zip",
                                                             "len"
                                                           |)
@@ -3242,7 +3614,9 @@ Module iter.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "into_iter",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -3256,7 +3630,7 @@ Module iter.
                                                                 M.read (| sz_a |),
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
+                                                                    M.deref (| M.read (| self |) |),
                                                                     "core::iter::adapters::zip::Zip",
                                                                     "len"
                                                                   |)
@@ -3284,10 +3658,22 @@ Module iter.
                                                                         []
                                                                         [ Ty.path "usize" ],
                                                                       [],
+                                                                      [],
                                                                       "next",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ iter ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            iter
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |),
                                                                 [
@@ -3314,7 +3700,9 @@ Module iter.
                                                                       let~ _ :=
                                                                         let β :=
                                                                           M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |),
                                                                             "core::iter::adapters::zip::Zip",
                                                                             "a_len"
                                                                           |) in
@@ -3334,14 +3722,23 @@ Module iter.
                                                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                               A,
                                                                               [],
+                                                                              [],
                                                                               "next_back",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "core::iter::adapters::zip::Zip",
-                                                                                "a"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
+                                                                                  "core::iter::adapters::zip::Zip",
+                                                                                  "a"
+                                                                                |)
                                                                               |)
                                                                             ]
                                                                           |)
@@ -3371,15 +3768,21 @@ Module iter.
                                                           M.alloc (|
                                                             Value.Tuple
                                                               [
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::iter::adapters::zip::Zip",
-                                                                  "a_len"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::iter::adapters::zip::Zip",
+                                                                    "a_len"
+                                                                  |)
                                                                 |);
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::iter::adapters::zip::Zip",
-                                                                  "len"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::iter::adapters::zip::Zip",
+                                                                    "len"
+                                                                  |)
                                                                 |)
                                                               ]
                                                           |),
@@ -3410,13 +3813,17 @@ Module iter.
                                                                               UnOp.not (|
                                                                                 BinOp.eq (|
                                                                                   M.read (|
-                                                                                    M.read (|
-                                                                                      left_val
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        left_val
+                                                                                      |)
                                                                                     |)
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.read (|
-                                                                                      right_val
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        right_val
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -3452,11 +3859,31 @@ Module iter.
                                                                                     M.read (|
                                                                                       kind
                                                                                     |);
-                                                                                    M.read (|
-                                                                                      left_val
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              left_val
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
-                                                                                    M.read (|
-                                                                                      right_val
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              right_val
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
                                                                                     |);
                                                                                     Value.StructTuple
                                                                                       "core::option::Option::None"
@@ -3492,14 +3919,19 @@ Module iter.
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           B,
                                           [],
+                                          [],
                                           "size",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::iter::adapters::zip::Zip",
-                                            "b"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::zip::Zip",
+                                              "b"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -3523,7 +3955,7 @@ Module iter.
                                                       M.read (| sz_b |),
                                                       M.read (|
                                                         M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
+                                                          M.deref (| M.read (| self |) |),
                                                           "core::iter::adapters::zip::Zip",
                                                           "len"
                                                         |)
@@ -3547,7 +3979,9 @@ Module iter.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -3561,7 +3995,7 @@ Module iter.
                                                             M.read (| sz_b |),
                                                             M.read (|
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
+                                                                M.deref (| M.read (| self |) |),
                                                                 "core::iter::adapters::zip::Zip",
                                                                 "len"
                                                               |)
@@ -3589,10 +4023,22 @@ Module iter.
                                                                     []
                                                                     [ Ty.path "usize" ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -3623,14 +4069,21 @@ Module iter.
                                                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                           B,
                                                                           [],
+                                                                          [],
                                                                           "next_back",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::iter::adapters::zip::Zip",
-                                                                            "b"
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "core::iter::adapters::zip::Zip",
+                                                                              "b"
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -3662,14 +4115,14 @@ Module iter.
                               BinOp.lt (|
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |)
                                 |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "core::iter::adapters::zip::Zip",
                                     "len"
                                   |)
@@ -3681,7 +4134,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "len"
                             |) in
@@ -3692,7 +4145,7 @@ Module iter.
                         let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "a_len"
                             |) in
@@ -3703,7 +4156,7 @@ Module iter.
                         let~ i :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::zip::Zip",
                               "len"
                             |)
@@ -3719,14 +4172,19 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       A,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::zip::Zip",
-                                        "a"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::zip::Zip",
+                                          "a"
+                                        |)
                                       |);
                                       M.read (| i |)
                                     ]
@@ -3736,14 +4194,19 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       B,
                                       [],
+                                      [],
                                       "__iterator_get_unchecked",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::iter::adapters::zip::Zip",
-                                        "b"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::zip::Zip",
+                                          "b"
+                                        |)
                                       |);
                                       M.read (| i |)
                                     ]
@@ -3917,15 +4380,46 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              M.call_closure (|
-                M.get_trait_method (| "core::iter::adapters::SourceIter", A, [], "as_inner", [] |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::zip::Zip",
-                    "a"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::adapters::SourceIter",
+                              A,
+                              [],
+                              [],
+                              "as_inner",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "a"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
-                ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4002,11 +4496,16 @@ Module iter.
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipFmt",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
+                  [],
                   [ A; B ],
                   "fmt",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| f |) ]
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4043,48 +4542,96 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Formatter",
-                                "debug_struct",
-                                []
-                              |),
-                              [ M.read (| f |); M.read (| Value.String "Zip" |) ]
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::builders::DebugStruct",
+                                  "field",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Formatter",
+                                          "debug_struct",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| f |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "Zip" |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "a" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::zip::Zip",
+                                          "a"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |);
-                          M.read (| Value.String "a" |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::zip::Zip",
-                            "a"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "b" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::zip::Zip",
+                                  "b"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.read (| Value.String "b" |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::zip::Zip",
-                        "b"
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -4122,17 +4669,28 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "Zip" |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_struct",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Zip" |) |)
+                          |)
+                        ]
+                      |)
                     |)
                   |)
                 ]
@@ -4167,10 +4725,12 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         Self,
                         [],
+                        [],
                         "size_hint",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
                   0
@@ -4204,10 +4764,13 @@ Module iter.
                 "core::iter::adapters::zip::SpecTrustedRandomAccess",
                 I,
                 [],
+                [],
                 "try_get_unchecked",
+                [],
                 []
               |),
-              [ M.read (| it |); M.read (| idx |) ]
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| it |) |) |); M.read (| idx |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4251,17 +4814,26 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "Should only be called on TrustedRandomAccess iterators"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "Should only be called on TrustedRandomAccess iterators"
+                                            |)
+                                          ]
                                       |)
-                                    ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -4309,10 +4881,15 @@ Module iter.
                   "core::iter::traits::iterator::Iterator",
                   I,
                   [],
+                  [],
                   "__iterator_get_unchecked",
+                  [],
                   []
                 |),
-                [ M.read (| self |); M.read (| index |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| index |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4377,11 +4954,18 @@ Module iter.
                                         (Ty.path "core::iter::adapters::zip::Zip")
                                         []
                                         [ A; B ],
+                                      [],
                                       [ A; B ],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ self ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |) in
                               let γ0_0 :=
@@ -4398,12 +4982,17 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ Acc; Ty.tuple [ Ty.associated; Ty.associated ] ]
                                       ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| accum |); M.read (| x |) ]
+                                    ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -4504,11 +5093,18 @@ Module iter.
                                             (Ty.path "core::iter::adapters::zip::Zip")
                                             []
                                             [ A; B ],
+                                          [],
                                           [ A; B ],
                                           "size_hint",
+                                          [],
                                           []
                                         |),
-                                        [ self ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     1
@@ -4553,7 +5149,9 @@ Module iter.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "into_iter",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4583,10 +5181,19 @@ Module iter.
                                                           []
                                                           [ Ty.path "usize" ],
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ iter ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
                                                   |),
                                                   [
@@ -4622,6 +5229,7 @@ Module iter.
                                                                       []
                                                                       [ Ty.associated ],
                                                                     "unwrap_unchecked",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4630,14 +5238,19 @@ Module iter.
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         A,
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          self,
-                                                                          "core::iter::adapters::zip::Zip",
-                                                                          "a"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            self,
+                                                                            "core::iter::adapters::zip::Zip",
+                                                                            "a"
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -4651,6 +5264,7 @@ Module iter.
                                                                       []
                                                                       [ Ty.associated ],
                                                                     "unwrap_unchecked",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4659,14 +5273,19 @@ Module iter.
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         B,
                                                                         [],
+                                                                        [],
                                                                         "next",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          self,
-                                                                          "core::iter::adapters::zip::Zip",
-                                                                          "b"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            self,
+                                                                            "core::iter::adapters::zip::Zip",
+                                                                            "b"
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -4681,6 +5300,7 @@ Module iter.
                                                               M.get_trait_method (|
                                                                 "core::ops::function::FnMut",
                                                                 F,
+                                                                [],
                                                                 [
                                                                   Ty.tuple
                                                                     [
@@ -4693,10 +5313,14 @@ Module iter.
                                                                     ]
                                                                 ],
                                                                 "call_mut",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                f;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  f
+                                                                |);
                                                                 Value.Tuple
                                                                   [
                                                                     M.read (| accum |);

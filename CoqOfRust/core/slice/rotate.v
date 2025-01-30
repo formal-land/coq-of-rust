@@ -305,6 +305,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "sub",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| mid |); M.read (| left |) ]
@@ -316,6 +317,7 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "read",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| x |) ]
@@ -333,6 +335,7 @@ Module slice.
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                                       "replace",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -340,6 +343,7 @@ Module slice.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                                           "add",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| x |); M.read (| i |) ]
@@ -408,6 +412,7 @@ Module slice.
                                                                                 []
                                                                                 [ T ],
                                                                               "write",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -478,7 +483,9 @@ Module slice.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     [],
+                                                    [],
                                                     "into_iter",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -510,10 +517,22 @@ Module slice.
                                                                     []
                                                                     [ Ty.path "usize" ],
                                                                   [],
+                                                                  [],
                                                                   "next",
+                                                                  [],
                                                                   []
                                                                 |),
-                                                                [ iter ]
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    M.deref (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        iter
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |),
                                                             [
@@ -548,6 +567,7 @@ Module slice.
                                                                             []
                                                                             [ T ],
                                                                           "read",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -558,6 +578,7 @@ Module slice.
                                                                                 []
                                                                                 [ T ],
                                                                               "add",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -588,6 +609,7 @@ Module slice.
                                                                                 []
                                                                                 [ T ],
                                                                               "replace",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -598,6 +620,7 @@ Module slice.
                                                                                     []
                                                                                     [ T ],
                                                                                   "add",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -687,6 +710,7 @@ Module slice.
                                                                                                         T
                                                                                                       ],
                                                                                                     "write",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -700,6 +724,7 @@ Module slice.
                                                                                                             T
                                                                                                           ],
                                                                                                         "add",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -845,6 +870,7 @@ Module slice.
                                                               ]
                                                           ],
                                                         "uninit",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -852,7 +878,8 @@ Module slice.
                                                   |) in
                                                 let~ buf :=
                                                   M.alloc (|
-                                                    M.rust_cast
+                                                    M.cast
+                                                      (Ty.apply (Ty.path "*mut") [] [ T ])
                                                       (M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
@@ -881,9 +908,15 @@ Module slice.
                                                                 ]
                                                             ],
                                                           "as_mut_ptr",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ rawarray ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            rawarray
+                                                          |)
+                                                        ]
                                                       |))
                                                   |) in
                                                 let~ dim :=
@@ -892,6 +925,7 @@ Module slice.
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "*mut") [] [ T ],
                                                         "add",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -899,6 +933,7 @@ Module slice.
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "*mut") [] [ T ],
                                                             "sub",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| mid |); M.read (| left |) ]
@@ -944,6 +979,7 @@ Module slice.
                                                                           []
                                                                           [ T ],
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -975,6 +1011,7 @@ Module slice.
                                                                         []
                                                                         [ T ],
                                                                       "sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1041,6 +1078,7 @@ Module slice.
                                                                           []
                                                                           [ T ],
                                                                         "sub",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1072,6 +1110,7 @@ Module slice.
                                                                         []
                                                                         [ T ],
                                                                       "sub",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1129,6 +1168,7 @@ Module slice.
                                                                       []
                                                                       [ T ],
                                                                     "sub",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1148,6 +1188,7 @@ Module slice.
                                                               M.get_associated_function (|
                                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                                 "sub",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| mid |); M.read (| right |)
@@ -1214,6 +1255,7 @@ Module slice.
                                                                       []
                                                                       [ T ],
                                                                     "sub",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1233,6 +1275,7 @@ Module slice.
                                                               M.get_associated_function (|
                                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                                 "add",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| mid |); M.read (| left |)

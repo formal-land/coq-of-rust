@@ -32,10 +32,21 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
-                          [ M.alloc (| Value.Array [ M.read (| Value.String "some
-" |) ] |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ M.read (| Value.String "some
+" |) ] |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -53,10 +64,21 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
-                          [ M.alloc (| Value.Array [ M.read (| Value.String "nothing
-" |) ] |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ M.read (| Value.String "nothing
+" |) ] |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -101,6 +123,7 @@ Module tests.
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -108,43 +131,63 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "std::fs::OpenOptions",
-                          "create",
-                          []
-                        |),
-                        [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
-                              "append",
+                              "create",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "std::fs::OpenOptions",
-                                    "new",
-                                    []
-                                  |),
-                                  []
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "std::fs::OpenOptions",
+                                      "append",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "std::fs::OpenOptions",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            []
+                                          |)
+                                        |)
+                                      |);
+                                      Value.Bool true
+                                    ]
+                                  |)
                                 |)
                               |);
                               Value.Bool true
                             ]
-                          |);
-                          Value.Bool true
-                        ]
+                          |)
+                        |)
                       |);
                       M.read (| Value.String "ferris.txt" |)
                     ]
                   |);
-                  M.read (| Value.String "Failed to open ferris.txt" |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                  |)
                 ]
               |)
             |) in
@@ -156,7 +199,9 @@ Module tests.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -183,10 +228,17 @@ Module tests.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -212,6 +264,7 @@ Module tests.
                                             []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -220,23 +273,45 @@ Module tests.
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
                                               [],
+                                              [],
                                               "write_all",
+                                              [],
                                               []
                                             |),
                                             [
-                                              file;
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "as_bytes",
-                                                  []
-                                                |),
-                                                [ M.read (| Value.String "Ferris
-" |) ]
+                                              M.borrow (| Pointer.Kind.MutRef, file |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Ferris
+" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |);
-                                          M.read (| Value.String "Could not write to ferris.txt" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                Value.String "Could not write to ferris.txt"
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -283,6 +358,7 @@ Module tests.
                     []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
+                  [],
                   []
                 |),
                 [
@@ -290,43 +366,63 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "std::fs::OpenOptions",
-                          "create",
-                          []
-                        |),
-                        [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
-                              "append",
+                              "create",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "std::fs::OpenOptions",
-                                    "new",
-                                    []
-                                  |),
-                                  []
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "std::fs::OpenOptions",
+                                      "append",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "std::fs::OpenOptions",
+                                              "new",
+                                              [],
+                                              []
+                                            |),
+                                            []
+                                          |)
+                                        |)
+                                      |);
+                                      Value.Bool true
+                                    ]
+                                  |)
                                 |)
                               |);
                               Value.Bool true
                             ]
-                          |);
-                          Value.Bool true
-                        ]
+                          |)
+                        |)
                       |);
                       M.read (| Value.String "ferris.txt" |)
                     ]
                   |);
-                  M.read (| Value.String "Failed to open ferris.txt" |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                  |)
                 ]
               |)
             |) in
@@ -338,7 +434,9 @@ Module tests.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [
@@ -365,10 +463,17 @@ Module tests.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
+                                  [],
                                   "next",
+                                  [],
                                   []
                                 |),
-                                [ iter ]
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -394,6 +499,7 @@ Module tests.
                                             []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
+                                          [],
                                           []
                                         |),
                                         [
@@ -402,23 +508,45 @@ Module tests.
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
                                               [],
+                                              [],
                                               "write_all",
+                                              [],
                                               []
                                             |),
                                             [
-                                              file;
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "as_bytes",
-                                                  []
-                                                |),
-                                                [ M.read (| Value.String "Corro
-" |) ]
+                                              M.borrow (| Pointer.Kind.MutRef, file |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (| Value.String "Corro
+" |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |);
-                                          M.read (| Value.String "Could not write to ferris.txt" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                Value.String "Could not write to ferris.txt"
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in

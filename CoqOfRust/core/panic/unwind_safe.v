@@ -280,10 +280,18 @@ Module panic.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
-              "core::panic::unwind_safe::AssertUnwindSafe",
-              0
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::panic::unwind_safe::AssertUnwindSafe",
+                    0
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -313,10 +321,23 @@ Module panic.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
-              "core::panic::unwind_safe::AssertUnwindSafe",
-              0
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::unwind_safe::AssertUnwindSafe",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -353,8 +374,10 @@ Module panic.
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
+                [],
                 [ Ty.tuple [] ],
                 "call_once",
+                [],
                 []
               |),
               [
@@ -404,32 +427,57 @@ Module panic.
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugTuple",
-                    "field",
-                    []
-                  |),
-                  [
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "AssertUnwindSafe" |) ]
-                      |)
-                    |);
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::panic::unwind_safe::AssertUnwindSafe",
-                      0
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugTuple",
+                        "field",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_tuple",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "AssertUnwindSafe" |) |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::panic::unwind_safe::AssertUnwindSafe",
+                                0
+                              |)
+                            |)
+                          |)
+                        |)
+                      ]
                     |)
-                  ]
+                  |)
                 |)
               ]
             |)))
@@ -463,7 +511,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe"
               [
                 M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                  M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                   []
                 |)
               ]))
@@ -520,6 +568,7 @@ Module panic.
                             ]
                         ],
                       "map_unchecked_mut",
+                      [],
                       [
                         F;
                         Ty.function
@@ -554,10 +603,18 @@ Module panic.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let x := M.copy (| γ |) in
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| x |),
-                                          "core::panic::unwind_safe::AssertUnwindSafe",
-                                          0
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.deref (| M.read (| x |) |),
+                                                "core::panic::unwind_safe::AssertUnwindSafe",
+                                                0
+                                              |)
+                                            |)
+                                          |)
                                         |)))
                                   ]
                                 |)))
@@ -568,8 +625,19 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::future::future::Future", F, [], "poll", [] |),
-                  [ M.read (| pinned_field |); M.read (| cx |) ]
+                  M.get_trait_method (|
+                    "core::future::future::Future",
+                    F,
+                    [],
+                    [],
+                    "poll",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| pinned_field |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
+                  ]
                 |)
               |)
             |)))
@@ -611,7 +679,9 @@ Module panic.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "poll_next",
+                [],
                 []
               |),
               [
@@ -628,6 +698,7 @@ Module panic.
                           ]
                       ],
                     "map_unchecked_mut",
+                    [],
                     [
                       S;
                       Ty.function
@@ -662,10 +733,18 @@ Module panic.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.read (| x |),
-                                        "core::panic::unwind_safe::AssertUnwindSafe",
-                                        0
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.deref (| M.read (| x |) |),
+                                              "core::panic::unwind_safe::AssertUnwindSafe",
+                                              0
+                                            |)
+                                          |)
+                                        |)
                                       |)))
                                 ]
                               |)))
@@ -673,7 +752,7 @@ Module panic.
                           end))
                   ]
                 |);
-                M.read (| cx |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cx |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -695,14 +774,19 @@ Module panic.
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
                 [],
+                [],
                 "size_hint",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::panic::unwind_safe::AssertUnwindSafe",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::panic::unwind_safe::AssertUnwindSafe",
+                    0
+                  |)
                 |)
               ]
             |)))

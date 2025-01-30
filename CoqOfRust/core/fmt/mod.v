@@ -48,7 +48,7 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -71,9 +71,9 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -82,17 +82,32 @@ Module fmt.
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
-                        M.alloc (| M.read (| Value.String "Left" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Left" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
-                        M.alloc (| M.read (| Value.String "Right" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Right" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
-                        M.alloc (| M.read (| Value.String "Center" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "Center" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -139,7 +154,7 @@ Module fmt.
                     [],
                     [ Ty.path "core::fmt::Alignment" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -150,7 +165,7 @@ Module fmt.
                     [],
                     [ Ty.path "core::fmt::Alignment" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -224,7 +239,7 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -247,8 +262,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "Error" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Error" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -415,17 +433,33 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let c := M.alloc (| c |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", Self, [], "write_str", [] |),
+            M.get_trait_method (| "core::fmt::Write", Self, [], [], "write_str", [], [] |),
             [
-              M.read (| self |);
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                [
-                  M.read (| c |);
-                  M.alloc (|
-                    repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
+                    [
+                      M.read (| c |);
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              repeat (|
+                                Value.Integer IntegerKind.U8 0,
+                                Value.Integer IntegerKind.Usize 4
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -444,10 +478,13 @@ Module fmt.
               "core::fmt::Write::write_fmt::SpecWriteFmt",
               Ty.apply (Ty.path "&mut") [] [ Self ],
               [],
+              [],
               "spec_write_fmt",
+              [],
               []
             |),
-            [ M.read (| self |); M.read (| args |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -471,8 +508,14 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_str", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| s |) ]
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_str", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -490,8 +533,14 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let c := M.alloc (| c |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_char", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| c |) ]
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_char", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| c |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -509,8 +558,14 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Write", W, [], "write_fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+            M.get_trait_method (| "core::fmt::Write", W, [], [], "write_fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.read (| args |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -573,7 +628,7 @@ Module fmt.
               ("align", Value.StructTuple "core::fmt::rt::Alignment::Unknown" []);
               ("width", Value.StructTuple "core::option::Option::None" []);
               ("precision", Value.StructTuple "core::option::Option::None" []);
-              ("buf", M.read (| buf |))
+              ("buf", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buf |) |) |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -608,40 +663,52 @@ Module fmt.
             "core::fmt::Formatter"
             [
               ("buf",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [
-                      Ty.tuple
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::function::FnOnce",
+                        F,
+                        [],
                         [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                        ]
-                    ],
-                    "call_once",
-                    []
-                  |),
-                  [
-                    M.read (| wrap |);
-                    Value.Tuple
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
+                            ]
+                        ],
+                        "call_once",
+                        [],
+                        []
+                      |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::fmt::Formatter",
-                            "buf"
-                          |)
-                        |)
+                        M.read (| wrap |);
+                        Value.Tuple
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::fmt::Formatter",
+                                    "buf"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
                       ]
-                  ]
+                    |)
+                  |)
                 |));
               ("flags",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "flags"
                   |)
@@ -649,7 +716,7 @@ Module fmt.
               ("fill",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "fill"
                   |)
@@ -657,7 +724,7 @@ Module fmt.
               ("align",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "align"
                   |)
@@ -665,7 +732,7 @@ Module fmt.
               ("width",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "width"
                   |)
@@ -673,7 +740,7 @@ Module fmt.
               ("precision",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "precision"
                   |)
@@ -764,8 +831,8 @@ Module fmt.
                 let~ width :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "len", [] |),
-                      [ M.read (| buf |) ]
+                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |) ]
                     |)
                   |) in
                 let~ sign := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
@@ -807,9 +874,15 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "sign_plus",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -853,9 +926,15 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "alternate",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -871,13 +950,25 @@ Module fmt.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.path "core::str::iter::Chars",
                                       [],
+                                      [],
                                       "count",
+                                      [],
                                       []
                                     |),
                                     [
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "str", "chars", [] |),
-                                        [ M.read (| prefix |) ]
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "chars",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| prefix |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -894,7 +985,7 @@ Module fmt.
                   |) in
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "width"
                   |),
@@ -913,7 +1004,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -921,9 +1014,17 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| sign |);
+                                      M.read (| prefix |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -949,6 +1050,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -959,6 +1061,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -985,18 +1088,25 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Formatter",
-                                  "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::fmt::Formatter",
+                                      "buf"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.read (| buf |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                             ]
                           |)
                         |)));
@@ -1024,7 +1134,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1032,9 +1144,17 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| sign |);
+                                      M.read (| prefix |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -1060,6 +1180,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1070,6 +1191,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1096,18 +1218,25 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Formatter",
-                                  "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::fmt::Formatter",
+                                      "buf"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.read (| buf |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                             ]
                           |)
                         |)));
@@ -1126,9 +1255,10 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "sign_aware_zero_pad",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |) in
                         let _ :=
@@ -1138,10 +1268,18 @@ Module fmt.
                             M.call_closure (|
                               M.get_function (| "core::mem::replace", [], [ Ty.path "char" ] |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Formatter",
-                                  "fill"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::fmt::Formatter",
+                                        "fill"
+                                      |)
+                                    |)
+                                  |)
                                 |);
                                 Value.UnicodeChar 48
                               ]
@@ -1156,10 +1294,18 @@ Module fmt.
                                 [ Ty.path "core::fmt::rt::Alignment" ]
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Formatter",
-                                  "align"
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::fmt::Formatter",
+                                        "align"
+                                      |)
+                                    |)
+                                  |)
                                 |);
                                 Value.StructTuple "core::fmt::rt::Alignment::Right" []
                               ]
@@ -1176,7 +1322,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1184,9 +1332,17 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| sign |);
+                                      M.read (| prefix |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -1212,6 +1368,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1222,6 +1379,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1255,7 +1413,9 @@ Module fmt.
                                       [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1263,10 +1423,14 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "padding",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         BinOp.Wrap.sub (| M.read (| min |), M.read (| width |) |);
                                         Value.StructTuple "core::fmt::Alignment::Right" []
                                       ]
@@ -1295,6 +1459,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1305,6 +1470,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1337,7 +1503,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1346,18 +1514,28 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::Formatter",
-                                          "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::fmt::Formatter",
+                                              "buf"
+                                            |)
+                                          |)
                                         |)
                                       |);
-                                      M.read (| buf |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| buf |) |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1384,6 +1562,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1394,6 +1573,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1425,7 +1605,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1433,9 +1615,16 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::PostPadding",
                                       "write",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| post_padding |); M.read (| self |) ]
+                                    [
+                                      M.read (| post_padding |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -1461,6 +1650,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1471,6 +1661,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1494,7 +1685,7 @@ Module fmt.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "fill"
                             |),
@@ -1503,7 +1694,7 @@ Module fmt.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "align"
                             |),
@@ -1534,7 +1725,9 @@ Module fmt.
                                       [ Ty.path "core::fmt::PostPadding"; Ty.path "core::fmt::Error"
                                       ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1542,10 +1735,14 @@ Module fmt.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "padding",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (| self |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         BinOp.Wrap.sub (| M.read (| min |), M.read (| width |) |);
                                         Value.StructTuple "core::fmt::Alignment::Right" []
                                       ]
@@ -1574,6 +1771,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -1584,6 +1782,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -1616,7 +1815,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1624,9 +1825,17 @@ Module fmt.
                                     M.get_associated_function (|
                                       Self,
                                       "write_prefix.pad_integral",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |); M.read (| sign |); M.read (| prefix |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |);
+                                      M.read (| sign |);
+                                      M.read (| prefix |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -1652,6 +1861,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1662,6 +1872,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1693,7 +1904,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1702,18 +1915,28 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::Formatter",
-                                          "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::fmt::Formatter",
+                                              "buf"
+                                            |)
+                                          |)
                                         |)
                                       |);
-                                      M.read (| buf |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| buf |) |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -1740,6 +1963,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -1750,6 +1974,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -1775,9 +2000,13 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::PostPadding",
                               "write",
+                              [],
                               []
                             |),
-                            [ M.read (| post_padding |); M.read (| self |) ]
+                            [
+                              M.read (| post_padding |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                            ]
                           |)
                         |)))
                   ]
@@ -1863,13 +2092,17 @@ Module fmt.
                                         []
                                         [ Ty.path "usize" ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::fmt::Formatter",
-                                        "width"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::fmt::Formatter",
+                                          "width"
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -1881,13 +2114,17 @@ Module fmt.
                                           []
                                           [ Ty.path "usize" ],
                                         "is_none",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::Formatter",
-                                          "precision"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::fmt::Formatter",
+                                            "precision"
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -1904,18 +2141,25 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::Formatter",
-                                          "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::fmt::Formatter",
+                                              "buf"
+                                            |)
+                                          |)
                                         |)
                                       |);
-                                      M.read (| s |)
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                                     ]
                                   |)
                                 |)
@@ -1934,7 +2178,7 @@ Module fmt.
                           ltac:(M.monadic
                             (let γ :=
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "core::fmt::Formatter",
                                 "precision"
                               |) in
@@ -1957,18 +2201,29 @@ Module fmt.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.path "core::str::iter::CharIndices",
                                             [],
+                                            [],
                                             "nth",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "char_indices",
-                                                  []
-                                                |),
-                                                [ M.read (| s |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "str",
+                                                    "char_indices",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| s |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
                                             |);
                                             M.read (| max |)
@@ -1992,6 +2247,7 @@ Module fmt.
                                             []
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           "unwrap_or",
+                                          [],
                                           []
                                         |),
                                         [
@@ -1999,6 +2255,7 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "get",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
@@ -2007,26 +2264,52 @@ Module fmt.
                                               ]
                                             |),
                                             [
-                                              M.read (| s |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
                                                 [ ("end_", M.read (| i |)) ]
                                             ]
                                           |);
-                                          M.read (| s |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| s |) |)
+                                          |)
                                         ]
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| M.read (| s |) |)))
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)))
                               ]
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| M.read (| s |) |)))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (| M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |) |)
+                                |)
+                              |)
+                            |)))
                       ]
                     |)
                   |) in
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::fmt::Formatter",
                     "width"
                   |),
@@ -2040,18 +2323,25 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                               [],
+                              [],
                               "write_str",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Formatter",
-                                  "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::fmt::Formatter",
+                                      "buf"
+                                    |)
+                                  |)
                                 |)
                               |);
-                              M.read (| s |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                             ]
                           |)
                         |)));
@@ -2071,13 +2361,15 @@ Module fmt.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.path "core::str::iter::Chars",
                                 [],
+                                [],
                                 "count",
+                                [],
                                 []
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "chars", [] |),
-                                  [ M.read (| s |) ]
+                                  M.get_associated_function (| Ty.path "str", "chars", [], [] |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |)
                               ]
                             |)
@@ -2103,18 +2395,25 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::Formatter",
-                                          "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::fmt::Formatter",
+                                              "buf"
+                                            |)
+                                          |)
                                         |)
                                       |);
-                                      M.read (| s |)
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                                     ]
                                   |)
                                 |)));
@@ -2137,7 +2436,9 @@ Module fmt.
                                                 Ty.path "core::fmt::Error"
                                               ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2145,10 +2446,14 @@ Module fmt.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "padding",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (| self |);
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (| width |),
                                                   M.read (| chars_count |)
@@ -2181,6 +2486,7 @@ Module fmt.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2191,6 +2497,7 @@ Module fmt.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2223,7 +2530,9 @@ Module fmt.
                                             []
                                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                           [],
+                                          [],
                                           "branch",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2232,18 +2541,28 @@ Module fmt.
                                               "core::fmt::Write",
                                               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                               [],
+                                              [],
                                               "write_str",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::fmt::Formatter",
-                                                  "buf"
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::fmt::Formatter",
+                                                      "buf"
+                                                    |)
+                                                  |)
                                                 |)
                                               |);
-                                              M.read (| s |)
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -2270,6 +2589,7 @@ Module fmt.
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -2280,6 +2600,7 @@ Module fmt.
                                                           ]
                                                       ],
                                                       "from_residual",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| residual |) ]
@@ -2305,9 +2626,16 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::PostPadding",
                                       "write",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| post_padding |); M.read (| self |) ]
+                                    [
+                                      M.read (| post_padding |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)))
                           ]
@@ -2361,7 +2689,7 @@ Module fmt.
                   M.copy (|
                     M.match_operator (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::fmt::Formatter",
                         "align"
                       |),
@@ -2444,7 +2772,9 @@ Module fmt.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -2474,10 +2804,19 @@ Module fmt.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -2513,7 +2852,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2524,20 +2865,29 @@ Module fmt.
                                                                   [ ("core::fmt::Write::Trait", [])
                                                                   ],
                                                                 [],
+                                                                [],
                                                                 "write_char",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::Formatter",
-                                                                    "buf"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "core::fmt::Formatter",
+                                                                        "buf"
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |);
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
+                                                                    M.deref (| M.read (| self |) |),
                                                                     "core::fmt::Formatter",
                                                                     "fill"
                                                                   |)
@@ -2574,6 +2924,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2587,6 +2938,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -2622,12 +2974,13 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::PostPadding",
                                   "new",
+                                  [],
                                   []
                                 |),
                                 [
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::fmt::Formatter",
                                       "fill"
                                     |)
@@ -2706,7 +3059,7 @@ Module fmt.
                       ltac:(M.monadic
                         (let γ :=
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::fmt::Formatter",
                             "width"
                           |) in
@@ -2724,16 +3077,23 @@ Module fmt.
                                 "core::clone::Clone",
                                 Ty.path "core::num::fmt::Formatted",
                                 [],
+                                [],
                                 "clone",
+                                [],
                                 []
                               |),
-                              [ M.read (| formatted |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| formatted |) |)
+                                |)
+                              ]
                             |)
                           |) in
                         let~ old_fill :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "fill"
                             |)
@@ -2741,7 +3101,7 @@ Module fmt.
                         let~ old_align :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "align"
                             |)
@@ -2759,9 +3119,15 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "sign_aware_zero_pad",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| self |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -2788,7 +3154,9 @@ Module fmt.
                                               []
                                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             [],
+                                            [],
                                             "branch",
+                                            [],
                                             []
                                           |),
                                           [
@@ -2797,18 +3165,28 @@ Module fmt.
                                                 "core::fmt::Write",
                                                 Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                                 [],
+                                                [],
                                                 "write_str",
+                                                [],
                                                 []
                                               |),
                                               [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::fmt::Formatter",
-                                                    "buf"
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::fmt::Formatter",
+                                                        "buf"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |);
-                                                M.read (| sign |)
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| sign |) |)
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -2836,6 +3214,7 @@ Module fmt.
                                                           []
                                                           [ Ty.tuple []; Ty.path "core::fmt::Error"
                                                           ],
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -2846,6 +3225,7 @@ Module fmt.
                                                             ]
                                                         ],
                                                         "from_residual",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| residual |) ]
@@ -2882,6 +3262,7 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "saturating_sub",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2890,9 +3271,15 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "len",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| sign |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| sign |) |)
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2900,7 +3287,7 @@ Module fmt.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::fmt::Formatter",
                                         "fill"
                                       |),
@@ -2909,7 +3296,7 @@ Module fmt.
                                   let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::fmt::Formatter",
                                         "align"
                                       |),
@@ -2925,9 +3312,10 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.path "core::num::fmt::Formatted",
                                 "len",
+                                [],
                                 []
                               |),
-                              [ formatted ]
+                              [ M.borrow (| Pointer.Kind.Ref, formatted |) ]
                             |)
                           |) in
                         let~ ret :=
@@ -2952,9 +3340,19 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "write_formatted_parts",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |); formatted ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, formatted |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)));
                                 fun γ =>
@@ -2974,7 +3372,9 @@ Module fmt.
                                                     Ty.path "core::fmt::Error"
                                                   ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2982,10 +3382,14 @@ Module fmt.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Formatter",
                                                     "padding",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.read (| self |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
                                                     BinOp.Wrap.sub (|
                                                       M.read (| width |),
                                                       M.read (| len |)
@@ -3022,6 +3426,7 @@ Module fmt.
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -3033,6 +3438,7 @@ Module fmt.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3066,7 +3472,9 @@ Module fmt.
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3074,9 +3482,21 @@ Module fmt.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Formatter",
                                                     "write_formatted_parts",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| self |); formatted ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, formatted |)
+                                                      |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -3105,6 +3525,7 @@ Module fmt.
                                                                 Ty.tuple [];
                                                                 Ty.path "core::fmt::Error"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -3116,6 +3537,7 @@ Module fmt.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3142,9 +3564,16 @@ Module fmt.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::PostPadding",
                                           "write",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| post_padding |); M.read (| self |) ]
+                                        [
+                                          M.read (| post_padding |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)))
                               ]
@@ -3153,7 +3582,7 @@ Module fmt.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "fill"
                             |),
@@ -3162,7 +3591,7 @@ Module fmt.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::fmt::Formatter",
                               "align"
                             |),
@@ -3176,9 +3605,13 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_formatted_parts",
+                              [],
                               []
                             |),
-                            [ M.read (| self |); M.read (| formatted |) ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| formatted |) |) |)
+                            ]
                           |)
                         |)))
                   ]
@@ -3258,13 +3691,23 @@ Module fmt.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                                    M.get_associated_function (|
+                                      Ty.path "str",
+                                      "is_empty",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| formatted |),
-                                          "core::num::fmt::Formatted",
-                                          "sign"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| formatted |) |),
+                                              "core::num::fmt::Formatted",
+                                              "sign"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -3284,7 +3727,9 @@ Module fmt.
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
@@ -3293,22 +3738,34 @@ Module fmt.
                                         "core::fmt::Write",
                                         Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                         [],
+                                        [],
                                         "write_str",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::fmt::Formatter",
-                                            "buf"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::fmt::Formatter",
+                                                "buf"
+                                              |)
+                                            |)
                                           |)
                                         |);
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| formatted |),
-                                            "core::num::fmt::Formatted",
-                                            "sign"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| formatted |) |),
+                                                "core::num::fmt::Formatted",
+                                                "sign"
+                                              |)
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -3337,6 +3794,7 @@ Module fmt.
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3347,6 +3805,7 @@ Module fmt.
                                                     ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -3383,13 +3842,15 @@ Module fmt.
                               []
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::num::fmt::Part" ] ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| formatted |),
+                                M.deref (| M.read (| formatted |) |),
                                 "core::num::fmt::Formatted",
                                 "parts"
                               |)
@@ -3414,10 +3875,17 @@ Module fmt.
                                             []
                                             [ Ty.path "core::num::fmt::Part" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -3441,7 +3909,7 @@ Module fmt.
                                             |) in
                                           let part := M.copy (| γ0_0 |) in
                                           M.match_operator (|
-                                            M.read (| part |),
+                                            M.deref (| M.read (| part |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -3469,12 +3937,18 @@ Module fmt.
                                                                           M.get_associated_function (|
                                                                             Ty.path "str",
                                                                             "len",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.read (|
-                                                                              M.get_constant (|
-                                                                                "core::fmt::write_formatted_parts::ZEROES"
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  M.get_constant (|
+                                                                                    "core::fmt::write_formatted_parts::ZEROES"
+                                                                                  |)
+                                                                                |)
                                                                               |)
                                                                             |)
                                                                           ]
@@ -3502,7 +3976,9 @@ Module fmt.
                                                                                 "core::fmt::Error"
                                                                             ],
                                                                           [],
+                                                                          [],
                                                                           "branch",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3515,20 +3991,36 @@ Module fmt.
                                                                                     [])
                                                                                 ],
                                                                               [],
+                                                                              [],
                                                                               "write_str",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
-                                                                                  "core::fmt::Formatter",
-                                                                                  "buf"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          self
+                                                                                        |)
+                                                                                      |),
+                                                                                      "core::fmt::Formatter",
+                                                                                      "buf"
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               |);
-                                                                              M.read (|
-                                                                                M.get_constant (|
-                                                                                  "core::fmt::write_formatted_parts::ZEROES"
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    M.get_constant (|
+                                                                                      "core::fmt::write_formatted_parts::ZEROES"
+                                                                                    |)
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             ]
@@ -3564,6 +4056,7 @@ Module fmt.
                                                                                           Ty.path
                                                                                             "core::fmt::Error"
                                                                                         ],
+                                                                                      [],
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -3577,6 +4070,7 @@ Module fmt.
                                                                                           ]
                                                                                       ],
                                                                                       "from_residual",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -3612,12 +4106,18 @@ Module fmt.
                                                                         M.get_associated_function (|
                                                                           Ty.path "str",
                                                                           "len",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            M.get_constant (|
-                                                                              "core::fmt::write_formatted_parts::ZEROES"
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.read (|
+                                                                                M.get_constant (|
+                                                                                  "core::fmt::write_formatted_parts::ZEROES"
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           |)
                                                                         ]
@@ -3678,7 +4178,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3691,46 +4193,75 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::Formatter",
-                                                                            "buf"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::fmt::Formatter",
+                                                                                "buf"
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::index::Index",
-                                                                            Ty.path "str",
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::ops::range::RangeTo")
-                                                                                []
-                                                                                [ Ty.path "usize" ]
-                                                                            ],
-                                                                            "index",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.get_constant (|
-                                                                                "core::fmt::write_formatted_parts::ZEROES"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::index::Index",
+                                                                                    Ty.path "str",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::ops::range::RangeTo")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                    ],
+                                                                                    "index",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.get_constant (|
+                                                                                            "core::fmt::write_formatted_parts::ZEROES"
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
+                                                                                    Value.StructRecord
+                                                                                      "core::ops::range::RangeTo"
+                                                                                      [
+                                                                                        ("end_",
+                                                                                          M.read (|
+                                                                                            nzeroes
+                                                                                          |))
+                                                                                      ]
+                                                                                  ]
+                                                                                |)
                                                                               |)
-                                                                            |);
-                                                                            Value.StructRecord
-                                                                              "core::ops::range::RangeTo"
-                                                                              [
-                                                                                ("end_",
-                                                                                  M.read (|
-                                                                                    nzeroes
-                                                                                  |))
-                                                                              ]
-                                                                          ]
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -3764,6 +4295,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -3777,6 +4309,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -3829,9 +4362,15 @@ Module fmt.
                                                         M.get_associated_function (|
                                                           Ty.path "core::num::fmt::Part",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| part |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| part |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |) in
                                                   let~ _ :=
@@ -3853,7 +4392,9 @@ Module fmt.
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [],
+                                                              [],
                                                               "into_iter",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3866,7 +4407,9 @@ Module fmt.
                                                                     []
                                                                     [ Ty.path "u8" ],
                                                                   [],
+                                                                  [],
                                                                   "rev",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3877,39 +4420,53 @@ Module fmt.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "iter_mut",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::index::IndexMut",
-                                                                          Ty.apply
-                                                                            (Ty.path "array")
-                                                                            [
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                5
-                                                                            ]
-                                                                            [ Ty.path "u8" ],
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::ops::range::RangeTo")
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::index::IndexMut",
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    5
+                                                                                ]
+                                                                                [ Ty.path "u8" ],
+                                                                              [],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::range::RangeTo")
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
+                                                                              ],
+                                                                              "index_mut",
+                                                                              [],
                                                                               []
-                                                                              [ Ty.path "usize" ]
-                                                                          ],
-                                                                          "index_mut",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          s;
-                                                                          Value.StructRecord
-                                                                            "core::ops::range::RangeTo"
+                                                                            |),
                                                                             [
-                                                                              ("end_",
-                                                                                M.read (| len |))
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                s
+                                                                              |);
+                                                                              Value.StructRecord
+                                                                                "core::ops::range::RangeTo"
+                                                                                [
+                                                                                  ("end_",
+                                                                                    M.read (|
+                                                                                      len
+                                                                                    |))
+                                                                                ]
                                                                             ]
-                                                                        ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -3942,10 +4499,22 @@ Module fmt.
                                                                                   [ Ty.path "u8" ]
                                                                               ],
                                                                             [],
+                                                                            [],
                                                                             "next",
+                                                                            [],
                                                                             []
                                                                           |),
-                                                                          [ iter ]
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.MutRef,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  iter
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |),
                                                                       [
@@ -3975,12 +4544,15 @@ Module fmt.
                                                                               M.copy (| γ0_0 |) in
                                                                             let~ _ :=
                                                                               M.write (|
-                                                                                M.read (| c |),
+                                                                                M.deref (|
+                                                                                  M.read (| c |)
+                                                                                |),
                                                                                 BinOp.Wrap.add (|
                                                                                   M.read (|
                                                                                     UnsupportedLiteral
                                                                                   |),
-                                                                                  M.rust_cast
+                                                                                  M.cast
+                                                                                    (Ty.path "u8")
                                                                                     (BinOp.Wrap.rem (|
                                                                                       M.read (|
                                                                                         v
@@ -4025,7 +4597,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4033,43 +4607,69 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "write_bytes.write_formatted_parts",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::Formatter",
-                                                                    "buf"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "core::fmt::Formatter",
+                                                                        "buf"
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |);
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::index::Index",
-                                                                    Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          5
-                                                                      ]
-                                                                      [ Ty.path "u8" ],
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::ops::range::RangeTo")
-                                                                        []
-                                                                        [ Ty.path "usize" ]
-                                                                    ],
-                                                                    "index",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    s;
-                                                                    Value.StructRecord
-                                                                      "core::ops::range::RangeTo"
-                                                                      [ ("end_", M.read (| len |)) ]
-                                                                  ]
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::index::Index",
+                                                                            Ty.apply
+                                                                              (Ty.path "array")
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  5
+                                                                              ]
+                                                                              [ Ty.path "u8" ],
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::ops::range::RangeTo")
+                                                                                []
+                                                                                [ Ty.path "usize" ]
+                                                                            ],
+                                                                            "index",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              s
+                                                                            |);
+                                                                            Value.StructRecord
+                                                                              "core::ops::range::RangeTo"
+                                                                              [
+                                                                                ("end_",
+                                                                                  M.read (| len |))
+                                                                              ]
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -4102,6 +4702,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4115,6 +4716,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4159,7 +4761,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4167,17 +4771,28 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Self,
                                                                 "write_bytes.write_formatted_parts",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::Formatter",
-                                                                    "buf"
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "core::fmt::Formatter",
+                                                                        "buf"
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |);
-                                                                M.read (| buf |)
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| buf |) |)
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -4209,6 +4824,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4222,6 +4838,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -4276,18 +4893,25 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_str",
+              [],
               []
             |),
             [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::fmt::Formatter",
-                  "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::fmt::Formatter",
+                      "buf"
+                    |)
+                  |)
                 |)
               |);
-              M.read (| data |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4322,9 +4946,10 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "as_statically_known_str",
+                            [],
                             []
                           |),
-                          [ fmt ]
+                          [ M.borrow (| Pointer.Kind.Ref, fmt |) ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -4340,18 +4965,25 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                           [],
+                          [],
                           "write_str",
+                          [],
                           []
                         |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::Formatter",
-                              "buf"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::fmt::Formatter",
+                                  "buf"
+                                |)
+                              |)
                             |)
                           |);
-                          M.read (| s |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                         ]
                       |)
                     |)));
@@ -4361,11 +4993,16 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (| "core::fmt::write", [], [] |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::Formatter",
-                              "buf"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::fmt::Formatter",
+                                  "buf"
+                                |)
+                              |)
                             |)
                           |);
                           M.read (| fmt |)
@@ -4392,7 +5029,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::fmt::Formatter",
               "flags"
             |)
@@ -4414,7 +5051,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::fmt::Formatter",
               "fill"
             |)
@@ -4442,7 +5079,7 @@ Module fmt.
           M.read (|
             M.match_operator (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::fmt::Formatter",
                 "align"
               |),
@@ -4495,7 +5132,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::fmt::Formatter",
               "width"
             |)
@@ -4517,7 +5154,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "core::fmt::Formatter",
               "precision"
             |)
@@ -4541,14 +5178,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 0)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 0)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4571,14 +5208,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 1)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 1)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4601,14 +5238,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 2)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 2)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4631,14 +5268,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 3)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 3)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4662,14 +5299,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 4)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 4)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4693,14 +5330,14 @@ Module fmt.
             BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::fmt::Formatter",
                   "flags"
                 |)
               |))
               (BinOp.Wrap.shl (|
                 Value.Integer IntegerKind.U32 1,
-                M.rust_cast (Value.Integer IntegerKind.Isize 5)
+                M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 5)
               |)),
             Value.Integer IntegerKind.U32 0
           |)))
@@ -4723,7 +5360,10 @@ Module fmt.
           let name := M.alloc (| name |) in
           M.call_closure (|
             M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-            [ M.read (| self |); M.read (| name |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4759,7 +5399,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4768,9 +5411,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -4778,9 +5426,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -4824,7 +5473,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4833,9 +5485,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4844,9 +5501,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -4854,9 +5516,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -4905,7 +5568,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4914,9 +5580,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4925,9 +5596,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -4936,9 +5612,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -4946,9 +5627,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5002,7 +5684,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5011,9 +5696,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5022,9 +5712,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5033,9 +5728,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5044,9 +5744,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name4 |); M.read (| value4 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name4 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5054,9 +5759,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5118,7 +5824,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5127,9 +5836,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name1 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5138,9 +5852,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name2 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5149,9 +5868,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name3 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5160,9 +5884,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name4 |); M.read (| value4 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name4 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5171,9 +5900,14 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| name5 |); M.read (| value5 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name5 |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5181,9 +5915,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5226,35 +5961,43 @@ Module fmt.
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              "len",
+                              [],
                               []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                            "len",
-                            []
-                          |),
-                          [ M.read (| names |) ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                          |)
                         |)
                       |);
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "slice")
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                ],
+                              "len",
+                              [],
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                              ],
-                            "len",
-                            []
-                          |),
-                          [ M.read (| values |) ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -5276,8 +6019,8 @@ Module fmt.
                                   (M.alloc (|
                                     UnOp.not (|
                                       BinOp.eq (|
-                                        M.read (| M.read (| left_val |) |),
-                                        M.read (| M.read (| right_val |) |)
+                                        M.read (| M.deref (| M.read (| left_val |) |) |),
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
                                       |)
                                     |)
                                   |)) in
@@ -5302,8 +6045,24 @@ Module fmt.
                                         |),
                                         [
                                           M.read (| kind |);
-                                          M.read (| left_val |);
-                                          M.read (| right_val |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
                                           Value.StructTuple "core::option::Option::None" []
                                         ]
                                       |)
@@ -5320,7 +6079,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5349,7 +6111,9 @@ Module fmt.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5419,10 +6183,17 @@ Module fmt.
                                             ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5451,12 +6222,21 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugStruct",
                                               "field",
+                                              [],
                                               []
                                             |),
                                             [
-                                              builder;
-                                              M.read (| M.read (| name |) |);
-                                              M.read (| value |)
+                                              M.borrow (| Pointer.Kind.MutRef, builder |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| name |) |) |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |)
                                             ]
                                           |)
                                         |) in
@@ -5472,9 +6252,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5497,7 +6278,10 @@ Module fmt.
           let name := M.alloc (| name |) in
           M.call_closure (|
             M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-            [ M.read (| self |); M.read (| name |) ]
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5527,7 +6311,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5536,9 +6323,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5546,9 +6337,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5588,7 +6380,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5597,9 +6392,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5608,9 +6407,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5618,9 +6421,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5663,7 +6467,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5672,9 +6479,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5683,9 +6494,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5694,9 +6509,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5704,9 +6523,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5752,7 +6572,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5761,9 +6584,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5772,9 +6599,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5783,9 +6614,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5794,9 +6629,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value4 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5804,9 +6643,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5855,7 +6695,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5864,9 +6707,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value1 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value1 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5875,9 +6722,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value2 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value2 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5886,9 +6737,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value3 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value3 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5897,9 +6752,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value4 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value4 |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5908,9 +6767,13 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "field",
+                    [],
                     []
                   |),
-                  [ builder; M.read (| value5 |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, builder |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value5 |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -5918,9 +6781,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -5959,7 +6823,10 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
-                  [ M.read (| self |); M.read (| name |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -5984,7 +6851,9 @@ Module fmt.
                               ]
                           ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [ M.read (| values |) ]
@@ -6012,10 +6881,17 @@ Module fmt.
                                             [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
                                         ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -6041,9 +6917,16 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::builders::DebugTuple",
                                               "field",
+                                              [],
                                               []
                                             |),
-                                            [ builder; M.read (| value |) ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, builder |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| value |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -6058,9 +6941,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
+                  [],
                   []
                 |),
-                [ builder ]
+                [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
               |)
             |)
           |)))
@@ -6082,7 +6966,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "core::fmt::builders::debug_list_new", [], [] |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6101,7 +6985,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "core::fmt::builders::debug_set_new", [], [] |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6120,7 +7004,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "core::fmt::builders::debug_map_new", [], [] |),
-            [ M.read (| self |) ]
+            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6191,7 +7075,7 @@ Module fmt.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
                       ]
                     |)))
@@ -6229,9 +7113,13 @@ Module fmt.
               Value.StructRecord
                 "core::fmt::Arguments"
                 [
-                  ("pieces", M.read (| pieces |));
+                  ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
                   ("fmt", Value.StructTuple "core::option::Option::None" []);
-                  ("args", M.alloc (| Value.Array [] |))
+                  ("args",
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
+                    |))
                 ]
             |)
           |)))
@@ -6261,9 +7149,9 @@ Module fmt.
               Value.StructRecord
                 "core::fmt::Arguments"
                 [
-                  ("pieces", M.read (| pieces |));
+                  ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
                   ("fmt", Value.StructTuple "core::option::Option::None" []);
-                  ("args", M.read (| args |))
+                  ("args", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |))
                 ]
             |)
           |)))
@@ -6293,9 +7181,12 @@ Module fmt.
           Value.StructRecord
             "core::fmt::Arguments"
             [
-              ("pieces", M.read (| pieces |));
-              ("fmt", Value.StructTuple "core::option::Option::Some" [ M.read (| fmt |) ]);
-              ("args", M.read (| args |))
+              ("pieces", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pieces |) |) |));
+              ("fmt",
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]);
+              ("args", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6354,7 +7245,9 @@ Module fmt.
                           (Ty.path "usize")
                       ],
                     [],
+                    [],
                     "sum",
+                    [],
                     [ Ty.path "usize" ]
                   |),
                   [
@@ -6366,7 +7259,9 @@ Module fmt.
                           []
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         [],
+                        [],
                         "map",
+                        [],
                         [
                           Ty.path "usize";
                           Ty.function
@@ -6390,14 +7285,20 @@ Module fmt.
                               []
                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             "iter",
+                            [],
                             []
                           |),
                           [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::fmt::Arguments",
-                                "pieces"
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::fmt::Arguments",
+                                    "pieces"
+                                  |)
+                                |)
                               |)
                             |)
                           ]
@@ -6418,9 +7319,17 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "len",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| M.read (| x |) |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (| M.deref (| M.read (| x |) |) |)
+                                                |)
+                                              |)
+                                            ]
                                           |)))
                                     ]
                                   |)))
@@ -6443,14 +7352,20 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
                               "is_empty",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::fmt::Arguments",
-                                  "args"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::fmt::Arguments",
+                                      "args"
+                                    |)
+                                  |)
                                 |)
                               |)
                             ]
@@ -6478,14 +7393,20 @@ Module fmt.
                                               []
                                               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::fmt::Arguments",
-                                                "pieces"
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::fmt::Arguments",
+                                                    "pieces"
+                                                  |)
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -6496,19 +7417,27 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "str",
                                             "is_empty",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
                                                 M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::fmt::Arguments",
-                                                    "pieces"
+                                                  M.SubPointer.get_array_field (|
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::fmt::Arguments",
+                                                          "pieces"
+                                                        |)
+                                                      |)
+                                                    |),
+                                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                                   |)
-                                                |),
-                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -6531,6 +7460,7 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "unwrap_or",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6538,6 +7468,7 @@ Module fmt.
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "checked_mul",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| pieces_length |); Value.Integer IntegerKind.Usize 2
@@ -6578,14 +7509,14 @@ Module fmt.
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::fmt::Arguments",
                         "pieces"
                       |)
                     |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::fmt::Arguments",
                         "args"
                       |)
@@ -6602,7 +7533,12 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [ M.read (| Value.String "" |) ]
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "" |) |)
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -6613,7 +7549,14 @@ Module fmt.
                     let s := M.alloc (| γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| M.read (| s |) |) ]
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| s |) |) |) |)
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -6640,8 +7583,8 @@ Module fmt.
             let~ s :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
-                  [ M.read (| self |) ]
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -6666,9 +7609,10 @@ Module fmt.
                                     []
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   "is_some",
+                                  [],
                                   []
                                 |),
-                                [ s ]
+                                [ M.borrow (| Pointer.Kind.Ref, s |) ]
                               |)
                             ]
                           |)
@@ -6729,10 +7673,15 @@ Module fmt.
               "core::fmt::Display",
               Ty.path "core::fmt::Arguments",
               [],
+              [],
               "fmt",
+              [],
               []
             |),
-            [ M.read (| self |); M.read (| fmt |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6762,14 +7711,19 @@ Module fmt.
           M.call_closure (|
             M.get_function (| "core::fmt::write", [], [] |),
             [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| fmt |),
-                  "core::fmt::Formatter",
-                  "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| fmt |) |),
+                      "core::fmt::Formatter",
+                      "buf"
+                    |)
+                  |)
                 |)
               |);
-              M.read (| M.read (| self |) |)
+              M.read (| M.deref (| M.read (| self |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6872,8 +7826,8 @@ Module fmt.
               let~ formatter :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
-                    [ M.read (| output |) ]
+                    M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [], [] |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |) ]
                   |)
                 |) in
               let~ idx := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
@@ -6900,7 +7854,9 @@ Module fmt.
                                         [ Ty.path "core::fmt::rt::Argument" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6912,7 +7868,9 @@ Module fmt.
                                         []
                                         [ Ty.path "core::fmt::rt::Argument" ],
                                       [],
+                                      [],
                                       "enumerate",
+                                      [],
                                       []
                                     |),
                                     [
@@ -6923,14 +7881,20 @@ Module fmt.
                                             []
                                             [ Ty.path "core::fmt::rt::Argument" ],
                                           "iter",
+                                          [],
                                           []
                                         |),
                                         [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              args,
-                                              "core::fmt::Arguments",
-                                              "args"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  args,
+                                                  "core::fmt::Arguments",
+                                                  "args"
+                                                |)
+                                              |)
                                             |)
                                           |)
                                         ]
@@ -6963,10 +7927,19 @@ Module fmt.
                                                       [ Ty.path "core::fmt::rt::Argument" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -7008,14 +7981,20 @@ Module fmt.
                                                               [ Ty.path "str" ]
                                                           ],
                                                         "get_unchecked",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            args,
-                                                            "core::fmt::Arguments",
-                                                            "pieces"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                args,
+                                                                "core::fmt::Arguments",
+                                                                "pieces"
+                                                              |)
+                                                            |)
                                                           |)
                                                         |);
                                                         M.read (| i |)
@@ -7036,11 +8015,19 @@ Module fmt.
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        M.read (| piece |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| piece |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -7066,7 +8053,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7079,19 +8068,33 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            formatter,
-                                                                            "core::fmt::Formatter",
-                                                                            "buf"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                formatter,
+                                                                                "core::fmt::Formatter",
+                                                                                "buf"
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         |);
-                                                                        M.read (|
-                                                                          M.read (| piece |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.deref (|
+                                                                                M.read (| piece |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -7125,6 +8128,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -7138,6 +8142,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7183,7 +8188,9 @@ Module fmt.
                                                                 Ty.path "core::fmt::Error"
                                                               ],
                                                             [],
+                                                            [],
                                                             "branch",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7191,9 +8198,24 @@ Module fmt.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "fmt",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| arg |); formatter ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| arg |) |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      formatter
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -7224,6 +8246,7 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
+                                                                        [],
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path
@@ -7237,6 +8260,7 @@ Module fmt.
                                                                             ]
                                                                         ],
                                                                         "from_residual",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [ M.read (| residual |) ]
@@ -7299,7 +8323,9 @@ Module fmt.
                                         [ Ty.path "core::fmt::rt::Placeholder" ]
                                     ],
                                   [],
+                                  [],
                                   "into_iter",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7311,7 +8337,9 @@ Module fmt.
                                         []
                                         [ Ty.path "core::fmt::rt::Placeholder" ],
                                       [],
+                                      [],
                                       "enumerate",
+                                      [],
                                       []
                                     |),
                                     [
@@ -7322,9 +8350,15 @@ Module fmt.
                                             []
                                             [ Ty.path "core::fmt::rt::Placeholder" ],
                                           "iter",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| fmt |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| fmt |) |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -7354,10 +8388,19 @@ Module fmt.
                                                       [ Ty.path "core::fmt::rt::Placeholder" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "next",
+                                                [],
                                                 []
                                               |),
-                                              [ iter ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
@@ -7399,14 +8442,20 @@ Module fmt.
                                                               [ Ty.path "str" ]
                                                           ],
                                                         "get_unchecked",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            args,
-                                                            "core::fmt::Arguments",
-                                                            "pieces"
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                args,
+                                                                "core::fmt::Arguments",
+                                                                "pieces"
+                                                              |)
+                                                            |)
                                                           |)
                                                         |);
                                                         M.read (| i |)
@@ -7427,11 +8476,19 @@ Module fmt.
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.read (|
-                                                                        M.read (| piece |)
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| piece |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -7457,7 +8514,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -7470,19 +8529,33 @@ Module fmt.
                                                                               [])
                                                                           ],
                                                                         [],
+                                                                        [],
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            formatter,
-                                                                            "core::fmt::Formatter",
-                                                                            "buf"
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                formatter,
+                                                                                "core::fmt::Formatter",
+                                                                                "buf"
+                                                                              |)
+                                                                            |)
                                                                           |)
                                                                         |);
-                                                                        M.read (|
-                                                                          M.read (| piece |)
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              M.deref (|
+                                                                                M.read (| piece |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -7516,6 +8589,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -7529,6 +8603,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -7573,7 +8648,9 @@ Module fmt.
                                                               Ty.path "core::fmt::Error"
                                                             ],
                                                           [],
+                                                          [],
                                                           "branch",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7584,13 +8661,29 @@ Module fmt.
                                                               []
                                                             |),
                                                             [
-                                                              formatter;
-                                                              M.read (| arg |);
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  args,
-                                                                  "core::fmt::Arguments",
-                                                                  "args"
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    formatter
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| arg |) |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      args,
+                                                                      "core::fmt::Arguments",
+                                                                      "args"
+                                                                    |)
+                                                                  |)
                                                                 |)
                                                               |)
                                                             ]
@@ -7623,6 +8716,7 @@ Module fmt.
                                                                           Ty.tuple [];
                                                                           Ty.path "core::fmt::Error"
                                                                         ],
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -7636,6 +8730,7 @@ Module fmt.
                                                                           ]
                                                                       ],
                                                                       "from_residual",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| residual |) ]
@@ -7689,14 +8784,20 @@ Module fmt.
                                   []
                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 "get",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    args,
-                                    "core::fmt::Arguments",
-                                    "pieces"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        args,
+                                        "core::fmt::Arguments",
+                                        "pieces"
+                                      |)
+                                    |)
                                   |)
                                 |);
                                 M.read (| idx |)
@@ -7721,7 +8822,9 @@ Module fmt.
                                     []
                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7730,18 +8833,28 @@ Module fmt.
                                       "core::fmt::Write",
                                       Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                       [],
+                                      [],
                                       "write_str",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          formatter,
-                                          "core::fmt::Formatter",
-                                          "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              formatter,
+                                              "core::fmt::Formatter",
+                                              "buf"
+                                            |)
+                                          |)
                                         |)
                                       |);
-                                      M.read (| M.read (| piece |) |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| M.deref (| M.read (| piece |) |) |) |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -7768,6 +8881,7 @@ Module fmt.
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -7778,6 +8892,7 @@ Module fmt.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -7844,13 +8959,13 @@ Module fmt.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| fmt |),
+                M.deref (| M.read (| fmt |) |),
                 "core::fmt::Formatter",
                 "fill"
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| arg |),
+                  M.deref (| M.read (| arg |) |),
                   "core::fmt::rt::Placeholder",
                   "fill"
                 |)
@@ -7859,13 +8974,13 @@ Module fmt.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| fmt |),
+                M.deref (| M.read (| fmt |) |),
                 "core::fmt::Formatter",
                 "align"
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| arg |),
+                  M.deref (| M.read (| arg |) |),
                   "core::fmt::rt::Placeholder",
                   "align"
                 |)
@@ -7874,13 +8989,13 @@ Module fmt.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| fmt |),
+                M.deref (| M.read (| fmt |) |),
                 "core::fmt::Formatter",
                 "flags"
               |),
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| arg |),
+                  M.deref (| M.read (| arg |) |),
                   "core::fmt::rt::Placeholder",
                   "flags"
                 |)
@@ -7890,18 +9005,26 @@ Module fmt.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| fmt |),
+                  M.deref (| M.read (| fmt |) |),
                   "core::fmt::Formatter",
                   "width"
                 |),
                 M.call_closure (|
                   M.get_function (| "core::fmt::getcount", [], [] |),
                   [
-                    M.read (| args |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| arg |),
-                      "core::fmt::rt::Placeholder",
-                      "width"
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| arg |) |),
+                            "core::fmt::rt::Placeholder",
+                            "width"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7909,18 +9032,26 @@ Module fmt.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| fmt |),
+                  M.deref (| M.read (| fmt |) |),
                   "core::fmt::Formatter",
                   "precision"
                 |),
                 M.call_closure (|
                   M.get_function (| "core::fmt::getcount", [], [] |),
                   [
-                    M.read (| args |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| arg |),
-                      "core::fmt::rt::Placeholder",
-                      "precision"
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| arg |) |),
+                            "core::fmt::rt::Placeholder",
+                            "precision"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -7947,7 +9078,7 @@ Module fmt.
                                       BinOp.lt (|
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| arg |),
+                                            M.deref (| M.read (| arg |) |),
                                             "core::fmt::rt::Placeholder",
                                             "position"
                                           |)
@@ -7959,9 +9090,15 @@ Module fmt.
                                               []
                                               [ Ty.path "core::fmt::rt::Argument" ],
                                             "len",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| args |) ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| args |) |)
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)
@@ -7996,13 +9133,14 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
                   "get_unchecked",
+                  [],
                   [ Ty.path "usize" ]
                 |),
                 [
-                  M.read (| args |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| arg |),
+                      M.deref (| M.read (| arg |) |),
                       "core::fmt::rt::Placeholder",
                       "position"
                     |)
@@ -8012,8 +9150,11 @@ Module fmt.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "fmt", [] |),
-              [ M.read (| value |); M.read (| fmt |) ]
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "fmt", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
+              ]
             |)
           |)
         |)))
@@ -8044,7 +9185,7 @@ Module fmt.
         let cnt := M.alloc (| cnt |) in
         M.read (|
           M.match_operator (|
-            M.read (| cnt |),
+            M.deref (| M.read (| cnt |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -8089,9 +9230,15 @@ Module fmt.
                                                       []
                                                       [ Ty.path "core::fmt::rt::Argument" ],
                                                     "len",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| args |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| args |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)
@@ -8125,16 +9272,26 @@ Module fmt.
                       M.get_associated_function (|
                         Ty.path "core::fmt::rt::Argument",
                         "as_usize",
+                        [],
                         []
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
-                            "get_unchecked",
-                            [ Ty.path "usize" ]
-                          |),
-                          [ M.read (| args |); M.read (| i |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ],
+                                "get_unchecked",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| args |) |) |);
+                                M.read (| i |)
+                              ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -8203,7 +9360,9 @@ Module fmt.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             [],
+                            [],
                             "into_iter",
+                            [],
                             []
                           |),
                           [
@@ -8240,10 +9399,17 @@ Module fmt.
                                             []
                                             [ Ty.path "usize" ],
                                           [],
+                                          [],
                                           "next",
+                                          [],
                                           []
                                         |),
-                                        [ iter ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -8276,7 +9442,9 @@ Module fmt.
                                                       []
                                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8285,15 +9453,22 @@ Module fmt.
                                                         "core::fmt::Write",
                                                         Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                                                         [],
+                                                        [],
                                                         "write_char",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| f |),
-                                                            "core::fmt::Formatter",
-                                                            "buf"
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| f |) |),
+                                                                "core::fmt::Formatter",
+                                                                "buf"
+                                                              |)
+                                                            |)
                                                           |)
                                                         |);
                                                         M.read (|
@@ -8332,6 +9507,7 @@ Module fmt.
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
                                                                   ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -8343,6 +9519,7 @@ Module fmt.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -8399,18 +9576,25 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_str",
+              [],
               []
             |),
             [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::fmt::Formatter",
-                  "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::fmt::Formatter",
+                      "buf"
+                    |)
+                  |)
                 |)
               |);
-              M.read (| s |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8432,15 +9616,22 @@ Module fmt.
               "core::fmt::Write",
               Ty.dyn [ ("core::fmt::Write::Trait", []) ],
               [],
+              [],
               "write_char",
+              [],
               []
             |),
             [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::fmt::Formatter",
-                  "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::fmt::Formatter",
+                      "buf"
+                    |)
+                  |)
                 |)
               |);
               M.read (| c |)
@@ -8476,9 +9667,10 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "as_statically_known_str",
+                            [],
                             []
                           |),
-                          [ args ]
+                          [ M.borrow (| Pointer.Kind.Ref, args |) ]
                         |)
                       |) in
                     let γ0_0 :=
@@ -8494,18 +9686,25 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.dyn [ ("core::fmt::Write::Trait", []) ],
                           [],
+                          [],
                           "write_str",
+                          [],
                           []
                         |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::Formatter",
-                              "buf"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::fmt::Formatter",
+                                  "buf"
+                                |)
+                              |)
                             |)
                           |);
-                          M.read (| s |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                         ]
                       |)
                     |)));
@@ -8515,11 +9714,16 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (| "core::fmt::write", [], [] |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::Formatter",
-                              "buf"
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::fmt::Formatter",
+                                  "buf"
+                                |)
+                              |)
                             |)
                           |);
                           M.read (| args |)
@@ -8560,10 +9764,15 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.read (| Value.String "an error occurred when formatting an argument" |);
-              M.read (| f |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (| Value.String "an error occurred when formatting an argument" |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8589,8 +9798,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8616,8 +9836,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8643,8 +9874,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8670,8 +9912,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8697,8 +9950,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8724,8 +9988,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8751,8 +10026,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8778,8 +10064,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8805,8 +10102,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8832,8 +10140,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8859,8 +10178,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8886,8 +10216,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8913,8 +10254,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8940,8 +10292,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8967,8 +10330,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8994,8 +10368,19 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
-            [ M.read (| M.read (| self |) |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9025,7 +10410,10 @@ Module fmt.
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
             β1,
-            [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+            [
+              fun γ =>
+                ltac:(M.monadic (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9054,7 +10442,10 @@ Module fmt.
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
             β1,
-            [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
+            [
+              fun γ =>
+                ltac:(M.monadic (M.never_to_any (| M.read (| M.deref (| M.read (| self |) |) |) |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9082,8 +10473,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "bool", [], "fmt", [] |),
-            [ M.read (| self |); M.read (| f |) ]
+            M.get_trait_method (| "core::fmt::Display", Ty.path "bool", [], [], "fmt", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9111,7 +10505,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
               M.read (|
                 M.match_operator (|
@@ -9119,15 +10513,27 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.read (| self |)) in
+                        (let γ := M.use (M.deref (| M.read (| self |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| M.read (| Value.String "true" |) |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "false" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "true" |) |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "false" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9212,7 +10618,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9221,10 +10629,15 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.path "core::fmt::Formatter",
                               [],
+                              [],
                               "write_char",
+                              [],
                               []
                             |),
-                            [ M.read (| f |); Value.UnicodeChar 34 ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              Value.UnicodeChar 34
+                            ]
                           |)
                         ]
                       |)
@@ -9250,6 +10663,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9260,6 +10674,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9303,8 +10718,18 @@ Module fmt.
                                   (M.alloc (|
                                     BinOp.gt (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "str", "len", [] |),
-                                        [ M.read (| rest |) ]
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| rest |) |)
+                                          |)
+                                        ]
                                       |),
                                       Value.Integer IntegerKind.Usize 0
                                     |)
@@ -9324,7 +10749,9 @@ Module fmt.
                                         []
                                         [ Ty.path "u8" ],
                                       [],
+                                      [],
                                       "position",
+                                      [],
                                       [
                                         Ty.function
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
@@ -9333,23 +10760,38 @@ Module fmt.
                                       ]
                                     |),
                                     [
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                            "iter",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "str",
-                                                "as_bytes",
-                                                []
-                                              |),
-                                              [ M.read (| rest |) ]
-                                            |)
-                                          ]
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "iter",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| rest |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |);
                                       M.closure
@@ -9369,6 +10811,7 @@ Module fmt.
                                                           M.get_associated_function (|
                                                             Self,
                                                             "needs_escape.fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| b |) ]
@@ -9407,23 +10850,32 @@ Module fmt.
                                       let~ _ :=
                                         M.write (|
                                           rest,
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "str",
-                                              "get_unchecked",
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeFrom")
-                                                  []
-                                                  [ Ty.path "usize" ]
-                                              ]
-                                            |),
-                                            [
-                                              M.read (| rest |);
-                                              Value.StructRecord
-                                                "core::ops::range::RangeFrom"
-                                                [ ("start", M.read (| non_printable_start |)) ]
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "str",
+                                                  "get_unchecked",
+                                                  [],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::RangeFrom")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| rest |) |)
+                                                  |);
+                                                  Value.StructRecord
+                                                    "core::ops::range::RangeFrom"
+                                                    [ ("start", M.read (| non_printable_start |)) ]
+                                                ]
+                                              |)
+                                            |)
                                           |)
                                         |) in
                                       let~ chars :=
@@ -9432,9 +10884,15 @@ Module fmt.
                                             M.get_associated_function (|
                                               Ty.path "str",
                                               "chars",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| rest |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| rest |) |)
+                                              |)
+                                            ]
                                           |)
                                         |) in
                                       let~ _ :=
@@ -9450,10 +10908,12 @@ Module fmt.
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.path "core::str::iter::Chars",
                                                         [],
+                                                        [],
                                                         "next",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ chars ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, chars |) ]
                                                     |)
                                                   |) in
                                                 let γ0_0 :=
@@ -9469,6 +10929,7 @@ Module fmt.
                                                       M.get_associated_function (|
                                                         Ty.path "char",
                                                         "escape_debug_ext",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -9501,10 +10962,17 @@ Module fmt.
                                                                       Ty.path
                                                                         "core::char::EscapeDebug",
                                                                       [],
+                                                                      [],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ esc ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        esc
+                                                                      |)
+                                                                    ]
                                                                   |),
                                                                   Value.Integer IntegerKind.Usize 1
                                                                 |)
@@ -9529,7 +10997,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9538,42 +11008,79 @@ Module fmt.
                                                                         Ty.path
                                                                           "core::fmt::Formatter",
                                                                         "write_str",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (| f |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::index::Index",
-                                                                            Ty.path "str",
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::ops::range::Range")
-                                                                                []
-                                                                                [ Ty.path "usize" ]
-                                                                            ],
-                                                                            "index",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (| self |);
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::clone::Clone",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::ops::range::Range")
-                                                                                  []
-                                                                                  [ Ty.path "usize"
-                                                                                  ],
-                                                                                [],
-                                                                                "clone",
-                                                                                []
-                                                                              |),
-                                                                              [ printable_range ]
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (| f |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::index::Index",
+                                                                                    Ty.path "str",
+                                                                                    [],
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::ops::range::Range")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        ]
+                                                                                    ],
+                                                                                    "index",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          self
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::clone::Clone",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::ops::range::Range")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ],
+                                                                                        [],
+                                                                                        [],
+                                                                                        "clone",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          printable_range
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |)
                                                                             |)
-                                                                          ]
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -9607,6 +11114,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -9620,6 +11128,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9659,7 +11168,9 @@ Module fmt.
                                                                         Ty.path "core::fmt::Error"
                                                                       ],
                                                                     [],
+                                                                    [],
                                                                     "branch",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -9669,10 +11180,28 @@ Module fmt.
                                                                         Ty.path
                                                                           "core::char::EscapeDebug",
                                                                         [],
+                                                                        [],
                                                                         "fmt",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [ esc; M.read (| f |) ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              esc
+                                                                            |)
+                                                                          |)
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (| f |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   ]
                                                                 |)
@@ -9704,6 +11233,7 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
+                                                                                [],
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -9717,6 +11247,7 @@ Module fmt.
                                                                                     ]
                                                                                 ],
                                                                                 "from_residual",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -9760,6 +11291,7 @@ Module fmt.
                                                                   M.get_associated_function (|
                                                                     Ty.path "char",
                                                                     "len_utf8",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| c |) ]
@@ -9787,6 +11319,7 @@ Module fmt.
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "len_utf8",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| c |) ]
@@ -9800,13 +11333,19 @@ Module fmt.
                                       let~ _ :=
                                         M.write (|
                                           rest,
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::str::iter::Chars",
-                                              "as_str",
-                                              []
-                                            |),
-                                            [ chars ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::str::iter::Chars",
+                                                  "as_str",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, chars |) ]
+                                              |)
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -9839,7 +11378,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -9847,24 +11388,43 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
+                              [],
                               []
                             |),
                             [
-                              M.read (| f |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.path "str",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::Range")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  []
-                                |),
-                                [ M.read (| self |); M.read (| printable_range |) ]
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::index::Index",
+                                          Ty.path "str",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                          "index",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| printable_range |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -9892,6 +11452,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -9902,6 +11463,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -9928,10 +11490,15 @@ Module fmt.
                       "core::fmt::Write",
                       Ty.path "core::fmt::Formatter",
                       [],
+                      [],
                       "write_char",
+                      [],
                       []
                     |),
-                    [ M.read (| f |); Value.UnicodeChar 34 ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      Value.UnicodeChar 34
+                    ]
                   |)
                 |)
               |)))
@@ -9962,8 +11529,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
-            [ M.read (| f |); M.read (| self |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10011,7 +11581,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -10020,10 +11592,15 @@ Module fmt.
                               "core::fmt::Write",
                               Ty.path "core::fmt::Formatter",
                               [],
+                              [],
                               "write_char",
+                              [],
                               []
                             |),
-                            [ M.read (| f |); Value.UnicodeChar 39 ]
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              Value.UnicodeChar 39
+                            ]
                           |)
                         ]
                       |)
@@ -10049,6 +11626,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -10059,6 +11637,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -10082,9 +11661,9 @@ Module fmt.
                 let~ esc :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "char", "escape_debug_ext", [] |),
+                      M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
                       [
-                        M.read (| M.read (| self |) |);
+                        M.read (| M.deref (| M.read (| self |) |) |);
                         Value.StructRecord
                           "core::char::methods::EscapeDebugExtArgs"
                           [
@@ -10106,7 +11685,9 @@ Module fmt.
                             []
                             [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           [],
+                          [],
                           "branch",
+                          [],
                           []
                         |),
                         [
@@ -10115,10 +11696,18 @@ Module fmt.
                               "core::fmt::Display",
                               Ty.path "core::char::EscapeDebug",
                               [],
+                              [],
                               "fmt",
+                              [],
                               []
                             |),
-                            [ esc; M.read (| f |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, esc |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                            ]
                           |)
                         ]
                       |)
@@ -10144,6 +11733,7 @@ Module fmt.
                                         (Ty.path "core::result::Result")
                                         []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -10154,6 +11744,7 @@ Module fmt.
                                           ]
                                       ],
                                       "from_residual",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| residual |) ]
@@ -10180,10 +11771,15 @@ Module fmt.
                       "core::fmt::Write",
                       Ty.path "core::fmt::Formatter",
                       [],
+                      [],
                       "write_char",
+                      [],
                       []
                     |),
-                    [ M.read (| f |); Value.UnicodeChar 39 ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      Value.UnicodeChar 39
+                    ]
                   |)
                 |)
               |)))
@@ -10231,13 +11827,17 @@ Module fmt.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "is_none",
+                                [],
                                 []
                               |),
                               [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| f |),
-                                  "core::fmt::Formatter",
-                                  "width"
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| f |) |),
+                                    "core::fmt::Formatter",
+                                    "width"
+                                  |)
                                 |)
                               ]
                             |),
@@ -10246,13 +11846,17 @@ Module fmt.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| f |),
-                                    "core::fmt::Formatter",
-                                    "precision"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| f |) |),
+                                      "core::fmt::Formatter",
+                                      "precision"
+                                    |)
                                   |)
                                 ]
                               |)))
@@ -10265,30 +11869,58 @@ Module fmt.
                           "core::fmt::Write",
                           Ty.path "core::fmt::Formatter",
                           [],
+                          [],
                           "write_char",
+                          [],
                           []
                         |),
-                        [ M.read (| f |); M.read (| M.read (| self |) |) ]
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.read (| M.deref (| M.read (| self |) |) |)
+                        ]
                       |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "pad",
+                          [],
+                          []
+                        |),
                         [
-                          M.read (| f |);
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                            [
-                              M.read (| M.read (| self |) |);
-                              M.alloc (|
-                                repeat (|
-                                  Value.Integer IntegerKind.U8 0,
-                                  Value.Integer IntegerKind.Usize 4
-                                |)
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "char",
+                                  "encode_utf8",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (| M.deref (| M.read (| self |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          repeat (|
+                                            Value.Integer IntegerKind.U8 0,
+                                            Value.Integer IntegerKind.Usize 4
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
@@ -10329,11 +11961,12 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   "expose_provenance",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [ M.read (| M.deref (| M.read (| self |) |) |) ]
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10384,7 +12017,7 @@ Module fmt.
           let~ old_width :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| f |),
+                M.deref (| M.read (| f |) |),
                 "core::fmt::Formatter",
                 "width"
               |)
@@ -10392,7 +12025,7 @@ Module fmt.
           let~ old_flags :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| f |),
+                M.deref (| M.read (| f |) |),
                 "core::fmt::Formatter",
                 "flags"
               |)
@@ -10410,16 +12043,17 @@ Module fmt.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "alternate",
+                              [],
                               []
                             |),
-                            [ M.read (| f |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| f |),
+                          M.deref (| M.read (| f |) |),
                           "core::fmt::Formatter",
                           "flags"
                         |) in
@@ -10429,7 +12063,7 @@ Module fmt.
                           (M.read (| β |))
                           (BinOp.Wrap.shl (|
                             Value.Integer IntegerKind.U32 1,
-                            M.rust_cast (Value.Integer IntegerKind.Isize 3)
+                            M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 3)
                           |))
                       |) in
                     M.match_operator (|
@@ -10447,13 +12081,17 @@ Module fmt.
                                         []
                                         [ Ty.path "usize" ],
                                       "is_none",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| f |),
-                                        "core::fmt::Formatter",
-                                        "width"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| f |) |),
+                                          "core::fmt::Formatter",
+                                          "width"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -10463,7 +12101,7 @@ Module fmt.
                             let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| f |),
+                                  M.deref (| M.read (| f |) |),
                                   "core::fmt::Formatter",
                                   "width"
                                 |),
@@ -10471,7 +12109,8 @@ Module fmt.
                                   "core::option::Option::Some"
                                   [
                                     BinOp.Wrap.add (|
-                                      M.rust_cast
+                                      M.cast
+                                        (Ty.path "usize")
                                         (BinOp.Wrap.div (|
                                           M.read (| M.get_constant (| "core::num::BITS" |) |),
                                           Value.Integer IntegerKind.U32 4
@@ -10490,7 +12129,7 @@ Module fmt.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
-                M.read (| f |),
+                M.deref (| M.read (| f |) |),
                 "core::fmt::Formatter",
                 "flags"
               |) in
@@ -10500,20 +12139,34 @@ Module fmt.
                 (M.read (| β |))
                 (BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.rust_cast (Value.Integer IntegerKind.Isize 2)
+                  M.cast (Ty.path "u32") (Value.Integer IntegerKind.Isize 2)
                 |))
             |) in
           let~ ret :=
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::fmt::LowerHex", Ty.path "usize", [], "fmt", [] |),
-                [ ptr_addr; M.read (| f |) ]
+                M.get_trait_method (|
+                  "core::fmt::LowerHex",
+                  Ty.path "usize",
+                  [],
+                  [],
+                  "fmt",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, ptr_addr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                ]
               |)
             |) in
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| f |),
+                M.deref (| M.read (| f |) |),
                 "core::fmt::Formatter",
                 "width"
               |),
@@ -10522,7 +12175,7 @@ Module fmt.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| f |),
+                M.deref (| M.read (| f |) |),
                 "core::fmt::Formatter",
                 "flags"
               |),
@@ -10555,15 +12208,27 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.rust_cast
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| M.read (| self |) |)))
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
+                        (* MutToConstPointer *)
+                        (M.pointer_coercion (M.read (| M.deref (| M.read (| self |) |) |)))
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10598,10 +12263,29 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
-            [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.use
+                      (M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                        |)
+                      |))
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10635,10 +12319,34 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
-            [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.use
+                      (M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                            |)
+                          |)
+                        |)
+                      |))
+                  |)
+                |)
+              |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10672,10 +12380,15 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
-            [ M.read (| self |); M.read (| f |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10709,10 +12422,15 @@ Module fmt.
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*mut") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
-            [ M.read (| self |); M.read (| f |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10757,12 +12475,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -10796,9 +12522,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_E ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_E |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10807,9 +12540,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_D ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10818,9 +12558,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_C ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10829,9 +12576,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_B ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10840,9 +12594,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_A ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10851,9 +12612,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10862,9 +12630,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10873,9 +12648,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10884,9 +12666,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10895,9 +12684,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10906,9 +12702,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -10917,9 +12720,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -10927,9 +12737,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -10978,12 +12789,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11015,9 +12834,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_D ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_D |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11026,9 +12852,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_C ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11037,9 +12870,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_B ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11048,9 +12888,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_A ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11059,9 +12906,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11070,9 +12924,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11081,9 +12942,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11092,9 +12960,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11103,9 +12978,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11114,9 +12996,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11125,9 +13014,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11135,9 +13031,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -11186,12 +13083,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11221,9 +13126,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_C ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_C |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11232,9 +13144,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_B ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11243,9 +13162,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_A ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11254,9 +13180,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11265,9 +13198,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11276,9 +13216,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11287,9 +13234,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11298,9 +13252,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11309,9 +13270,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11320,9 +13288,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11330,9 +13305,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -11380,12 +13356,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11413,9 +13397,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_B ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_B |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11424,9 +13415,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_A ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11435,9 +13433,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11446,9 +13451,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11457,9 +13469,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11468,9 +13487,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11479,9 +13505,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11490,9 +13523,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11501,9 +13541,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11511,9 +13558,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -11561,12 +13609,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11592,9 +13648,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_A ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_A |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11603,9 +13666,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11614,9 +13684,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11625,9 +13702,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11636,9 +13720,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11647,9 +13738,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11658,9 +13756,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11669,9 +13774,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11679,9 +13791,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -11729,12 +13842,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11758,9 +13879,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Z ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Z |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11769,9 +13897,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11780,9 +13915,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11791,9 +13933,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11802,9 +13951,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11813,9 +13969,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11824,9 +13987,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11834,9 +14004,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -11879,12 +14050,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -11906,9 +14085,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_Y ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_Y |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11917,9 +14103,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11928,9 +14121,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11939,9 +14139,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11950,9 +14157,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -11961,9 +14175,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -11971,9 +14192,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12016,12 +14238,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -12041,9 +14271,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_X ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_X |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12052,9 +14289,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12063,9 +14307,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12074,9 +14325,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12085,9 +14343,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -12095,9 +14360,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12140,12 +14406,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -12163,9 +14437,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_W ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_W |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12174,9 +14455,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12185,9 +14473,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12196,9 +14491,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -12206,9 +14508,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12251,12 +14554,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -12272,9 +14583,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_V ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_V |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12283,9 +14601,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12294,9 +14619,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -12304,9 +14636,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12349,12 +14682,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -12368,9 +14709,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_U ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_U |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -12379,9 +14727,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -12389,9 +14744,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12434,12 +14790,20 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
-                  [ M.read (| f |); M.read (| Value.String "" |) ]
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                  ]
                 |)
               |) in
             M.match_operator (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -12451,9 +14815,16 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugTuple",
                             "field",
+                            [],
                             []
                           |),
-                          [ builder; value_T ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, builder |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, value_T |) |)
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|
@@ -12461,9 +14832,10 @@ Module fmt.
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "finish",
+                          [],
                           []
                         |),
-                        [ builder ]
+                        [ M.borrow (| Pointer.Kind.MutRef, builder |) ]
                       |)
                     |)))
               ]
@@ -12497,33 +14869,53 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::builders::DebugList", "finish", [] |),
+            M.get_associated_function (|
+              Ty.path "core::fmt::builders::DebugList",
+              "finish",
+              [],
+              []
+            |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::builders::DebugList",
-                  "entries",
-                  [
-                    Ty.apply (Ty.path "&") [] [ T ];
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
-                  ]
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_list",
-                        []
-                      |),
-                      [ M.read (| f |) ]
-                    |)
-                  |);
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                    [ M.read (| self |) ]
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugList",
+                      "entries",
+                      [],
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
+                      ]
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Formatter",
+                              "debug_list",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |) ]
+                          |)
+                        |)
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -12554,8 +14946,11 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
-            [ M.read (| f |); M.read (| Value.String "()" |) ]
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "()" |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12584,35 +14979,63 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
-                  M.alloc (|
-                    Value.Array
-                      [ M.read (| Value.String "PhantomData<" |); M.read (| Value.String ">" |) ]
-                  |);
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_function (| "core::any::type_name", [], [ T ] |),
-                                []
-                              |)
-                            |)
-                          ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "PhantomData<" |);
+                              M.read (| Value.String ">" |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "core::any::type_name", [], [ T ] |),
+                                            []
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 ]
               |)
@@ -12649,38 +15072,67 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::builders::DebugStruct",
-                  "field",
-                  []
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "Cell" |) ]
-                    |)
-                  |);
-                  M.read (| Value.String "value" |);
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
-                        "get",
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugStruct",
+                      "field",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Formatter",
+                              "debug_struct",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "Cell" |) |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "value" |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
+                                  "get",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
                   |)
-                ]
+                |)
               |)
             ]
           |)))
@@ -12723,9 +15175,16 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct",
+                    [],
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "RefCell" |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "RefCell" |) |)
+                    |)
+                  ]
                 |)
               |) in
             let~ _ :=
@@ -12735,9 +15194,10 @@ Module fmt.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                       "try_borrow",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -12755,9 +15215,20 @@ Module fmt.
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
+                            [],
                             []
                           |),
-                          [ d; M.read (| Value.String "value" |); borrow ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, d |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "value" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, borrow |) |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -12769,30 +15240,57 @@ Module fmt.
                           0
                         |) in
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::builders::DebugStruct",
-                            "field",
-                            []
-                          |),
-                          [
-                            d;
-                            M.read (| Value.String "value" |);
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "<borrowed>" |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::builders::DebugStruct",
+                                "field",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, d |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| Value.String "value" |) |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Arguments",
+                                            "new_const",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [ M.read (| Value.String "<borrowed>" |) ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
-                                ]
-                              |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       |)))
                 ]
@@ -12802,9 +15300,10 @@ Module fmt.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
-                [ d ]
+                [ M.borrow (| Pointer.Kind.MutRef, d |) ]
               |)
             |)
           |)))
@@ -12836,19 +15335,31 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12879,19 +15390,31 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
+            M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -12925,17 +15448,28 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "UnsafeCell" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "UnsafeCell" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]
@@ -12971,17 +15505,28 @@ Module fmt.
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct",
-                    []
-                  |),
-                  [ M.read (| f |); M.read (| Value.String "SyncUnsafeCell" |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| Value.String "SyncUnsafeCell" |) |)
+                      |)
+                    ]
+                  |)
                 |)
               |)
             ]

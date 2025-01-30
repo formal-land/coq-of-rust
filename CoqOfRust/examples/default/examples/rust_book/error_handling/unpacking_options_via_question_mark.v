@@ -30,7 +30,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
                 ltac:(M.monadic
                   (M.match_operator (|
                     Value.DeclaredButUndefined,
-                    [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                    [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                   |)))
             ]
           |)
@@ -80,7 +80,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -146,7 +146,9 @@ Module Impl_unpacking_options_via_question_mark_Person.
                           []
                           [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -162,13 +164,15 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                       []
                                       [ Ty.path "unpacking_options_via_question_mark::Job" ],
                                     [],
+                                    [],
                                     "branch",
+                                    [],
                                     []
                                   |),
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "unpacking_options_via_question_mark::Person",
                                         "job"
                                       |)
@@ -197,6 +201,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u8" ],
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -204,6 +209,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                                     [ Ty.path "core::convert::Infallible" ]
                                                 ],
                                                 "from_residual",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| residual |) ]
@@ -249,6 +255,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -256,6 +263,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                         [ Ty.path "core::convert::Infallible" ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -342,20 +350,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "unpacking_options_via_question_mark::Person",
-                        "work_phone_area_code",
-                        []
-                      |),
-                      [ p ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "unpacking_options_via_question_mark::Person",
+                          "work_phone_area_code",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, p |) ]
+                      |)
                     |)
                   |);
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.Integer IntegerKind.U8 61 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.Integer IntegerKind.U8 61 ]
+                    |)
                   |)
                 ]
             |),
@@ -379,6 +394,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -386,9 +402,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.path "u8" ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -419,8 +445,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

@@ -23,16 +23,28 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "EvenNumber" |);
-            M.alloc (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
-                "try_from_and_try_into::EvenNumber",
-                0
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "EvenNumber" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (| M.read (| self |) |),
+                        "try_from_and_try_into::EvenNumber",
+                        0
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -72,14 +84,14 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
         BinOp.eq (|
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "try_from_and_try_into::EvenNumber",
               0
             |)
           |),
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
-              M.read (| other |),
+              M.deref (| M.read (| other |) |),
               "try_from_and_try_into::EvenNumber",
               0
             |)
@@ -180,26 +192,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::convert::TryFrom",
-                        Ty.path "try_from_and_try_into::EvenNumber",
-                        [ Ty.path "i32" ],
-                        "try_from",
-                        []
-                      |),
-                      [ Value.Integer IntegerKind.I32 8 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::TryFrom",
+                          Ty.path "try_from_and_try_into::EvenNumber",
+                          [],
+                          [ Ty.path "i32" ],
+                          "try_from",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.I32 8 ]
+                      |)
                     |)
                   |);
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer IntegerKind.I32 8 ]
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          Value.StructTuple
+                            "try_from_and_try_into::EvenNumber"
+                            [ Value.Integer IntegerKind.I32 8 ]
+                        ]
+                    |)
                   |)
                 ]
             |),
@@ -227,6 +247,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -235,9 +256,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -270,8 +301,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -289,19 +336,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::convert::TryFrom",
-                        Ty.path "try_from_and_try_into::EvenNumber",
-                        [ Ty.path "i32" ],
-                        "try_from",
-                        []
-                      |),
-                      [ Value.Integer IntegerKind.I32 5 ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::TryFrom",
+                          Ty.path "try_from_and_try_into::EvenNumber",
+                          [],
+                          [ Ty.path "i32" ],
+                          "try_from",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.I32 5 ]
+                      |)
                     |)
                   |);
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                  |)
                 ]
             |),
             [
@@ -328,6 +383,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -336,9 +392,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -371,8 +437,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -391,8 +473,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "i32",
+                [],
                 [ Ty.path "try_from_and_try_into::EvenNumber" ],
                 "try_into",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 8 ]
@@ -403,15 +487,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  result;
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer IntegerKind.I32 8 ]
-                      ]
+                  M.borrow (| Pointer.Kind.Ref, result |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          Value.StructTuple
+                            "try_from_and_try_into::EvenNumber"
+                            [ Value.Integer IntegerKind.I32 8 ]
+                        ]
+                    |)
                   |)
                 ]
             |),
@@ -439,6 +526,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -447,9 +535,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -482,8 +580,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)
@@ -502,8 +616,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "i32",
+                [],
                 [ Ty.path "try_from_and_try_into::EvenNumber" ],
                 "try_into",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.I32 5 ]
@@ -514,8 +630,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.Tuple
                 [
-                  result;
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                  M.borrow (| Pointer.Kind.Ref, result |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+                  |)
                 ]
             |),
             [
@@ -542,6 +661,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                         [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
                                         ],
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -550,9 +670,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           ]
                                       ],
                                       "eq",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| left_val |); M.read (| right_val |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)) in
@@ -585,8 +715,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

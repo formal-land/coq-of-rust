@@ -29,7 +29,9 @@ Module iter.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
+                                [],
                                 "into_iter",
+                                [],
                                 []
                               |),
                               [
@@ -59,10 +61,19 @@ Module iter.
                                                 []
                                                 [ Ty.path "usize" ],
                                               [],
+                                              [],
                                               "next",
+                                              [],
                                               []
                                             |),
-                                            [ iter ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
                                           |)
                                         |),
                                         [
@@ -100,19 +111,32 @@ Module iter.
                                                                   []
                                                                   [ Ty.associated ],
                                                                 "is_none",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::iter::traits::double_ended::DoubleEndedIterator",
-                                                                      Self,
-                                                                      [],
-                                                                      "next_back",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| self |) ]
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                                                                        Self,
+                                                                        [],
+                                                                        [],
+                                                                        "next_back",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               ]
@@ -138,6 +162,7 @@ Module iter.
                                                                         []
                                                                         [ Ty.path "usize" ],
                                                                       "new_unchecked",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -209,19 +234,31 @@ Module iter.
                                               [ Ty.path "usize" ]
                                           ],
                                         "is_err",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::double_ended::DoubleEndedIterator",
-                                              Self,
-                                              [],
-                                              "advance_back_by",
-                                              []
-                                            |),
-                                            [ M.read (| self |); M.read (| n |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::double_ended::DoubleEndedIterator",
+                                                Self,
+                                                [],
+                                                [],
+                                                "advance_back_by",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
+                                                M.read (| n |)
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -250,10 +287,12 @@ Module iter.
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Self,
                           [],
+                          [],
                           "next_back",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |)
                   |)))
@@ -297,10 +336,17 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Self,
                                           [],
+                                          [],
                                           "next_back",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -321,7 +367,9 @@ Module iter.
                                                 "core::ops::try_trait::Try",
                                                 R,
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -329,12 +377,14 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ B; Ty.associated ] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    f;
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
                                                     Value.Tuple
                                                       [ M.read (| accum |); M.read (| x |) ]
                                                   ]
@@ -360,8 +410,10 @@ Module iter.
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
+                                                            [],
                                                             [ Ty.associated ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -407,7 +459,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| accum |) ]
@@ -447,10 +501,12 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Self,
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
-                                    [ self ]
+                                    [ M.borrow (| Pointer.Kind.MutRef, self |) ]
                                   |)
                                 |) in
                               let γ0_0 :=
@@ -467,11 +523,16 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ B; Ty.associated ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| accum |); M.read (| x |) ]
+                                    ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -511,6 +572,7 @@ Module iter.
                     []
                     [ Ty.associated; Ty.tuple [] ],
                   "break_value",
+                  [],
                   []
                 |),
                 [
@@ -519,7 +581,9 @@ Module iter.
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Self,
                       [],
+                      [],
                       "try_rfold",
+                      [],
                       [
                         Ty.tuple [];
                         Ty.associated;
@@ -530,10 +594,10 @@ Module iter.
                       ]
                     |),
                     [
-                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       Value.Tuple [];
                       M.call_closure (|
-                        M.get_associated_function (| Self, "check.rfind", [] |),
+                        M.get_associated_function (| Self, "check.rfind", [], [] |),
                         [ M.read (| predicate |) ]
                       |)
                     ]
@@ -566,10 +630,17 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "next_back",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -596,10 +667,18 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "advance_back_by",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| n |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -621,10 +700,18 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "nth_back",
+                  [],
                   []
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| n |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| n |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -650,10 +737,16 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                   Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
+                  [],
                   "spec_rfold",
+                  [],
                   [ B; F ]
                 |),
-                [ M.read (| self |); M.read (| init |); M.read (| f |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| init |);
+                  M.read (| f |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -680,10 +773,16 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                   Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
+                  [],
                   "spec_try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
-                [ M.read (| self |); M.read (| init |); M.read (| f |) ]
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| init |);
+                  M.read (| f |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -752,10 +851,17 @@ Module iter.
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
                                       [],
+                                      [],
                                       "next_back",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |) in
                               let γ0_0 :=
@@ -772,11 +878,16 @@ Module iter.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [ Ty.tuple [ B; Ty.associated ] ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                    [
+                                      M.borrow (| Pointer.Kind.MutRef, f |);
+                                      Value.Tuple [ M.read (| accum |); M.read (| x |) ]
+                                    ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -846,10 +957,17 @@ Module iter.
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply (Ty.path "&mut") [] [ I ],
                                           [],
+                                          [],
                                           "next_back",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
                                     |) in
                                   let γ0_0 :=
@@ -870,7 +988,9 @@ Module iter.
                                                 "core::ops::try_trait::Try",
                                                 R,
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -878,12 +998,14 @@ Module iter.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
+                                                    [],
                                                     [ Ty.tuple [ B; Ty.associated ] ],
                                                     "call_mut",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    f;
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
                                                     Value.Tuple
                                                       [ M.read (| accum |); M.read (| x |) ]
                                                   ]
@@ -909,8 +1031,10 @@ Module iter.
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
+                                                            [],
                                                             [ Ty.associated ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -956,7 +1080,9 @@ Module iter.
                           "core::ops::try_trait::Try",
                           R,
                           [],
+                          [],
                           "from_output",
+                          [],
                           []
                         |),
                         [ M.read (| accum |) ]
@@ -1014,7 +1140,9 @@ Module iter.
                         "core::iter::traits::double_ended::DoubleEndedIteratorRefSpec",
                         Ty.apply (Ty.path "&mut") [] [ I ],
                         [],
+                        [],
                         "spec_try_rfold",
+                        [],
                         [
                           AAA;
                           Ty.associated;
@@ -1022,12 +1150,13 @@ Module iter.
                         ]
                       |),
                       [
-                        self;
+                        M.borrow (| Pointer.Kind.MutRef, self |);
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
+                            [],
                             [ AAA; Ty.associated; FFF ]
                           |),
                           [ M.read (| fold |) ]
@@ -1069,10 +1198,19 @@ Module iter.
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
                   [],
+                  [],
                   "try_rfold",
+                  [],
                   [ B; F; R ]
                 |),
-                [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |);
+                  M.read (| init |);
+                  M.read (| f |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

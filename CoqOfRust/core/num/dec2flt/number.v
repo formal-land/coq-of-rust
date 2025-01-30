@@ -65,7 +65,7 @@ Module num.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
                           ]
                         |)))
@@ -108,35 +108,83 @@ Module num.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field4_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Number" |);
-                  M.read (| Value.String "exponent" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::dec2flt::number::Number",
-                    "exponent"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Number" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "exponent" |) |)
                   |);
-                  M.read (| Value.String "mantissa" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::dec2flt::number::Number",
-                    "mantissa"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::number::Number",
+                          "exponent"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "negative" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::dec2flt::number::Number",
-                    "negative"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "mantissa" |) |)
                   |);
-                  M.read (| Value.String "many_digits" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::number::Number",
-                      "many_digits"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::number::Number",
+                          "mantissa"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "negative" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::number::Number",
+                          "negative"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "many_digits" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::dec2flt::number::Number",
+                              "many_digits"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -169,7 +217,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "i64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -180,7 +230,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "u64",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -191,7 +243,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "bool",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -202,7 +256,9 @@ Module num.
                         "core::default::Default",
                         Ty.path "bool",
                         [],
+                        [],
                         "default",
+                        [],
                         []
                       |),
                       []
@@ -246,14 +302,14 @@ Module num.
                     BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
@@ -263,14 +319,14 @@ Module num.
                       (BinOp.eq (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
                         |),
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
+                            M.deref (| M.read (| other |) |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
@@ -281,14 +337,14 @@ Module num.
                     (BinOp.eq (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.deref (| M.read (| other |) |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
@@ -299,14 +355,14 @@ Module num.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
@@ -396,7 +452,7 @@ Module num.
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
@@ -406,7 +462,7 @@ Module num.
                       (BinOp.le (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
+                            M.deref (| M.read (| self |) |),
                             "core::num::dec2flt::number::Number",
                             "exponent"
                           |)
@@ -422,7 +478,7 @@ Module num.
                     (BinOp.le (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "core::num::dec2flt::number::Number",
                           "mantissa"
                         |)
@@ -438,7 +494,7 @@ Module num.
                   (UnOp.not (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
@@ -519,9 +575,15 @@ Module num.
                                     M.get_associated_function (|
                                       Ty.path "core::num::dec2flt::number::Number",
                                       "is_fast_path",
+                                      [],
                                       [ F ]
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -539,7 +601,7 @@ Module num.
                                               BinOp.le (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::num::dec2flt::number::Number",
                                                     "exponent"
                                                   |)
@@ -563,13 +625,15 @@ Module num.
                                                 "core::num::dec2flt::float::RawFloat",
                                                 F,
                                                 [],
+                                                [],
                                                 "from_u64",
+                                                [],
                                                 []
                                               |),
                                               [
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
+                                                    M.deref (| M.read (| self |) |),
                                                     "core::num::dec2flt::number::Number",
                                                     "mantissa"
                                                   |)
@@ -588,7 +652,7 @@ Module num.
                                                       BinOp.lt (|
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::num::dec2flt::number::Number",
                                                             "exponent"
                                                           |)
@@ -606,8 +670,10 @@ Module num.
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Div",
                                                       F,
+                                                      [],
                                                       [ F ],
                                                       "div",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -617,15 +683,18 @@ Module num.
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
                                                           [],
+                                                          [],
                                                           "pow10_fast_path",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "usize")
                                                             (UnOp.neg (|
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
+                                                                  M.deref (| M.read (| self |) |),
                                                                   "core::num::dec2flt::number::Number",
                                                                   "exponent"
                                                                 |)
@@ -643,8 +712,10 @@ Module num.
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Mul",
                                                       F,
+                                                      [],
                                                       [ F ],
                                                       "mul",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -654,14 +725,17 @@ Module num.
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
                                                           [],
+                                                          [],
                                                           "pow10_fast_path",
+                                                          [],
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
+                                                          M.cast
+                                                            (Ty.path "usize")
                                                             (M.read (|
                                                               M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
+                                                                M.deref (| M.read (| self |) |),
                                                                 "core::num::dec2flt::number::Number",
                                                                 "exponent"
                                                               |)
@@ -680,7 +754,7 @@ Module num.
                                             BinOp.Wrap.sub (|
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
+                                                  M.deref (| M.read (| self |) |),
                                                   "core::num::dec2flt::number::Number",
                                                   "exponent"
                                                 |)
@@ -704,7 +778,9 @@ Module num.
                                                       []
                                                       [ Ty.path "u64" ],
                                                     [],
+                                                    [],
                                                     "branch",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -712,12 +788,13 @@ Module num.
                                                       M.get_associated_function (|
                                                         Ty.path "u64",
                                                         "checked_mul",
+                                                        [],
                                                         []
                                                       |),
                                                       [
                                                         M.read (|
                                                           M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
+                                                            M.deref (| M.read (| self |) |),
                                                             "core::num::dec2flt::number::Number",
                                                             "mantissa"
                                                           |)
@@ -728,7 +805,9 @@ Module num.
                                                               "core::num::dec2flt::number::INT_POW10"
                                                             |),
                                                             M.alloc (|
-                                                              M.rust_cast (M.read (| shift |))
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (| shift |))
                                                             |)
                                                           |)
                                                         |)
@@ -758,6 +837,7 @@ Module num.
                                                                   (Ty.path "core::option::Option")
                                                                   []
                                                                   [ F ],
+                                                                [],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
@@ -768,6 +848,7 @@ Module num.
                                                                     ]
                                                                 ],
                                                                 "from_residual",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ M.read (| residual |) ]
@@ -832,8 +913,10 @@ Module num.
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               F,
+                                              [],
                                               [ F ],
                                               "mul",
+                                              [],
                                               []
                                             |),
                                             [
@@ -842,7 +925,9 @@ Module num.
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
                                                   [],
+                                                  [],
                                                   "from_u64",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| mantissa |) ]
@@ -852,11 +937,14 @@ Module num.
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
                                                   [],
+                                                  [],
                                                   "pow10_fast_path",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.rust_cast
+                                                  M.cast
+                                                    (Ty.path "usize")
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
@@ -879,7 +967,7 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::num::dec2flt::number::Number",
                                             "negative"
                                           |)) in
@@ -896,7 +984,9 @@ Module num.
                                               "core::ops::arith::Neg",
                                               F,
                                               [],
+                                              [],
                                               "neg",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| value |) ]

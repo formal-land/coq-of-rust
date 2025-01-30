@@ -44,7 +44,7 @@ Module panic.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
                 ]
               |)
@@ -74,29 +74,57 @@ Module panic.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field3_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "Location" |);
-                M.read (| Value.String "file" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::location::Location",
-                  "file"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Location" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "file" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::location::Location",
+                        "file"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "line" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::location::Location",
-                  "line"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "line" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::location::Location",
+                        "line"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "col" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::location::Location",
-                    "col"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "col" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::panic::location::Location",
+                            "col"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -168,43 +196,85 @@ Module panic.
                       "core::hash::Hash",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "hash",
+                      [],
                       [ __H ]
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::panic::location::Location",
-                        "file"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::panic::location::Location",
+                              "file"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                    M.get_trait_method (|
+                      "core::hash::Hash",
+                      Ty.path "u32",
+                      [],
+                      [],
+                      "hash",
+                      [],
+                      [ __H ]
+                    |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::panic::location::Location",
-                        "line"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::panic::location::Location",
+                              "line"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.read (| state |)
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                     ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "u32",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::location::Location",
-                      "col"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::panic::location::Location",
+                            "col"
+                          |)
+                        |)
+                      |)
                     |);
-                    M.read (| state |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |)
               |)
@@ -238,19 +308,37 @@ Module panic.
                       "core::cmp::Ord",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       [],
+                      [],
                       "cmp",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::panic::location::Location",
-                        "file"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::panic::location::Location",
+                              "file"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::panic::location::Location",
-                        "file"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::panic::location::Location",
+                              "file"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -262,17 +350,41 @@ Module panic.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
+                            M.get_trait_method (|
+                              "core::cmp::Ord",
+                              Ty.path "u32",
+                              [],
+                              [],
+                              "cmp",
+                              [],
+                              []
+                            |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::location::Location",
-                                "line"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::panic::location::Location",
+                                      "line"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "core::panic::location::Location",
-                                "line"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| other |) |),
+                                      "core::panic::location::Location",
+                                      "line"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -287,19 +399,37 @@ Module panic.
                                     "core::cmp::Ord",
                                     Ty.path "u32",
                                     [],
+                                    [],
                                     "cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::panic::location::Location",
-                                      "col"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::panic::location::Location",
+                                            "col"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "core::panic::location::Location",
-                                      "col"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "core::panic::location::Location",
+                                            "col"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -355,20 +485,28 @@ Module panic.
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     "eq",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::location::Location",
-                      "file"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::panic::location::Location",
+                        "file"
+                      |)
                     |);
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
-                      "core::panic::location::Location",
-                      "file"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::panic::location::Location",
+                        "file"
+                      |)
                     |)
                   ]
                 |),
@@ -376,14 +514,14 @@ Module panic.
                   (BinOp.eq (|
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::panic::location::Location",
                         "line"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
+                        M.deref (| M.read (| other |) |),
                         "core::panic::location::Location",
                         "line"
                       |)
@@ -394,14 +532,14 @@ Module panic.
                 (BinOp.eq (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::panic::location::Location",
                       "col"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| other |),
+                      M.deref (| M.read (| other |) |),
                       "core::panic::location::Location",
                       "col"
                     |)
@@ -436,20 +574,38 @@ Module panic.
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                      [],
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       "partial_cmp",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::panic::location::Location",
-                        "file"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::panic::location::Location",
+                              "file"
+                            |)
+                          |)
+                        |)
                       |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| other |),
-                        "core::panic::location::Location",
-                        "file"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "core::panic::location::Location",
+                              "file"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -470,20 +626,38 @@ Module panic.
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "u32",
+                              [],
                               [ Ty.path "u32" ],
                               "partial_cmp",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::location::Location",
-                                "line"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::panic::location::Location",
+                                      "line"
+                                    |)
+                                  |)
+                                |)
                               |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| other |),
-                                "core::panic::location::Location",
-                                "line"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| other |) |),
+                                      "core::panic::location::Location",
+                                      "line"
+                                    |)
+                                  |)
+                                |)
                               |)
                             ]
                           |)
@@ -503,20 +677,38 @@ Module panic.
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "u32",
+                                    [],
                                     [ Ty.path "u32" ],
                                     "partial_cmp",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::panic::location::Location",
-                                      "col"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::panic::location::Location",
+                                            "col"
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| other |),
-                                      "core::panic::location::Location",
-                                      "col"
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| other |) |),
+                                            "core::panic::location::Location",
+                                            "col"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -576,11 +768,16 @@ Module panic.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::panic::location::Location",
-                "file"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::panic::location::Location",
+                    "file"
+                  |)
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -600,7 +797,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::panic::location::Location",
                 "line"
               |)
@@ -622,7 +819,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "core::panic::location::Location",
                 "col"
               |)
@@ -645,7 +842,10 @@ Module panic.
             let col := M.alloc (| col |) in
             Value.StructRecord
               "core::panic::location::Location"
-              [ ("file", M.read (| file |)); ("line", M.read (| line |)); ("col", M.read (| col |))
+              [
+                ("file", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| file |) |) |));
+                ("line", M.read (| line |));
+                ("col", M.read (| col |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -670,66 +870,109 @@ Module panic.
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
-                M.read (| formatter |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "" |);
-                          M.read (| Value.String ":" |);
-                          M.read (| Value.String ":" |)
-                        ]
-                    |);
-                    M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::location::Location",
-                                "file"
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "u32" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::location::Location",
-                                "line"
-                              |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "u32" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::location::Location",
-                                "col"
-                              |)
-                            ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "" |);
+                                M.read (| Value.String ":" |);
+                                M.read (| Value.String ":" |)
+                              ]
                           |)
-                        ]
+                        |)
+                      |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::panic::location::Location",
+                                            "file"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [],
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::panic::location::Location",
+                                            "line"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [],
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::panic::location::Location",
+                                            "col"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)

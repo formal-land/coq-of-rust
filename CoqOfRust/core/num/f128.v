@@ -315,7 +315,7 @@ Module f128.
           (let self := M.alloc (| self |) in
           BinOp.lt (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "f128", "abs_private", [] |),
+              M.get_associated_function (| Ty.path "f128", "abs_private", [], [] |),
               [ M.read (| self |) ]
             |),
             M.read (| M.get_constant (| "core::f128::INFINITY" |) |)
@@ -339,7 +339,7 @@ Module f128.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f128", "classify", [] |),
+                  M.get_associated_function (| Ty.path "f128", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -371,7 +371,7 @@ Module f128.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f128", "classify", [] |),
+                  M.get_associated_function (| Ty.path "f128", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |),
@@ -410,7 +410,7 @@ Module f128.
             let~ bits :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                  M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                   [ M.read (| self |) ]
                 |)
               |) in
@@ -500,7 +500,7 @@ Module f128.
           (let self := M.alloc (| self |) in
           UnOp.not (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "f128", "is_sign_negative", [] |),
+              M.get_associated_function (| Ty.path "f128", "is_sign_negative", [], [] |),
               [ M.read (| self |) ]
             |)
           |)))
@@ -526,7 +526,7 @@ Module f128.
           BinOp.ne (|
             BinOp.bit_and
               (M.call_closure (|
-                M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |))
               (BinOp.Wrap.shl (|
@@ -573,7 +573,7 @@ Module f128.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -588,7 +588,12 @@ Module f128.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "f128", "is_nan", [] |),
+                                    M.get_associated_function (|
+                                      Ty.path "f128",
+                                      "is_nan",
+                                      [],
+                                      []
+                                    |),
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
@@ -598,6 +603,7 @@ Module f128.
                                         M.get_associated_function (|
                                           Ty.path "f128",
                                           "to_bits",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| M.get_constant (| "core::f128::INFINITY" |) |) ]
@@ -672,7 +678,7 @@ Module f128.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f128", "from_bits", [] |),
+                    M.get_associated_function (| Ty.path "f128", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
                 |)
@@ -715,7 +721,7 @@ Module f128.
                 let~ bits :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                      M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
@@ -730,7 +736,12 @@ Module f128.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
-                                    M.get_associated_function (| Ty.path "f128", "is_nan", [] |),
+                                    M.get_associated_function (|
+                                      Ty.path "f128",
+                                      "is_nan",
+                                      [],
+                                      []
+                                    |),
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
@@ -740,6 +751,7 @@ Module f128.
                                         M.get_associated_function (|
                                           Ty.path "f128",
                                           "to_bits",
+                                          [],
                                           []
                                         |),
                                         [
@@ -818,7 +830,7 @@ Module f128.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "f128", "from_bits", [] |),
+                    M.get_associated_function (| Ty.path "f128", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
                 |)
@@ -1002,6 +1014,7 @@ Module f128.
                                                       M.get_associated_function (|
                                                         Ty.path "f128",
                                                         "is_sign_positive",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -1011,6 +1024,7 @@ Module f128.
                                                         M.get_associated_function (|
                                                           Ty.path "f128",
                                                           "is_sign_negative",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| other |) ]
@@ -1118,6 +1132,7 @@ Module f128.
                                                       M.get_associated_function (|
                                                         Ty.path "f128",
                                                         "is_sign_negative",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| self |) ]
@@ -1127,6 +1142,7 @@ Module f128.
                                                         M.get_associated_function (|
                                                           Ty.path "f128",
                                                           "is_sign_positive",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| other |) ]
@@ -1202,14 +1218,14 @@ Module f128.
                     let~ abs_a :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f128", "abs_private", [] |),
+                          M.get_associated_function (| Ty.path "f128", "abs_private", [], [] |),
                           [ M.read (| a |) ]
                         |)
                       |) in
                     let~ abs_b :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_associated_function (| Ty.path "f128", "abs_private", [] |),
+                          M.get_associated_function (| Ty.path "f128", "abs_private", [], [] |),
                           [ M.read (| b |) ]
                         |)
                       |) in
@@ -1352,8 +1368,10 @@ Module f128.
             M.get_trait_method (|
               "core::convert::num::FloatToInt",
               Ty.path "f128",
+              [],
               [ Int ],
               "to_int_unchecked",
+              [],
               []
             |),
             [ M.read (| self |) ]
@@ -1424,10 +1442,10 @@ Module f128.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "to_be_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "to_be_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1448,10 +1466,10 @@ Module f128.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "to_le_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1472,10 +1490,10 @@ Module f128.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [] |),
+            M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
             ]
@@ -1496,10 +1514,10 @@ Module f128.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f128", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f128", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1521,10 +1539,10 @@ Module f128.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f128", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f128", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_le_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_le_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1546,10 +1564,10 @@ Module f128.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "f128", "from_bits", [] |),
+            M.get_associated_function (| Ty.path "f128", "from_bits", [], [] |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [] |),
+                M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
             ]
@@ -1602,18 +1620,20 @@ Module f128.
           M.read (|
             let~ left :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i128")
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
-                    [ M.read (| M.read (| self |) |) ]
+                    M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |))
               |) in
             let~ right :=
               M.alloc (|
-                M.rust_cast
+                M.cast
+                  (Ty.path "i128")
                   (M.call_closure (|
-                    M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
-                    [ M.read (| M.read (| other |) |) ]
+                    M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
+                    [ M.read (| M.deref (| M.read (| other |) |) |) ]
                   |))
               |) in
             let~ _ :=
@@ -1622,9 +1642,11 @@ Module f128.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i128")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 127 |)),
                       Value.Integer IntegerKind.I32 1
                     |)))
@@ -1635,9 +1657,11 @@ Module f128.
                 β,
                 BinOp.bit_xor
                   (M.read (| β |))
-                  (M.rust_cast
+                  (M.cast
+                    (Ty.path "i128")
                     (BinOp.Wrap.shr (|
-                      M.rust_cast
+                      M.cast
+                        (Ty.path "u128")
                         (BinOp.Wrap.shr (|
                           M.read (| right |),
                           Value.Integer IntegerKind.I32 127
@@ -1647,8 +1671,14 @@ Module f128.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], "cmp", [] |),
-                [ left; right ]
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "i128", [], [], "cmp", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.Ref, left |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, right |) |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -1698,38 +1728,71 @@ Module f128.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "min > max, or either was NaN. min = "
-                                        |);
-                                        M.read (| Value.String ", max = " |)
-                                      ]
-                                  |);
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "f128" ]
-                                          |),
-                                          [ min ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "f128" ]
-                                          |),
-                                          [ max ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String "min > max, or either was NaN. min = "
+                                              |);
+                                              M.read (| Value.String ", max = " |)
+                                            ]
                                         |)
-                                      ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "f128" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, min |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
+                                                  [ Ty.path "f128" ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, max |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)

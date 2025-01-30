@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
           "payment_channel::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -48,7 +56,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -93,14 +101,14 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
         BinOp.eq (|
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "payment_channel::AccountId",
               0
             |)
           |),
           M.read (|
             M.SubPointer.get_struct_tuple_field (|
-              M.read (| other |),
+              M.deref (| M.read (| other |) |),
               "payment_channel::AccountId",
               0
             |)
@@ -265,7 +273,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                   [],
                   [ Ty.path "payment_channel::Error" ]
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
           let~ __arg1_discr :=
@@ -276,7 +284,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                   [],
                   [ Ty.path "payment_channel::Error" ]
                 |),
-                [ M.read (| other |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
           M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -362,7 +370,7 @@ Module Impl_payment_channel_Env.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::Env",
             "caller"
           |)
@@ -651,7 +659,12 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "payment_channel::PaymentChannel", "init_env", [] |),
+          M.get_associated_function (|
+            Ty.path "payment_channel::PaymentChannel",
+            "init_env",
+            [],
+            []
+          |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -690,17 +703,22 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "account_id",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "payment_channel::PaymentChannel",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "payment_channel::PaymentChannel",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -718,7 +736,9 @@ Module Impl_payment_channel_PaymentChannel.
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [ Ty.path "u8" ],
                   [],
+                  [],
                   "default",
+                  [],
                   []
                 |),
                 []
@@ -735,7 +755,16 @@ Module Impl_payment_channel_PaymentChannel.
                     Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ]
                   ]
                 |),
-                [ encodable; message ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, encodable |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, message |) |)
+                  |)
+                ]
               |)
             |) in
           let~ pub_key :=
@@ -751,12 +780,26 @@ Module Impl_payment_channel_PaymentChannel.
                     []
                     [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                   "unwrap_or_else",
+                  [],
                   [ Ty.function [ Ty.tuple [ Ty.path "payment_channel::Error" ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
                     M.get_function (| "payment_channel::ecdsa_recover", [], [] |),
-                    [ signature; message; pub_key ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, signature |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, message |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, pub_key |) |)
+                      |)
+                    ]
                   |);
                   M.closure
                     (fun γ =>
@@ -798,10 +841,21 @@ Module Impl_payment_channel_PaymentChannel.
                   "payment_channel::CryptoHash",
                   Ty.path "payment_channel::Blake2x256",
                   [],
+                  [],
                   "hash",
+                  [],
                   []
                 |),
-                [ pub_key; signature_account_id ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, pub_key |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, signature_account_id |) |)
+                  |)
+                ]
               |)
             |) in
           M.alloc (|
@@ -809,29 +863,39 @@ Module Impl_payment_channel_PaymentChannel.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "payment_channel::AccountId",
+                [],
                 [ Ty.path "payment_channel::AccountId" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "payment_channel::PaymentChannel",
-                  "recipient"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "payment_channel::PaymentChannel",
+                    "recipient"
+                  |)
                 |);
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::convert::Into",
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 32 ]
-                        [ Ty.path "u8" ],
-                      [ Ty.path "payment_channel::AccountId" ],
-                      "into",
-                      []
-                    |),
-                    [ M.read (| signature_account_id |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::convert::Into",
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ],
+                        [],
+                        [ Ty.path "payment_channel::AccountId" ],
+                        "into",
+                        [],
+                        []
+                      |),
+                      [ M.read (| signature_account_id |) ]
+                    |)
                   |)
                 |)
               ]
@@ -866,16 +930,20 @@ Module Impl_payment_channel_PaymentChannel.
           [
             ("sender",
               M.call_closure (|
-                M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [] |),
+                M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [], [] |),
                 [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "payment_channel::PaymentChannel",
-                        "init_env",
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "payment_channel::PaymentChannel",
+                          "init_env",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
+                      |)
                     |)
                   |)
                 ]
@@ -935,36 +1003,54 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "payment_channel::Env",
-                                        "caller",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "payment_channel::PaymentChannel",
-                                              "env",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "payment_channel::Env",
+                                          "caller",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "payment_channel::PaymentChannel",
+                                                  "env",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "payment_channel::PaymentChannel",
+                                      "recipient"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1002,7 +1088,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.read (| amount |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
@@ -1043,9 +1129,17 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| amount |);
+                                    M.read (| signature |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -1077,7 +1171,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1088,6 +1184,7 @@ Module Impl_payment_channel_PaymentChannel.
                               []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
@@ -1100,22 +1197,32 @@ Module Impl_payment_channel_PaymentChannel.
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "payment_channel::PaymentChannel",
-                                      "env",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "payment_channel::PaymentChannel",
+                                        "env",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "payment_channel::PaymentChannel",
                                     "recipient"
                                   |)
@@ -1124,7 +1231,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.read (| amount |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "payment_channel::PaymentChannel",
                                       "withdrawn"
                                     |)
@@ -1176,6 +1283,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1186,6 +1294,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1243,7 +1352,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1251,9 +1362,14 @@ Module Impl_payment_channel_PaymentChannel.
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "close_inner",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| amount |);
+                            M.read (| signature |)
+                          ]
                         |)
                       ]
                     |)
@@ -1279,6 +1395,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1289,6 +1406,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -1315,22 +1433,27 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "terminate_contract",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "payment_channel::PaymentChannel",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "payment_channel::PaymentChannel",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "payment_channel::PaymentChannel",
                           "sender"
                         |)
@@ -1387,36 +1510,54 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "payment_channel::Env",
-                                        "caller",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "payment_channel::PaymentChannel",
-                                              "env",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "payment_channel::Env",
+                                          "caller",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "payment_channel::PaymentChannel",
+                                                  "env",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "sender"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "payment_channel::PaymentChannel",
+                                      "sender"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1444,17 +1585,22 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "block_timestamp",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "payment_channel::PaymentChannel",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "payment_channel::PaymentChannel",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
                     ]
@@ -1466,7 +1612,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.read (| now |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "payment_channel::PaymentChannel",
                         "close_duration"
                       |)
@@ -1479,17 +1625,22 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "emit_event",
+                      [],
                       []
                     |),
                     [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "payment_channel::PaymentChannel",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "payment_channel::PaymentChannel",
+                              "env",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |);
                       Value.StructTuple
@@ -1502,7 +1653,7 @@ Module Impl_payment_channel_PaymentChannel.
                               ("close_duration",
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "payment_channel::PaymentChannel",
                                     "close_duration"
                                   |)
@@ -1515,7 +1666,7 @@ Module Impl_payment_channel_PaymentChannel.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "payment_channel::PaymentChannel",
                     "expiration"
                   |),
@@ -1560,7 +1711,7 @@ Module Impl_payment_channel_PaymentChannel.
             (M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "payment_channel::PaymentChannel",
                   "expiration"
                 |),
@@ -1580,17 +1731,27 @@ Module Impl_payment_channel_PaymentChannel.
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "block_timestamp",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "payment_channel::PaymentChannel",
-                                    "env",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "payment_channel::PaymentChannel",
+                                      "env",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             ]
@@ -1636,22 +1797,32 @@ Module Impl_payment_channel_PaymentChannel.
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "terminate_contract",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "payment_channel::PaymentChannel",
-                                    "env",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "payment_channel::PaymentChannel",
+                                      "env",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "payment_channel::PaymentChannel",
                                   "sender"
                                 |)
@@ -1729,36 +1900,54 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
+                                  [],
                                   [ Ty.path "payment_channel::AccountId" ],
                                   "ne",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "payment_channel::Env",
-                                        "caller",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "payment_channel::PaymentChannel",
-                                              "env",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "payment_channel::Env",
+                                          "caller",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "payment_channel::PaymentChannel",
+                                                  "env",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "recipient"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "payment_channel::PaymentChannel",
+                                      "recipient"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -1797,9 +1986,17 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| amount |);
+                                    M.read (| signature |)
+                                  ]
                                 |)
                               |)
                             |)) in
@@ -1833,7 +2030,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.read (| amount |),
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
@@ -1866,7 +2063,7 @@ Module Impl_payment_channel_PaymentChannel.
                     M.read (| amount |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "payment_channel::PaymentChannel",
                         "withdrawn"
                       |)
@@ -1876,7 +2073,7 @@ Module Impl_payment_channel_PaymentChannel.
               let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "payment_channel::PaymentChannel",
                     "withdrawn"
                   |) in
@@ -1895,7 +2092,9 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                         [],
+                        [],
                         "branch",
+                        [],
                         []
                       |),
                       [
@@ -1906,6 +2105,7 @@ Module Impl_payment_channel_PaymentChannel.
                               []
                               [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                             "map_err",
+                            [],
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
@@ -1918,22 +2118,32 @@ Module Impl_payment_channel_PaymentChannel.
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
+                                [],
                                 []
                               |),
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "payment_channel::PaymentChannel",
-                                      "env",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "payment_channel::PaymentChannel",
+                                        "env",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "payment_channel::PaymentChannel",
                                     "recipient"
                                   |)
@@ -1985,6 +2195,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "payment_channel::Error" ],
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
@@ -1995,6 +2206,7 @@ Module Impl_payment_channel_PaymentChannel.
                                         ]
                                     ],
                                     "from_residual",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| residual |) ]
@@ -2035,7 +2247,7 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::PaymentChannel",
             "sender"
           |)
@@ -2057,7 +2269,7 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::PaymentChannel",
             "recipient"
           |)
@@ -2080,7 +2292,7 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::PaymentChannel",
             "expiration"
           |)
@@ -2103,7 +2315,7 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::PaymentChannel",
             "withdrawn"
           |)
@@ -2126,7 +2338,7 @@ Module Impl_payment_channel_PaymentChannel.
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
-            M.read (| self |),
+            M.deref (| M.read (| self |) |),
             "payment_channel::PaymentChannel",
             "close_duration"
           |)
@@ -2148,16 +2360,20 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
-          M.get_associated_function (| Ty.path "payment_channel::Env", "balance", [] |),
+          M.get_associated_function (| Ty.path "payment_channel::Env", "balance", [], [] |),
           [
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "payment_channel::PaymentChannel",
-                  "env",
-                  []
-                |),
-                [ M.read (| self |) ]
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "payment_channel::PaymentChannel",
+                    "env",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |)
               |)
             |)
           ]

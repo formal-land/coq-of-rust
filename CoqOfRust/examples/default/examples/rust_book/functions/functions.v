@@ -95,10 +95,23 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
+                              [],
                               []
                             |),
-                            [ M.alloc (| Value.Array [ M.read (| Value.String "fizzbuzz
-" |) ] |) ]
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "fizzbuzz
+" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                           |)
                         ]
                       |)
@@ -132,12 +145,21 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "fizz
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "fizz
 " |) ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -176,12 +198,22 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array [ M.read (| Value.String "buzz
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [ M.read (| Value.String "buzz
 " |) ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -202,29 +234,54 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
+                                              [],
                                               []
                                             |),
                                             [
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "" |);
-                                                    M.read (| Value.String "
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "" |);
+                                                          M.read (| Value.String "
 " |)
-                                                  ]
-                                              |);
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [ Ty.path "u32" ]
-                                                      |),
-                                                      [ n ]
+                                                        ]
                                                     |)
-                                                  ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "u32" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (| Pointer.Kind.Ref, n |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -266,7 +323,9 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [
@@ -274,6 +333,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                       "new",
+                      [],
                       []
                     |),
                     [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
@@ -298,10 +358,17 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                   []
                                   [ Ty.path "u32" ],
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
-                              [ iter ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                |)
+                              ]
                             |)
                           |),
                           [

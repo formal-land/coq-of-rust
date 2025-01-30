@@ -26,23 +26,43 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
+            [],
             []
           |),
           [
-            M.read (| f |);
-            M.read (| Value.String "Rectangle" |);
-            M.read (| Value.String "length" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "generics_bounds::Rectangle",
-              "length"
+            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Rectangle" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "length" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "generics_bounds::Rectangle",
+                    "length"
+                  |)
+                |)
+              |)
             |);
-            M.read (| Value.String "height" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "generics_bounds::Rectangle",
-                "height"
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "height" |) |) |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_bounds::Rectangle",
+                        "height"
+                      |)
+                    |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -82,14 +102,14 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
         BinOp.Wrap.mul (|
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "generics_bounds::Rectangle",
               "length"
             |)
           |),
           M.read (|
             M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
+              M.deref (| M.read (| self |) |),
               "generics_bounds::Rectangle",
               "height"
             |)
@@ -124,24 +144,52 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                              |),
-                              [ t ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [],
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -167,8 +215,8 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.call_closure (|
-        M.get_trait_method (| "generics_bounds::HasArea", T, [], "area", [] |),
-        [ M.read (| t |) ]
+        M.get_trait_method (| "generics_bounds::HasArea", T, [], [], "area", [], [] |),
+        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -226,7 +274,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.path "generics_bounds::Rectangle" ]
               |),
-              [ rectangle ]
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, rectangle |) |)
+                |)
+              ]
             |)
           |) in
         let~ _ :=
@@ -236,38 +289,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [],
+                      []
+                    |),
                     [
-                      M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "Area: " |); M.read (| Value.String "
-" |) ]
-                      |);
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "f64" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "generics_bounds::HasArea",
-                                      Ty.path "generics_bounds::Rectangle",
-                                      [],
-                                      "area",
-                                      []
-                                    |),
-                                    [ rectangle ]
-                                  |)
-                                |)
-                              ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "Area: " |); M.read (| Value.String "
+" |)
+                                ]
                             |)
-                          ]
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "f64" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "generics_bounds::HasArea",
+                                                  Ty.path "generics_bounds::Rectangle",
+                                                  [],
+                                                  [],
+                                                  "area",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, rectangle |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |)

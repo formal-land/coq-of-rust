@@ -25,16 +25,31 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "TryFromIntError" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::num::error::TryFromIntError",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "TryFromIntError" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::error::TryFromIntError",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -73,7 +88,7 @@ Module num.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -112,20 +127,28 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.tuple [],
+                [],
                 [ Ty.tuple [] ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::num::error::TryFromIntError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::error::TryFromIntError",
+                    0
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::num::error::TryFromIntError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::num::error::TryFromIntError",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -187,19 +210,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::error::Error",
-                    Ty.path "core::num::error::TryFromIntError",
-                    [],
-                    "description",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::error::Error",
+                        Ty.path "core::num::error::TryFromIntError",
+                        [],
+                        [],
+                        "description",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| fmt |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -226,7 +256,12 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| Value.String "out of range integral type conversion attempted" |)))
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.read (| Value.String "out of range integral type conversion attempted" |)
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -313,17 +348,32 @@ Module num.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "ParseIntError" |);
-                M.read (| Value.String "kind" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::num::error::ParseIntError",
-                    "kind"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "ParseIntError" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::num::error::ParseIntError",
+                            "kind"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -357,14 +407,24 @@ Module num.
                       "core::clone::Clone",
                       Ty.path "core::num::error::IntErrorKind",
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::error::ParseIntError",
-                        "kind"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::num::error::ParseIntError",
+                              "kind"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -405,20 +465,28 @@ Module num.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::num::error::IntErrorKind",
+                [],
                 [ Ty.path "core::num::error::IntErrorKind" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::num::error::ParseIntError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::error::ParseIntError",
+                    "kind"
+                  |)
                 |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::num::error::ParseIntError",
-                  "kind"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::num::error::ParseIntError",
+                    "kind"
+                  |)
                 |)
               ]
             |)))
@@ -511,9 +579,9 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -523,7 +591,12 @@ Module num.
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
-                          M.alloc (| M.read (| Value.String "Empty" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Empty" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -532,7 +605,12 @@ Module num.
                               γ,
                               "core::num::error::IntErrorKind::InvalidDigit"
                             |) in
-                          M.alloc (| M.read (| Value.String "InvalidDigit" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "InvalidDigit" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -541,7 +619,12 @@ Module num.
                               γ,
                               "core::num::error::IntErrorKind::PosOverflow"
                             |) in
-                          M.alloc (| M.read (| Value.String "PosOverflow" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "PosOverflow" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -550,13 +633,23 @@ Module num.
                               γ,
                               "core::num::error::IntErrorKind::NegOverflow"
                             |) in
-                          M.alloc (| M.read (| Value.String "NegOverflow" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "NegOverflow" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
-                          M.alloc (| M.read (| Value.String "Zero" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Zero" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -664,7 +757,7 @@ Module num.
                       [],
                       [ Ty.path "core::num::error::IntErrorKind" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -675,7 +768,7 @@ Module num.
                       [],
                       [ Ty.path "core::num::error::IntErrorKind" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -730,10 +823,18 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::num::error::ParseIntError",
-              "kind"
+            M.borrow (|
+              Pointer.Kind.Ref,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::num::error::ParseIntError",
+                    "kind"
+                  |)
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -757,19 +858,26 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
+              M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::error::Error",
-                    Ty.path "core::num::error::ParseIntError",
-                    [],
-                    "description",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::error::Error",
+                        Ty.path "core::num::error::ParseIntError",
+                        [],
+                        [],
+                        "description",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |);
-                M.read (| f |)
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -805,7 +913,7 @@ Module num.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::num::error::ParseIntError",
                   "kind"
                 |),
@@ -815,32 +923,57 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                       M.alloc (|
-                        M.read (| Value.String "cannot parse integer from empty string" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "cannot parse integer from empty string" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
-                      M.alloc (| M.read (| Value.String "invalid digit found in string" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid digit found in string" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                       M.alloc (|
-                        M.read (| Value.String "number too large to fit in target type" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "number too large to fit in target type" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                       M.alloc (|
-                        M.read (| Value.String "number too small to fit in target type" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "number too small to fit in target type" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                       M.alloc (|
-                        M.read (| Value.String "number would be zero for non-zero type" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "number would be zero for non-zero type" |)
+                          |)
+                        |)
                       |)))
                 ]
               |)

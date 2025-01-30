@@ -141,6 +141,9 @@ Module Pointer.
 
   Module Kind.
     Inductive t : Set :=
+    (** The address kind for the allocation primitive. This is later converted to proper pointer
+        kinds. *)
+    | Raw
     | Ref
     | MutRef
     | ConstPointer
@@ -148,6 +151,7 @@ Module Pointer.
 
     Definition to_ty_path (kind : t) : string :=
       match kind with
+      | Raw => "raw" (* it should appear as it is not possible to manipulate raw pointers in Rust *)
       | Ref => "&"
       | MutRef => "&mut"
       | ConstPointer => "*const"
@@ -158,6 +162,11 @@ Module Pointer.
   Inductive t (Value : Set) : Set :=
   | Make {A : Set} (kind : Kind.t) (ty : Ty.t) (to_value : A -> Value) (core : Core.t Value A).
   Arguments Make {_ _}.
+
+  Definition deref {Value : Set} (pointer : t Value) : t Value :=
+    match pointer with
+    | Make _ ty to_value core => Make Kind.Raw ty to_value core
+    end.
 End Pointer.
 
 Module Value.
@@ -262,17 +271,23 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead (pointer : Pointer.t Value.t)
-  | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
-  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
+  | StateRead (pointer : Value.t)
+  | StateWrite (pointer : Value.t) (value : Value.t)
+  | GetSubPointer (pointer : Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
   | GetFunction (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
-  | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
+  | GetAssociatedFunction
+    (ty : Ty.t)
+    (name : string)
+    (generic_consts : list Value.t)
+    (generic_tys : list Ty.t)
   | GetTraitMethod
     (trait : string)
     (self_ty : Ty.t)
+    (trait_consts : list Value.t)
     (trait_tys : list Ty.t)
     (method : string)
+    (generic_consts : list Value.t)
     (generic_tys : list Ty.t).
 End Primitive.
 
@@ -405,7 +420,7 @@ Module IsTraitMethod.
       (trait_tys : list Ty.t)
       (method_name : string) :
       (PolymorphicFunction.t) -> Prop :=
-  | Explicit (instance : Instance.t) (method : PolymorphicFunction.t) :
+  | Defined (instance : Instance.t) (method : PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -413,7 +428,7 @@ Module IsTraitMethod.
       instance ->
     List.assoc instance method_name = Some (InstanceField.Method method) ->
     t trait_name self_ty trait_tys method_name method
-  | Implicit (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
+  | Provided (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
       self_ty
@@ -573,17 +588,11 @@ Definition alloc (v : Value.t) : M :=
   call_primitive (Primitive.StateAlloc v).
 Arguments alloc /.
 
-Definition read (r : Value.t) : M :=
-  match r with
-  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
-  | _ => impossible "cannot read"
-  end.
+Definition read (pointer : Value.t) : M :=
+  call_primitive (Primitive.StateRead pointer).
 
-Definition write (r : Value.t) (update : Value.t) : M :=
-  match r with
-  | Value.Pointer pointer => call_primitive (Primitive.StateWrite pointer update)
-  | _ => impossible "cannot write"
-  end.
+Definition write (pointer : Value.t) (update : Value.t) : M :=
+  call_primitive (Primitive.StateWrite pointer update).
 
 Definition copy (r : Value.t) : M :=
   let* v := read r in
@@ -592,12 +601,8 @@ Arguments copy /.
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
     access in an array, we do a [break_match]. *)
-Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
-  match r with
-  | Value.Pointer pointer =>
-    call_primitive (Primitive.GetSubPointer pointer index)
-  | _ => impossible "cannot get sub-pointer"
-  end.
+Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
+  call_primitive (Primitive.GetSubPointer pointer index).
 
 Definition are_equal (value1 value2 : Value.t) : M :=
   call_primitive (Primitive.AreEqual value1 value2).
@@ -611,19 +616,22 @@ Definition get_function (path : string) (generic_consts : list Value.t) (generic
 Definition get_associated_function
   (ty : Ty.t)
   (name : string)
+  (generic_consts : list Value.t)
   (generic_tys : list Ty.t) :
   M :=
-  call_primitive (Primitive.GetAssociatedFunction ty name generic_tys).
+  call_primitive (Primitive.GetAssociatedFunction ty name generic_consts generic_tys).
 
 Definition get_trait_method
     (trait : string)
     (self_ty : Ty.t)
+    (trait_consts : list Value.t)
     (trait_tys : list Ty.t)
     (method : string)
+    (generic_consts : list Value.t)
     (generic_tys : list Ty.t) :
     M :=
   call_primitive (Primitive.GetTraitMethod
-    trait self_ty trait_tys method generic_tys
+    trait self_ty trait_consts trait_tys method generic_consts generic_tys
   ).
 
 Definition catch (body : M) (handler : Exception.t -> M) : M :=
@@ -705,15 +713,14 @@ Fixpoint find_or_pattern_aux
       )
   end.
 
-(** The [body] must be a closure. *)
 Definition find_or_pattern
     (scrutinee : Value.t)
     (arms : list (Value.t -> M))
-    (body : Value.t) :
+    (body : list Value.t -> M) :
     M :=
   let* free_vars := find_or_pattern_aux scrutinee arms in
   match free_vars with
-  | Value.Tuple free_vars => call_closure body free_vars
+  | Value.Tuple free_vars => body free_vars
   | _ => impossible "expected a tuple of free variables"
   end.
 
@@ -769,12 +776,25 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   | _ => break_match
   end.
 
+Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
+  match value with
+  | Value.Pointer (Pointer.Make Pointer.Kind.Raw ty to_value core) =>
+    pure (Value.Pointer (Pointer.Make kind ty to_value core))
+  | _ => impossible "expected a raw pointer"
+  end.
+
+Definition deref (value : Value.t) : M :=
+  match value with
+  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
+  | _ => impossible "expected a pointer"
+  end.
+
 Parameter pointer_coercion : Value.t -> Value.t.
 
-(** This function is explicitely called in the Rust AST, and should take two
+(** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of
     integers. *)
-Parameter rust_cast : Value.t -> Value.t.
+Parameter cast : Ty.t -> Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
   Value.Closure (existS (_, _) f).

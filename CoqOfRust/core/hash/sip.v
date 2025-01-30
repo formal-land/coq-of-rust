@@ -32,17 +32,32 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher13" |);
-                M.read (| Value.String "hasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher13",
-                    "hasher"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher13" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher13",
+                            "hasher"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -79,14 +94,24 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher13",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::hash::sip::SipHasher13",
+                              "hasher"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -122,7 +147,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -168,17 +195,32 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher24" |);
-                M.read (| Value.String "hasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher24",
-                    "hasher"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher24" |) |)
+                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher24",
+                            "hasher"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -215,14 +257,24 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "clone",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher24",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::hash::sip::SipHasher24",
+                              "hasher"
+                            |)
+                          |)
+                        |)
                       |)
                     ]
                   |))
@@ -258,7 +310,9 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "default",
+                      [],
                       []
                     |),
                     []
@@ -297,16 +351,31 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "SipHasher" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "SipHasher" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -339,14 +408,24 @@ Module hash.
                     "core::clone::Clone",
                     Ty.path "core::hash::sip::SipHasher24",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::hash::sip::SipHasher",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -378,7 +457,9 @@ Module hash.
                     "core::default::Default",
                     Ty.path "core::hash::sip::SipHasher24",
                     [],
+                    [],
                     "default",
+                    [],
                     []
                   |),
                   []
@@ -426,62 +507,155 @@ Module hash.
             M.read (|
               let~ names :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "k0" |);
-                        M.read (| Value.String "k1" |);
-                        M.read (| Value.String "length" |);
-                        M.read (| Value.String "state" |);
-                        M.read (| Value.String "tail" |);
-                        M.read (| Value.String "ntail" |);
-                        M.read (| Value.String "_marker" |)
-                      ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "k0" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "k1" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "length" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "state" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "tail" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "ntail" |) |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.read (| Value.String "_marker" |) |)
+                              |)
+                            ]
+                        |)
+                      |)
+                    |)
                   |)
                 |) in
               let~ values :=
                 M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "k0"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "k1"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "length"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "state"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "tail"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::hash::sip::Hasher",
-                          "ntail"
-                        |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
                         M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::hash::sip::Hasher",
-                            "_marker"
-                          |)
+                          Value.Array
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "k0"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "k1"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "length"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "state"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "tail"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::hash::sip::Hasher",
+                                      "ntail"
+                                    |)
+                                  |)
+                                |)
+                              |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::hash::sip::Hasher",
+                                          "_marker"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
                         |)
-                      ]
+                      |)
+                    |)
                   |)
                 |) in
               M.alloc (|
@@ -489,13 +663,17 @@ Module hash.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct_fields_finish",
+                    [],
                     []
                   |),
                   [
-                    M.read (| f |);
-                    M.read (| Value.String "Hasher" |);
-                    M.read (| names |);
-                    M.read (| values |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.read (| Value.String "Hasher" |) |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
               |)
@@ -540,35 +718,71 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "State" |);
-                M.read (| Value.String "v0" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v0"
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "State" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v0" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v2" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v2"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v2" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v1" |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::State",
-                  "v1"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v1" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |)
+                    |)
+                  |)
                 |);
-                M.read (| Value.String "v3" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::hash::sip::State",
-                    "v3"
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v3" |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::State",
+                            "v3"
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -596,7 +810,7 @@ Module hash.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -722,7 +936,8 @@ Module hash.
                       let~ _ :=
                         M.write (|
                           out,
-                          M.rust_cast
+                          M.cast
+                            (Ty.path "u64")
                             (M.read (|
                               let~ _ :=
                                 M.match_operator (|
@@ -768,9 +983,15 @@ Module hash.
                                                                   []
                                                                   [ Ty.path "u8" ],
                                                                 "len",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ M.read (| buf |) ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| buf |) |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)
                                                         |)
@@ -822,6 +1043,7 @@ Module hash.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -829,14 +1051,32 @@ Module hash.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "as_ptr",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| buf |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| buf |) |)
+                                              |)
+                                            ]
                                           |);
                                           BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
                                         ]
                                       |);
-                                      M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                      M.cast
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                        (M.read (|
+                                          M.use
+                                            (M.alloc (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutPointer,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, data |)
+                                                |)
+                                              |)
+                                            |))
+                                        |));
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::size_of",
@@ -850,7 +1090,7 @@ Module hash.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "u32", "to_le", [] |),
+                                  M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
                                   [ M.read (| data |) ]
                                 |)
                               |)
@@ -891,7 +1131,8 @@ Module hash.
                           BinOp.bit_or
                             (M.read (| β |))
                             (BinOp.Wrap.shl (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u64")
                                 (M.read (|
                                   let~ _ :=
                                     M.match_operator (|
@@ -937,9 +1178,15 @@ Module hash.
                                                                       []
                                                                       [ Ty.path "u8" ],
                                                                     "len",
+                                                                    [],
                                                                     []
                                                                   |),
-                                                                  [ M.read (| buf |) ]
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| buf |) |)
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)
                                                             |)
@@ -991,6 +1238,7 @@ Module hash.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -998,9 +1246,15 @@ Module hash.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "as_ptr",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| buf |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| buf |) |)
+                                                  |)
+                                                ]
                                               |);
                                               BinOp.Wrap.add (|
                                                 M.read (| start |),
@@ -1008,7 +1262,19 @@ Module hash.
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                          M.cast
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                            (M.read (|
+                                              M.use
+                                                (M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutPointer,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, data |)
+                                                    |)
+                                                  |)
+                                                |))
+                                            |));
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
@@ -1022,7 +1288,12 @@ Module hash.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_associated_function (| Ty.path "u16", "to_le", [] |),
+                                      M.get_associated_function (|
+                                        Ty.path "u16",
+                                        "to_le",
+                                        [],
+                                        []
+                                      |),
                                       [ M.read (| data |) ]
                                     |)
                                   |)
@@ -1054,18 +1325,25 @@ Module hash.
                           BinOp.bit_or
                             (M.read (| β |))
                             (BinOp.Wrap.shl (|
-                              M.rust_cast
+                              M.cast
+                                (Ty.path "u64")
                                 (M.read (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "get_unchecked",
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.read (| buf |);
-                                      BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
-                                    ]
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                        "get_unchecked",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| buf |) |)
+                                        |);
+                                        BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
+                                      ]
+                                    |)
                                   |)
                                 |)),
                               BinOp.Wrap.mul (| M.read (| i |), Value.Integer IntegerKind.Usize 8 |)
@@ -1143,6 +1421,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher",
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -1177,6 +1456,7 @@ Module hash.
                             []
                             [ Ty.path "core::hash::sip::Sip24Rounds" ],
                           "new_with_keys",
+                          [],
                           []
                         |),
                         [ M.read (| key0 |); M.read (| key1 |) ]
@@ -1206,6 +1486,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher13",
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -1237,6 +1518,7 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       "new_with_keys",
+                      [],
                       []
                     |),
                     [ M.read (| key0 |); M.read (| key1 |) ]
@@ -1308,9 +1590,10 @@ Module hash.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       "reset",
+                      [],
                       []
                     |),
-                    [ state ]
+                    [ M.borrow (| Pointer.Kind.MutRef, state |) ]
                   |)
                 |) in
               state
@@ -1342,7 +1625,7 @@ Module hash.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "length"
                   |),
@@ -1352,7 +1635,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1362,7 +1645,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
@@ -1373,7 +1656,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1383,7 +1666,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
@@ -1394,7 +1677,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1404,7 +1687,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
@@ -1415,7 +1698,7 @@ Module hash.
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |),
@@ -1425,7 +1708,7 @@ Module hash.
                   BinOp.bit_xor
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
@@ -1435,7 +1718,7 @@ Module hash.
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "ntail"
                   |),
@@ -1473,20 +1756,25 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip24Rounds" ],
                 [],
+                [],
                 "write",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
-                  |),
-                  "core::hash::sip::SipHasher24",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::hash::sip::SipHasher",
+                      0
+                    |),
+                    "core::hash::sip::SipHasher24",
+                    "hasher"
+                  |)
                 |);
-                M.read (| msg |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1514,20 +1802,25 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip24Rounds" ],
                       [],
+                      [],
                       "write_str",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "core::hash::sip::SipHasher",
-                          0
-                        |),
-                        "core::hash::sip::SipHasher24",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::SipHasher",
+                            0
+                          |),
+                          "core::hash::sip::SipHasher24",
+                          "hasher"
+                        |)
                       |);
-                      M.read (| s |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                     ]
                   |)
                 |) in
@@ -1554,18 +1847,23 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip24Rounds" ],
                 [],
+                [],
                 "finish",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::hash::sip::SipHasher",
-                    0
-                  |),
-                  "core::hash::sip::SipHasher24",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::hash::sip::SipHasher",
+                      0
+                    |),
+                    "core::hash::sip::SipHasher24",
+                    "hasher"
+                  |)
                 |)
               ]
             |)))
@@ -1607,16 +1905,21 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip13Rounds" ],
                 [],
+                [],
                 "write",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::SipHasher13",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::hash::sip::SipHasher13",
+                    "hasher"
+                  |)
                 |);
-                M.read (| msg |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1644,16 +1947,21 @@ Module hash.
                         []
                         [ Ty.path "core::hash::sip::Sip13Rounds" ],
                       [],
+                      [],
                       "write_str",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher13",
-                        "hasher"
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::SipHasher13",
+                          "hasher"
+                        |)
                       |);
-                      M.read (| s |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
                     ]
                   |)
                 |) in
@@ -1680,14 +1988,19 @@ Module hash.
                   []
                   [ Ty.path "core::hash::sip::Sip13Rounds" ],
                 [],
+                [],
                 "finish",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::hash::sip::SipHasher13",
-                  "hasher"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::hash::sip::SipHasher13",
+                    "hasher"
+                  |)
                 |)
               ]
             |)))
@@ -1773,15 +2086,16 @@ Module hash.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
+                          [],
                           []
                         |),
-                        [ M.read (| msg |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
                       |)
                     |) in
                   let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "length"
                       |) in
@@ -1799,7 +2113,7 @@ Module hash.
                                   BinOp.ne (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "ntail"
                                       |)
@@ -1816,7 +2130,7 @@ Module hash.
                                   Value.Integer IntegerKind.Usize 8,
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "core::hash::sip::Hasher",
                                       "ntail"
                                     |)
@@ -1826,7 +2140,7 @@ Module hash.
                             let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "core::hash::sip::Hasher",
                                   "tail"
                                 |) in
@@ -1838,7 +2152,10 @@ Module hash.
                                     M.call_closure (|
                                       M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
                                       [
-                                        M.read (| msg |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| msg |) |)
+                                        |);
                                         Value.Integer IntegerKind.Usize 0;
                                         M.call_closure (|
                                           M.get_function (|
@@ -1854,7 +2171,7 @@ Module hash.
                                       Value.Integer IntegerKind.Usize 8,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |)
@@ -1883,7 +2200,7 @@ Module hash.
                                           let~ _ :=
                                             let β :=
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
+                                                M.deref (| M.read (| self |) |),
                                                 "core::hash::sip::Hasher",
                                                 "ntail"
                                               |) in
@@ -1904,7 +2221,7 @@ Module hash.
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::hash::sip::Hasher",
                                             "state"
                                           |),
@@ -1917,7 +2234,7 @@ Module hash.
                                           (M.read (| β |))
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
@@ -1930,14 +2247,24 @@ Module hash.
                                             "core::hash::sip::Sip",
                                             S,
                                             [],
+                                            [],
                                             "c_rounds",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::hash::sip::Hasher",
-                                              "state"
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::hash::sip::Hasher",
+                                                    "state"
+                                                  |)
+                                                |)
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1946,7 +2273,7 @@ Module hash.
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
+                                            M.deref (| M.read (| self |) |),
                                             "core::hash::sip::Hasher",
                                             "state"
                                           |),
@@ -1959,7 +2286,7 @@ Module hash.
                                           (M.read (| β |))
                                           (M.read (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
@@ -1968,7 +2295,7 @@ Module hash.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |),
@@ -2051,9 +2378,17 @@ Module hash.
                                                                         []
                                                                         [ Ty.path "u8" ],
                                                                       "len",
+                                                                      [],
                                                                       []
                                                                     |),
-                                                                    [ M.read (| msg |) ]
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| msg |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -2106,6 +2441,7 @@ Module hash.
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2113,14 +2449,32 @@ Module hash.
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "as_ptr",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| msg |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| msg |) |)
+                                                    |)
+                                                  ]
                                                 |);
                                                 M.read (| i |)
                                               ]
                                             |);
-                                            M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                            M.cast
+                                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                              (M.read (|
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutPointer,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, data |)
+                                                      |)
+                                                    |)
+                                                  |))
+                                              |));
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::size_of",
@@ -2134,7 +2488,12 @@ Module hash.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_associated_function (| Ty.path "u64", "to_le", [] |),
+                                        M.get_associated_function (|
+                                          Ty.path "u64",
+                                          "to_le",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| data |) ]
                                       |)
                                     |)
@@ -2143,7 +2502,7 @@ Module hash.
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "state"
                                       |),
@@ -2161,14 +2520,24 @@ Module hash.
                                         "core::hash::sip::Sip",
                                         S,
                                         [],
+                                        [],
                                         "c_rounds",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::hash::sip::Hasher",
-                                          "state"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "state"
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2177,7 +2546,7 @@ Module hash.
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
+                                        M.deref (| M.read (| self |) |),
                                         "core::hash::sip::Hasher",
                                         "state"
                                       |),
@@ -2217,19 +2586,23 @@ Module hash.
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "tail"
                       |),
                       M.call_closure (|
                         M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
-                        [ M.read (| msg |); M.read (| i |); M.read (| left |) ]
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
+                          M.read (| i |);
+                          M.read (| left |)
+                        ]
                       |)
                     |) in
                   let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "ntail"
                       |),
@@ -2264,14 +2637,21 @@ Module hash.
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       [],
+                      [],
                       "write",
+                      [],
                       []
                     |),
                     [
-                      M.read (| self |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                        [ M.read (| s |) ]
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -2283,10 +2663,15 @@ Module hash.
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       [],
+                      [],
                       "write_u8",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); Value.Integer IntegerKind.U8 255 ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      Value.Integer IntegerKind.U8 255
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2320,7 +2705,7 @@ Module hash.
               let~ state :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::hash::sip::Hasher",
                     "state"
                   |)
@@ -2330,10 +2715,11 @@ Module hash.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       BinOp.bit_and
-                        (M.rust_cast
+                        (M.cast
+                          (Ty.path "u64")
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::hash::sip::Hasher",
                               "length"
                             |)
@@ -2343,7 +2729,7 @@ Module hash.
                     |))
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
                         "tail"
                       |)
@@ -2360,8 +2746,13 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::sip::Sip", S, [], "c_rounds", [] |),
-                    [ state ]
+                    M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "c_rounds", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, state |) |)
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -2386,8 +2777,13 @@ Module hash.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_trait_method (| "core::hash::sip::Sip", S, [], "d_rounds", [] |),
-                    [ state ]
+                    M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "d_rounds", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, state |) |)
+                      |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -2465,7 +2861,7 @@ Module hash.
                 ("k0",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "k0"
                     |)
@@ -2473,7 +2869,7 @@ Module hash.
                 ("k1",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "k1"
                     |)
@@ -2481,7 +2877,7 @@ Module hash.
                 ("length",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "length"
                     |)
@@ -2489,7 +2885,7 @@ Module hash.
                 ("state",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "state"
                     |)
@@ -2497,7 +2893,7 @@ Module hash.
                 ("tail",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "tail"
                     |)
@@ -2505,7 +2901,7 @@ Module hash.
                 ("ntail",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "ntail"
                     |)
@@ -2513,7 +2909,7 @@ Module hash.
                 ("_marker",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
                       "_marker"
                     |)
@@ -2548,6 +2944,7 @@ Module hash.
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                 "new_with_keys",
+                [],
                 []
               |),
               [ Value.Integer IntegerKind.U64 0; Value.Integer IntegerKind.U64 0 ]
@@ -2586,8 +2983,14 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip13Rounds" |) ]
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "Sip13Rounds" |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2657,23 +3060,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2684,23 +3087,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2711,16 +3114,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2732,7 +3135,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -2742,7 +3145,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -2751,16 +3154,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2772,7 +3175,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -2782,7 +3185,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -2791,16 +3194,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -2812,23 +3215,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2839,23 +3242,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2866,16 +3269,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -2887,7 +3290,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -2897,7 +3300,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -2906,16 +3309,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -2927,7 +3330,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -2937,7 +3340,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -2946,16 +3349,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -2987,23 +3390,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3014,23 +3417,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3041,16 +3444,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3062,7 +3465,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3072,7 +3475,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3081,16 +3484,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3102,7 +3505,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3112,7 +3515,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3121,16 +3524,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3142,23 +3545,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3169,23 +3572,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3196,16 +3599,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3217,7 +3620,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3227,7 +3630,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3236,16 +3639,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3257,7 +3660,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3267,7 +3670,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3276,16 +3679,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3299,23 +3702,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3326,23 +3729,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3353,16 +3756,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3374,7 +3777,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3384,7 +3787,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3393,16 +3796,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3414,7 +3817,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3424,7 +3827,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3433,16 +3836,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3454,23 +3857,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3481,23 +3884,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3508,16 +3911,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3529,7 +3932,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3539,7 +3942,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3548,16 +3951,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3569,7 +3972,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3579,7 +3982,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3588,16 +3991,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3611,23 +4014,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3638,23 +4041,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3665,16 +4068,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3686,7 +4089,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3696,7 +4099,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3705,16 +4108,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3726,7 +4129,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3736,7 +4139,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3745,16 +4148,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -3766,23 +4169,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3793,23 +4196,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3820,16 +4223,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -3841,7 +4244,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -3851,7 +4254,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -3860,16 +4263,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -3881,7 +4284,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -3891,7 +4294,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -3900,16 +4303,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -3953,8 +4356,14 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip24Rounds" |) ]
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "Sip24Rounds" |) |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4025,23 +4434,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4052,23 +4461,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4079,16 +4488,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4100,7 +4509,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4110,7 +4519,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4119,16 +4528,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4140,7 +4549,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4150,7 +4559,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4159,16 +4568,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4180,23 +4589,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4207,23 +4616,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4234,16 +4643,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4255,7 +4664,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4265,7 +4674,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4274,16 +4683,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4295,7 +4704,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4305,7 +4714,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4314,16 +4723,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4337,23 +4746,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4364,23 +4773,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4391,16 +4800,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4412,7 +4821,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4422,7 +4831,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4431,16 +4840,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4452,7 +4861,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4462,7 +4871,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4471,16 +4880,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4492,23 +4901,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4519,23 +4928,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4546,16 +4955,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4567,7 +4976,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4577,7 +4986,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4586,16 +4995,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4607,7 +5016,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4617,7 +5026,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4626,16 +5035,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4668,23 +5077,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4695,23 +5104,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4722,16 +5131,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4743,7 +5152,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4753,7 +5162,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4762,16 +5171,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4783,7 +5192,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4793,7 +5202,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4802,16 +5211,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -4823,23 +5232,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4850,23 +5259,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4877,16 +5286,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -4898,7 +5307,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -4908,7 +5317,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -4917,16 +5326,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -4938,7 +5347,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -4948,7 +5357,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -4957,16 +5366,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -4980,23 +5389,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5007,23 +5416,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5034,16 +5443,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5055,7 +5464,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5065,7 +5474,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5074,16 +5483,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5095,7 +5504,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5105,7 +5514,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5114,16 +5523,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5135,23 +5544,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5162,23 +5571,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5189,16 +5598,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5210,7 +5619,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5220,7 +5629,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5229,16 +5638,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5250,7 +5659,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5260,7 +5669,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5269,16 +5678,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -5292,23 +5701,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5319,23 +5728,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5346,16 +5755,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5367,7 +5776,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5377,7 +5786,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5386,16 +5795,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5407,7 +5816,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5417,7 +5826,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5426,16 +5835,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5447,23 +5856,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5474,23 +5883,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5501,16 +5910,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5522,7 +5931,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5532,7 +5941,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5541,16 +5950,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5562,7 +5971,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5572,7 +5981,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5581,16 +5990,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
@@ -5604,23 +6013,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5631,23 +6040,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5658,16 +6067,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5679,7 +6088,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5689,7 +6098,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5698,16 +6107,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5719,7 +6128,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5729,7 +6138,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5738,16 +6147,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
@@ -5759,23 +6168,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5786,23 +6195,23 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v0"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
+                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
                         |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5813,16 +6222,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v1"
                           |)
@@ -5834,7 +6243,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v1"
                     |) in
@@ -5844,7 +6253,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v2"
                         |)
@@ -5853,16 +6262,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v3"
                           |)
@@ -5874,7 +6283,7 @@ Module hash.
                 let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v3"
                     |) in
@@ -5884,7 +6293,7 @@ Module hash.
                       (M.read (| β |))
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| state |),
+                          M.deref (| M.read (| state |) |),
                           "core::hash::sip::State",
                           "v0"
                         |)
@@ -5893,16 +6302,16 @@ Module hash.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| state |),
+                      M.deref (| M.read (| state |) |),
                       "core::hash::sip::State",
                       "v2"
                     |),
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.read (| state |),
+                            M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)

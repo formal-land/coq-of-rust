@@ -198,12 +198,18 @@ Module bls12_381.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                               "len",
+                              [],
                               []
                             |),
                             [
-                              M.read (|
-                                M.get_constant (|
-                                  "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.read (|
+                                    M.get_constant (|
+                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                                    |)
+                                  |)
                                 |)
                               |)
                             ]
@@ -215,12 +221,15 @@ Module bls12_381.
                   |) in
                 let~ discount :=
                   M.alloc (|
-                    M.rust_cast
+                    M.cast
+                      (Ty.path "u64")
                       (M.read (|
                         M.SubPointer.get_array_field (|
-                          M.read (|
-                            M.get_constant (|
-                              "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                          M.deref (|
+                            M.read (|
+                              M.get_constant (|
+                                "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                              |)
                             |)
                           |),
                           index
@@ -230,7 +239,10 @@ Module bls12_381.
                 M.alloc (|
                   BinOp.Wrap.div (|
                     BinOp.Wrap.mul (|
-                      BinOp.Wrap.mul (| M.rust_cast (M.read (| k |)), M.read (| discount |) |),
+                      BinOp.Wrap.mul (|
+                        M.cast (Ty.path "u64") (M.read (| k |)),
+                        M.read (| discount |)
+                      |),
                       M.read (| multiplication_cost |)
                     |),
                     M.read (|

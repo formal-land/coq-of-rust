@@ -38,10 +38,18 @@ Module Impl_flipper_Flipper.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "flipper::Flipper", "new", [] |),
+          M.get_associated_function (| Ty.path "flipper::Flipper", "new", [], [] |),
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "bool", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "bool",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]
@@ -65,14 +73,14 @@ Module Impl_flipper_Flipper.
           let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "flipper::Flipper",
                 "value"
               |),
               UnOp.not (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "flipper::Flipper",
                     "value"
                   |)
@@ -97,7 +105,11 @@ Module Impl_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.SubPointer.get_struct_record_field (| M.read (| self |), "flipper::Flipper", "value" |)
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "flipper::Flipper",
+            "value"
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

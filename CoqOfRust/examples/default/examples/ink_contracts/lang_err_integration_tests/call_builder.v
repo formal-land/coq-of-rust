@@ -21,7 +21,15 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
           "call_builder::AccountId"
           [
             M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
+              M.get_trait_method (|
+                "core::default::Default",
+                Ty.path "u128",
+                [],
+                [],
+                "default",
+                [],
+                []
+              |),
               []
             |)
           ]))
@@ -48,7 +56,7 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
         M.read (|
           M.match_operator (|
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -160,7 +168,9 @@ Module Impl_call_builder_CallBuilderTest.
             "core::default::Default",
             Ty.path "call_builder::CallBuilderTest",
             [],
+            [],
             "default",
+            [],
             []
           |),
           []
@@ -235,26 +245,44 @@ Module Impl_call_builder_CallBuilderTest.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
+                              [],
                               []
                             |),
                             [
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String
-                                        "not implemented: No other `LangError` variants exist at the moment."
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "not implemented: No other `LangError` variants exist at the moment."
+                                          |)
+                                        ]
                                     |)
-                                  ]
+                                  |)
+                                |)
                               |);
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "none",
-                                    []
-                                  |),
-                                  []
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "none",
+                                          [],
+                                          []
+                                        |),
+                                        []
+                                      |)
+                                    |)
+                                  |)
                                 |)
                               |)
                             ]

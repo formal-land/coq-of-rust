@@ -18,12 +18,21 @@ Module move_resource.
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
               [],
+              [],
               "to_owned",
+              [],
               []
             |),
             [
-              M.read (|
-                M.get_constant (| "move_core_types::move_resource::MoveStructType::MODULE_NAME" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    M.get_constant (|
+                      "move_core_types::move_resource::MoveStructType::MODULE_NAME"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -49,12 +58,21 @@ Module move_resource.
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
               [],
+              [],
               "to_owned",
+              [],
               []
             |),
             [
-              M.read (|
-                M.get_constant (| "move_core_types::move_resource::MoveStructType::STRUCT_NAME" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    M.get_constant (|
+                      "move_core_types::move_resource::MoveStructType::STRUCT_NAME"
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -85,6 +103,7 @@ Module move_resource.
                   Ty.path "alloc::alloc::Global"
                 ],
               "new",
+              [],
               []
             |),
             []
@@ -111,7 +130,9 @@ Module move_resource.
                     "move_core_types::move_resource::MoveStructType",
                     Self,
                     [],
+                    [],
                     "struct_identifier",
+                    [],
                     []
                   |),
                   []
@@ -122,7 +143,9 @@ Module move_resource.
                     "move_core_types::move_resource::MoveStructType",
                     Self,
                     [],
+                    [],
                     "module_identifier",
+                    [],
                     []
                   |),
                   []
@@ -133,7 +156,9 @@ Module move_resource.
                     "move_core_types::move_resource::MoveStructType",
                     Self,
                     [],
+                    [],
                     "type_params",
+                    [],
                     []
                   |),
                   []
@@ -161,19 +186,25 @@ Module move_resource.
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::StructTag",
               "access_vector",
+              [],
               []
             |),
             [
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "move_core_types::move_resource::MoveStructType",
-                    Self,
-                    [],
-                    "struct_tag",
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "move_core_types::move_resource::MoveStructType",
+                      Self,
+                      [],
+                      [],
+                      "struct_tag",
+                      [],
+                      []
+                    |),
                     []
-                  |),
-                  []
+                  |)
                 |)
               |)
             ]

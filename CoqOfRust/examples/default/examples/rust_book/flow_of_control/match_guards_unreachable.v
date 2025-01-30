@@ -37,10 +37,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
-                          [ M.alloc (| Value.Array [ M.read (| Value.String "Zero
-" |) ] |) ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (| Value.Array [ M.read (| Value.String "Zero
+" |) ] |)
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
                       ]
                     |)
@@ -61,12 +72,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
+                            [],
                             []
                           |),
                           [
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Greater than zero
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Value.Array [ M.read (| Value.String "Greater than zero
 " |) ]
+                                  |)
+                                |)
+                              |)
                             |)
                           ]
                         |)
@@ -84,7 +104,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ Value.String "Should never happen." ]
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (| Pointer.Kind.Ref, Value.String "Should never happen." |)
+                          |)
+                        |)
+                      ]
                     |)
                   |)
                 |)))

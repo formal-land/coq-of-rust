@@ -26,7 +26,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
           let~ _ :=
             let β :=
               M.SubPointer.get_struct_tuple_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "scoping_rules_lifetimes_methods::Owner",
                 0
               |) in
@@ -56,31 +56,64 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "new_v1",
+                        [],
+                        []
+                      |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "`print`: " |); M.read (| Value.String "
-" |) ]
-                        |);
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.read (| self |),
-                                    "scoping_rules_lifetimes_methods::Owner",
-                                    0
-                                  |)
-                                ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "`print`: " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
                               |)
-                            ]
+                            |)
+                          |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [],
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "scoping_rules_lifetimes_methods::Owner",
+                                                0
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -121,9 +154,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "scoping_rules_lifetimes_methods::Owner",
                 "add_one",
+                [],
                 []
               |),
-              [ owner ]
+              [ M.borrow (| Pointer.Kind.MutRef, owner |) ]
             |)
           |) in
         let~ _ :=
@@ -132,9 +166,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "scoping_rules_lifetimes_methods::Owner",
                 "print",
+                [],
                 []
               |),
-              [ owner ]
+              [ M.borrow (| Pointer.Kind.Ref, owner |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

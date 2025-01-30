@@ -18,9 +18,25 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
-" |) ] |)
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_const",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "called `function()`
+" |) ]
+                            |)
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -55,12 +71,22 @@ Module cool.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `cool::function()`
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "called `cool::function()`
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -97,12 +123,21 @@ Module my.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `my::function()`
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "called `my::function()`
 " |) ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -138,13 +173,22 @@ Module my.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
+                          [],
                           []
                         |),
                         [
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my::cool::function()`
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "called `my::cool::function()`
 " |) ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -200,13 +244,26 @@ Module my.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
+                        [],
                         []
                       |),
                       [
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "called `my::indirect_call()`, that
-> " |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "called `my::indirect_call()`, that
+> "
+                                    |)
+                                  ]
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |)

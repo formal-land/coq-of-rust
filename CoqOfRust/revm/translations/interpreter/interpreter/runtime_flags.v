@@ -33,7 +33,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags",
                 "is_static"
               |)
@@ -53,7 +53,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags",
                 "is_eof"
               |)
@@ -73,7 +73,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags",
                 "is_eof_init"
               |)
@@ -93,7 +93,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
+                M.deref (| M.read (| self |) |),
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags",
                 "spec_id"
               |)

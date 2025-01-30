@@ -34,10 +34,12 @@ Module resolver.
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
-                [ M.read (| module_id |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |) ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -65,10 +67,12 @@ Module resolver.
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
                   [],
+                  [],
                   "clone",
+                  [],
                   []
                 |),
-                [ M.read (| module_id |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |) ]
               |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -133,10 +137,19 @@ Module resolver.
               "move_core_types::resolver::ResourceResolver",
               T,
               [],
+              [],
               "get_resource",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| tag |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| address |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tag |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -177,10 +190,18 @@ Module resolver.
               "move_core_types::resolver::ModuleResolver",
               T,
               [],
+              [],
               "get_module",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -222,21 +243,33 @@ Module resolver.
               "move_core_types::resolver::ModuleResolver",
               T,
               [],
+              [],
               "get_module",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply
+                        (Ty.path "alloc::sync::Arc")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |);
-              M.read (| module_id |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -277,10 +310,17 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "link_context",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -302,10 +342,18 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "relocate",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -337,10 +385,19 @@ Module resolver.
               "move_core_types::resolver::LinkageResolver",
               T,
               [],
+              [],
               "defining_module",
+              [],
               []
             |),
-            [ M.read (| M.read (| self |) |); M.read (| module_id |); M.read (| struct_ |) ]
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module_id |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| struct_ |) |) |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

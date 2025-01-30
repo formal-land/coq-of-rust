@@ -18,7 +18,9 @@ Module vec.
         | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
-            Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
+            Value.StructTuple
+              "alloc::borrow::Cow::Borrowed"
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -55,7 +57,19 @@ Module vec.
             (let s := M.alloc (| s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
-              [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]))
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.read (|
+                      M.use
+                        (M.alloc (|
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                        |))
+                    |)
+                  |)
+                |)
+              ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -116,13 +130,22 @@ Module vec.
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
-                    "as_slice",
-                    []
-                  |),
-                  [ M.read (| v |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
+                        "as_slice",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                    |)
+                  |)
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -166,8 +189,10 @@ Module vec.
                   M.get_trait_method (|
                     "core::iter::traits::collect::FromIterator",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                    [],
                     [ T ],
                     "from_iter",
+                    [],
                     [ I ]
                   |),
                   [ M.read (| it |) ]

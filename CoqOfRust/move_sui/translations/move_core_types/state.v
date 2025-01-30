@@ -42,7 +42,7 @@ Module state.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.read (| self |) |)))
+          M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -76,9 +76,9 @@ Module state.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
-              M.read (| f |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
                   self,
@@ -91,25 +91,45 @@ Module state.
                             γ,
                             "move_core_types::state::VMState::DESERIALIZER"
                           |) in
-                        M.alloc (| M.read (| Value.String "DESERIALIZER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "DESERIALIZER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
-                        M.alloc (| M.read (| Value.String "VERIFIER" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "VERIFIER" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
-                        M.alloc (| M.read (| Value.String "RUNTIME" |) |)));
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "RUNTIME" |) |)
+                          |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
-                        M.alloc (| M.read (| Value.String "OTHER" |) |)))
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "OTHER" |) |)
+                          |)
+                        |)))
                   ]
                 |)
               |)
@@ -156,7 +176,7 @@ Module state.
                     [],
                     [ Ty.path "move_core_types::state::VMState" ]
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ __arg1_discr :=
@@ -167,7 +187,7 @@ Module state.
                     [],
                     [ Ty.path "move_core_types::state::VMState" ]
                   |),
-                  [ M.read (| other |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -231,6 +251,7 @@ Module state.
                   [ Ty.path "move_core_types::state::VMState" ]
               ],
             "with",
+            [],
             [
               Ty.function
                 [
@@ -252,7 +273,7 @@ Module state.
             ]
           |),
           [
-            M.get_constant (| "move_core_types::state::STATE" |);
+            M.borrow (| Pointer.Kind.Ref, M.get_constant (| "move_core_types::state::STATE" |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -272,9 +293,13 @@ Module state.
                                     []
                                     [ Ty.path "move_core_types::state::VMState" ],
                                   "replace",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| s |); M.read (| state |) ]
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                                  M.read (| state |)
+                                ]
                               |)))
                         ]
                       |)))
@@ -308,6 +333,7 @@ Module state.
                   [ Ty.path "move_core_types::state::VMState" ]
               ],
             "with",
+            [],
             [
               Ty.function
                 [
@@ -329,7 +355,7 @@ Module state.
             ]
           |),
           [
-            M.get_constant (| "move_core_types::state::STATE" |);
+            M.borrow (| Pointer.Kind.Ref, M.get_constant (| "move_core_types::state::STATE" |) |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -343,32 +369,45 @@ Module state.
                             ltac:(M.monadic
                               (let s := M.copy (| γ |) in
                               M.read (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "core::cell::Ref")
+                                M.deref (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "core::cell::Ref")
+                                        []
+                                        [ Ty.path "move_core_types::state::VMState" ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
                                       []
-                                      [ Ty.path "move_core_types::state::VMState" ],
-                                    [],
-                                    "deref",
-                                    []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::cell::RefCell")
-                                            []
-                                            [ Ty.path "move_core_types::state::VMState" ],
-                                          "borrow",
-                                          []
-                                        |),
-                                        [ M.read (| s |) ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::cell::RefCell")
+                                                []
+                                                [ Ty.path "move_core_types::state::VMState" ],
+                                              "borrow",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |)
-                                    |)
-                                  ]
+                                    ]
+                                  |)
                                 |)
                               |)))
                         ]

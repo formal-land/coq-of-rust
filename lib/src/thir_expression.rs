@@ -186,7 +186,7 @@ fn build_inner_match(
                                     .map(|pattern| {
                                         Rc::new(Expr::Lambda {
                                             is_for_match: true,
-                                            is_internal: true,
+                                            form: LambdaForm::Function,
                                             args: vec![("γ".to_string(), None)],
                                             body: build_inner_match(
                                                 vec![("γ".to_string(), pattern.clone())],
@@ -204,7 +204,7 @@ fn build_inner_match(
                             }),
                             Rc::new(Expr::Lambda {
                                 is_for_match: true,
-                                is_internal: false,
+                                form: LambdaForm::ListFunction,
                                 args: free_vars.iter().map(|name| (name.clone(), None)).collect(),
                                 body,
                             }),
@@ -368,7 +368,7 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
 
                     Rc::new(Expr::Lambda {
                         is_for_match: true,
-                        is_internal: true,
+                        form: LambdaForm::Function,
                         args: vec![("γ".to_string(), None)],
                         body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
                     })
@@ -475,6 +475,7 @@ pub(crate) fn compile_expr<'a>(
                         ],
                     }),
                     func: "new".to_string(),
+                    generic_consts: vec![],
                     generic_tys: vec![],
                 }),
                 args: vec![value],
@@ -525,7 +526,11 @@ pub(crate) fn compile_expr<'a>(
             })
             .alloc()
         }
-        thir::ExprKind::Deref { arg } => compile_expr(env, generics, thir, arg).read(),
+        thir::ExprKind::Deref { arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.deref"),
+            args: vec![compile_expr(env, generics, thir, arg).read()],
+            kind: CallKind::Effectful,
+        }),
         thir::ExprKind::Binary { op, lhs, rhs } => {
             let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, generics, thir, lhs);
@@ -569,15 +574,10 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Cast { source } => {
-            let func = Expr::local_var("M.rust_cast");
-            let source = compile_expr(env, generics, thir, source);
+            let source = compile_expr(env, generics, thir, source).read();
+            let target_ty = compile_type(env, &expr.span, generics, &expr.ty);
 
-            Rc::new(Expr::Call {
-                func,
-                args: vec![source.read()],
-                kind: CallKind::Pure,
-            })
-            .alloc()
+            Rc::new(Expr::Cast { target_ty, source }).alloc()
         }
         thir::ExprKind::Use { source } => {
             let source = compile_expr(env, generics, thir, source);
@@ -756,13 +756,36 @@ pub(crate) fn compile_expr<'a>(
 
             Rc::new(Expr::LocalVar(name))
         }
-        thir::ExprKind::Borrow {
-            borrow_kind: _,
-            arg,
-        }
-        | thir::ExprKind::RawBorrow { mutability: _, arg } => {
-            compile_expr(env, generics, thir, arg).alloc()
-        }
+        thir::ExprKind::Borrow { borrow_kind, arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.borrow"),
+            args: vec![
+                Expr::local_var(
+                    if matches!(borrow_kind, rustc_middle::mir::BorrowKind::Mut { .. }) {
+                        "Pointer.Kind.MutRef"
+                    } else {
+                        "Pointer.Kind.Ref"
+                    },
+                ),
+                compile_expr(env, generics, thir, arg),
+            ],
+            kind: CallKind::Effectful,
+        })
+        .alloc(),
+        thir::ExprKind::RawBorrow { mutability, arg } => Rc::new(Expr::Call {
+            func: Expr::local_var("M.borrow"),
+            args: vec![
+                Expr::local_var(
+                    if matches!(mutability, rustc_middle::mir::Mutability::Mut) {
+                        "Pointer.Kind.MutPointer"
+                    } else {
+                        "Pointer.Kind.ConstPointer"
+                    },
+                ),
+                compile_expr(env, generics, thir, arg),
+            ],
+            kind: CallKind::Effectful,
+        })
+        .alloc(),
         thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
         thir::ExprKind::Continue { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Continue)),
         thir::ExprKind::Return { value } => {
@@ -908,7 +931,7 @@ pub(crate) fn compile_expr<'a>(
                     args,
                     body,
                     is_for_match: false,
-                    is_internal: false,
+                    form: LambdaForm::Closure,
                 })
                 .alloc()
             });
@@ -958,6 +981,16 @@ pub(crate) fn compile_expr<'a>(
                             let func = symbol.unwrap().to_string();
                             // We remove [nb_parent_generics] elements from the start of [generic_args]
                             // as these are already inferred from the `Self` type.
+                            let generic_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect();
                             let generic_tys = generic_args
                                 .iter()
                                 .skip(nb_parent_generics)
@@ -972,6 +1005,7 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetAssociatedFunction {
                                 ty,
                                 func,
+                                generic_consts,
                                 generic_tys,
                             })
                             .alloc()
@@ -994,7 +1028,27 @@ pub(crate) fn compile_expr<'a>(
                                 [self_ty, trait_tys @ ..] => (self_ty.clone(), trait_tys.to_vec()),
                                 _ => panic!("Expected at least one element"),
                             };
+                            let trait_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
                             let method_name = symbol.unwrap().to_string();
+                            let generic_consts = generic_args
+                                .iter()
+                                .take(nb_parent_generics)
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
                             let generic_tys = generic_args
                                 .iter()
                                 .skip(nb_parent_generics)
@@ -1009,8 +1063,10 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetTraitMethod {
                                 trait_name: parent_path,
                                 self_ty,
+                                trait_consts,
                                 trait_tys,
                                 method_name,
+                                generic_consts,
                                 generic_tys,
                             })
                             .alloc()
@@ -1058,6 +1114,7 @@ pub(crate) fn compile_expr<'a>(
                             Rc::new(Expr::GetAssociatedFunction {
                                 ty: CoqType::var("Self"),
                                 func: format!("{}.{}", symbol.unwrap(), parent_symbol),
+                                generic_consts: vec![],
                                 generic_tys: vec![],
                             })
                             .alloc()

@@ -49,17 +49,30 @@ Module identity.
                     M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [] |),
+                        M.get_associated_function (|
+                          Ty.path "bytes::bytes::Bytes",
+                          "len",
+                          [],
+                          []
+                        |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              "deref",
-                              []
-                            |),
-                            [ M.read (| input |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
                         ]
                       |);
@@ -94,8 +107,10 @@ Module identity.
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
+                                        [],
                                         [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
                                         "into",
+                                        [],
                                         []
                                       |),
                                       [
@@ -120,6 +135,7 @@ Module identity.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
+                        [],
                         []
                       |),
                       [
@@ -129,10 +145,12 @@ Module identity.
                             "core::clone::Clone",
                             Ty.path "alloy_primitives::bytes_::Bytes",
                             [],
+                            [],
                             "clone",
+                            [],
                             []
                           |),
-                          [ M.read (| input |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                         |)
                       ]
                     |)

@@ -29,7 +29,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ a; M.alloc (| Value.Integer IntegerKind.U64 8 |) ] |),
+            M.alloc (|
+              Value.Tuple
+                [
+                  M.borrow (| Pointer.Kind.Ref, a |);
+                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 8 |) |)
+                ]
+            |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -47,8 +53,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   BinOp.eq (|
-                                    M.read (| M.read (| left_val |) |),
-                                    M.read (| M.read (| right_val |) |)
+                                    M.read (| M.deref (| M.read (| left_val |) |) |),
+                                    M.read (| M.deref (| M.read (| right_val |) |) |)
                                   |)
                                 |)
                               |)) in
@@ -70,8 +76,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |),
                                     [
                                       M.read (| kind |);
-                                      M.read (| left_val |);
-                                      M.read (| right_val |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| left_val |) |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| right_val |) |)
+                                          |)
+                                        |)
+                                      |);
                                       Value.StructTuple "core::option::Option::None" []
                                     ]
                                   |)

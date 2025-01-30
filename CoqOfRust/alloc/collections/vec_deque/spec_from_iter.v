@@ -38,6 +38,7 @@ Module collections.
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -45,6 +46,7 @@ Module collections.
                       [ T; Ty.path "alloc::alloc::Global" ]
                   ],
                   "into",
+                  [],
                   []
                 |),
                 [
@@ -52,8 +54,10 @@ Module collections.
                     M.get_trait_method (|
                       "core::iter::traits::collect::FromIterator",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                      [],
                       [ T ],
                       "from_iter",
+                      [],
                       [ I ]
                     |),
                     [ M.read (| iterator |) ]
@@ -102,6 +106,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "into_vecdeque",
+                  [],
                   []
                 |),
                 [ M.read (| iterator |) ]
@@ -156,6 +161,7 @@ Module collections.
                     []
                     [ T; Ty.path "alloc::alloc::Global" ],
                   "into_vecdeque",
+                  [],
                   []
                 |),
                 [ M.read (| iterator |) ]

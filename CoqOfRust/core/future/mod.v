@@ -30,16 +30,28 @@ Module future.
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
+              [],
               []
             |),
             [
-              M.read (| f |);
-              M.read (| Value.String "ResumeTy" |);
-              M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::future::ResumeTy",
-                  0
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ResumeTy" |) |) |);
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::future::ResumeTy",
+                          0
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
               |)
             ]
@@ -78,7 +90,7 @@ Module future.
           M.read (|
             M.match_operator (|
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -126,29 +138,55 @@ Module future.
     | [], [], [ cx ] =>
       ltac:(M.monadic
         (let cx := M.alloc (| cx |) in
-        M.call_closure (|
-          M.get_associated_function (|
-            Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
-            "cast",
-            [ Ty.path "core::task::wake::Context" ]
-          |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::ptr::non_null::NonNull")
-                  []
-                  [ Ty.path "core::task::wake::Context" ],
-                "as_ptr",
-                []
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (| cx, "core::future::ResumeTy", 0 |)
+        M.borrow (|
+          Pointer.Kind.MutRef,
+          M.deref (|
+            M.borrow (|
+              Pointer.Kind.MutRef,
+              M.deref (|
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
+                            "cast",
+                            [],
+                            [ Ty.path "core::task::wake::Context" ]
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "core::task::wake::Context" ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    cx,
+                                    "core::future::ResumeTy",
+                                    0
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)
+                    |)
+                  |)
                 |)
-              ]
+              |)
             |)
-          ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

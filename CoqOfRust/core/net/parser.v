@@ -28,9 +28,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u8", "checked_mul", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -39,7 +39,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -50,6 +52,7 @@ Module net.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -57,8 +60,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u8" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -89,6 +94,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u8" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -96,6 +102,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -137,9 +144,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "checked_add", [] |),
+                  M.get_associated_function (| Ty.path "u8", "checked_add", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -148,7 +155,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -159,6 +168,7 @@ Module net.
                                     []
                                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -166,8 +176,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u8" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -198,6 +210,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u8" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -205,6 +218,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -267,9 +281,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u16", "checked_mul", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -278,7 +292,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -289,6 +305,7 @@ Module net.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -296,8 +313,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -328,6 +347,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u16" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -335,6 +355,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -376,9 +397,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "checked_add", [] |),
+                  M.get_associated_function (| Ty.path "u16", "checked_add", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -387,7 +408,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -398,6 +421,7 @@ Module net.
                                     []
                                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -405,8 +429,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u16" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -437,6 +463,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u16" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -444,6 +471,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -506,9 +534,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "checked_mul", [] |),
+                  M.get_associated_function (| Ty.path "u32", "checked_mul", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -517,7 +545,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -528,6 +558,7 @@ Module net.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::convert::Infallible" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -535,8 +566,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -567,6 +600,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u32" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -574,6 +608,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -615,9 +650,9 @@ Module net.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
+                  M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
                   [
-                    M.read (| M.read (| self |) |);
+                    M.read (| M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.match_operator (|
                         M.alloc (|
@@ -626,7 +661,9 @@ Module net.
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               [],
+                              [],
                               "branch",
+                              [],
                               []
                             |),
                             [
@@ -637,6 +674,7 @@ Module net.
                                     []
                                     [ Ty.path "u32"; Ty.path "core::convert::Infallible" ],
                                   "ok",
+                                  [],
                                   []
                                 |),
                                 [
@@ -644,8 +682,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.path "u32",
+                                      [],
                                       [ Ty.path "u32" ],
                                       "try_into",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| other |) ]
@@ -676,6 +716,7 @@ Module net.
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u32" ],
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -683,6 +724,7 @@ Module net.
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| residual |) ]
@@ -746,7 +788,9 @@ Module net.
         | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
-            Value.StructRecord "core::net::parser::Parser" [ ("state", M.read (| input |)) ]))
+            Value.StructRecord
+              "core::net::parser::Parser"
+              [ ("state", M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -775,7 +819,7 @@ Module net.
               let~ state :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
+                    M.deref (| M.read (| self |) |),
                     "core::net::parser::Parser",
                     "state"
                   |)
@@ -786,14 +830,20 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       F,
+                      [],
                       [
                         Ty.tuple
                           [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                       ],
                       "call_once",
+                      [],
                       []
                     |),
-                    [ M.read (| inner |); Value.Tuple [ M.read (| self |) ] ]
+                    [
+                      M.read (| inner |);
+                      Value.Tuple
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -809,9 +859,10 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_none",
+                                  [],
                                   []
                                 |),
-                                [ result ]
+                                [ M.borrow (| Pointer.Kind.Ref, result |) ]
                               |)
                             |)) in
                         let _ :=
@@ -819,11 +870,11 @@ Module net.
                         let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::net::parser::Parser",
                               "state"
                             |),
-                            M.read (| state |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| state |) |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -860,14 +911,20 @@ Module net.
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       F,
+                      [],
                       [
                         Ty.tuple
                           [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                       ],
                       "call_once",
+                      [],
                       []
                     |),
-                    [ M.read (| inner |); Value.Tuple [ M.read (| self |) ] ]
+                    [
+                      M.read (| inner |);
+                      Value.Tuple
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -875,6 +932,7 @@ Module net.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "ok_or",
+                    [],
                     [ Ty.path "core::net::parser::AddrParseError" ]
                   |),
                   [
@@ -891,14 +949,20 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "is_empty",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::net::parser::Parser",
-                                            "state"
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::net::parser::Parser",
+                                                "state"
+                                              |)
+                                            |)
                                           |)
                                         |)
                                       ]
@@ -943,6 +1007,7 @@ Module net.
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                 "map",
+                [],
                 [
                   Ty.path "char";
                   Ty.function
@@ -955,14 +1020,20 @@ Module net.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "first",
+                    [],
                     []
                   |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::parser::Parser",
-                        "state"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::parser::Parser",
+                            "state"
+                          |)
+                        |)
                       |)
                     |)
                   ]
@@ -984,8 +1055,10 @@ Module net.
                                     M.get_trait_method (|
                                       "core::convert::From",
                                       Ty.path "char",
+                                      [],
                                       [ Ty.path "u8" ],
                                       "from",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| b |) ]
@@ -1027,6 +1100,7 @@ Module net.
                       ]
                   ],
                 "map",
+                [],
                 [
                   Ty.path "char";
                   Ty.function
@@ -1051,14 +1125,20 @@ Module net.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "split_first",
+                    [],
                     []
                   |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::net::parser::Parser",
-                        "state"
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::parser::Parser",
+                            "state"
+                          |)
+                        |)
                       |)
                     |)
                   ]
@@ -1083,19 +1163,24 @@ Module net.
                                     let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
+                                          M.deref (| M.read (| self |) |),
                                           "core::net::parser::Parser",
                                           "state"
                                         |),
-                                        M.read (| tail |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| tail |) |)
+                                        |)
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::convert::From",
                                           Ty.path "char",
+                                          [],
                                           [ Ty.path "u8" ],
                                           "from",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| b |) ]
@@ -1130,6 +1215,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.tuple [];
                   Ty.function
@@ -1141,7 +1227,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -1161,6 +1247,7 @@ Module net.
                                         []
                                         [ Ty.path "char" ],
                                       "and_then",
+                                      [],
                                       [
                                         Ty.tuple [];
                                         Ty.function
@@ -1176,9 +1263,15 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::parser::Parser",
                                           "read_char",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| p |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| p |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.closure
                                         (fun γ =>
@@ -1269,6 +1362,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   T;
                   Ty.function
@@ -1280,7 +1374,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -1324,7 +1418,9 @@ Module net.
                                                           []
                                                           [ Ty.tuple [] ],
                                                         [],
+                                                        [],
                                                         "branch",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1332,9 +1428,16 @@ Module net.
                                                           M.get_associated_function (|
                                                             Ty.path "core::net::parser::Parser",
                                                             "read_given_char",
+                                                            [],
                                                             []
                                                           |),
-                                                          [ M.read (| p |); M.read (| sep |) ]
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| p |) |)
+                                                            |);
+                                                            M.read (| sep |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -1361,6 +1464,7 @@ Module net.
                                                                         "core::option::Option")
                                                                       []
                                                                       [ T ],
+                                                                    [],
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
@@ -1372,6 +1476,7 @@ Module net.
                                                                         ]
                                                                     ],
                                                                     "from_residual",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| residual |) ]
@@ -1401,6 +1506,7 @@ Module net.
                                         M.get_trait_method (|
                                           "core::ops::function::FnOnce",
                                           F,
+                                          [],
                                           [
                                             Ty.tuple
                                               [
@@ -1411,9 +1517,19 @@ Module net.
                                               ]
                                           ],
                                           "call_once",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| inner |); Value.Tuple [ M.read (| p |) ] ]
+                                        [
+                                          M.read (| inner |);
+                                          Value.Tuple
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| p |) |)
+                                              |)
+                                            ]
+                                        ]
                                       |)
                                     |)
                                   |)))
@@ -1493,6 +1609,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   T;
                   Ty.function
@@ -1504,7 +1621,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -1529,6 +1646,7 @@ Module net.
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "char" ],
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1536,23 +1654,36 @@ Module net.
                                                 [ Ty.path "char" ]
                                             ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::parser::Parser",
-                                                  "peek_char",
-                                                  []
-                                                |),
-                                                [ M.read (| p |) ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::net::parser::Parser",
+                                                    "peek_char",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              Value.StructTuple
-                                                "core::option::Option::Some"
-                                                [ Value.UnicodeChar 48 ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.StructTuple
+                                                  "core::option::Option::Some"
+                                                  [ Value.UnicodeChar 48 ]
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1655,6 +1786,7 @@ Module net.
                                                                       Ty.path
                                                                         "core::net::parser::Parser",
                                                                       "read_atomically",
+                                                                      [],
                                                                       [
                                                                         Ty.path "u32";
                                                                         Ty.function
@@ -1678,7 +1810,10 @@ Module net.
                                                                       ]
                                                                     |),
                                                                     [
-                                                                      M.read (| p |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (| M.read (| p |) |)
+                                                                      |);
                                                                       M.closure
                                                                         (fun γ =>
                                                                           ltac:(M.monadic
@@ -1699,6 +1834,7 @@ Module net.
                                                                                             Ty.path
                                                                                               "char",
                                                                                             "to_digit",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -1717,7 +1853,9 @@ Module net.
                                                                                                             "char"
                                                                                                         ],
                                                                                                       [],
+                                                                                                      [],
                                                                                                       "branch",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -1726,11 +1864,17 @@ Module net.
                                                                                                           Ty.path
                                                                                                             "core::net::parser::Parser",
                                                                                                           "read_char",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            p
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.MutRef,
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                p
+                                                                                                              |)
+                                                                                                            |)
                                                                                                           |)
                                                                                                         ]
                                                                                                       |)
@@ -1768,6 +1912,7 @@ Module net.
                                                                                                                       Ty.path
                                                                                                                         "u32"
                                                                                                                     ],
+                                                                                                                  [],
                                                                                                                   [
                                                                                                                     Ty.apply
                                                                                                                       (Ty.path
@@ -1779,6 +1924,7 @@ Module net.
                                                                                                                       ]
                                                                                                                   ],
                                                                                                                   "from_residual",
+                                                                                                                  [],
                                                                                                                   []
                                                                                                                 |),
                                                                                                                 [
@@ -1926,6 +2072,7 @@ Module net.
                                                         []
                                                         [ T; Ty.associated ],
                                                       "ok",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1933,8 +2080,10 @@ Module net.
                                                         M.get_trait_method (|
                                                           "core::convert::TryInto",
                                                           Ty.path "u32",
+                                                          [],
                                                           [ T ],
                                                           "try_into",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| result |) ]
@@ -1965,6 +2114,7 @@ Module net.
                                                                       Ty.path
                                                                         "core::net::parser::Parser",
                                                                       "read_atomically",
+                                                                      [],
                                                                       [
                                                                         Ty.path "u32";
                                                                         Ty.function
@@ -1988,7 +2138,10 @@ Module net.
                                                                       ]
                                                                     |),
                                                                     [
-                                                                      M.read (| p |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (| M.read (| p |) |)
+                                                                      |);
                                                                       M.closure
                                                                         (fun γ =>
                                                                           ltac:(M.monadic
@@ -2009,6 +2162,7 @@ Module net.
                                                                                             Ty.path
                                                                                               "char",
                                                                                             "to_digit",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -2027,7 +2181,9 @@ Module net.
                                                                                                             "char"
                                                                                                         ],
                                                                                                       [],
+                                                                                                      [],
                                                                                                       "branch",
+                                                                                                      [],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -2036,11 +2192,17 @@ Module net.
                                                                                                           Ty.path
                                                                                                             "core::net::parser::Parser",
                                                                                                           "read_char",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            p
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.MutRef,
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                p
+                                                                                                              |)
+                                                                                                            |)
                                                                                                           |)
                                                                                                         ]
                                                                                                       |)
@@ -2078,6 +2240,7 @@ Module net.
                                                                                                                       Ty.path
                                                                                                                         "u32"
                                                                                                                     ],
+                                                                                                                  [],
                                                                                                                   [
                                                                                                                     Ty.apply
                                                                                                                       (Ty.path
@@ -2089,6 +2252,7 @@ Module net.
                                                                                                                       ]
                                                                                                                   ],
                                                                                                                   "from_residual",
+                                                                                                                  [],
                                                                                                                   []
                                                                                                                 |),
                                                                                                                 [
@@ -2156,7 +2320,9 @@ Module net.
                                                                               []
                                                                               [ T ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2165,11 +2331,16 @@ Module net.
                                                                                 "core::net::parser::ReadNumberHelper",
                                                                                 T,
                                                                                 [],
+                                                                                [],
                                                                                 "checked_mul",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                result;
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  result
+                                                                                |);
                                                                                 M.read (| radix |)
                                                                               ]
                                                                             |)
@@ -2199,6 +2370,7 @@ Module net.
                                                                                             "core::option::Option")
                                                                                           []
                                                                                           [ T ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -2210,6 +2382,7 @@ Module net.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2252,7 +2425,9 @@ Module net.
                                                                               []
                                                                               [ T ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2261,11 +2436,16 @@ Module net.
                                                                                 "core::net::parser::ReadNumberHelper",
                                                                                 T,
                                                                                 [],
+                                                                                [],
                                                                                 "checked_add",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                result;
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  result
+                                                                                |);
                                                                                 M.read (| digit |)
                                                                               ]
                                                                             |)
@@ -2295,6 +2475,7 @@ Module net.
                                                                                             "core::option::Option")
                                                                                           []
                                                                                           [ T ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -2306,6 +2487,7 @@ Module net.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2470,6 +2652,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv4Addr";
                   Ty.function
@@ -2484,7 +2667,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -2523,7 +2706,9 @@ Module net.
                                                       [ Ty.path "u8" ]
                                                   ],
                                                 [],
+                                                [],
                                                 "into_iter",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2535,7 +2720,9 @@ Module net.
                                                       []
                                                       [ Ty.path "u8" ],
                                                     [],
+                                                    [],
                                                     "enumerate",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2546,9 +2733,10 @@ Module net.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "iter_mut",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ groups ]
+                                                      [ M.borrow (| Pointer.Kind.MutRef, groups |) ]
                                                     |)
                                                   ]
                                                 |)
@@ -2579,10 +2767,22 @@ Module net.
                                                                     [ Ty.path "u8" ]
                                                                 ],
                                                               [],
+                                                              [],
                                                               "next",
+                                                              [],
                                                               []
                                                             |),
-                                                            [ iter ]
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    iter
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         |),
                                                         [
@@ -2620,7 +2820,7 @@ Module net.
                                                               let slot := M.copy (| γ1_1 |) in
                                                               let~ _ :=
                                                                 M.write (|
-                                                                  M.read (| slot |),
+                                                                  M.deref (| M.read (| slot |) |),
                                                                   M.read (|
                                                                     M.match_operator (|
                                                                       M.alloc (|
@@ -2633,7 +2833,9 @@ Module net.
                                                                               []
                                                                               [ Ty.path "u8" ],
                                                                             [],
+                                                                            [],
                                                                             "branch",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2642,6 +2844,7 @@ Module net.
                                                                                 Ty.path
                                                                                   "core::net::parser::Parser",
                                                                                 "read_separator",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path "u8";
                                                                                   Ty.function
@@ -2667,7 +2870,12 @@ Module net.
                                                                                 ]
                                                                               |),
                                                                               [
-                                                                                M.read (| p |);
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.MutRef,
+                                                                                  M.deref (|
+                                                                                    M.read (| p |)
+                                                                                  |)
+                                                                                |);
                                                                                 Value.UnicodeChar
                                                                                   46;
                                                                                 M.read (| i |);
@@ -2695,14 +2903,20 @@ Module net.
                                                                                                       Ty.path
                                                                                                         "core::net::parser::Parser",
                                                                                                       "read_number",
+                                                                                                      [],
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "u8"
                                                                                                       ]
                                                                                                     |),
                                                                                                     [
-                                                                                                      M.read (|
-                                                                                                        p
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.MutRef,
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            p
+                                                                                                          |)
+                                                                                                        |)
                                                                                                       |);
                                                                                                       Value.Integer
                                                                                                         IntegerKind.U32
@@ -2755,6 +2969,7 @@ Module net.
                                                                                             Ty.path
                                                                                               "core::net::ip_addr::Ipv4Addr"
                                                                                           ],
+                                                                                        [],
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -2766,6 +2981,7 @@ Module net.
                                                                                             ]
                                                                                         ],
                                                                                         "from_residual",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -2811,8 +3027,10 @@ Module net.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 4 ]
                                                 [ Ty.path "u8" ],
+                                              [],
                                               [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                               "into",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| groups |) ]
@@ -2908,6 +3126,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
@@ -2922,7 +3141,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -2949,9 +3168,19 @@ Module net.
                                           M.get_associated_function (|
                                             Self,
                                             "read_groups.read_ipv6_addr",
+                                            [],
                                             []
                                           |),
-                                          [ M.read (| p |); head ]
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| p |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, head |) |)
+                                            |)
+                                          ]
                                         |)
                                       |),
                                       [
@@ -2998,11 +3227,13 @@ Module net.
                                                                             8
                                                                         ]
                                                                         [ Ty.path "u16" ],
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "core::net::ip_addr::Ipv6Addr"
                                                                       ],
                                                                       "into",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| head |) ]
@@ -3054,7 +3285,9 @@ Module net.
                                                         []
                                                         [ Ty.tuple [] ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3062,9 +3295,16 @@ Module net.
                                                         M.get_associated_function (|
                                                           Ty.path "core::net::parser::Parser",
                                                           "read_given_char",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| p |); Value.UnicodeChar 58 ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| p |) |)
+                                                          |);
+                                                          Value.UnicodeChar 58
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -3093,6 +3333,7 @@ Module net.
                                                                       Ty.path
                                                                         "core::net::ip_addr::Ipv6Addr"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -3104,6 +3345,7 @@ Module net.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -3135,7 +3377,9 @@ Module net.
                                                         []
                                                         [ Ty.tuple [] ],
                                                       [],
+                                                      [],
                                                       "branch",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3143,9 +3387,16 @@ Module net.
                                                         M.get_associated_function (|
                                                           Ty.path "core::net::parser::Parser",
                                                           "read_given_char",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| p |); Value.UnicodeChar 58 ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| p |) |)
+                                                          |);
+                                                          Value.UnicodeChar 58
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -3174,6 +3425,7 @@ Module net.
                                                                       Ty.path
                                                                         "core::net::ip_addr::Ipv6Addr"
                                                                     ],
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -3185,6 +3437,7 @@ Module net.
                                                                       ]
                                                                   ],
                                                                   "from_residual",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| residual |) ]
@@ -3228,32 +3481,56 @@ Module net.
                                                   M.get_associated_function (|
                                                     Self,
                                                     "read_groups.read_ipv6_addr",
+                                                    [],
                                                     []
                                                   |),
                                                   [
-                                                    M.read (| p |);
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::index::IndexMut",
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 7 ]
-                                                          [ Ty.path "u16" ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::ops::range::RangeTo")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ],
-                                                        "index_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        tail;
-                                                        Value.StructRecord
-                                                          "core::ops::range::RangeTo"
-                                                          [ ("end_", M.read (| limit |)) ]
-                                                      ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::IndexMut",
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      7
+                                                                  ]
+                                                                  [ Ty.path "u16" ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::RangeTo")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ],
+                                                                "index_mut",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  tail
+                                                                |);
+                                                                Value.StructRecord
+                                                                  "core::ops::range::RangeTo"
+                                                                  [ ("end_", M.read (| limit |)) ]
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -3275,77 +3552,107 @@ Module net.
                                                               []
                                                               [ Ty.path "u16" ],
                                                             "copy_from_slice",
+                                                            [],
                                                             []
                                                           |),
                                                           [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::index::IndexMut",
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      8
-                                                                  ]
-                                                                  [ Ty.path "u16" ],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "core::ops::range::Range")
-                                                                    []
-                                                                    [ Ty.path "usize" ]
-                                                                ],
-                                                                "index_mut",
-                                                                []
-                                                              |),
-                                                              [
-                                                                head;
-                                                                Value.StructRecord
-                                                                  "core::ops::range::Range"
-                                                                  [
-                                                                    ("start",
-                                                                      BinOp.Wrap.sub (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::index::IndexMut",
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
                                                                         Value.Integer
                                                                           IntegerKind.Usize
-                                                                          8,
-                                                                        M.read (| tail_size |)
-                                                                      |));
-                                                                    ("end_",
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        8)
-                                                                  ]
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::index::Index",
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      7
-                                                                  ]
-                                                                  [ Ty.path "u16" ],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "core::ops::range::RangeTo")
+                                                                          8
+                                                                      ]
+                                                                      [ Ty.path "u16" ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::ops::range::Range")
+                                                                        []
+                                                                        [ Ty.path "usize" ]
+                                                                    ],
+                                                                    "index_mut",
+                                                                    [],
                                                                     []
-                                                                    [ Ty.path "usize" ]
-                                                                ],
-                                                                "index",
-                                                                []
-                                                              |),
-                                                              [
-                                                                tail;
-                                                                Value.StructRecord
-                                                                  "core::ops::range::RangeTo"
-                                                                  [ ("end_", M.read (| tail_size |))
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.MutRef,
+                                                                      head
+                                                                    |);
+                                                                    Value.StructRecord
+                                                                      "core::ops::range::Range"
+                                                                      [
+                                                                        ("start",
+                                                                          BinOp.Wrap.sub (|
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              8,
+                                                                            M.read (| tail_size |)
+                                                                          |));
+                                                                        ("end_",
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            8)
+                                                                      ]
                                                                   ]
-                                                              ]
+                                                                |)
+                                                              |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::index::Index",
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              7
+                                                                          ]
+                                                                          [ Ty.path "u16" ],
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::range::RangeTo")
+                                                                            []
+                                                                            [ Ty.path "usize" ]
+                                                                        ],
+                                                                        "index",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          tail
+                                                                        |);
+                                                                        Value.StructRecord
+                                                                          "core::ops::range::RangeTo"
+                                                                          [
+                                                                            ("end_",
+                                                                              M.read (|
+                                                                                tail_size
+                                                                              |))
+                                                                          ]
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)
                                                           ]
                                                         |)
@@ -3362,11 +3669,13 @@ Module net.
                                                                 [ Value.Integer IntegerKind.Usize 8
                                                                 ]
                                                                 [ Ty.path "u16" ],
+                                                              [],
                                                               [
                                                                 Ty.path
                                                                   "core::net::ip_addr::Ipv6Addr"
                                                               ],
                                                               "into",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| head |) ]
@@ -3407,6 +3716,7 @@ Module net.
                   []
                   [ Ty.path "core::net::ip_addr::IpAddr" ],
                 "or_else",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [] ]
@@ -3424,6 +3734,7 @@ Module net.
                       []
                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                     "map",
+                    [],
                     [
                       Ty.path "core::net::ip_addr::IpAddr";
                       Ty.function
@@ -3436,9 +3747,10 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::parser::Parser",
                         "read_ipv4_addr",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.constructor_as_closure "core::net::ip_addr::IpAddr::V4"
                   ]
@@ -3461,6 +3773,7 @@ Module net.
                                         []
                                         [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                                       "map",
+                                      [],
                                       [
                                         Ty.path "core::net::ip_addr::IpAddr";
                                         Ty.function
@@ -3473,9 +3786,15 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::parser::Parser",
                                           "read_ipv6_addr",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.constructor_as_closure "core::net::ip_addr::IpAddr::V6"
                                     ]
@@ -3509,6 +3828,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "u16";
                   Ty.function
@@ -3520,7 +3840,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -3545,7 +3865,9 @@ Module net.
                                                 []
                                                 [ Ty.tuple [] ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3553,9 +3875,16 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::parser::Parser",
                                                   "read_given_char",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| p |); Value.UnicodeChar 58 ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| p |) |)
+                                                  |);
+                                                  Value.UnicodeChar 58
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -3581,6 +3910,7 @@ Module net.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "u16" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -3589,6 +3919,7 @@ Module net.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -3614,10 +3945,14 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::parser::Parser",
                                           "read_number",
+                                          [],
                                           [ Ty.path "u16" ]
                                         |),
                                         [
-                                          M.read (| p |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| p |) |)
+                                          |);
                                           Value.Integer IntegerKind.U32 10;
                                           Value.StructTuple "core::option::Option::None" [];
                                           Value.Bool true
@@ -3653,6 +3988,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "u32";
                   Ty.function
@@ -3664,7 +4000,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -3689,7 +4025,9 @@ Module net.
                                                 []
                                                 [ Ty.tuple [] ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3697,9 +4035,16 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::parser::Parser",
                                                   "read_given_char",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| p |); Value.UnicodeChar 37 ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| p |) |)
+                                                  |);
+                                                  Value.UnicodeChar 37
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -3725,6 +4070,7 @@ Module net.
                                                             (Ty.path "core::option::Option")
                                                             []
                                                             [ Ty.path "u32" ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -3733,6 +4079,7 @@ Module net.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -3758,10 +4105,14 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::parser::Parser",
                                           "read_number",
+                                          [],
                                           [ Ty.path "u32" ]
                                         |),
                                         [
-                                          M.read (| p |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| p |) |)
+                                          |);
                                           Value.Integer IntegerKind.U32 10;
                                           Value.StructTuple "core::option::Option::None" [];
                                           Value.Bool true
@@ -3799,6 +4150,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
@@ -3813,7 +4165,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -3839,7 +4191,9 @@ Module net.
                                                   []
                                                   [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3847,9 +4201,15 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::net::parser::Parser",
                                                     "read_ipv4_addr",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| p |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -3878,6 +4238,7 @@ Module net.
                                                                 Ty.path
                                                                   "core::net::socket_addr::SocketAddrV4"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -3888,6 +4249,7 @@ Module net.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3921,7 +4283,9 @@ Module net.
                                                   []
                                                   [ Ty.path "u16" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3929,9 +4293,15 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::net::parser::Parser",
                                                     "read_port",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| p |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -3960,6 +4330,7 @@ Module net.
                                                                 Ty.path
                                                                   "core::net::socket_addr::SocketAddrV4"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -3970,6 +4341,7 @@ Module net.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -3999,6 +4371,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::net::socket_addr::SocketAddrV4",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| ip |); M.read (| port |) ]
@@ -4040,6 +4413,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "read_atomically",
+                [],
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
@@ -4054,7 +4428,7 @@ Module net.
                 ]
               |),
               [
-                M.read (| self |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -4079,7 +4453,9 @@ Module net.
                                                 []
                                                 [ Ty.tuple [] ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4087,9 +4463,16 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::parser::Parser",
                                                   "read_given_char",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| p |); Value.UnicodeChar 91 ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| p |) |)
+                                                  |);
+                                                  Value.UnicodeChar 91
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -4118,6 +4501,7 @@ Module net.
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV6"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -4126,6 +4510,7 @@ Module net.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -4158,7 +4543,9 @@ Module net.
                                                   []
                                                   [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4166,9 +4553,15 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::net::parser::Parser",
                                                     "read_ipv6_addr",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| p |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -4197,6 +4590,7 @@ Module net.
                                                                 Ty.path
                                                                   "core::net::socket_addr::SocketAddrV6"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -4207,6 +4601,7 @@ Module net.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -4237,6 +4632,7 @@ Module net.
                                               []
                                               [ Ty.path "u32" ],
                                             "unwrap_or",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4244,9 +4640,15 @@ Module net.
                                               M.get_associated_function (|
                                                 Ty.path "core::net::parser::Parser",
                                                 "read_scope_id",
+                                                [],
                                                 []
                                               |),
-                                              [ M.read (| p |) ]
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| p |) |)
+                                                |)
+                                              ]
                                             |);
                                             Value.Integer IntegerKind.U32 0
                                           ]
@@ -4263,7 +4665,9 @@ Module net.
                                                 []
                                                 [ Ty.tuple [] ],
                                               [],
+                                              [],
                                               "branch",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4271,9 +4675,16 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::parser::Parser",
                                                   "read_given_char",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| p |); Value.UnicodeChar 93 ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| p |) |)
+                                                  |);
+                                                  Value.UnicodeChar 93
+                                                ]
                                               |)
                                             ]
                                           |)
@@ -4302,6 +4713,7 @@ Module net.
                                                               Ty.path
                                                                 "core::net::socket_addr::SocketAddrV6"
                                                             ],
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -4310,6 +4722,7 @@ Module net.
                                                               ]
                                                           ],
                                                           "from_residual",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| residual |) ]
@@ -4342,7 +4755,9 @@ Module net.
                                                   []
                                                   [ Ty.path "u16" ],
                                                 [],
+                                                [],
                                                 "branch",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4350,9 +4765,15 @@ Module net.
                                                   M.get_associated_function (|
                                                     Ty.path "core::net::parser::Parser",
                                                     "read_port",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| p |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| p |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -4381,6 +4802,7 @@ Module net.
                                                                 Ty.path
                                                                   "core::net::socket_addr::SocketAddrV6"
                                                               ],
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -4391,6 +4813,7 @@ Module net.
                                                                 ]
                                                             ],
                                                             "from_residual",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| residual |) ]
@@ -4420,6 +4843,7 @@ Module net.
                                             M.get_associated_function (|
                                               Ty.path "core::net::socket_addr::SocketAddrV6",
                                               "new",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4463,6 +4887,7 @@ Module net.
                   []
                   [ Ty.path "core::net::socket_addr::SocketAddr" ],
                 "or_else",
+                [],
                 [
                   Ty.function
                     [ Ty.tuple [] ]
@@ -4480,6 +4905,7 @@ Module net.
                       []
                       [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
                     "map",
+                    [],
                     [
                       Ty.path "core::net::socket_addr::SocketAddr";
                       Ty.function
@@ -4492,9 +4918,10 @@ Module net.
                       M.get_associated_function (|
                         Ty.path "core::net::parser::Parser",
                         "read_socket_addr_v4",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.constructor_as_closure "core::net::socket_addr::SocketAddr::V4"
                   ]
@@ -4517,6 +4944,7 @@ Module net.
                                         []
                                         [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
                                       "map",
+                                      [],
                                       [
                                         Ty.path "core::net::socket_addr::SocketAddr";
                                         Ty.function
@@ -4529,9 +4957,15 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::net::parser::Parser",
                                           "read_socket_addr_v6",
+                                          [],
                                           []
                                         |),
-                                        [ M.read (| self |) ]
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |);
                                       M.constructor_as_closure
                                         "core::net::socket_addr::SocketAddr::V6"
@@ -4567,6 +5001,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "parse_with",
+                [],
                 [
                   Ty.path "core::net::ip_addr::IpAddr";
                   Ty.function
@@ -4581,10 +5016,18 @@ Module net.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::net::parser::Parser", "new", [] |),
-                    [ M.read (| b |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::parser::Parser",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -4603,9 +5046,15 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::parser::Parser",
                                       "read_ip_addr",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| p |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| p |) |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -4640,12 +5089,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::IpAddr",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -4693,9 +5148,10 @@ Module net.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "len",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| b |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
                               |),
                               Value.Integer IntegerKind.Usize 15
                             |)
@@ -4717,6 +5173,7 @@ Module net.
                           M.get_associated_function (|
                             Ty.path "core::net::parser::Parser",
                             "parse_with",
+                            [],
                             [
                               Ty.path "core::net::ip_addr::Ipv4Addr";
                               Ty.function
@@ -4736,14 +5193,18 @@ Module net.
                             ]
                           |),
                           [
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::net::parser::Parser",
-                                  "new",
-                                  []
-                                |),
-                                [ M.read (| b |) ]
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::parser::Parser",
+                                    "new",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                                |)
                               |)
                             |);
                             M.closure
@@ -4762,9 +5223,15 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::net::parser::Parser",
                                                   "read_ipv4_addr",
+                                                  [],
                                                   []
                                                 |),
-                                                [ M.read (| p |) ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| p |) |)
+                                                  |)
+                                                ]
                                               |)))
                                         ]
                                       |)))
@@ -4803,12 +5270,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv4Addr",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -4841,6 +5314,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "parse_with",
+                [],
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
@@ -4855,10 +5329,18 @@ Module net.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::net::parser::Parser", "new", [] |),
-                    [ M.read (| b |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::parser::Parser",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -4877,9 +5359,15 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::parser::Parser",
                                       "read_ipv6_addr",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| p |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| p |) |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -4914,12 +5402,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::ip_addr::Ipv6Addr",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -4952,6 +5446,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "parse_with",
+                [],
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
@@ -4966,10 +5461,18 @@ Module net.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::net::parser::Parser", "new", [] |),
-                    [ M.read (| b |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::parser::Parser",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -4988,9 +5491,15 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::parser::Parser",
                                       "read_socket_addr_v4",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| p |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| p |) |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -5025,12 +5534,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::socket_addr::SocketAddrV4",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -5063,6 +5578,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "parse_with",
+                [],
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
@@ -5077,10 +5593,18 @@ Module net.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::net::parser::Parser", "new", [] |),
-                    [ M.read (| b |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::parser::Parser",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -5099,9 +5623,15 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::parser::Parser",
                                       "read_socket_addr_v6",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| p |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| p |) |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -5136,12 +5666,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::socket_addr::SocketAddrV6",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -5174,6 +5710,7 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::parser::Parser",
                 "parse_with",
+                [],
                 [
                   Ty.path "core::net::socket_addr::SocketAddr";
                   Ty.function
@@ -5188,10 +5725,18 @@ Module net.
                 ]
               |),
               [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::net::parser::Parser", "new", [] |),
-                    [ M.read (| b |) ]
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::net::parser::Parser",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                    |)
                   |)
                 |);
                 M.closure
@@ -5210,9 +5755,15 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::net::parser::Parser",
                                       "read_socket_addr",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| p |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| p |) |)
+                                      |)
+                                    ]
                                   |)))
                             ]
                           |)))
@@ -5247,12 +5798,18 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::net::socket_addr::SocketAddr",
                 "parse_ascii",
+                [],
                 []
               |),
               [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                  [ M.read (| s |) ]
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -5320,9 +5877,9 @@ Module net.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| f |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
                     self,
@@ -5331,35 +5888,65 @@ Module net.
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
-                          M.alloc (| M.read (| Value.String "Ip" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Ip" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
-                          M.alloc (| M.read (| Value.String "Ipv4" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Ipv4" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
-                          M.alloc (| M.read (| Value.String "Ipv6" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Ipv6" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
-                          M.alloc (| M.read (| Value.String "Socket" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "Socket" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
-                          M.alloc (| M.read (| Value.String "SocketV4" |) |)));
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "SocketV4" |) |)
+                            |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
-                          M.alloc (| M.read (| Value.String "SocketV6" |) |)))
+                          M.alloc (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "SocketV6" |) |)
+                            |)
+                          |)))
                     ]
                   |)
                 |)
@@ -5463,7 +6050,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::parser::AddrKind" ]
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
               let~ __arg1_discr :=
@@ -5474,7 +6061,7 @@ Module net.
                       [],
                       [ Ty.path "core::net::parser::AddrKind" ]
                     |),
-                    [ M.read (| other |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
@@ -5538,16 +6125,31 @@ Module net.
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
+                [],
                 []
               |),
               [
-                M.read (| f |);
-                M.read (| Value.String "AddrParseError" |);
-                M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::net::parser::AddrParseError",
-                    0
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (| M.read (| Value.String "AddrParseError" |) |)
+                |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::parser::AddrParseError",
+                            0
+                          |)
+                        |)
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -5580,14 +6182,24 @@ Module net.
                     "core::clone::Clone",
                     Ty.path "core::net::parser::AddrKind",
                     [],
+                    [],
                     "clone",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::net::parser::AddrParseError",
-                      0
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::net::parser::AddrParseError",
+                            0
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -5628,20 +6240,28 @@ Module net.
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::net::parser::AddrKind",
+                [],
                 [ Ty.path "core::net::parser::AddrKind" ],
                 "eq",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "core::net::parser::AddrParseError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::net::parser::AddrParseError",
+                    0
+                  |)
                 |);
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| other |),
-                  "core::net::parser::AddrParseError",
-                  0
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::net::parser::AddrParseError",
+                    0
+                  |)
                 |)
               ]
             |)))
@@ -5702,18 +6322,25 @@ Module net.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
-                M.read (| fmt |);
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::error::Error",
-                    Ty.path "core::net::parser::AddrParseError",
-                    [],
-                    "description",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::error::Error",
+                        Ty.path "core::net::parser::AddrParseError",
+                        [],
+                        [],
+                        "description",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               ]
             |)))
@@ -5751,7 +6378,7 @@ Module net.
             M.read (|
               M.match_operator (|
                 M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "core::net::parser::AddrParseError",
                   0
                 |),
@@ -5759,31 +6386,63 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
-                      M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid IP address syntax" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
-                      M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid IPv4 address syntax" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
-                      M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid IPv6 address syntax" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
-                      M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.read (| Value.String "invalid socket address syntax" |) |)
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                       M.alloc (|
-                        M.read (| Value.String "invalid IPv4 socket address syntax" |)
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "invalid IPv4 socket address syntax" |)
+                          |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
-                      M.alloc (| M.read (| Value.String "invalid IPv6 socket address syntax" |) |)))
+                      M.alloc (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (| Value.String "invalid IPv6 socket address syntax" |)
+                          |)
+                        |)
+                      |)))
                 ]
               |)
             |)))

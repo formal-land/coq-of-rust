@@ -65,8 +65,8 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
-                        let~ end_ := M.alloc (| M.rust_cast (M.read (| end_ |)) |) in
+                        let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
+                        let~ end_ := M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -122,6 +122,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
                                               "ok",
+                                              [],
                                               []
                                             |),
                                             [
@@ -129,8 +130,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "try_from",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -156,6 +159,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   Ty.path "core::num::error::TryFromIntError"
                                                 ],
                                               "ok",
+                                              [],
                                               []
                                             |),
                                             [
@@ -163,8 +167,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
+                                                  [],
                                                   [ Ty.path "u32" ],
                                                   "try_from",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| count |) ]

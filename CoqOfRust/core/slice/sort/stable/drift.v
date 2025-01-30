@@ -125,9 +125,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -246,6 +247,7 @@ Module slice.
                                   [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                               ],
                             "uninit",
+                            [],
                             []
                           |),
                           []
@@ -265,6 +267,7 @@ Module slice.
                                   [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                               ],
                             "cast",
+                            [],
                             [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                           |),
                           [
@@ -280,9 +283,10 @@ Module slice.
                                       [ Ty.path "core::slice::sort::stable::drift::DriftsortRun" ]
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
-                              [ run_storage ]
+                              [ M.borrow (| Pointer.Kind.MutRef, run_storage |) ]
                             |)
                           ]
                         |)
@@ -301,6 +305,7 @@ Module slice.
                                   [ Ty.path "u8" ]
                               ],
                             "uninit",
+                            [],
                             []
                           |),
                           []
@@ -320,6 +325,7 @@ Module slice.
                                   [ Ty.path "u8" ]
                               ],
                             "cast",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [
@@ -335,9 +341,10 @@ Module slice.
                                       [ Ty.path "u8" ]
                                   ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
-                              [ desired_depth_storage ]
+                              [ M.borrow (| Pointer.Kind.MutRef, desired_depth_storage |) ]
                             |)
                           ]
                         |)
@@ -349,6 +356,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                             "new_sorted",
+                            [],
                             []
                           |),
                           [ Value.Integer IntegerKind.Usize 0 ]
@@ -395,30 +403,53 @@ Module slice.
                                                     [ T; F ]
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::index::IndexMut",
-                                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::ops::range::RangeFrom")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ],
-                                                        "index_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| v |);
-                                                        Value.StructRecord
-                                                          "core::ops::range::RangeFrom"
-                                                          [ ("start", M.read (| scan_idx |)) ]
-                                                      ]
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::IndexMut",
+                                                                Ty.apply (Ty.path "slice") [] [ T ],
+                                                                [],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::RangeFrom")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ],
+                                                                "index_mut",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| v |) |)
+                                                                |);
+                                                                Value.StructRecord
+                                                                  "core::ops::range::RangeFrom"
+                                                                  [ ("start", M.read (| scan_idx |))
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
                                                     |);
-                                                    M.read (| scratch |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| scratch |) |)
+                                                    |);
                                                     M.read (| min_good_run_len |);
                                                     M.read (| eager_sort |);
-                                                    M.read (| is_less |)
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| is_less |) |)
+                                                    |)
                                                   ]
                                                 |)
                                               |) in
@@ -439,6 +470,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| prev_run |) ]
@@ -452,6 +484,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "len",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| next_run |) ]
@@ -472,6 +505,7 @@ Module slice.
                                                     Ty.path
                                                       "core::slice::sort::stable::drift::DriftsortRun",
                                                     "new_sorted",
+                                                    [],
                                                     []
                                                   |),
                                                   [ Value.Integer IntegerKind.Usize 0 ]
@@ -505,24 +539,27 @@ Module slice.
                                                           ltac:(M.monadic
                                                             (BinOp.ge (|
                                                               M.read (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path "*mut")
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path "*mut")
+                                                                        []
+                                                                        [ Ty.path "u8" ],
+                                                                      "add",
+                                                                      [],
                                                                       []
-                                                                      [ Ty.path "u8" ],
-                                                                    "add",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (| desired_depths |);
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.read (| stack_len |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
-                                                                    |)
-                                                                  ]
+                                                                    |),
+                                                                    [
+                                                                      M.read (| desired_depths |);
+                                                                      BinOp.Wrap.sub (|
+                                                                        M.read (| stack_len |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 |)
                                                               |),
                                                               M.read (| desired_depth |)
@@ -536,25 +573,28 @@ Module slice.
                                                     |) in
                                                   let~ left :=
                                                     M.copy (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "*mut")
+                                                      M.deref (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "*mut")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "core::slice::sort::stable::drift::DriftsortRun"
+                                                              ],
+                                                            "add",
+                                                            [],
                                                             []
-                                                            [
-                                                              Ty.path
-                                                                "core::slice::sort::stable::drift::DriftsortRun"
-                                                            ],
-                                                          "add",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (| runs |);
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| stack_len |),
-                                                            Value.Integer IntegerKind.Usize 1
-                                                          |)
-                                                        ]
+                                                          |),
+                                                          [
+                                                            M.read (| runs |);
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| stack_len |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)
+                                                          ]
+                                                        |)
                                                       |)
                                                     |) in
                                                   let~ merged_len :=
@@ -565,6 +605,7 @@ Module slice.
                                                             Ty.path
                                                               "core::slice::sort::stable::drift::DriftsortRun",
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| left |) ]
@@ -574,6 +615,7 @@ Module slice.
                                                             Ty.path
                                                               "core::slice::sort::stable::drift::DriftsortRun",
                                                             "len",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| prev_run |) ]
@@ -593,6 +635,7 @@ Module slice.
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [] [ T ],
                                                           "get_unchecked_mut",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::ops::range::Range")
@@ -601,7 +644,10 @@ Module slice.
                                                           ]
                                                         |),
                                                         [
-                                                          M.read (| v |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| v |) |)
+                                                          |);
                                                           Value.StructRecord
                                                             "core::ops::range::Range"
                                                             [
@@ -622,11 +668,20 @@ Module slice.
                                                           [ T; F ]
                                                         |),
                                                         [
-                                                          M.read (| merge_slice |);
-                                                          M.read (| scratch |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| merge_slice |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| scratch |) |)
+                                                          |);
                                                           M.read (| left |);
                                                           M.read (| prev_run |);
-                                                          M.read (| is_less |)
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| is_less |) |)
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -660,31 +715,37 @@ Module slice.
                                       |) in
                                     let~ _ :=
                                       M.write (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "core::slice::sort::stable::drift::DriftsortRun"
+                                                ],
+                                              "add",
+                                              [],
                                               []
-                                              [
-                                                Ty.path
-                                                  "core::slice::sort::stable::drift::DriftsortRun"
-                                              ],
-                                            "add",
-                                            []
-                                          |),
-                                          [ M.read (| runs |); M.read (| stack_len |) ]
+                                            |),
+                                            [ M.read (| runs |); M.read (| stack_len |) ]
+                                          |)
                                         |),
                                         M.read (| prev_run |)
                                       |) in
                                     let~ _ :=
                                       M.write (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                            "add",
-                                            []
-                                          |),
-                                          [ M.read (| desired_depths |); M.read (| stack_len |) ]
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                              "add",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| desired_depths |); M.read (| stack_len |) ]
+                                          |)
                                         |),
                                         M.read (| desired_depth |)
                                       |) in
@@ -734,6 +795,7 @@ Module slice.
                                             Ty.path
                                               "core::slice::sort::stable::drift::DriftsortRun",
                                             "len",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| next_run |) ]
@@ -758,6 +820,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                         "sorted",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| prev_run |) ]
@@ -774,7 +837,20 @@ Module slice.
                                     [],
                                     [ T; F ]
                                   |),
-                                  [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| v |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| scratch |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
+                                  ]
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -837,12 +913,22 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Platform not supported" |) ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "Platform not supported" |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -861,11 +947,11 @@ Module slice.
                           Value.Integer IntegerKind.U64 1,
                           Value.Integer IntegerKind.I32 62
                         |),
-                        M.rust_cast (M.read (| n |))
+                        M.cast (Ty.path "u64") (M.read (| n |))
                       |),
                       Value.Integer IntegerKind.U64 1
                     |),
-                    M.rust_cast (M.read (| n |))
+                    M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 |)
               |)))
@@ -896,21 +982,22 @@ Module slice.
                 let~ x :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast (M.read (| left |)),
-                      M.rust_cast (M.read (| mid |))
+                      M.cast (Ty.path "u64") (M.read (| left |)),
+                      M.cast (Ty.path "u64") (M.read (| mid |))
                     |)
                   |) in
                 let~ y :=
                   M.alloc (|
                     BinOp.Wrap.add (|
-                      M.rust_cast (M.read (| mid |)),
-                      M.rust_cast (M.read (| right |))
+                      M.cast (Ty.path "u64") (M.read (| mid |)),
+                      M.cast (Ty.path "u64") (M.read (| right |))
                     |)
                   |) in
                 M.alloc (|
-                  M.rust_cast
+                  M.cast
+                    (Ty.path "u8")
                     (M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
+                      M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                       [
                         BinOp.bit_xor
                           (BinOp.Wrap.mul (| M.read (| scale_factor |), M.read (| x |) |))
@@ -951,7 +1038,7 @@ Module slice.
                 let~ ilog :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
+                      M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
                       [ BinOp.bit_or (M.read (| n |)) (Value.Integer IntegerKind.Usize 1) ]
                     |)
                   |) in
@@ -1023,9 +1110,10 @@ Module slice.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| v |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
                 let~ can_fit_in_scratch :=
@@ -1039,9 +1127,10 @@ Module slice.
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
+                          [],
                           []
                         |),
-                        [ M.read (| scratch |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| scratch |) |) |) ]
                       |)
                     |)
                   |) in
@@ -1061,6 +1150,7 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                         "sorted",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| left |) ]
@@ -1071,6 +1161,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                       "sorted",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| right |) ]
@@ -1094,6 +1185,7 @@ Module slice.
                                               Ty.path
                                                 "core::slice::sort::stable::drift::DriftsortRun",
                                               "sorted",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| left |) ]
@@ -1114,39 +1206,61 @@ Module slice.
                                           [ T; F ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::index::IndexMut",
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeTo")
-                                                  []
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "index_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.read (| v |);
-                                              Value.StructRecord
-                                                "core::ops::range::RangeTo"
-                                                [
-                                                  ("end_",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::slice::sort::stable::drift::DriftsortRun",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [ M.read (| left |) ]
-                                                    |))
-                                                ]
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::IndexMut",
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeTo")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index_mut",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| v |) |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeTo"
+                                                        [
+                                                          ("end_",
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "core::slice::sort::stable::drift::DriftsortRun",
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| left |) ]
+                                                            |))
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |);
-                                          M.read (| scratch |);
-                                          M.read (| is_less |)
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| scratch |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1169,6 +1283,7 @@ Module slice.
                                               Ty.path
                                                 "core::slice::sort::stable::drift::DriftsortRun",
                                               "sorted",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| right |) ]
@@ -1189,39 +1304,61 @@ Module slice.
                                           [ T; F ]
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::index::IndexMut",
-                                              Ty.apply (Ty.path "slice") [] [ T ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::RangeFrom")
-                                                  []
-                                                  [ Ty.path "usize" ]
-                                              ],
-                                              "index_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.read (| v |);
-                                              Value.StructRecord
-                                                "core::ops::range::RangeFrom"
-                                                [
-                                                  ("start",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::slice::sort::stable::drift::DriftsortRun",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [ M.read (| left |) ]
-                                                    |))
-                                                ]
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::index::IndexMut",
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::RangeFrom")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "index_mut",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| v |) |)
+                                                      |);
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "core::slice::sort::stable::drift::DriftsortRun",
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| left |) ]
+                                                            |))
+                                                        ]
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |)
                                           |);
-                                          M.read (| scratch |);
-                                          M.read (| is_less |)
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| scratch |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1238,17 +1375,24 @@ Module slice.
                                 [ T; F ]
                               |),
                               [
-                                M.read (| v |);
-                                M.read (| scratch |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| scratch |) |)
+                                |);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| left |) ]
                                 |);
-                                M.read (| is_less |)
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| is_less |) |)
+                                |)
                               ]
                             |)
                           |) in
@@ -1257,6 +1401,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                               "new_sorted",
+                              [],
                               []
                             |),
                             [ M.read (| len |) ]
@@ -1269,6 +1414,7 @@ Module slice.
                             M.get_associated_function (|
                               Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                               "new_unsorted",
+                              [],
                               []
                             |),
                             [ M.read (| len |) ]
@@ -1338,9 +1484,10 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| v |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -1367,7 +1514,13 @@ Module slice.
                                       [],
                                       [ T; F ]
                                     |),
-                                    [ M.read (| v |); M.read (| is_less |) ]
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| is_less |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -1427,37 +1580,51 @@ Module slice.
                                                                         []
                                                                         [ T ],
                                                                       "reverse",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::index::IndexMut",
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
-                                                                            []
-                                                                            [ T ],
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::ops::range::RangeTo")
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::index::IndexMut",
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [ T ],
+                                                                              [],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::range::RangeTo")
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ]
+                                                                              ],
+                                                                              "index_mut",
+                                                                              [],
                                                                               []
-                                                                              [ Ty.path "usize" ]
-                                                                          ],
-                                                                          "index_mut",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| v |);
-                                                                          Value.StructRecord
-                                                                            "core::ops::range::RangeTo"
+                                                                            |),
                                                                             [
-                                                                              ("end_",
-                                                                                M.read (|
-                                                                                  run_len
-                                                                                |))
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (| v |)
+                                                                                |)
+                                                                              |);
+                                                                              Value.StructRecord
+                                                                                "core::ops::range::RangeTo"
+                                                                                [
+                                                                                  ("end_",
+                                                                                    M.read (|
+                                                                                      run_len
+                                                                                    |))
+                                                                                ]
                                                                             ]
-                                                                        ]
+                                                                          |)
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1474,6 +1641,7 @@ Module slice.
                                                           Ty.path
                                                             "core::slice::sort::stable::drift::DriftsortRun",
                                                           "new_sorted",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| run_len |) ]
@@ -1508,7 +1676,9 @@ Module slice.
                                         "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
                                         T,
                                         [],
+                                        [],
                                         "small_sort_threshold",
+                                        [],
                                         []
                                       |),
                                       []
@@ -1526,30 +1696,51 @@ Module slice.
                                     [ T; F ]
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::index::IndexMut",
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index_mut",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| v |);
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
-                                          [ ("end_", M.read (| eager_run_len |)) ]
-                                      ]
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply (Ty.path "slice") [] [ T ],
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::RangeTo")
+                                                    []
+                                                    [ Ty.path "usize" ]
+                                                ],
+                                                "index_mut",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| v |) |)
+                                                |);
+                                                Value.StructRecord
+                                                  "core::ops::range::RangeTo"
+                                                  [ ("end_", M.read (| eager_run_len |)) ]
+                                              ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     |);
-                                    M.read (| scratch |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| scratch |) |)
+                                    |);
                                     Value.Integer IntegerKind.U32 0;
                                     Value.StructTuple "core::option::Option::None" [];
-                                    M.read (| is_less |)
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
                                   ]
                                 |)
                               |) in
@@ -1558,6 +1749,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                   "new_sorted",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| eager_run_len |) ]
@@ -1570,6 +1762,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::slice::sort::stable::drift::DriftsortRun",
                                   "new_unsorted",
+                                  [],
                                   []
                                 |),
                                 [
@@ -1615,16 +1808,17 @@ Module slice.
                     BinOp.Wrap.mul (|
                       Value.Integer IntegerKind.U32 2,
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "ilog2", [] |),
+                        M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
                         [
                           BinOp.bit_or
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
+                                [],
                                 []
                               |),
-                              [ M.read (| v |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                             |))
                             (Value.Integer IntegerKind.Usize 1)
                         ]
@@ -1640,11 +1834,11 @@ Module slice.
                         [ T; F ]
                       |),
                       [
-                        M.read (| v |);
-                        M.read (| scratch |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |);
                         M.read (| limit |);
                         Value.StructTuple "core::option::Option::None" [];
-                        M.read (| is_less |)
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                       ]
                     |)
                   |) in
@@ -1687,7 +1881,7 @@ Module slice.
                 M.read (|
                   M.match_operator (|
                     Value.DeclaredButUndefined,
-                    [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                    [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                   |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"

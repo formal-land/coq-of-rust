@@ -34,35 +34,83 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field4_finish",
+                  [],
                   []
                 |),
                 [
-                  M.read (| f |);
-                  M.read (| Value.String "Intersperse" |);
-                  M.read (| Value.String "started" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::Intersperse",
-                    "started"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "Intersperse" |) |)
                   |);
-                  M.read (| Value.String "separator" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::Intersperse",
-                    "separator"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "started" |) |)
                   |);
-                  M.read (| Value.String "next_item" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::Intersperse",
-                    "next_item"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "started"
+                        |)
+                      |)
+                    |)
                   |);
-                  M.read (| Value.String "iter" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::adapters::intersperse::Intersperse",
-                      "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "separator" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "separator"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| Value.String "next_item" |) |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "next_item"
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "iter"
+                            |)
+                          |)
+                        |)
+                      |)
                     |)
                   |)
                 ]
@@ -99,25 +147,51 @@ Module iter.
                         "core::clone::Clone",
                         Ty.path "bool",
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "started"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::intersperse::Intersperse",
+                                "started"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
                   ("separator",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.associated,
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "separator"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::intersperse::Intersperse",
+                                "separator"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -127,14 +201,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "next_item"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::intersperse::Intersperse",
+                                "next_item"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |));
@@ -144,14 +228,24 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::intersperse::Intersperse",
+                                "iter"
+                              |)
+                            |)
+                          |)
                         |)
                       ]
                     |))
@@ -209,7 +303,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "fuse",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -265,7 +361,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::intersperse::Intersperse",
                               "started"
                             |)) in
@@ -285,13 +381,17 @@ Module iter.
                                           []
                                           [ Ty.associated ],
                                         "take",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::iter::adapters::intersperse::Intersperse",
-                                          "next_item"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::intersperse::Intersperse",
+                                            "next_item"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -318,14 +418,19 @@ Module iter.
                                           []
                                           [ I ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::iter::adapters::intersperse::Intersperse",
-                                          "iter"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::intersperse::Intersperse",
+                                            "iter"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -345,9 +450,10 @@ Module iter.
                                                     []
                                                     [ Ty.associated ],
                                                   "is_some",
+                                                  [],
                                                   []
                                                 |),
-                                                [ next_item ]
+                                                [ M.borrow (| Pointer.Kind.Ref, next_item |) ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -358,7 +464,7 @@ Module iter.
                                         let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::iter::adapters::intersperse::Intersperse",
                                               "next_item"
                                             |),
@@ -373,14 +479,19 @@ Module iter.
                                                   "core::clone::Clone",
                                                   Ty.associated,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::iter::adapters::intersperse::Intersperse",
-                                                    "separator"
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::intersperse::Intersperse",
+                                                      "separator"
+                                                    |)
                                                   |)
                                                 ]
                                               |)
@@ -400,7 +511,7 @@ Module iter.
                         (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::intersperse::Intersperse",
                               "started"
                             |),
@@ -412,14 +523,19 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::intersperse::Intersperse",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::intersperse::Intersperse",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -448,14 +564,22 @@ Module iter.
                   [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::Intersperse",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "iter"
+                        |)
+                      |)
+                    |)
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::adapters::intersperse::Intersperse",
                       "started"
                     |)
@@ -464,13 +588,17 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "is_some",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::intersperse::Intersperse",
-                        "next_item"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::Intersperse",
+                          "next_item"
+                        |)
                       |)
                     ]
                   |)
@@ -551,10 +679,12 @@ Module iter.
                                             "core::clone::Clone",
                                             Ty.associated,
                                             [],
+                                            [],
                                             "clone",
+                                            [],
                                             []
                                           |),
-                                          [ separator ]
+                                          [ M.borrow (| Pointer.Kind.Ref, separator |) ]
                                         |)))
                                   ]
                                 |)))
@@ -648,79 +778,166 @@ Module iter.
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
+                  [],
                   []
                 |),
                 [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugStruct",
-                      "field",
-                      []
-                    |),
-                    [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
+                          [],
                           []
                         |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::builders::DebugStruct",
-                              "field",
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "debug_struct",
-                                        []
-                                      |),
-                                      [ M.read (| f |); M.read (| Value.String "IntersperseWith" |)
-                                      ]
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::builders::DebugStruct",
+                                          "field",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::builders::DebugStruct",
+                                                  "field",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "debug_struct",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.deref (| M.read (| f |) |)
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                Value.String "IntersperseWith"
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (| Value.String "started" |)
+                                                    |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::iter::adapters::intersperse::IntersperseWith",
+                                                          "started"
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| Value.String "separator" |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::intersperse::IntersperseWith",
+                                                  "separator"
+                                                |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |);
-                                  M.read (| Value.String "started" |);
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::IntersperseWith",
-                                    "started"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| Value.String "iter" |) |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::intersperse::IntersperseWith",
+                                          "iter"
+                                        |)
+                                      |)
+                                    |)
                                   |)
                                 ]
-                              |);
-                              M.read (| Value.String "separator" |);
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::intersperse::IntersperseWith",
-                                "separator"
                               |)
-                            ]
+                            |)
                           |);
-                          M.read (| Value.String "iter" |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::intersperse::IntersperseWith",
-                            "iter"
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "next_item" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::intersperse::IntersperseWith",
+                                  "next_item"
+                                |)
+                              |)
+                            |)
                           |)
                         ]
-                      |);
-                      M.read (| Value.String "next_item" |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::intersperse::IntersperseWith",
-                        "next_item"
                       |)
-                    ]
+                    |)
                   |)
                 ]
               |)))
@@ -762,19 +979,22 @@ Module iter.
                   ("started",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "core::iter::adapters::intersperse::IntersperseWith",
                         "started"
                       |)
                     |));
                   ("separator",
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", G, [], [], "clone", [], [] |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "separator"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::intersperse::IntersperseWith",
+                            "separator"
+                          |)
                         |)
                       ]
                     |));
@@ -784,14 +1004,19 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "iter"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::intersperse::IntersperseWith",
+                            "iter"
+                          |)
                         |)
                       ]
                     |));
@@ -801,14 +1026,19 @@ Module iter.
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                         [],
+                        [],
                         "clone",
+                        [],
                         []
                       |),
                       [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "next_item"
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::intersperse::IntersperseWith",
+                            "next_item"
+                          |)
                         |)
                       ]
                     |))
@@ -853,7 +1083,9 @@ Module iter.
                         "core::iter::traits::iterator::Iterator",
                         I,
                         [],
+                        [],
                         "fuse",
+                        [],
                         []
                       |),
                       [ M.read (| iter |) ]
@@ -909,7 +1141,7 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "started"
                             |)) in
@@ -929,13 +1161,17 @@ Module iter.
                                           []
                                           [ Ty.associated ],
                                         "take",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::iter::adapters::intersperse::IntersperseWith",
-                                          "next_item"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::intersperse::IntersperseWith",
+                                            "next_item"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -962,14 +1198,19 @@ Module iter.
                                           []
                                           [ I ],
                                         [],
+                                        [],
                                         "next",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::iter::adapters::intersperse::IntersperseWith",
-                                          "iter"
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::intersperse::IntersperseWith",
+                                            "iter"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -989,9 +1230,10 @@ Module iter.
                                                     []
                                                     [ Ty.associated ],
                                                   "is_some",
+                                                  [],
                                                   []
                                                 |),
-                                                [ next_item ]
+                                                [ M.borrow (| Pointer.Kind.Ref, next_item |) ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -1002,7 +1244,7 @@ Module iter.
                                         let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
+                                              M.deref (| M.read (| self |) |),
                                               "core::iter::adapters::intersperse::IntersperseWith",
                                               "next_item"
                                             |),
@@ -1016,15 +1258,20 @@ Module iter.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   G,
+                                                  [],
                                                   [ Ty.tuple [] ],
                                                   "call_mut",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::iter::adapters::intersperse::IntersperseWith",
-                                                    "separator"
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::intersperse::IntersperseWith",
+                                                      "separator"
+                                                    |)
                                                   |);
                                                   Value.Tuple []
                                                 ]
@@ -1045,7 +1292,7 @@ Module iter.
                         (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "started"
                             |),
@@ -1057,14 +1304,19 @@ Module iter.
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
                               [],
+                              [],
                               "next",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::intersperse::IntersperseWith",
-                                "iter"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::intersperse::IntersperseWith",
+                                  "iter"
+                                |)
                               |)
                             ]
                           |)
@@ -1098,14 +1350,22 @@ Module iter.
                   [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
                 |),
                 [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::adapters::intersperse::IntersperseWith",
-                    "iter"
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
+                          "iter"
+                        |)
+                      |)
+                    |)
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "core::iter::adapters::intersperse::IntersperseWith",
                       "started"
                     |)
@@ -1114,13 +1374,17 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "is_some",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::intersperse::IntersperseWith",
-                        "next_item"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::intersperse::IntersperseWith",
+                          "next_item"
+                        |)
                       |)
                     ]
                   |)
@@ -1236,10 +1500,12 @@ Module iter.
                       "core::iter::traits::iterator::Iterator",
                       I,
                       [],
+                      [],
                       "size_hint",
+                      [],
                       []
                     |),
-                    [ M.read (| iter |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| iter |) |) |) ]
                   |)
                 |),
                 [
@@ -1253,12 +1519,18 @@ Module iter.
                         Value.Tuple
                           [
                             M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+                              M.get_associated_function (|
+                                Ty.path "usize",
+                                "saturating_add",
+                                [],
+                                []
+                              |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -1266,14 +1538,17 @@ Module iter.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "saturating_sub",
+                                        [],
                                         []
                                       |),
                                       [
                                         M.read (| lo |);
-                                        M.rust_cast (UnOp.not (| M.read (| started |) |))
+                                        M.cast
+                                          (Ty.path "usize")
+                                          (UnOp.not (| M.read (| started |) |))
                                       ]
                                     |);
-                                    M.rust_cast (M.read (| next_is_some |))
+                                    M.cast (Ty.path "usize") (M.read (| next_is_some |))
                                   ]
                                 |);
                                 M.read (| lo |)
@@ -1283,6 +1558,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "and_then",
+                                [],
                                 [
                                   Ty.path "usize";
                                   Ty.function
@@ -1311,6 +1587,7 @@ Module iter.
                                                     M.get_associated_function (|
                                                       Ty.path "usize",
                                                       "checked_add",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1318,6 +1595,7 @@ Module iter.
                                                         M.get_associated_function (|
                                                           Ty.path "usize",
                                                           "saturating_add",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -1325,17 +1603,21 @@ Module iter.
                                                             M.get_associated_function (|
                                                               Ty.path "usize",
                                                               "saturating_sub",
+                                                              [],
                                                               []
                                                             |),
                                                             [
                                                               M.read (| hi |);
-                                                              M.rust_cast
+                                                              M.cast
+                                                                (Ty.path "usize")
                                                                 (UnOp.not (|
                                                                   M.read (| started |)
                                                                 |))
                                                             ]
                                                           |);
-                                                          M.rust_cast (M.read (| next_is_some |))
+                                                          M.cast
+                                                            (Ty.path "usize")
+                                                            (M.read (| next_is_some |))
                                                         ]
                                                       |);
                                                       M.read (| hi |)
@@ -1415,9 +1697,10 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 "take",
+                                [],
                                 []
                               |),
-                              [ next_item ]
+                              [ M.borrow (| Pointer.Kind.MutRef, next_item |) ]
                             |)
                           |)));
                       fun γ =>
@@ -1428,10 +1711,12 @@ Module iter.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
-                              [ iter ]
+                              [ M.borrow (| Pointer.Kind.MutRef, iter |) ]
                             |)
                           |)))
                     ]
@@ -1458,11 +1743,16 @@ Module iter.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 F,
+                                [],
                                 [ Ty.tuple [ B; Ty.associated ] ],
                                 "call_mut",
+                                [],
                                 []
                               |),
-                              [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, f |);
+                                Value.Tuple [ M.read (| accum |); M.read (| x |) ]
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -1475,7 +1765,9 @@ Module iter.
                     "core::iter::traits::iterator::Iterator",
                     I,
                     [],
+                    [],
                     "fold",
+                    [],
                     [ B; Ty.function [ Ty.tuple [ B; Ty.associated ] ] B ]
                   |),
                   [
@@ -1507,12 +1799,14 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnMut",
                                                         F,
+                                                        [],
                                                         [ Ty.tuple [ B; Ty.associated ] ],
                                                         "call_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        f;
+                                                        M.borrow (| Pointer.Kind.MutRef, f |);
                                                         Value.Tuple
                                                           [
                                                             M.read (| accum |);
@@ -1520,11 +1814,19 @@ Module iter.
                                                               M.get_trait_method (|
                                                                 "core::ops::function::FnMut",
                                                                 G,
+                                                                [],
                                                                 [ Ty.tuple [] ],
                                                                 "call_mut",
+                                                                [],
                                                                 []
                                                               |),
-                                                              [ separator; Value.Tuple [] ]
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  separator
+                                                                |);
+                                                                Value.Tuple []
+                                                              ]
                                                             |)
                                                           ]
                                                       ]
@@ -1537,12 +1839,14 @@ Module iter.
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnMut",
                                                         F,
+                                                        [],
                                                         [ Ty.tuple [ B; Ty.associated ] ],
                                                         "call_mut",
+                                                        [],
                                                         []
                                                       |),
                                                       [
-                                                        f;
+                                                        M.borrow (| Pointer.Kind.MutRef, f |);
                                                         Value.Tuple
                                                           [ M.read (| accum |); M.read (| x |) ]
                                                       ]

@@ -50,9 +50,19 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
-            [ M.read (| M.read (| self |) |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -80,9 +90,19 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
-            [ M.read (| M.read (| self |) |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -110,9 +130,24 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::convert::AsMut", T, [ U ], "as_mut", [] |),
-            [ M.read (| M.read (| self |) |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (| "core::convert::AsMut", T, [], [ U ], "as_mut", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                      |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -141,7 +176,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::From", U, [ T ], "from", [] |),
+            M.get_trait_method (| "core::convert::From", U, [], [ T ], "from", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -228,7 +263,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_trait_method (| "core::convert::TryFrom", U, [ T ], "try_from", [] |),
+            M.get_trait_method (| "core::convert::TryFrom", U, [], [ T ], "try_from", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -268,7 +303,7 @@ Module convert.
             "core::result::Result::Ok"
             [
               M.call_closure (|
-                M.get_trait_method (| "core::convert::Into", U, [ T ], "into", [] |),
+                M.get_trait_method (| "core::convert::Into", U, [], [ T ], "into", [], [] |),
                 [ M.read (| value |) ]
               |)
             ]))
@@ -329,7 +364,10 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| self |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -380,7 +418,10 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| self |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -425,7 +466,9 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+          M.never_to_any (|
+            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -456,7 +499,9 @@ Module convert.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+                  (M.never_to_any (|
+                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                  |)))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -489,7 +534,9 @@ Module convert.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+                  (M.never_to_any (|
+                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                  |)))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -516,7 +563,9 @@ Module convert.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+          M.never_to_any (|
+            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -547,7 +596,9 @@ Module convert.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+                  (M.never_to_any (|
+                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                  |)))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -582,7 +633,9 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+          M.never_to_any (|
+            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -608,7 +661,9 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
-          M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+          M.never_to_any (|
+            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -664,7 +719,9 @@ Module convert.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
+                  (M.never_to_any (|
+                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                  |)))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

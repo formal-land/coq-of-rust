@@ -37,6 +37,7 @@ Module vec.
                       []
                       [ T; Ty.path "alloc::alloc::Global" ],
                     "new",
+                    [],
                     []
                   |),
                   []
@@ -63,6 +64,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "with_capacity_in",
+              [],
               []
             |),
             [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -94,6 +96,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "try_with_capacity_in",
+              [],
               []
             |),
             [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -127,6 +130,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_parts_in",
+              [],
               []
             |),
             [
@@ -160,6 +164,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_parts_in",
+              [],
               []
             |),
             [
@@ -199,6 +204,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "new_in",
+                    [],
                     []
                   |),
                   [ M.read (| alloc |) ]
@@ -237,6 +243,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "with_capacity_in",
+                    [],
                     []
                   |),
                   [ M.read (| capacity |); M.read (| alloc |) ]
@@ -290,7 +297,9 @@ Module vec.
                                       Ty.path "alloc::collections::TryReserveError"
                                     ],
                                   [],
+                                  [],
                                   "branch",
+                                  [],
                                   []
                                 |),
                                 [
@@ -298,6 +307,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                       "try_with_capacity_in",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| capacity |); M.read (| alloc |) ]
@@ -329,6 +339,7 @@ Module vec.
                                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ];
                                                   Ty.path "alloc::collections::TryReserveError"
                                                 ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -339,6 +350,7 @@ Module vec.
                                                   ]
                                               ],
                                               "from_residual",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| residual |) ]
@@ -398,6 +410,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "from_raw_parts_in",
+                    [],
                     []
                   |),
                   [ M.read (| ptr |); M.read (| capacity |); M.read (| alloc |) ]
@@ -438,6 +451,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "from_nonnull_in",
+                    [],
                     []
                   |),
                   [ M.read (| ptr |); M.read (| capacity |); M.read (| alloc |) ]
@@ -478,6 +492,7 @@ Module vec.
                       []
                       [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -490,21 +505,29 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [ me ]
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, me |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |);
@@ -512,21 +535,29 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "len",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [ me ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |);
@@ -534,21 +565,29 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [ me ]
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                          |)
+                        |)
                       |)
                     ]
                   |)
@@ -582,6 +621,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "into_raw_parts",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -603,6 +643,7 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -652,6 +693,7 @@ Module vec.
                       []
                       [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -663,21 +705,29 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ me ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -688,21 +738,29 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "capacity",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ me ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -713,21 +771,29 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                        [],
-                        "deref_mut",
-                        []
-                      |),
-                      [ me ]
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::DerefMut",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref_mut",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, me |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -737,27 +803,40 @@ Module vec.
                 M.call_closure (|
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        "allocator",
-                        []
-                      |),
-                      [
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
                         M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply
-                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              []
-                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                            "allocator",
                             [],
-                            "deref",
                             []
                           |),
-                          [ me ]
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                |)
+                              |)
+                            |)
+                          ]
                         |)
-                      ]
+                      |)
                     |)
                   ]
                 |)
@@ -799,6 +878,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "into_raw_parts_with_alloc",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -822,6 +902,7 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new_unchecked",
+                              [],
                               []
                             |),
                             [ M.read (| ptr |) ]
@@ -856,9 +937,18 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "capacity",
+              [],
               []
             |),
-            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::vec::Vec",
+                  "buf"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -887,17 +977,21 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::Vec",
-                      "buf"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::Vec",
+                        "buf"
+                      |)
                     |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::Vec",
                         "len"
                       |)
@@ -939,17 +1033,21 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "reserve_exact",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::Vec",
-                      "buf"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::Vec",
+                        "buf"
+                      |)
                     |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::Vec",
                         "len"
                       |)
@@ -983,17 +1081,21 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "try_reserve",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::vec::Vec",
-                "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::vec::Vec",
+                  "buf"
+                |)
               |);
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |)
@@ -1029,17 +1131,21 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "try_reserve_exact",
+              [],
               []
             |),
             [
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "alloc::vec::Vec",
-                "buf"
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::vec::Vec",
+                  "buf"
+                |)
               |);
               M.read (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |)
@@ -1089,13 +1195,14 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "capacity",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::vec::Vec",
                                 "len"
                               |)
@@ -1109,17 +1216,21 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "shrink_to_fit",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::vec::Vec",
-                              "buf"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::vec::Vec",
+                                "buf"
+                              |)
                             |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::vec::Vec",
                                 "len"
                               |)
@@ -1167,9 +1278,10 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "capacity",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
                             M.read (| min_capacity |)
                           |)
@@ -1181,20 +1293,24 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "shrink_to_fit",
+                            [],
                             []
                           |),
                           [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::vec::Vec",
-                              "buf"
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::vec::Vec",
+                                "buf"
+                              |)
                             |);
                             M.call_closure (|
                               M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
+                                    M.deref (| M.read (| self |) |),
                                     "alloc::vec::Vec",
                                     "len"
                                   |)
@@ -1246,9 +1362,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "shrink_to_fit",
+                    [],
                     []
                   |),
-                  [ self ]
+                  [ M.borrow (| Pointer.Kind.MutRef, self |) ]
                 |)
               |) in
             let~ me :=
@@ -1260,6 +1377,7 @@ Module vec.
                       []
                       [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -1274,22 +1392,34 @@ Module vec.
                     [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ]
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [ me ]
-                      |),
-                      "alloc::vec::Vec",
-                      "buf"
+                    M.borrow (|
+                      Pointer.Kind.ConstPointer,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                              |)
+                            |),
+                            "alloc::vec::Vec",
+                            "buf"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1300,21 +1430,29 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::deref::Deref",
-                        Ty.apply
-                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          []
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                        [],
-                        "deref",
-                        []
-                      |),
-                      [ me ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -1333,6 +1471,7 @@ Module vec.
                       A
                     ],
                   "assume_init",
+                  [],
                   []
                 |),
                 [
@@ -1340,6 +1479,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "into_box",
+                      [],
                       []
                     |),
                     [ M.read (| buf |); M.read (| len |) ]
@@ -1401,7 +1541,7 @@ Module vec.
                                   M.read (| len |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::Vec",
                                       "len"
                                     |)
@@ -1421,7 +1561,7 @@ Module vec.
                     BinOp.Wrap.sub (|
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::vec::Vec",
                           "len"
                         |)
@@ -1438,6 +1578,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [
@@ -1445,9 +1586,11 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "as_mut_ptr",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
                             |);
                             M.read (| len |)
                           ]
@@ -1459,7 +1602,7 @@ Module vec.
                 let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::vec::Vec",
                       "len"
                     |),
@@ -1497,15 +1640,22 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1530,15 +1680,27 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::DerefMut",
-              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-              [],
-              "deref_mut",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1566,13 +1728,17 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                 "ptr",
+                [],
                 []
               |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::Vec",
-                  "buf"
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::vec::Vec",
+                    "buf"
+                  |)
                 |)
               ]
             |))))
@@ -1600,9 +1766,18 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "ptr",
+              [],
               []
             |),
-            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "alloc::vec::Vec",
+                  "buf"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1628,6 +1803,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
               "new_unchecked",
+              [],
               []
             |),
             [
@@ -1635,9 +1811,10 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "as_mut_ptr",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
             ]
           |)))
@@ -1659,14 +1836,28 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-              "allocator",
-              []
-            |),
-            [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
-            ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                  "allocator",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::Vec",
+                      "buf"
+                    |)
+                  |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1714,9 +1905,15 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                               "capacity",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)
@@ -1749,7 +1946,7 @@ Module vec.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |),
@@ -1804,9 +2001,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -1821,7 +2019,12 @@ Module vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "assert_failed.swap_remove", [] |),
+                            M.get_associated_function (|
+                              Self,
+                              "assert_failed.swap_remove",
+                              [],
+                              []
+                            |),
                             [ M.read (| index |); M.read (| len |) ]
                           |)
                         |)
@@ -1838,6 +2041,7 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ T ],
                         "add",
+                        [],
                         []
                       |),
                       [
@@ -1845,9 +2049,10 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "as_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |);
                         M.read (| index |)
                       ]
@@ -1861,9 +2066,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -1877,6 +2083,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -1885,7 +2092,12 @@ Module vec.
                         ]
                       |));
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [ M.read (| base_ptr |); M.read (| index |) ]
                     |);
                     Value.Integer IntegerKind.Usize 1
@@ -1898,10 +2110,11 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                   ]
                 |)
@@ -1968,9 +2181,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -1985,7 +2199,7 @@ Module vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "assert_failed.insert", [] |),
+                            M.get_associated_function (| Self, "assert_failed.insert", [], [] |),
                             [ M.read (| index |); M.read (| len |) ]
                           |)
                         |)
@@ -2008,13 +2222,17 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "capacity",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::Vec",
-                                    "buf"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::vec::Vec",
+                                      "buf"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2027,13 +2245,17 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "grow_one",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::vec::Vec",
-                                "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::vec::Vec",
+                                  "buf"
+                                |)
                               |)
                             ]
                           |)
@@ -2046,15 +2268,21 @@ Module vec.
               let~ p :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      "add",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |);
                       M.read (| index |)
                     ]
@@ -2081,6 +2309,7 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ T ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| p |); Value.Integer IntegerKind.Usize 1 ]
@@ -2107,10 +2336,11 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                   ]
                 |)
@@ -2170,9 +2400,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -2187,7 +2418,7 @@ Module vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "assert_failed.remove", [] |),
+                            M.get_associated_function (| Self, "assert_failed.remove", [], [] |),
                             [ M.read (| index |); M.read (| len |) ]
                           |)
                         |)
@@ -2200,15 +2431,21 @@ Module vec.
               let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      "add",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
-                        [ M.read (| self |) ]
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                       |);
                       M.read (| index |)
                     ]
@@ -2233,6 +2470,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
+                            [],
                             []
                           |),
                           [ M.read (| ptr |); Value.Integer IntegerKind.Usize 1 ]
@@ -2252,10 +2490,11 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.sub (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                   ]
                 |)
@@ -2291,6 +2530,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "retain_mut",
+                    [],
                     [
                       Ty.function
                         [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
@@ -2298,7 +2538,7 @@ Module vec.
                     ]
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -2315,11 +2555,22 @@ Module vec.
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           F,
+                                          [],
                                           [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                           "call_mut",
+                                          [],
                                           []
                                         |),
-                                        [ f; Value.Tuple [ M.read (| elem |) ] ]
+                                        [
+                                          M.borrow (| Pointer.Kind.MutRef, f |);
+                                          Value.Tuple
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| elem |) |)
+                                              |)
+                                            ]
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -2453,9 +2704,10 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2486,9 +2738,13 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "set_len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        Value.Integer IntegerKind.Usize 0
+                      ]
                     |)
                   |) in
                 let~ g :=
@@ -2496,7 +2752,7 @@ Module vec.
                     Value.StructRecord
                       "alloc::vec::retain_mut::BackshiftOnDrop"
                       [
-                        ("v", M.read (| self |));
+                        ("v", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                         ("processed_len", Value.Integer IntegerKind.Usize 0);
                         ("deleted_cnt", Value.Integer IntegerKind.Usize 0);
                         ("original_len", M.read (| original_len |))
@@ -2505,15 +2761,35 @@ Module vec.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Self, "process_loop.retain_mut", [] |),
-                      [ M.read (| original_len |); f; g ]
+                      M.get_associated_function (| Self, "process_loop.retain_mut", [], [] |),
+                      [
+                        M.read (| original_len |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, f |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, g |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Self, "process_loop.retain_mut", [] |),
-                      [ M.read (| original_len |); f; g ]
+                      M.get_associated_function (| Self, "process_loop.retain_mut", [], [] |),
+                      [
+                        M.read (| original_len |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, f |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, g |) |)
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ :=
@@ -2562,6 +2838,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "dedup_by",
+              [],
               [
                 Ty.function
                   [
@@ -2572,7 +2849,7 @@ Module vec.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -2595,35 +2872,69 @@ Module vec.
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             K,
+                                            [],
                                             [ K ],
                                             "eq",
+                                            [],
                                             []
                                           |),
                                           [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                                                  ],
-                                                  "call_mut",
-                                                  []
-                                                |),
-                                                [ key; Value.Tuple [ M.read (| a |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, key |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| a |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |);
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                                                  ],
-                                                  "call_mut",
-                                                  []
-                                                |),
-                                                [ key; Value.Tuple [ M.read (| b |) ] ]
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, key |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| b |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
                                           ]
@@ -2788,9 +3099,10 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2819,9 +3131,10 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
                 let~ _ :=
@@ -2853,6 +3166,7 @@ Module vec.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2861,6 +3175,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "wrapping_sub",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2877,6 +3192,7 @@ Module vec.
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| start |); M.read (| first_duplicate_idx |) ]
@@ -2887,6 +3203,7 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
+                                        [],
                                         [
                                           Ty.tuple
                                             [
@@ -2895,11 +3212,32 @@ Module vec.
                                             ]
                                         ],
                                         "call_mut",
+                                        [],
                                         []
                                       |),
                                       [
-                                        same_bucket;
-                                        Value.Tuple [ M.read (| current |); M.read (| prev |) ]
+                                        M.borrow (| Pointer.Kind.MutRef, same_bucket |);
+                                        Value.Tuple
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| current |) |)
+                                                |)
+                                              |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| prev |) |)
+                                                |)
+                                              |)
+                                            |)
+                                          ]
                                       ]
                                     |)
                                   |)
@@ -2978,7 +3316,7 @@ Module vec.
                             Value.Integer IntegerKind.Usize 1
                           |));
                         ("write", M.read (| first_duplicate_idx |));
-                        ("vec", M.read (| self |))
+                        ("vec", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
                       ]
                   |) in
                 let~ _ :=
@@ -2991,6 +3329,7 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "add",
+                              [],
                               []
                             |),
                             [ M.read (| start |); M.read (| first_duplicate_idx |) ]
@@ -3032,6 +3371,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3052,6 +3392,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
+                                      [],
                                       []
                                     |),
                                     [
@@ -3060,6 +3401,7 @@ Module vec.
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "wrapping_sub",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3082,6 +3424,7 @@ Module vec.
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       F,
+                                      [],
                                       [
                                         Ty.tuple
                                           [
@@ -3090,11 +3433,32 @@ Module vec.
                                           ]
                                       ],
                                       "call_mut",
+                                      [],
                                       []
                                     |),
                                     [
-                                      same_bucket;
-                                      Value.Tuple [ M.read (| read_ptr |); M.read (| prev_ptr |) ]
+                                      M.borrow (| Pointer.Kind.MutRef, same_bucket |);
+                                      Value.Tuple
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| read_ptr |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| prev_ptr |) |)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                     ]
                                   |)
                                 |) in
@@ -3143,6 +3507,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [
@@ -3226,14 +3591,20 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "set_len",
+                        [],
                         []
                       |),
                       [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            gap,
-                            "alloc::vec::dedup_by::FillGapOnDrop",
-                            "vec"
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                gap,
+                                "alloc::vec::dedup_by::FillGapOnDrop",
+                                "vec"
+                              |)
+                            |)
                           |)
                         |);
                         M.read (|
@@ -3294,7 +3665,7 @@ Module vec.
             let~ len :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |)
@@ -3314,13 +3685,17 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "capacity",
+                                  [],
                                   []
                                 |),
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::Vec",
-                                    "buf"
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::vec::Vec",
+                                      "buf"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3333,13 +3708,17 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "grow_one",
+                              [],
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::vec::Vec",
-                                "buf"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::vec::Vec",
+                                  "buf"
+                                |)
                               |)
                             ]
                           |)
@@ -3351,15 +3730,16 @@ Module vec.
             let~ end_ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.read (| len |)
                   ]
@@ -3375,7 +3755,7 @@ Module vec.
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |),
@@ -3430,7 +3810,7 @@ Module vec.
                                 BinOp.eq (|
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
+                                      M.deref (| M.read (| self |) |),
                                       "alloc::vec::Vec",
                                       "len"
                                     |)
@@ -3439,13 +3819,17 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                       "capacity",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::vec::Vec",
-                                        "buf"
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::vec::Vec",
+                                          "buf"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3474,6 +3858,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -3481,13 +3866,14 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_mut_ptr",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                           |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
+                              M.deref (| M.read (| self |) |),
                               "alloc::vec::Vec",
                               "len"
                             |)
@@ -3505,7 +3891,7 @@ Module vec.
                   let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::Vec",
                         "len"
                       |) in
@@ -3555,7 +3941,7 @@ Module vec.
                           BinOp.eq (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
+                                M.deref (| M.read (| self |) |),
                                 "alloc::vec::Vec",
                                 "len"
                               |)
@@ -3570,7 +3956,7 @@ Module vec.
                     (let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
+                          M.deref (| M.read (| self |) |),
                           "alloc::vec::Vec",
                           "len"
                         |) in
@@ -3586,7 +3972,7 @@ Module vec.
                             BinOp.lt (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
+                                  M.deref (| M.read (| self |) |),
                                   "alloc::vec::Vec",
                                   "len"
                                 |)
@@ -3595,9 +3981,10 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "capacity",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)
                           ]
@@ -3614,6 +4001,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ T ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -3621,17 +4009,29 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "as_ptr",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ M.read (| self |) ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -3680,7 +4080,9 @@ Module vec.
                               []
                               [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             [],
+                            [],
                             "branch",
+                            [],
                             []
                           |),
                           [
@@ -3688,18 +4090,31 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "last_mut",
+                                [],
                                 []
                               |),
                               [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::DerefMut",
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                    [],
-                                    "deref_mut",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::DerefMut",
+                                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                        [],
+                                        [],
+                                        "deref_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -3724,6 +4139,7 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -3731,6 +4147,7 @@ Module vec.
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| residual |) ]
@@ -3764,11 +4181,22 @@ Module vec.
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   F,
+                                  [],
                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                   "call_once",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| f |); Value.Tuple [ M.read (| last |) ] ]
+                                [
+                                  M.read (| f |);
+                                  Value.Tuple
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| last |) |)
+                                      |)
+                                    ]
+                                ]
                               |)
                             |)) in
                         let _ :=
@@ -3778,9 +4206,10 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "pop",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -3819,20 +4248,28 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "append_elements",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (|
                       M.use
                         (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                              "as_slice",
-                              []
-                            |),
-                            [ M.read (| other |) ]
+                          M.borrow (|
+                            Pointer.Kind.ConstPointer,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                  "as_slice",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                                ]
+                              |)
+                            |)
                           |)
                         |))
                     |)
@@ -3845,9 +4282,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
+                    [],
                     []
                   |),
-                  [ M.read (| other |); Value.Integer IntegerKind.Usize 0 ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| other |) |) |);
+                    Value.Integer IntegerKind.Usize 0
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -3884,8 +4325,13 @@ Module vec.
             let~ count :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
-                  [ M.read (| other |) ]
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "slice") [] [ T ],
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -3894,9 +4340,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| count |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| count |)
+                  ]
                 |)
               |) in
             let~ len :=
@@ -3905,9 +4355,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -3915,17 +4366,23 @@ Module vec.
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
-                    M.rust_cast (M.read (| other |));
+                    M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| other |));
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |);
                         M.read (| len |)
                       ]
@@ -3937,7 +4394,7 @@ Module vec.
             let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |) in
@@ -3996,9 +4453,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -4034,9 +4492,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "set_len",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| start |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| start |)
+                          ]
                         |)
                       |) in
                     let~ range_slice :=
@@ -4048,6 +4510,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -4055,9 +4518,11 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_ptr",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
                                 |);
                                 M.read (| start |)
                               ]
@@ -4077,9 +4542,15 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
+                                [],
                                 []
                               |),
-                              [ M.read (| range_slice |) ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| range_slice |) |)
+                                |)
+                              ]
                             |));
                           ("vec",
                             M.call_closure (|
@@ -4089,6 +4560,7 @@ Module vec.
                                   (Ty.path "core::ptr::non_null::NonNull")
                                   []
                                   [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -4096,6 +4568,7 @@ Module vec.
                                     [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
                                 ],
                                 "from",
+                                [],
                                 []
                               |),
                               [ M.read (| self |) ]
@@ -4137,19 +4610,25 @@ Module vec.
           M.read (|
             let~ elems :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                    "as_mut_slice",
-                    []
-                  |),
-                  [ M.read (| self |) ]
+                M.borrow (|
+                  Pointer.Kind.MutPointer,
+                  M.deref (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                        "as_mut_slice",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
                 |)
               |) in
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |),
@@ -4187,7 +4666,11 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "len" |)
+            M.SubPointer.get_struct_record_field (|
+              M.deref (| M.read (| self |) |),
+              "alloc::vec::Vec",
+              "len"
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4212,9 +4695,10 @@ Module vec.
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "len",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -4278,9 +4762,10 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "len",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             |)
                           |)) in
@@ -4288,16 +4773,17 @@ Module vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_associated_function (| Self, "assert_failed.split_off", [] |),
+                            M.get_associated_function (| Self, "assert_failed.split_off", [], [] |),
                             [
                               M.read (| at_ |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "len",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| self |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |)
                             ]
                           |)
@@ -4311,7 +4797,7 @@ Module vec.
                 BinOp.Wrap.sub (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::vec::Vec",
                       "len"
                     |)
@@ -4325,20 +4811,27 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "with_capacity_in",
+                    [],
                     []
                   |),
                   [
                     M.read (| other_len |);
                     M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                      M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                            "allocator",
-                            []
-                          |),
-                          [ M.read (| self |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                "allocator",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -4352,9 +4845,13 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); M.read (| at_ |) ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| at_ |)
+                    ]
                   |)
                 |) in
               let~ _ :=
@@ -4363,9 +4860,10 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
+                      [],
                       []
                     |),
-                    [ other; M.read (| other_len |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, other |); M.read (| other_len |) ]
                   |)
                 |) in
               let~ _ :=
@@ -4377,6 +4875,7 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*const") [] [ T ],
                           "add",
+                          [],
                           []
                         |),
                         [
@@ -4384,9 +4883,10 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_ptr",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |);
                           M.read (| at_ |)
                         ]
@@ -4395,17 +4895,19 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
+                          [],
                           []
                         |),
-                        [ other ]
+                        [ M.borrow (| Pointer.Kind.MutRef, other |) ]
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "len",
+                          [],
                           []
                         |),
-                        [ other ]
+                        [ M.borrow (| Pointer.Kind.Ref, other |) ]
                       |)
                     ]
                   |)
@@ -4448,9 +4950,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -4467,6 +4970,7 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "extend_trusted",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::iter::adapters::take::Take")
@@ -4480,7 +4984,7 @@ Module vec.
                             ]
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
@@ -4489,7 +4993,9 @@ Module vec.
                                   []
                                   [ F ],
                                 [],
+                                [],
                                 "take",
+                                [],
                                 []
                               |),
                               [
@@ -4516,9 +5022,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "truncate",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| new_len |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| new_len |)
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
@@ -4547,67 +5057,95 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ me :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      []
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      "as_mut_ptr",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref_mut",
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.read (|
+                let~ me :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
                           []
-                        |),
-                        [ me ]
-                      |)
-                    ]
-                  |);
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
-                        |),
-                        [ me ]
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                        "new",
+                        [],
+                        []
                       |),
-                      "alloc::vec::Vec",
-                      "len"
+                      [ M.read (| self |) ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                  "as_mut_ptr",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::DerefMut",
+                                          Ty.apply
+                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                          [],
+                                          [],
+                                          "deref_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.MutRef, me |) ]
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                    |)
+                                  |),
+                                  "alloc::vec::Vec",
+                                  "len"
+                                |)
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
                     |)
                   |)
-                ]
+                |)
               |)
             |)
           |)))
@@ -4642,58 +5180,93 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (|
-              "core::slice::raw::from_raw_parts_mut",
-              [],
-              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-            |),
-            [
-              M.rust_cast
-                (M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        "as_mut_ptr",
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::vec::Vec",
-                        "len"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::slice::raw::from_raw_parts_mut",
+                          [],
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        |),
+                        [
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ])
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                    "as_mut_ptr",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::Vec",
+                                    "len"
+                                  |)
+                                |)
+                              ]
+                            |));
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                                "capacity",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::Vec",
+                                    "buf"
+                                  |)
+                                |)
+                              ]
+                            |),
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::vec::Vec",
+                                "len"
+                              |)
+                            |)
+                          |)
+                        ]
                       |)
                     |)
-                  ]
-                |));
-              BinOp.Wrap.sub (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                    "capacity",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::Vec",
-                      "buf"
-                    |)
-                  ]
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::Vec",
-                    "len"
                   |)
                 |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4728,9 +5301,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "split_at_spare_mut_with_len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |),
               [
@@ -4741,7 +5315,13 @@ Module vec.
                     let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                     let init := M.copy (| γ0_0 |) in
                     let spare := M.copy (| γ0_1 |) in
-                    M.alloc (| Value.Tuple [ M.read (| init |); M.read (| spare |) ] |)))
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| init |) |) |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| spare |) |) |)
+                        ]
+                    |)))
               ]
             |)
           |)))
@@ -4794,20 +5374,21 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ spare_ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [], [] |),
                   [
                     M.read (| ptr |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::Vec",
                         "len"
                       |)
@@ -4821,6 +5402,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| spare_ptr |) ]
@@ -4833,19 +5415,23 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "capacity",
+                      [],
                       []
                     |),
                     [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::vec::Vec",
-                        "buf"
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::Vec",
+                          "buf"
+                        |)
                       |)
                     ]
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::vec::Vec",
                       "len"
                     |)
@@ -4860,7 +5446,7 @@ Module vec.
                     M.read (| ptr |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.deref (| M.read (| self |) |),
                         "alloc::vec::Vec",
                         "len"
                       |)
@@ -4882,12 +5468,20 @@ Module vec.
             M.alloc (|
               Value.Tuple
                 [
-                  M.read (| initialized |);
-                  M.read (| spare |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::Vec",
-                    "len"
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| initialized |) |) |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| spare |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::Vec",
+                          "len"
+                        |)
+                      |)
+                    |)
                   |)
                 ]
             |)
@@ -4927,9 +5521,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             M.match_operator (|
@@ -4945,10 +5540,11 @@ Module vec.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "extend_with",
+                          [],
                           []
                         |),
                         [
-                          M.read (| self |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                           BinOp.Wrap.sub (| M.read (| new_len |), M.read (| len |) |);
                           M.read (| value |)
                         ]
@@ -4962,9 +5558,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "truncate",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| new_len |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| new_len |)
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
@@ -4999,18 +5599,20 @@ Module vec.
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ T ];
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
               ],
               "spec_extend",
+              [],
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                [ M.read (| other |) ]
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             ]
           |)))
@@ -5063,9 +5665,10 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "len",
+                              [],
                               []
                             |),
-                            [ M.read (| self |) ]
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |))
                       ]
                   ]
@@ -5077,19 +5680,22 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "len",
+                        [],
                         []
                       |),
-                      [ range ]
+                      [ M.borrow (| Pointer.Kind.Ref, range |) ]
                     |)
                   ]
                 |)
@@ -5101,10 +5707,15 @@ Module vec.
                     "alloc::vec::ExtendFromWithinSpec",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     [],
+                    [],
                     "spec_extend_from_within",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| range |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| range |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -5159,31 +5770,37 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| n |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| n |)
+                  ]
                 |)
               |) in
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "len",
+                        [],
                         []
                       |),
-                      [ M.read (| self |) ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   ]
                 |)
@@ -5194,13 +5811,22 @@ Module vec.
                   M.get_associated_function (|
                     Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop",
                     "new",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::Vec",
-                      "len"
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::Vec",
+                            "len"
+                          |)
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -5214,7 +5840,9 @@ Module vec.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
+                        [],
                         "into_iter",
+                        [],
                         []
                       |),
                       [
@@ -5241,10 +5869,17 @@ Module vec.
                                         []
                                         [ Ty.path "usize" ],
                                       [],
+                                      [],
                                       "next",
+                                      [],
                                       []
                                     |),
-                                    [ iter ]
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
                                   |)
                                 |),
                                 [
@@ -5274,10 +5909,12 @@ Module vec.
                                                   "core::clone::Clone",
                                                   T,
                                                   [],
+                                                  [],
                                                   "clone",
+                                                  [],
                                                   []
                                                 |),
-                                                [ value ]
+                                                [ M.borrow (| Pointer.Kind.Ref, value |) ]
                                               |)
                                             ]
                                           |)
@@ -5289,6 +5926,7 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "add",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| ptr |); Value.Integer IntegerKind.Usize 1 ]
@@ -5300,9 +5938,13 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop",
                                               "increment_len",
+                                              [],
                                               []
                                             |),
-                                            [ local_len; Value.Integer IntegerKind.Usize 1 ]
+                                            [
+                                              M.borrow (| Pointer.Kind.MutRef, local_len |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -5336,9 +5978,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop",
                             "increment_len",
+                            [],
                             []
                           |),
-                          [ local_len; Value.Integer IntegerKind.Usize 1 ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, local_len |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
@@ -5367,6 +6013,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "dedup_by",
+              [],
               [
                 Ty.function
                   [
@@ -5377,7 +6024,7 @@ Module vec.
               ]
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -5400,11 +6047,16 @@ Module vec.
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply (Ty.path "&mut") [] [ T ],
+                                            [],
                                             [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                             "eq",
+                                            [],
                                             []
                                           |),
-                                          [ a; b ]
+                                          [
+                                            M.borrow (| Pointer.Kind.Ref, a |);
+                                            M.borrow (| Pointer.Kind.Ref, b |)
+                                          ]
                                         |)))
                                   ]
                                 |)))
@@ -5472,10 +6124,12 @@ Module vec.
                                 "core::iter::traits::iterator::Iterator",
                                 I,
                                 [],
+                                [],
                                 "next",
+                                [],
                                 []
                               |),
-                              [ iterator ]
+                              [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                             |)
                           |) in
                         let γ0_0 :=
@@ -5491,9 +6145,10 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "len",
+                                [],
                                 []
                               |),
-                              [ M.read (| self |) ]
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |) in
                         let~ _ :=
@@ -5511,9 +6166,15 @@ Module vec.
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                               "capacity",
+                                              [],
                                               []
                                             |),
-                                            [ M.read (| self |) ]
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
                                           |)
                                         |)
                                       |)) in
@@ -5529,10 +6190,12 @@ Module vec.
                                           "core::iter::traits::iterator::Iterator",
                                           I,
                                           [],
+                                          [],
                                           "size_hint",
+                                          [],
                                           []
                                         |),
-                                        [ iterator ]
+                                        [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                                       |)
                                     |),
                                     [
@@ -5547,14 +6210,19 @@ Module vec.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                                   "reserve",
+                                                  [],
                                                   []
                                                 |),
                                                 [
-                                                  M.read (| self |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "usize",
                                                       "saturating_add",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5580,6 +6248,7 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ T ],
                                     "add",
+                                    [],
                                     []
                                   |),
                                   [
@@ -5587,9 +6256,15 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                         "as_mut_ptr",
+                                        [],
                                         []
                                       |),
-                                      [ M.read (| self |) ]
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
                                     |);
                                     M.read (| len |)
                                   ]
@@ -5604,10 +6279,11 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "set_len",
+                                [],
                                 []
                               |),
                               [
-                                M.read (| self |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                                 BinOp.Wrap.add (|
                                   M.read (| len |),
                                   Value.Integer IntegerKind.Usize 1
@@ -5690,10 +6366,12 @@ Module vec.
                     "core::iter::traits::iterator::Iterator",
                     impl_iter_TrustedLen_Item___T_,
                     [],
+                    [],
                     "size_hint",
+                    [],
                     []
                   |),
-                  [ iterator ]
+                  [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                 |)
               |),
               [
@@ -5730,7 +6408,13 @@ Module vec.
                                         |) in
                                       let~ _ :=
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [ low; additional ] |),
+                                          M.alloc (|
+                                            Value.Tuple
+                                              [
+                                                M.borrow (| Pointer.Kind.Ref, low |);
+                                                M.borrow (| Pointer.Kind.Ref, additional |)
+                                              ]
+                                          |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -5751,10 +6435,14 @@ Module vec.
                                                               UnOp.not (|
                                                                 BinOp.eq (|
                                                                   M.read (|
-                                                                    M.read (| left_val |)
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
                                                                   |),
                                                                   M.read (|
-                                                                    M.read (| right_val |)
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -5785,8 +6473,28 @@ Module vec.
                                                                   |),
                                                                   [
                                                                     M.read (| kind |);
-                                                                    M.read (| left_val |);
-                                                                    M.read (| right_val |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |);
                                                                     Value.StructTuple
                                                                       "core::option::Option::Some"
                                                                       [
@@ -5795,57 +6503,83 @@ Module vec.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_v1",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "TrustedLen iterator's size hint is not exact: "
-                                                                                  |)
-                                                                                ]
-                                                                            |);
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::rt::Argument",
-                                                                                      "new_debug",
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "usize";
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "core::option::Option")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "usize"
-                                                                                              ]
-                                                                                          ]
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "TrustedLen iterator's size hint is not exact: "
+                                                                                        |)
                                                                                       ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.alloc (|
-                                                                                        Value.Tuple
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            |);
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
+                                                                                            "new_debug",
+                                                                                            [],
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "usize";
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "usize"
+                                                                                                    ]
+                                                                                                ]
+                                                                                            ]
+                                                                                          |),
                                                                                           [
-                                                                                            M.read (|
-                                                                                              low
-                                                                                            |);
-                                                                                            M.read (|
-                                                                                              high
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.alloc (|
+                                                                                                    Value.Tuple
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          low
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          high
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
                                                                                             |)
                                                                                           ]
-                                                                                      |)
-                                                                                    ]
+                                                                                        |)
+                                                                                      ]
                                                                                   |)
-                                                                                ]
+                                                                                |)
+                                                                              |)
                                                                             |)
                                                                           ]
                                                                         |)
@@ -5873,9 +6607,16 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "reserve",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |); M.read (| additional |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |);
+                                    M.read (| additional |)
+                                  ]
                                 |)
                               |) in
                             let~ ptr :=
@@ -5884,9 +6625,15 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |)
                               |) in
                             let~ local_len :=
@@ -5895,13 +6642,22 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop",
                                     "new",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::vec::Vec",
-                                      "len"
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::vec::Vec",
+                                            "len"
+                                          |)
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -5913,7 +6669,9 @@ Module vec.
                                     "core::iter::traits::iterator::Iterator",
                                     impl_iter_TrustedLen_Item___T_,
                                     [],
+                                    [],
                                     "for_each",
+                                    [],
                                     [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
                                   |),
                                   [
@@ -5947,6 +6705,7 @@ Module vec.
                                                                       []
                                                                       [ T ],
                                                                     "add",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -5956,9 +6715,15 @@ Module vec.
                                                                         Ty.path
                                                                           "alloc::vec::set_len_on_drop::SetLenOnDrop",
                                                                         "current_len",
+                                                                        [],
                                                                         []
                                                                       |),
-                                                                      [ local_len ]
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          local_len
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   ]
                                                                 |);
@@ -5973,10 +6738,14 @@ Module vec.
                                                                 Ty.path
                                                                   "alloc::vec::set_len_on_drop::SetLenOnDrop",
                                                                 "increment_len",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
-                                                                local_len;
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  local_len
+                                                                |);
                                                                 Value.Integer IntegerKind.Usize 1
                                                               ]
                                                             |)
@@ -6002,12 +6771,21 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "capacity overflow" |) ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String "capacity overflow" |) ]
+                                              |)
+                                            |)
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -6052,9 +6830,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "drain",
+                    [],
                     [ R ]
                   |),
-                  [ M.read (| self |); M.read (| range |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| range |)
+                  ]
                 |));
               ("replace_with",
                 M.call_closure (|
@@ -6062,7 +6844,9 @@ Module vec.
                     "core::iter::traits::collect::IntoIterator",
                     I,
                     [],
+                    [],
                     "into_iter",
+                    [],
                     []
                   |),
                   [ M.read (| replace_with |) ]
@@ -6104,9 +6888,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -6116,9 +6901,13 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
+                      [],
                       []
                     |),
-                    [ M.read (| self |); Value.Integer IntegerKind.Usize 0 ]
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      Value.Integer IntegerKind.Usize 0
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
@@ -6126,7 +6915,7 @@ Module vec.
               Value.StructRecord
                 "alloc::vec::extract_if::ExtractIf"
                 [
-                  ("vec", M.read (| self |));
+                  ("vec", M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
                   ("idx", Value.Integer IntegerKind.Usize 0);
                   ("del", Value.Integer IntegerKind.Usize 0);
                   ("old_len", M.read (| old_len |));
@@ -6191,6 +6980,7 @@ Module vec.
                       []
                       [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                     "into_raw_parts_with_alloc",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -6231,6 +7021,7 @@ Module vec.
                                           []
                                           [ Ty.path "usize" ],
                                         "expect",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6238,6 +7029,7 @@ Module vec.
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "checked_mul",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6245,7 +7037,10 @@ Module vec.
                                             M.read (| M.get_constant (| "alloc::vec::N" |) |)
                                           ]
                                         |);
-                                        M.read (| Value.String "vec len overflow" |)
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| Value.String "vec len overflow" |) |)
+                                        |)
                                       ]
                                     |);
                                     M.read (| M.get_constant (| "core::num::MAX" |) |)
@@ -6260,6 +7055,7 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "unchecked_mul",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6271,6 +7067,7 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "unchecked_mul",
+                                        [],
                                         []
                                       |),
                                       [
@@ -6294,6 +7091,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "from_raw_parts_in",
+                                  [],
                                   []
                                 |),
                                 [
@@ -6304,6 +7102,7 @@ Module vec.
                                         []
                                         [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                       "cast",
+                                      [],
                                       [ T ]
                                     |),
                                     [ M.read (| ptr |) ]
@@ -6345,7 +7144,9 @@ Module vec.
             "alloc::vec::spec_from_elem::SpecFromElem",
             T,
             [],
+            [],
             "from_elem",
+            [],
             [ Ty.path "alloc::alloc::Global" ]
           |),
           [ M.read (| elem |); M.read (| n |); Value.StructTuple "alloc::alloc::Global" [] ]
@@ -6372,7 +7173,9 @@ Module vec.
             "alloc::vec::spec_from_elem::SpecFromElem",
             T,
             [],
+            [],
             "from_elem",
+            [],
             [ A ]
           |),
           [ M.read (| elem |); M.read (| n |); M.read (| alloc |) ]
@@ -6425,9 +7228,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "split_at_spare_mut_with_len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                 |)
               |),
               [
@@ -6445,9 +7249,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "get_unchecked",
+                            [],
                             [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
-                          [ M.read (| this |); M.read (| src |) ]
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| this |) |) |);
+                            M.read (| src |)
+                          ]
                         |)
                       |) in
                     let~ _ :=
@@ -6496,7 +7304,9 @@ Module vec.
                                   (Ty.apply (Ty.path "&mut") [] [ T ])
                               ],
                             [],
+                            [],
                             "for_each",
+                            [],
                             [
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
@@ -6523,7 +7333,9 @@ Module vec.
                                       ]
                                   ],
                                 [],
+                                [],
                                 "map",
+                                [],
                                 [
                                   Ty.apply (Ty.path "&mut") [] [ T ];
                                   Ty.function
@@ -6601,19 +7413,30 @@ Module vec.
                                                         []
                                                         [ T ],
                                                       "write",
+                                                      [],
                                                       []
                                                     |),
                                                     [
-                                                      M.read (| dst |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| dst |) |)
+                                                      |);
                                                       M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::clone::Clone",
                                                           T,
                                                           [],
+                                                          [],
                                                           "clone",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| src |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| src |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)))
@@ -6635,7 +7458,7 @@ Module vec.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.read (|
-                                                let β := M.read (| len |) in
+                                                let β := M.deref (| M.read (| len |) |) in
                                                 M.write (|
                                                   β,
                                                   BinOp.Wrap.add (|
@@ -6718,10 +7541,12 @@ Module vec.
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [],
+                    [],
                     "len",
+                    [],
                     []
                   |),
-                  [ src ]
+                  [ M.borrow (| Pointer.Kind.Ref, src |) ]
                 |)
               |) in
             let~ _ :=
@@ -6731,9 +7556,10 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "split_at_spare_mut",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |),
                 [
@@ -6749,10 +7575,14 @@ Module vec.
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "get_unchecked",
+                              [],
                               [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
                               ]
                             |),
-                            [ M.read (| init |); M.read (| src |) ]
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| init |) |) |);
+                              M.read (| src |)
+                            ]
                           |)
                         |) in
                       let~ _ :=
@@ -6764,11 +7594,14 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "as_ptr",
+                                  [],
                                   []
                                 |),
-                                [ M.read (| source |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                                ]
                               |);
-                              M.rust_cast
+                              M.cast
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
                                 (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -6781,9 +7614,15 @@ Module vec.
                                           [ T ]
                                       ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| spare |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| spare |) |)
+                                    |)
+                                  ]
                                 |));
                               M.read (| count |)
                             ]
@@ -6795,7 +7634,7 @@ Module vec.
             let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
+                  M.deref (| M.read (| self |) |),
                   "alloc::vec::Vec",
                   "len"
                 |) in
@@ -6832,25 +7671,31 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  "as_ptr",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::Vec",
-                  "len"
-                |)
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |)
+                  |)
+                ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6879,25 +7724,41 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  "as_mut_ptr",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::Vec",
-                  "len"
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              "as_mut_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::Vec",
+                              "len"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
                 |)
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6942,15 +7803,21 @@ Module vec.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                  M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        "allocator",
-                        []
-                      |),
-                      [ M.read (| self |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                            "allocator",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
                     |)
                   ]
                 |)
@@ -6960,18 +7827,31 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "to_vec_in",
+                  [],
                   [ A ]
                 |),
                 [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [ M.read (| self |) ]
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
+                      |)
+                    |)
                   |);
                   M.read (| alloc |)
                 ]
@@ -7000,20 +7880,28 @@ Module vec.
                   M.get_trait_method (|
                     "alloc::slice::SpecCloneIntoVec",
                     Ty.apply (Ty.path "slice") [] [ T ],
+                    [],
                     [ T; A ],
                     "clone_into",
+                    [],
                     []
                   |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                        "as_slice",
-                        []
-                      |),
-                      [ M.read (| source |) ]
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                            "as_slice",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
+                        |)
+                      |)
                     |);
-                    M.read (| self |)
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
                   ]
                 |)
               |) in
@@ -7055,21 +7943,35 @@ Module vec.
               "core::hash::Hash",
               Ty.apply (Ty.path "slice") [] [ T ],
               [],
+              [],
               "hash",
+              [],
               [ H ]
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| state |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7102,27 +8004,46 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.apply (Ty.path "slice") [] [ T ],
-              [ I ],
-              "index",
-              []
-            |),
-            [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
               M.call_closure (|
                 M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                  "core::ops::index::Index",
+                  Ty.apply (Ty.path "slice") [] [ T ],
                   [],
-                  "deref",
+                  [ I ],
+                  "index",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)
+                      |)
+                    |)
+                  |);
+                  M.read (| index |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7155,27 +8076,56 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.apply (Ty.path "slice") [] [ T ],
-              [ I ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      [],
+                      [ I ],
+                      "index_mut",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                  [],
+                                  [],
+                                  "deref_mut",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        |)
+                      |);
+                      M.read (| index |)
+                    ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7208,8 +8158,10 @@ Module vec.
             M.get_trait_method (|
               "alloc::vec::spec_from_iter::SpecFromIter",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [],
               [ T; Ty.associated ],
               "from_iter",
+              [],
               []
             |),
             [
@@ -7218,7 +8170,9 @@ Module vec.
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]
@@ -7280,6 +8234,7 @@ Module vec.
                       []
                       [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
+                    [],
                     []
                   |),
                   [ M.read (| self |) ]
@@ -7291,33 +8246,47 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                     "new",
+                    [],
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_function (| "core::ptr::read", [], [ A ] |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                            "allocator",
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.ConstPointer,
+                          M.deref (|
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  []
-                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                "allocator",
                                 [],
-                                "deref",
                                 []
                               |),
-                              [ me ]
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
@@ -7330,25 +8299,33 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "non_null",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                          |)
                         |),
-                        [ me ]
-                      |),
-                      "alloc::vec::Vec",
-                      "buf"
+                        "alloc::vec::Vec",
+                        "buf"
+                      |)
                     |)
                   ]
                 |)
@@ -7359,6 +8336,7 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
+                    [],
                     []
                   |),
                   [ M.read (| buf |) ]
@@ -7382,6 +8360,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "wrapping_byte_add",
+                                [],
                                 []
                               |),
                               [
@@ -7390,21 +8369,29 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "len",
+                                    [],
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                          []
-                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                        [],
-                                        "deref",
-                                        []
-                                      |),
-                                      [ me ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                        |)
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -7414,13 +8401,15 @@ Module vec.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.rust_cast
+                          M.cast
+                            (Ty.apply (Ty.path "*const") [] [ T ])
                             (* MutToConstPointer *)
                             (M.pointer_coercion
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "add",
+                                  [],
                                   []
                                 |),
                                 [
@@ -7429,21 +8418,30 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
                                     [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.apply
-                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                            []
-                                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                          [],
-                                          "deref",
-                                          []
-                                        |),
-                                        [ me ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                []
+                                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]
+                                                ],
+                                              [],
+                                              [],
+                                              "deref",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                          |)
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -7459,25 +8457,33 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "capacity",
+                    [],
                     []
                   |),
                   [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            []
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                          [],
-                          "deref",
-                          []
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
+                                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                          |)
                         |),
-                        [ me ]
-                      |),
-                      "alloc::vec::Vec",
-                      "buf"
+                        "alloc::vec::Vec",
+                        "buf"
+                      |)
                     |)
                   ]
                 |)
@@ -7535,17 +8541,24 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::Deref",
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      [],
+                      [],
+                      "deref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -7589,17 +8602,24 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [], [] |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
               |)
             ]
           |)))
@@ -7639,18 +8659,22 @@ Module vec.
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+              [],
               [ T; Ty.associated ],
               "spec_extend",
+              [],
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]
@@ -7679,9 +8703,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "push",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| item |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| item |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7713,9 +8741,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| additional |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| additional |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7752,9 +8784,10 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
+                    [],
                     []
                   |),
-                  [ M.read (| self |) ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
             let~ _ :=
@@ -7763,15 +8796,21 @@ Module vec.
                   M.get_function (| "core::ptr::write", [], [ T ] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "add",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "as_mut_ptr",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |);
                         M.read (| len |)
                       ]
@@ -7786,10 +8825,11 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
+                    [],
                     []
                   |),
                   [
-                    M.read (| self |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                   ]
                 |)
@@ -7834,18 +8874,22 @@ Module vec.
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ T ]; Ty.associated ],
               "spec_extend",
+              [],
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
                   [],
+                  [],
                   "into_iter",
+                  [],
                   []
                 |),
                 [ M.read (| iter |) ]
@@ -7881,9 +8925,13 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "push",
+                            [],
                             []
                           |),
-                          [ M.read (| self |); M.read (| item |) ]
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| item |)
+                          ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)
@@ -7917,9 +8965,13 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
+                    [],
                     []
                   |),
-                  [ M.read (| self |); M.read (| additional |) ]
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| additional |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -7963,9 +9015,10 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "len",
+                            [],
                             []
                           |),
-                          [ M.read (| self |) ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |) in
                     let~ _ :=
@@ -7977,6 +9030,7 @@ Module vec.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "add",
+                                [],
                                 []
                               |),
                               [
@@ -7984,9 +9038,15 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_mut_ptr",
+                                    [],
                                     []
                                   |),
-                                  [ M.read (| self |) ]
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
                                 |);
                                 M.read (| len |)
                               ]
@@ -8001,10 +9061,11 @@ Module vec.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "set_len",
+                            [],
                             []
                           |),
                           [
-                            M.read (| self |);
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                             BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 1 |)
                           ]
                         |)
@@ -8055,30 +9116,56 @@ Module vec.
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply (Ty.path "slice") [] [ T ],
+              [],
               [ Ty.apply (Ty.path "slice") [] [ T ] ],
               "partial_cmp",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8127,29 +9214,55 @@ Module vec.
               "core::cmp::Ord",
               Ty.apply (Ty.path "slice") [] [ T ],
               [],
+              [],
               "cmp",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| other |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |)
             ]
           |)))
@@ -8199,13 +9312,14 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "as_mut_ptr",
+                      [],
                       []
                     |),
-                    [ M.read (| self |) ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
+                      M.deref (| M.read (| self |) |),
                       "alloc::vec::Vec",
                       "len"
                     |)
@@ -8244,6 +9358,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
+              [],
               []
             |),
             []
@@ -8280,21 +9395,35 @@ Module vec.
               "core::fmt::Debug",
               Ty.apply (Ty.path "slice") [] [ T ],
               [],
+              [],
               "fmt",
+              [],
               []
             |),
             [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)
+                  |)
+                |)
               |);
-              M.read (| f |)
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8350,7 +9479,10 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| self |)))
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -8377,15 +9509,22 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-              [],
-              "deref",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::ops::deref::Deref",
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                  [],
+                  [],
+                  "deref",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8413,15 +9552,27 @@ Module vec.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::deref::DerefMut",
-              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-              [],
-              "deref_mut",
-              []
-            |),
-            [ M.read (| self |) ]
+          M.borrow (|
+            Pointer.Kind.MutRef,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |)
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8451,8 +9602,8 @@ Module vec.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
-            [ M.read (| s |) ]
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8483,8 +9634,8 @@ Module vec.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
-            [ M.read (| s |) ]
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8524,8 +9675,10 @@ Module vec.
             M.get_trait_method (|
               "core::convert::From",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "from",
+              [],
               []
             |),
             [
@@ -8533,9 +9686,10 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "array") [ N ] [ T ],
                   "as_slice",
+                  [ N ],
                   []
                 |),
-                [ M.read (| s |) ]
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
               |)
             ]
           |)))
@@ -8577,8 +9731,10 @@ Module vec.
             M.get_trait_method (|
               "core::convert::From",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "from",
+              [],
               []
             |),
             [
@@ -8586,9 +9742,10 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "array") [ N ] [ T ],
                   "as_mut_slice",
+                  [ N ],
                   []
                 |),
-                [ M.read (| s |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
               |)
             ]
           |)))
@@ -8630,6 +9787,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ T ],
               "into_vec",
+              [],
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
@@ -8640,6 +9798,7 @@ Module vec.
                     []
                     [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
                   "new",
+                  [],
                   []
                 |),
                 [ M.read (| s |) ]
@@ -8677,6 +9836,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               "into_owned",
+              [],
               []
             |),
             [ M.read (| s |) ]
@@ -8710,7 +9870,12 @@ Module vec.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "into_vec", [ A ] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ T ],
+              "into_vec",
+              [],
+              [ A ]
+            |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8748,6 +9913,7 @@ Module vec.
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "into_boxed_slice",
+              [],
               []
             |),
             [ M.read (| v |) ]
@@ -8785,14 +9951,16 @@ Module vec.
                 (Ty.path "alloc::vec::Vec")
                 []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
               "from",
+              [],
               []
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                [ M.read (| s |) ]
+                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
               |)
             ]
           |)))
@@ -8861,9 +10029,10 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
+                                      [],
                                       []
                                     |),
-                                    [ vec ]
+                                    [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                                   |),
                                   M.read (| M.get_constant (| "alloc::vec::N" |) |)
                                 |)
@@ -8888,9 +10057,10 @@ Module vec.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "set_len",
+                        [],
                         []
                       |),
-                      [ vec; Value.Integer IntegerKind.Usize 0 ]
+                      [ M.borrow (| Pointer.Kind.MutRef, vec |); Value.Integer IntegerKind.Usize 0 ]
                     |)
                   |) in
                 let~ array :=
@@ -8902,14 +10072,19 @@ Module vec.
                         [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                       |),
                       [
-                        M.rust_cast
+                        M.cast
+                          (Ty.apply
+                            (Ty.path "*const")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_ptr",
+                              [],
                               []
                             |),
-                            [ vec ]
+                            [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                           |))
                       ]
                     |)

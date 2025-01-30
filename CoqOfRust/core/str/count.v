@@ -48,8 +48,8 @@ Module str.
                             ltac:(M.monadic
                               (BinOp.lt (|
                                 M.call_closure (|
-                                  M.get_associated_function (| Ty.path "str", "len", [] |),
-                                  [ M.read (| s |) ]
+                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |),
                                 BinOp.Wrap.mul (|
                                   M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
@@ -63,9 +63,14 @@ Module str.
                       M.call_closure (|
                         M.get_function (| "core::str::count::char_count_general_case", [], [] |),
                         [
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                            [ M.read (| s |) ]
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                              |)
+                            |)
                           |)
                         ]
                       |)
@@ -75,7 +80,7 @@ Module str.
                     (M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::str::count::do_count_chars", [], [] |),
-                        [ M.read (| s |) ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     |)))
               ]
@@ -172,12 +177,18 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
+                        [],
                         [ Ty.path "usize" ]
                       |),
                       [
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                          [ M.read (| s |) ]
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                            |)
+                          |)
                         |)
                       ]
                     |)
@@ -212,9 +223,15 @@ Module str.
                                                       []
                                                       [ Ty.path "usize" ],
                                                     "is_empty",
+                                                    [],
                                                     []
                                                   |),
-                                                  [ M.read (| body |) ]
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| body |) |)
+                                                    |)
+                                                  ]
                                                 |),
                                                 ltac:(M.monadic
                                                   (BinOp.gt (|
@@ -225,9 +242,15 @@ Module str.
                                                           []
                                                           [ Ty.path "u8" ],
                                                         "len",
+                                                        [],
                                                         []
                                                       |),
-                                                      [ M.read (| head |) ]
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| head |) |)
+                                                        |)
+                                                      ]
                                                     |),
                                                     M.read (|
                                                       M.get_constant (|
@@ -245,9 +268,15 @@ Module str.
                                                         []
                                                         [ Ty.path "u8" ],
                                                       "len",
+                                                      [],
                                                       []
                                                     |),
-                                                    [ M.read (| tail |) ]
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| tail |) |)
+                                                      |)
+                                                    ]
                                                   |),
                                                   M.read (|
                                                     M.get_constant (|
@@ -275,13 +304,24 @@ Module str.
                                               []
                                             |),
                                             [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "as_bytes",
-                                                  []
-                                                |),
-                                                [ M.read (| s |) ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| s |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -301,7 +341,7 @@ Module str.
                                   [],
                                   []
                                 |),
-                                [ M.read (| head |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |) ]
                               |),
                               M.call_closure (|
                                 M.get_function (|
@@ -309,7 +349,7 @@ Module str.
                                   [],
                                   []
                                 |),
-                                [ M.read (| tail |) ]
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| tail |) |) |) ]
                               |)
                             |)
                           |) in
@@ -325,7 +365,9 @@ Module str.
                                       []
                                       [ Ty.path "usize" ],
                                     [],
+                                    [],
                                     "into_iter",
+                                    [],
                                     []
                                   |),
                                   [
@@ -333,10 +375,14 @@ Module str.
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                         "chunks",
+                                        [],
                                         []
                                       |),
                                       [
-                                        M.read (| body |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| body |) |)
+                                        |);
                                         M.read (|
                                           M.get_constant (|
                                             "core::str::count::do_count_chars::CHUNK_SIZE"
@@ -364,10 +410,19 @@ Module str.
                                                     []
                                                     [ Ty.path "usize" ],
                                                   [],
+                                                  [],
                                                   "next",
+                                                  [],
                                                   []
                                                 |),
-                                                [ iter ]
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |),
                                             [
@@ -403,9 +458,15 @@ Module str.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           "as_chunks",
+                                                          [],
                                                           []
                                                         |),
-                                                        [ M.read (| chunk |) ]
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| chunk |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |),
                                                     [
@@ -450,7 +511,9 @@ Module str.
                                                                             ]
                                                                         ],
                                                                       [],
+                                                                      [],
                                                                       "into_iter",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| unrolled_chunks |) ]
@@ -487,10 +550,22 @@ Module str.
                                                                                           ]
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "next",
+                                                                                    [],
                                                                                     []
                                                                                   |),
-                                                                                  [ iter ]
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.MutRef,
+                                                                                      M.deref (|
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.MutRef,
+                                                                                          iter
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |),
                                                                               [
@@ -545,7 +620,9 @@ Module str.
                                                                                                     ]
                                                                                                 ],
                                                                                               [],
+                                                                                              [],
                                                                                               "into_iter",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -581,11 +658,21 @@ Module str.
                                                                                                                   "usize"
                                                                                                               ],
                                                                                                             [],
+                                                                                                            [],
                                                                                                             "next",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
-                                                                                                            iter
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.MutRef,
+                                                                                                              M.deref (|
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.MutRef,
+                                                                                                                  iter
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            |)
                                                                                                           ]
                                                                                                         |)
                                                                                                       |),
@@ -704,9 +791,18 @@ Module str.
                                                                                 []
                                                                                 [ Ty.path "usize" ],
                                                                               "is_empty",
+                                                                              [],
                                                                               []
                                                                             |),
-                                                                            [ M.read (| remainder |)
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    remainder
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         |)
@@ -746,7 +842,9 @@ Module str.
                                                                                           ]
                                                                                       ],
                                                                                     [],
+                                                                                    [],
                                                                                     "into_iter",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -780,11 +878,21 @@ Module str.
                                                                                                         "usize"
                                                                                                     ],
                                                                                                   [],
+                                                                                                  [],
                                                                                                   "next",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
-                                                                                                  iter
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.MutRef,
+                                                                                                    M.deref (|
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.MutRef,
+                                                                                                        iter
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)
                                                                                             |),
@@ -951,7 +1059,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                 [ Value.Integer IntegerKind.U8 1 ]
               |)
             |))).
@@ -990,7 +1098,7 @@ Module str.
             M.alloc (|
               BinOp.Wrap.shr (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
+                  M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| pair_sum |);
                     M.read (|
@@ -1020,7 +1128,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 1 ]
               |)
             |))).
@@ -1030,7 +1138,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
+                M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 255 ]
               |)
             |))).
@@ -1062,7 +1170,9 @@ Module str.
                     (Ty.path "bool")
                 ],
               [],
+              [],
               "count",
+              [],
               []
             |),
             [
@@ -1071,7 +1181,9 @@ Module str.
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                   [],
+                  [],
                   "filter",
+                  [],
                   [
                     Ty.function
                       [
@@ -1087,9 +1199,10 @@ Module str.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "iter",
+                      [],
                       []
                     |),
-                    [ M.read (| s |) ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                   |);
                   M.closure
                     (fun γ =>

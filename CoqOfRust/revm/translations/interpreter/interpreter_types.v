@@ -28,11 +28,13 @@ Module interpreter_types.
               "revm_interpreter::interpreter_types::MemoryTrait",
               Self,
               [],
+              [],
               "slice",
+              [],
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
               Value.StructRecord
                 "core::ops::range::Range"
                 [
@@ -64,10 +66,12 @@ Module interpreter_types.
                 "revm_interpreter::interpreter_types::SubRoutineStack",
                 Self,
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -91,10 +95,12 @@ Module interpreter_types.
                 "revm_interpreter::interpreter_types::StackTrait",
                 Self,
                 [],
+                [],
                 "len",
+                [],
                 []
               |),
-              [ M.read (| self |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -114,11 +120,13 @@ Module interpreter_types.
               "revm_interpreter::interpreter_types::StackTrait",
               Self,
               [],
+              [],
               "push",
+              [],
               []
             |),
             [
-              M.read (| self |);
+              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::Into",
@@ -126,6 +134,7 @@ Module interpreter_types.
                     (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [],
+                  [],
                   [
                     Ty.apply
                       (Ty.path "ruint::Uint")
@@ -133,6 +142,7 @@ Module interpreter_types.
                       []
                   ],
                   "into",
+                  [],
                   []
                 |),
                 [ M.read (| value |) ]
@@ -180,6 +190,7 @@ Module interpreter_types.
                     ]
                 ],
               "map",
+              [],
               [
                 Ty.apply
                   (Ty.path "&mut")
@@ -240,10 +251,12 @@ Module interpreter_types.
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
                   [],
+                  [],
                   "popn_top",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -293,6 +306,7 @@ Module interpreter_types.
                     ]
                 ],
               "map",
+              [],
               [
                 Ty.apply
                   (Ty.path "ruint::Uint")
@@ -328,10 +342,12 @@ Module interpreter_types.
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
                   [],
+                  [],
                   "popn",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -380,6 +396,7 @@ Module interpreter_types.
                     []
                 ],
               "map",
+              [],
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.function
@@ -401,10 +418,12 @@ Module interpreter_types.
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
                   [],
+                  [],
                   "pop",
+                  [],
                   []
                 |),
-                [ M.read (| self |) ]
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |);
               M.closure
                 (fun γ =>
@@ -422,6 +441,7 @@ Module interpreter_types.
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "alloy_primitives::bits::address::Address",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "array")
@@ -429,6 +449,7 @@ Module interpreter_types.
                                         [ Ty.path "u8" ]
                                     ],
                                     "from",
+                                    [],
                                     []
                                   |),
                                   [
@@ -442,9 +463,13 @@ Module interpreter_types.
                                           ]
                                           [],
                                         "to_be_bytes",
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ],
                                         []
                                       |),
-                                      [ value ]
+                                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
                                     |)
                                   ]
                                 |)))
