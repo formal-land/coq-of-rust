@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Export smpl.Smpl.
 
 Import List.ListNotations.
 
@@ -13,10 +14,53 @@ Arguments Φ _ {_}.
 
 Global Opaque φ.
 
-Global Instance BoolIsLink : Link bool := {
-  Φ := Ty.path "bool";
-  φ b := Value.Bool b;
-}.
+Smpl Create of_value.
+
+Module OfValue.
+  Inductive t (value' : Value.t) : Type :=
+  | Make {A : Set} `{Link A} (value : A) :
+    value' = φ value ->
+    t value'.
+
+  Definition get_Set {value' : Value.t} (x : t value') : Set :=
+    let '@Make _ A _ _ _ := x in
+    A.
+
+  Global Instance IsLink {value' : Value.t} (x : t value') : Link (get_Set x).
+  Proof.
+    destruct x.
+    assumption.
+  Defined.
+
+  Definition get_value {value' : Value.t} (x : t value') : get_Set x :=
+    let '@Make _ _ _ value _ := x in
+    value.
+
+  Definition of_value {A : Set} `{Link A} (value : A) :
+    t (φ value).
+  Proof.
+    eapply Make with (value := value).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_value : of_value.
+End OfValue.
+
+Module Bool.
+  Global Instance IsLink : Link bool := {
+    Φ := Ty.path "bool";
+    φ b := Value.Bool b;
+  }.
+
+  Lemma of_value_with (b : bool) :
+    Value.Bool b = φ b.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (b : bool) :
+    OfValue.t (Value.Bool b).
+  Proof. eapply OfValue.Make with (A := bool); smpl of_value. Defined.
+  Smpl Add apply of_value : of_value.
+End Bool.
 
 Module Integer.
   (** We distinguish the various forms of integers at this level. We will use plain [Z] integers in
@@ -46,6 +90,16 @@ Module Integer.
     Φ := Ty.path (to_ty_path kind);
     φ '{| value := value |} := Value.Integer kind value;
   }.
+
+  Lemma of_value_with {kind : IntegerKind.t} (value : Z) :
+    Value.Integer kind value = φ (Integer.Build_t kind value).
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value {kind : IntegerKind.t} (value : Z) :
+    OfValue.t (Value.Integer kind value).
+  Proof. eapply OfValue.Make with (A := t kind); smpl of_value. Defined.
+  Smpl Add apply of_value : of_value.
 End Integer.
 
 (** ** Integer kinds for better readability *)
@@ -105,7 +159,35 @@ Module Char.
     Φ := Ty.path "char";
     φ '(Make c) := Value.UnicodeChar c;
   }.
+
+  Lemma of_value_with (c : Z) :
+    Value.UnicodeChar c = φ (Char.Make c).
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (c : Z) :
+    OfValue.t (Value.UnicodeChar c).
+  Proof. eapply OfValue.Make with (A := t); smpl of_value. Defined.
+  Smpl Add apply of_value : of_value.
 End Char.
+
+(** ** Tuples *)
+Module Unit.
+  Global Instance IsLink : Link unit := {
+    Φ := Ty.tuple [];
+    φ _ := Value.Tuple [];
+  }.
+
+  Lemma of_value_with :
+    Value.Tuple [] = φ tt.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value :
+    OfValue.t (Value.Tuple []).
+  Proof. eapply OfValue.Make with (A := unit); smpl of_value. Defined.
+  Smpl Add apply of_value : of_value.
+End Unit.
 
 Module OneElementTuple.
   (** There are no tuples of one element in Coq so we have to create it. This is different than the
@@ -120,15 +202,26 @@ Module OneElementTuple.
     Φ := Ty.tuple [Φ A];
     φ '{| value := value |} := Value.Tuple [φ value];
   }.
+
+  Lemma of_value_with {A : Set} `{Link A} value value' :
+    value' = φ value ->
+    Value.Tuple [value'] = φ (OneElementTuple.Build_t A _ value).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (value' : Value.t) :
+    OfValue.t value' ->
+    OfValue.t (Value.Tuple [value']).
+  Proof.
+    intros [A].
+    eapply OfValue.Make with (A := t A).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
 End OneElementTuple.
 
-Module TupleIsLink.
-  Global Instance I0 : Link unit := {
-    Φ := Ty.tuple [];
-    φ _ := Value.Tuple [];
-  }.
-
-  Global Instance I2 (A1 A2 : Set)
+Module Pair.
+  Global Instance IsLink (A1 A2 : Set)
       (_ : Link A1)
       (_ : Link A2) :
       Link (A1 * A2) := {
@@ -136,93 +229,24 @@ Module TupleIsLink.
     φ '(a1, a2) := Value.Tuple [φ a1; φ a2];
   }.
 
-  Global Instance I3 (A1 A2 A3 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3) :
-      Link (A1 * A2 * A3) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3];
-    φ '(a1, a2, a3) := Value.Tuple [φ a1; φ a2; φ a3];
-  }.
+  Lemma of_value_with {A1 A2 : Set} `{Link A1} `{Link A2} a1 a2 a1' a2' :
+    a1' = φ a1 ->
+    a2' = φ a2 ->
+    Value.Tuple [a1'; a2'] = φ (A := A1 * A2) (a1, a2).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
 
-  Global Instance I4 (A1 A2 A3 A4 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3)
-      (_ : Link A4) :
-      Link (A1 * A2 * A3 * A4) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4];
-    φ '(a1, a2, a3, a4) :=
-      Value.Tuple [φ a1; φ a2; φ a3; φ a4];
-  }.
-
-  Global Instance I5 (A1 A2 A3 A4 A5 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3)
-      (_ : Link A4)
-      (_ : Link A5) :
-      Link (A1 * A2 * A3 * A4 * A5) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5];
-    φ '(a1, a2, a3, a4, a5) :=
-      Value.Tuple [φ a1; φ a2; φ a3; φ a4; φ a5];
-  }.
-
-  Global Instance I6 (A1 A2 A3 A4 A5 A6 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3)
-      (_ : Link A4)
-      (_ : Link A5)
-      (_ : Link A6) :
-      Link (A1 * A2 * A3 * A4 * A5 * A6) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6];
-    φ '(a1, a2, a3, a4, a5, a6) :=
-      Value.Tuple [φ a1; φ a2; φ a3; φ a4; φ a5; φ a6];
-  }.
-
-  Global Instance I7 (A1 A2 A3 A4 A5 A6 A7 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3)
-      (_ : Link A4)
-      (_ : Link A5)
-      (_ : Link A6)
-      (_ : Link A7) :
-      Link (A1 * A2 * A3 * A4 * A5 * A6 * A7) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7];
-    φ '(a1, a2, a3, a4, a5, a6, a7) :=
-      Value.Tuple [
-        φ a1; φ a2; φ a3; φ a4; φ a5; φ a6; φ a7
-      ];
-  }.
-
-  Global Instance I8 (A1 A2 A3 A4 A5 A6 A7 A8 : Set)
-      (_ : Link A1)
-      (_ : Link A2)
-      (_ : Link A3)
-      (_ : Link A4)
-      (_ : Link A5)
-      (_ : Link A6)
-      (_ : Link A7)
-      (_ : Link A8) :
-      Link (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8) := {
-    Φ := Ty.tuple [
-      Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7; Φ A8
-    ];
-    φ '(a1, a2, a3, a4, a5, a6, a7, a8) :=
-      Value.Tuple [
-        φ a1;
-        φ a2;
-        φ a3;
-        φ a4;
-        φ a5;
-        φ a6;
-        φ a7;
-        φ a8
-      ];
-  }.
-End TupleIsLink.
+  Definition of_value (a1' a2' : Value.t) :
+    OfValue.t a1' ->
+    OfValue.t a2' ->
+    OfValue.t (Value.Tuple [a1'; a2']).
+  Proof.
+    intros [A1] [A2].
+    eapply OfValue.Make with (A := A1 * A2).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
+End Pair.
 
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)
@@ -269,11 +293,15 @@ Module Ref.
     φ ref := Value.Pointer (to_pointer ref);
   }.
 
-  Definition immediate {kind : Pointer.Kind.t} {A : Set} `{Link A} (value : A) : t kind A :=
+  Definition immediate (kind : Pointer.Kind.t) {A : Set} `{Link A} (value : A) : t kind A :=
     {| core := Core.Immediate value |}.
 
   Definition deref {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
       t Pointer.Kind.Raw A :=
+    {| core := ref.(core) |}.
+
+  Definition cast {kind1 kind2 : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind1 A) :
+      t kind2 A :=
     {| core := ref.(core) |}.
 
   Lemma deref_eq {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
@@ -361,29 +389,44 @@ Definition output_pure (Output : Set) `{Link Output} (output : Output) : Value.t
   inl (φ output).
 
 Module Output.
-  Inductive t (Output : Set) `{Link Output} : Set :=
+  Inductive t (Output : Set) : Set :=
   | Success (output : Output) : t Output
   | Panic (panic : Panic.t) : t Output.
-  Arguments Success {_ _}.
-  Arguments Panic {_ _}.
+  Arguments Success {_}.
+  Arguments Panic {_}.
+
+  Definition to_value {Output : Set} `{Link Output} (output : t Output) : Value.t + Exception.t :=
+    match output with
+    | Success output => output_pure Output output
+    | Panic panic => inr (Exception.Panic panic)
+    end.
+
+  Lemma of_success_eq {Output : Set} `{Link Output} output output' :
+    output' = φ output ->
+    inl output' = to_value (Output.Success output).
+  Proof. now intros; subst. Qed.
+
+  Lemma of_panic_eq {Output : Set} `{Link Output} panic :
+    inr (Exception.Panic panic) = to_value (Output.Panic panic).
+  Proof. reflexivity. Qed.
 End Output.
 
-Definition output_with_panic (Output : Set) `{Link Output} (output : Output.t Output) :
+(* Definition output_with_panic (Output : Set) `{Link Output} (output : Output.t Output) :
     Value.t + Exception.t :=
   match output with
   | Output.Success output => inl (φ output)
   | Output.Panic panic => inr (Exception.Panic panic)
-  end.
+  end. *)
 
-Definition output_with_exception (Output : Set) `{Link Output} (output : Output + Exception.t) :
+(* Definition output_with_exception (Output : Set) `{Link Output} (output : Output + Exception.t) :
     Value.t + Exception.t :=
   match output with
   | inl output => inl (φ output)
   | inr exception => inr exception
-  end.
+  end. *)
 
 Module Run.
-  Reserved Notation "{{ e ⇓ output_to_value }}" (no associativity).
+  Reserved Notation "{{ e 🔽 Output }}" (no associativity).
 
   (** The [Run.t] predicate to show that there exists a trace of execution for an expression [e]
       if we choose the right types/`φ` functions and make a valid names and traits
@@ -393,53 +436,53 @@ Module Run.
       a [Value.t] or an [Exception.t] at the end. It gives a constraint on what kinds of results
       the expression [e] can produce.
   *)
-  Inductive t {Output : Set} (output_to_value : Output -> Value.t + Exception.t) : M -> Set :=
+  Inductive t (Output : Set) `{Link Output} : M -> Set :=
   | Pure
-      (output : Output)
+      (output : Output.t Output)
       (output' : Value.t + Exception.t) :
-    output' = output_to_value output ->
-    {{ LowM.Pure output' ⇓ output_to_value }}
-  | CallPrimitiveStateAlloc {A : Set} `{Link A}
-      (value : A) (value' : Value.t)
-      (k : Value.t -> M) :
-    value' = φ value ->
-    (forall (ref : Ref.t Pointer.Kind.Raw A),
-      {{ k (φ ref) ⇓ output_to_value }}
-     ) ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateAllocImmediate {A : Set} `{Link A}
-      (value : A) (value' : Value.t)
-      (k : Value.t -> M) :
-    value' = φ value ->
+    output' = Output.to_value output ->
+    {{ LowM.Pure output' 🔽 Output }}
+  | CallPrimitiveStateAlloc
+      (value' : Value.t)
+      (k : Value.t -> M)
+      (of_value : OfValue.t value') :
+    (forall (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value)),
+      {{ k (φ ref) 🔽 Output }}
+    ) ->
+    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 Output }}
+  | CallPrimitiveStateAllocImmediate
+      (value' : Value.t)
+      (k : Value.t -> M)
+      (of_value : OfValue.t value') :
     {{
-      k (φ ({| Ref.core := Ref.Core.Immediate value |} : Ref.t Pointer.Kind.Raw A)) ⇓
-      output_to_value
+      k (φ (Ref.immediate Pointer.Kind.Raw (OfValue.get_value of_value))) 🔽
+      Output
     }} ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
+    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 Output }}
   | CallPrimitiveStateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : Value.t -> M) :
     let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     (forall (value : A),
-      {{ k (φ value) ⇓ output_to_value }}
+      {{ k (φ value) 🔽 Output }}
     ) ->
     (* We can expect the pointers to always be the image of [φ] as they cannot be manually
        created. This is the same for the other primitives expecting a pointer. *)
-    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
+    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 Output }}
   | CallPrimitiveStateReadImmediate {A : Set} `{Link A}
       (value : A)
       (k : Value.t -> M) :
-    let ref := Ref.immediate (kind := Pointer.Kind.Raw) value in
-    {{ k (φ value) ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k ⇓ output_to_value }}
+    let ref := Ref.immediate Pointer.Kind.Raw value in
+    {{ k (φ value) 🔽 Output }} ->
+    {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 Output }}
   | CallPrimitiveStateWrite {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
     let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     value' = φ value ->
-    {{ k (φ tt) ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k ⇓ output_to_value }}
+    {{ k (φ tt) 🔽 Output }} ->
+    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 Output }}
   | CallPrimitiveGetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
       (ref_core : Ref.Core.t A)
       (runner : SubPointer.Runner.t A Sub_A)
@@ -447,11 +490,11 @@ Module Run.
     let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     SubPointer.Runner.Valid.t runner ->
     (forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
-      {{ k (φ sub_ref) ⇓ output_to_value }}
+      {{ k (φ sub_ref) 🔽 Output }}
     ) ->
     {{
-      LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) runner.(SubPointer.Runner.index)) k ⇓
-      output_to_value
+      LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) runner.(SubPointer.Runner.index)) k 🔽
+      Output
     }}
   | CallPrimitiveAreEqual {A : Set} `{Link A}
       (x y : A) (x' y' : Value.t)
@@ -459,11 +502,11 @@ Module Run.
     x' = φ x ->
     y' = φ y ->
     (forall (b : bool),
-      {{ k (φ b) ⇓ output_to_value }}
+      {{ k (φ b) 🔽 Output }}
     ) ->
     {{
-      LowM.CallPrimitive (Primitive.AreEqual x' y') k ⇓
-        output_to_value
+      LowM.CallPrimitive (Primitive.AreEqual x' y') k 🔽
+        Output
     }}
   | CallPrimitiveGetFunction
       (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
@@ -471,10 +514,10 @@ Module Run.
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (function generic_consts generic_tys)) in
     M.IsFunction name function ->
-    {{ k closure ⇓ output_to_value }} ->
+    {{ k closure 🔽 Output }} ->
     {{
-      LowM.CallPrimitive (Primitive.GetFunction name generic_consts generic_tys) k ⇓
-      output_to_value
+      LowM.CallPrimitive (Primitive.GetFunction name generic_consts generic_tys) k 🔽
+      Output
     }}
   | CallPrimitiveGetAssociatedFunction
       (ty : Ty.t) (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
@@ -482,10 +525,10 @@ Module Run.
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (associated_function generic_consts generic_tys)) in
     M.IsAssociatedFunction ty name associated_function ->
-    {{ k closure ⇓ output_to_value }} ->
+    {{ k closure 🔽 Output }} ->
     {{ LowM.CallPrimitive
-        (Primitive.GetAssociatedFunction ty name generic_consts generic_tys) k ⇓
-        output_to_value
+        (Primitive.GetAssociatedFunction ty name generic_consts generic_tys) k 🔽
+        Output
     }}
   | CallPrimitiveGetTraitMethod
       (trait_name : string) (self_ty : Ty.t) (trait_consts : list Value.t) (trait_tys : list Ty.t)
@@ -494,7 +537,7 @@ Module Run.
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (method generic_consts generic_tys)) in
     IsTraitMethod.t trait_name self_ty trait_tys method_name method ->
-    {{ k closure ⇓ output_to_value }} ->
+    {{ k closure 🔽 Output }} ->
     {{ LowM.CallPrimitive
         (Primitive.GetTraitMethod
           trait_name
@@ -505,70 +548,41 @@ Module Run.
           generic_consts
           generic_tys
         )
-        k ⇓
-        output_to_value
+        k 🔽
+        Output
     }}
   | CallClosure {Output' : Set}
-      (output_to_value' : Output' -> Value.t + Exception.t)
+      (ty : Ty.t) (to_value : Output' -> Value.t)
       (f : list Value.t -> M) (args : list Value.t)
       (k : Value.t + Exception.t -> M) :
+    let _ := Build_Link _ ty to_value in
     let closure := Value.Closure (existS (_, _) f) in
-    {{ f args ⇓ output_to_value' }} ->
-    (forall (value_inter : Output'),
-      {{ k (output_to_value' value_inter) ⇓ output_to_value }}
+    {{ f args 🔽 Output' }} ->
+    (forall (value_inter : Output.t Output'),
+      {{ k (Output.to_value value_inter) 🔽 Output }}
     ) ->
-    {{ LowM.CallClosure closure args k ⇓ output_to_value }}
+    {{ LowM.CallClosure closure args k 🔽 Output }}
   | Let {Output' : Set}
-      (output_to_value' : Output' -> Value.t + Exception.t)
+      (ty : Ty.t) (to_value : Output' -> Value.t)
       (e : M) (k : Value.t + Exception.t -> M) :
-    {{ e ⇓ output_to_value' }} ->
-    (forall (value_inter : Output'),
-      {{ k (output_to_value' value_inter) ⇓ output_to_value }}
+    let _ := Build_Link _ ty to_value in
+    {{ e 🔽 Output' }} ->
+    (forall (value_inter : Output.t Output'),
+      {{ k (Output.to_value value_inter) 🔽 Output }}
     ) ->
-    {{ LowM.Let e k ⇓ output_to_value }}
+    {{ LowM.Let e k 🔽 Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite (e e' : M) :
     e = e' ->
-    {{ e' ⇓ output_to_value }} ->
-    {{ e ⇓ output_to_value }}
+    {{ e' 🔽 Output }} ->
+    {{ e 🔽 Output }}
 
-  where "{{ e ⇓ output_to_value }}" :=
-    (t output_to_value e).
-
-  Notation "{{ e 🔽 Output }}" := {{ e ⇓ output_with_panic Output }}.
+  where "{{ e 🔽 Output }}" :=
+    (t Output e).
 End Run.
 
 Import Run.
-
-(*
-(** This lemma is convenient to handle the case of sub-pointers. We also have a dedicated tactic
-    using it (defined below). Using the tactic is the recommended way. *)
-Definition run_sub_pointer {Output A Sub_A : Set}
-    {IsLinkA : Link A} {IsLinkSub_A : Link Sub_A}
-    {runner : SubPointer.Runner.t A Sub_A}
-    (H_runner : SubPointer.Runner.Valid.t runner)
-    (ref_core : Ref.Core.t A)
-    (pointer_core : Pointer.Core.t Value.t A)
-    (k : Value.t -> M)
-    (output_to_value : Output -> Value.t + Exception.t)
-    (H_pointer_core : pointer_core = Ref.Core.to_core ref_core)
-    (H_k : forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
-      {{ k (φ sub_ref) ⇓ output_to_value }}
-    ) :
-  let pointer := Pointer.Make Pointer.Kind.Raw (Φ A) φ pointer_core in
-  {{
-    LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
-    output_to_value
-  }}.
-Proof.
-  intros.
-  eapply Run.CallPrimitiveGetSubPointer;
-    try apply H_pointer_core;
-    try apply H_runner;
-    try apply H_k.
-Defined.
-*)
 
 Module Primitive.
   (** These primitives are equivalent to the ones in the generated code, except that we are now
@@ -605,17 +619,16 @@ End LowM.
 
 (** With this function we generate an expression in [LowM.t Output] that is equivalent to the
     input [e] expression, following the proof of equivalence provided in [run]. *)
-Fixpoint evaluate {Output : Set}
-  {e : M} {output_to_value : Output -> Value.t + Exception.t}
-  (run : {{ e ⇓ output_to_value }}) :
-  LowM.t Output.
+Fixpoint evaluate {Output : Set} `{Link Output} {e : M}
+    (run : {{ e 🔽 Output }}) :
+  LowM.t (Output.t Output).
 Proof.
   destruct run.
   { (* Pure *)
     exact (LowM.Pure output).
   }
   { (* Alloc *)
-    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
+    apply (LowM.CallPrimitive (Primitive.StateAlloc (OfValue.get_value of_value))).
     intros ref_core.
     eapply evaluate.
     match goal with
@@ -673,7 +686,7 @@ Proof.
     }
     intros output'; eapply evaluate.
     match goal with
-    | H : forall _ : Output', _ |- _ => apply (H output')
+    | H : forall _ : Output.t Output', _ |- _ => apply (H output')
     end.
   }
   { (* Let *)
@@ -682,7 +695,7 @@ Proof.
     }
     intros output'; eapply evaluate.
     match goal with
-    | H : forall _ : Output', _ |- _ => apply (H output')
+    | H : forall _ : Output.t Output', _ |- _ => apply (H output')
     end.
   }
   { (* Rewrite *)
@@ -690,49 +703,17 @@ Proof.
   }
 Defined.
 
-Ltac run_symbolic_state_alloc :=
-  (
-    (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
-    with_strategy opaque [φ] cbn;
-    match goal with
-    | |-
-      {{
-        CoqOfRust.M.LowM.CallPrimitive
-          (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
-        _
-      }} =>
-        eapply Run.CallPrimitiveStateAlloc with (A := B);
-        [try reflexivity |];
-        intros
-    end
-  ) || (
-    (* An important case is the allocation of the unit value *)
-    eapply Run.CallPrimitiveStateAlloc with (value := tt); [reflexivity |];
-    intros
-  ).
+Ltac run_symbolic_pure :=
+  eapply Run.Pure;
+    try reflexivity;
+    try apply Output.of_success_eq;
+    try apply Output.of_panic_eq;
+    repeat (smpl of_value || reflexivity).
 
 Ltac run_symbolic_state_alloc_immediate :=
-  (
-    (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
-    with_strategy opaque [φ] cbn;
-    match goal with
-    | |-
-      {{
-        CoqOfRust.M.LowM.CallPrimitive
-          (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
-        _
-      }} =>
-        eapply Run.CallPrimitiveStateAllocImmediate with (A := B);
-        try reflexivity
-    end
-  ) || (
-    (* An important case is the allocation of the unit value *)
-    eapply Run.CallPrimitiveStateAllocImmediate with (value := tt);
-    try reflexivity
-  ).
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [smpl of_value |].
 
 Ltac run_symbolic_state_read :=
-  cbn;
   eapply Run.CallPrimitiveStateRead;
   intros.
 
@@ -741,9 +722,7 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  cbn;
-  eapply Run.CallPrimitiveStateWrite; [reflexivity | reflexivity |];
-  intros.
+  eapply Run.CallPrimitiveStateWrite; [smpl of_value |].
 
 Ltac run_rewrite_deref :=
   eapply Run.Rewrite; [
@@ -751,55 +730,27 @@ Ltac run_rewrite_deref :=
     reflexivity
   |].
 
-Ltac run_symbolic_one_step :=
-  match goal with
-  | |- {{ _ ⇓ _ }} =>
-    (eapply Run.Pure; try reflexivity) ||
-    run_symbolic_state_alloc ||
-    run_symbolic_state_read_immediate ||
-    run_symbolic_state_read ||
-    run_symbolic_state_write ||
-    run_rewrite_deref
-  end.
-
 Ltac run_symbolic_one_step_immediate :=
   match goal with
-  | |- {{ _ ⇓ _ }} =>
-    (eapply Run.Pure; try reflexivity) ||
+  | |- {{ _ 🔽 _ }} =>
+    run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
     run_symbolic_state_write ||
-    run_rewrite_deref
+    run_rewrite_deref ||
+    fold @LowM.let_ ||
+    cbn
   end.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
-  unshelve (repeat run_symbolic_one_step_immediate).
-
-Ltac run_symbolic_mutable :=
-  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
-  unshelve (repeat run_symbolic_one_step).
-
-Ltac run_panic :=
-  run_symbolic; try apply Output.Panic; try reflexivity.
+  repeat run_symbolic_one_step_immediate.
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)
 Ltac run_sub_pointer sub_pointer_is_valid :=
   cbn; apply (Run.CallPrimitiveGetSubPointer _ _ _ _ sub_pointer_is_valid); intros.
-
-Module Function.
-  Record t (Args Output : Set)
-      (args_to_value : Args -> list Value.t)
-      (output_to_value : Output -> Value.t + Exception.t) :
-      Set := {
-    f : list Value.t -> M;
-    run : forall (args : Args),
-      {{ f (args_to_value args) ⇓ output_to_value }};
-  }.
-End Function.
 
 Module Function2.
   Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {

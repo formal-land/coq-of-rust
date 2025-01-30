@@ -32,10 +32,7 @@ Module Impl_Default_for_unit.
       { apply default.Impl_core_default_Default_for_Tuple_.Implements. }
       { reflexivity. }
     }
-    { run_symbolic;
-        try apply Output.Success;
-        try reflexivity.
-    }
+    { run_symbolic. }
   Defined.
 
   Definition run : Default.Run Self.
@@ -57,10 +54,7 @@ Module Impl_Default_for_bool.
       { apply default.Impl_core_default_Default_for_bool.Implements. }
       { reflexivity. }
     }
-    { run_symbolic;
-        try apply Output.Success;
-        try reflexivity.
-    }
+    { run_symbolic. }
   Defined.
 
   Definition run : Default.Run Self.
@@ -123,12 +117,7 @@ Module Impl_Default_for_integer.
       { apply implements_of_integer_kind. }
       { reflexivity. }
     }
-    { destruct kind;
-        run_symbolic;
-        try apply Output.Success;
-        try apply Integer.Build_t;
-        try with_strategy transparent [φ] reflexivity.
-    }
+    { destruct kind; run_symbolic. }
   Defined.
 
   Definition run (kind : IntegerKind.t) : Default.Run (Self kind).

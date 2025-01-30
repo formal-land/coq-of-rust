@@ -33,22 +33,10 @@ Proof.
   }
   run_symbolic.
   eapply Run.CallClosure. {
-    apply (run_call_once compare (Ref.immediate v1, Ref.immediate v2)).
+    apply (run_call_once compare (Ref.immediate _ v1, Ref.immediate _ v2)).
   }
-  intros [ordering |]; cbn; [|run_panic].
-  destruct ordering; cbn.
-  { run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
-  }
-  { run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
-  }
-  { run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
-  }
+  intros [ordering |]; cbn; [|run_symbolic].
+  destruct ordering; run_symbolic.
 Defined.
 
 (*

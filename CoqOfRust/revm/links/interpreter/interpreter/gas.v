@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
 Require core.links.cmp.
@@ -29,6 +30,16 @@ Module MemoryGas.
         ("expansion_cost", φ x.(expansion_cost))
       ];
   }.
+
+  Lemma of_value words_num words_num' expansion_cost expansion_cost' :
+    words_num' = φ words_num ->
+    expansion_cost' = φ expansion_cost ->
+    Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+      ("words_num", words_num');
+      ("expansion_cost", expansion_cost')
+    ] = φ (Build_t words_num expansion_cost).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value : of_value.
 
   Module SubPointer.
     Definition get_words_num : SubPointer.Runner.t t Usize.t := {|
@@ -78,18 +89,15 @@ Module Impl_Default_for_MemoryGas.
       eapply Run.CallClosure. {
         apply run_default_usize.
       }
-      intros []; cbn; [|run_panic].
+      intros []; cbn; [|run_symbolic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros []; cbn; [|run_panic].
-      run_symbolic;
-        try apply Output.Success;
-        try apply MemoryGas.Build_t;
-        try with_strategy transparent [φ] reflexivity.
+      intros []; cbn; [|run_symbolic].
+      run_symbolic.
     }
   Defined.
 
@@ -113,11 +121,7 @@ Module Impl_MemoryGas.
   *)
   Definition run_new : {{ gas.Impl_revm_interpreter_gas_MemoryGas.new [] [] [] 🔽 MemoryGas.t }}.
   Proof.
-    run_symbolic;
-      try apply Output.Success;
-      try apply MemoryGas.Build_t;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    run_symbolic.
   Defined.
 End Impl_MemoryGas.
 
@@ -155,6 +159,20 @@ Module Gas.
         ("memory", φ x.(memory))
       ];
   }.
+
+  Lemma of_value limit limit' remaining remaining' refunded refunded' memory memory' :
+    limit' = φ limit ->
+    remaining' = φ remaining ->
+    refunded' = φ refunded ->
+    memory' = φ memory ->
+    Value.StructRecord "revm_interpreter::gas::Gas" [
+      ("limit", limit');
+      ("remaining", remaining');
+      ("refunded", refunded');
+      ("memory", memory')
+    ] = φ (Build_t limit remaining refunded memory).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value : of_value.
 
   Module SubPointer.
     Definition get_limit : SubPointer.Runner.t t U64.t := {|
@@ -220,9 +238,7 @@ Module Impl_Clone.
       { reflexivity. }
     }
     { intros.
-      run_symbolic;
-        try apply Output.Success;
-        try reflexivity.
+      run_symbolic.
     }
   Defined.
 
@@ -256,32 +272,29 @@ Module Impl_Default.
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros []; cbn; [|run_panic].
+      intros []; cbn; [|run_symbolic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros []; cbn; [|run_panic].
+      intros []; cbn; [|run_symbolic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_i64.
       }
       eapply Run.CallClosure. {
         apply run_default_i64.
       }
-      intros []; cbn; [|run_panic].
+      intros []; cbn; [|run_symbolic].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_memory_gas.
       }
       eapply Run.CallClosure. {
         apply run_default_memory_gas.
       }
-      intros []; cbn; [|run_panic].
-      run_symbolic;
-        try apply Output.Success;
-        try apply Gas.Build_t;
-        try with_strategy transparent [φ] reflexivity.
+      intros []; cbn; [|run_symbolic].
+      run_symbolic.
     }
   Defined.
 
@@ -317,12 +330,8 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
-    intros []; cbn; [|run_panic].
-    run_symbolic;
-      try apply Output.Success;
-      try simple apply Gas.Build_t;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    intros []; cbn; [|run_symbolic].
+    run_symbolic.
   Defined.
 
   (*
@@ -345,12 +354,8 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
-    intros []; cbn; [|run_panic].
-    run_symbolic;
-      try apply Output.Success;
-      try simple apply Gas.Build_t;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    intros []; cbn; [|run_symbolic].
+    run_symbolic.
   Defined.
 
   (*
@@ -363,9 +368,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_limit_is_valid.
-    run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    run_symbolic.
   Defined.
 
   (*
@@ -376,10 +379,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Definition run_memory (self : Ref.t Pointer.Kind.Ref Self) :
     {{ gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] 🔽 U64.t }}.
   Proof.
-    run_symbolic;
-      try apply Output.Success;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    run_symbolic.
   Defined.
 
   (*
@@ -392,9 +392,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
-    run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    run_symbolic.
   Defined.
 
   (*
@@ -409,10 +407,7 @@ Module Impl_revm_interpreter_gas_Gas.
     run_sub_pointer Gas.SubPointer.get_limit_is_valid.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic;
-      try apply Output.Success;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    run_symbolic.
   Defined.
 
   (*
@@ -425,9 +420,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    run_symbolic.
   Defined.
 
   (*
@@ -442,11 +435,21 @@ Module Impl_revm_interpreter_gas_Gas.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic;
-      try apply Output.Success;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
+    run_symbolic.
   Defined.
+
+  (* Module OfValue.
+    Inductive t (value' : Value.t) : Set :=
+    | Make {A : Set} `{Link A} (value : A) :
+      value' = φ value ->
+      t value'.
+
+    Definition Unit : t (Value.Tuple []).
+    Proof.
+      eapply Make with (A := unit).
+      smpl of_value.
+    Defined.
+  End OfValue. *)
 
   (*
       pub fn erase_cost(&mut self, returned: u64) {
@@ -459,16 +462,10 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic.
-    cbn.
-    unshelve eapply Run.CallPrimitiveStateWrite;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
     eapply Run.Let. {
       run_symbolic.
     }
-    intros; run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    intros []; run_symbolic.
   Defined.
 
   (*
@@ -483,14 +480,9 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.Let. {
       run_symbolic.
       run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-      unshelve eapply Run.CallPrimitiveStateWrite;
-        try apply Integer.Build_t;
-        try with_strategy transparent [φ] reflexivity.
       run_symbolic.
     }
-    intros; run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    intros []; run_symbolic.
   Defined.
 
   (*
@@ -504,18 +496,12 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic.
     run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
     run_symbolic.
-    unshelve eapply Run.CallPrimitiveStateWrite;
-      try apply Integer.Build_t;
-      try with_strategy transparent [φ] reflexivity.
     eapply Run.Let. {
       run_symbolic.
     }
-    intros; run_symbolic;
-      try apply Output.Success;
-      try reflexivity.
+    intros []; run_symbolic.
   Defined.
 
-  (*
   (*
       pub fn set_final_refund(&mut self, is_london: bool) {
           let max_refund_quotient = if is_london { 5 } else { 2 };
@@ -526,24 +512,12 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] 🔽 unit }}.
   Proof.
     run_symbolic.
-    eapply Run.Let with (output_to_value' := fun (v : Ref.t Pointer.Kind.Ref U64.t) => inl (φ v)). {
+    eapply Run.Let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; cbn.
-      { unshelve eapply CallPrimitiveStateAllocImmediate with (A := U64.t);
-          try apply Integer.Build_t;
-          try exact Pointer.Kind.Ref;
-          try reflexivity.
-        run_symbolic.
-      }
-      { unshelve eapply CallPrimitiveStateAllocImmediate with (A := U64.t);
-          try apply Integer.Build_t;
-          try exact Pointer.Kind.Ref;
-          try reflexivity.
-        run_symbolic.
-      }
+      intros []; cbn; run_symbolic.
     }
-    intros.
+    cbn; intros []; [|run_symbolic].
     eapply Run.Let. {
       run_symbolic.
       run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
@@ -556,19 +530,28 @@ Module Impl_revm_interpreter_gas_Gas.
       }
       run_symbolic.
       eapply Run.CallClosure. {
-        pose proof (run_refunded self).
+        apply (run_refunded (Ref.cast self)).
       }
-    }
-    intros; run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
-    run_symbolic.
-    eapply Run.Let. {
+      intros []; cbn; [|run_symbolic].
+      eapply Run.CallPrimitiveGetAssociatedFunction. {
+        apply gas.Impl_revm_interpreter_gas_Gas.AssociatedFunction_spent.
+      }
       run_symbolic.
-    }
-    intros; run_symbolic.
-    eapply Run.Let. {
+      eapply Run.CallClosure. {
+        apply (run_spent (Ref.cast self)).
+      }
+      intros []; cbn; run_symbolic.
+      eapply Run.Rewrite. {
+        unfold BinOp.Wrap.div.
+        rewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64).
+        reflexivity.
+      }
       run_symbolic.
+      eapply Run.CallClosure. {
+        admit.
+      }
+      admit.
     }
-    intros; run_symbolic.
-  *)
+    admit.
+  Admitted.
 End Impl_revm_interpreter_gas_Gas.

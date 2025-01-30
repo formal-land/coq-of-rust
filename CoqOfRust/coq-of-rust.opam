@@ -17,6 +17,7 @@ depends: [
   "coq" {>= "8.20.0" & < "8.21"}
   "coq-hammer"
   "coq-coqutil" {>= "0.0.5"}
+  "coq-smpl"
   "ocaml" {>= "4.08"}
 ]
 build: [
