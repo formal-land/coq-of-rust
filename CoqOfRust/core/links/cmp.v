@@ -35,7 +35,7 @@ Proof.
   eapply Run.CallClosure. {
     apply (run_call_once compare (Ref.immediate _ v1, Ref.immediate _ v2)).
   }
-  intros [ordering |]; cbn; [|run_symbolic].
+  intros [ordering|]; run_symbolic.
   destruct ordering; run_symbolic.
 Defined.
 
@@ -110,8 +110,7 @@ Module Ord.
           {| Function2.run := run_cmp |}
       ).
     }
-    intros.
-    run_symbolic.
+    intros []; run_symbolic.
   Defined.
 
   Definition run_min {Self : Set} `{Link Self} (self other : Self)
@@ -146,8 +145,7 @@ Module Impl_Ord_for_u64.
       eapply Run.CallClosure. {
         apply (intrinsics.run_three_way_compare IntegerKind.U64).
       }
-      intros.
-      run_symbolic.
+      intros []; run_symbolic.
     }
   Defined.
 
