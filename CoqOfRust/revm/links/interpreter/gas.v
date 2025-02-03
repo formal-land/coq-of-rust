@@ -4,6 +4,7 @@ Require Import CoqOfRust.links.M.
 Require core.links.clone.
 Require core.links.cmp.
 Require core.links.default.
+Require core.links.option.
 Require Import revm.translations.interpreter.gas.
 
 Import Run.
@@ -31,7 +32,7 @@ Module MemoryGas.
       ];
   }.
 
-  Lemma of_value words_num words_num' expansion_cost expansion_cost' :
+  Lemma of_value_with words_num words_num' expansion_cost expansion_cost' :
     words_num' = φ words_num ->
     expansion_cost' = φ expansion_cost ->
     Value.StructRecord "revm_interpreter::gas::MemoryGas" [
@@ -39,6 +40,18 @@ Module MemoryGas.
       ("expansion_cost", expansion_cost')
     ] = φ (Build_t words_num expansion_cost).
   Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (words_num : Usize.t) words_num' (expansion_cost : U64.t) expansion_cost' :
+    words_num' = φ words_num ->
+    expansion_cost' = φ expansion_cost ->
+    OfValue.t (
+      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+        ("words_num", words_num');
+        ("expansion_cost", expansion_cost')
+      ]
+    ).
+  Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
@@ -89,15 +102,14 @@ Module Impl_Default_for_MemoryGas.
       eapply Run.CallClosure. {
         apply run_default_usize.
       }
-      intros []; cbn; [|run_symbolic].
+      intros []; run_symbolic.
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
       eapply Run.CallClosure. {
         apply run_default_u64.
       }
-      intros []; cbn; [|run_symbolic].
-      run_symbolic.
+      intros []; run_symbolic.
     }
   Defined.
 
@@ -111,6 +123,8 @@ Module Impl_Default_for_MemoryGas.
 End Impl_Default_for_MemoryGas.
 
 Module Impl_MemoryGas.
+  Definition Self : Set := MemoryGas.t.
+
   (*
   pub const fn new() -> Self {
       Self {
@@ -123,6 +137,48 @@ Module Impl_MemoryGas.
   Proof.
     run_symbolic.
   Defined.
+
+  (*
+  pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
+      if new_num <= self.words_num {
+          return None;
+      }
+      self.words_num = new_num;
+      let mut cost = crate::gas::calc::memory_gas(new_num);
+      core::mem::swap(&mut self.expansion_cost, &mut cost);
+      // Safe to subtract because we know that new_len > length
+      // Notice the swap above.
+      Some(self.expansion_cost - cost)
+  }
+  *)
+  Definition run_record_new_len
+      (self : Ref.t Pointer.Kind.MutRef MemoryGas.t)
+      (new_num : Usize.t) :
+    {{
+      gas.Impl_revm_interpreter_gas_MemoryGas.record_new_len [] [] [φ self; φ new_num] 🔽
+      option U64.t
+    }}.
+  Proof.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+      run_sub_pointer MemoryGas.SubPointer.get_words_num_is_valid.
+      run_symbolic.
+      eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
+      intros []; run_symbolic.
+    }
+    intros [|[]]; run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+      run_sub_pointer MemoryGas.SubPointer.get_words_num_is_valid.
+      run_symbolic.
+    }
+    intros [|[]]; run_symbolic.
+    eapply Run.Let. {
+      admit.
+    }
+    admit.
+  Admitted.
 End Impl_MemoryGas.
 
 (*
@@ -160,7 +216,7 @@ Module Gas.
       ];
   }.
 
-  Lemma of_value limit limit' remaining remaining' refunded refunded' memory memory' :
+  Lemma of_value_impl limit limit' remaining remaining' refunded refunded' memory memory' :
     limit' = φ limit ->
     remaining' = φ remaining ->
     refunded' = φ refunded ->
@@ -172,6 +228,26 @@ Module Gas.
       ("memory", memory')
     ] = φ (Build_t limit remaining refunded memory).
   Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_impl : of_value.
+
+  Definition of_value
+      (limit : U64.t) limit'
+      (remaining : U64.t) remaining'
+      (refunded : I64.t) refunded'
+      (memory : MemoryGas.t) memory' :
+    limit' = φ limit ->
+    remaining' = φ remaining ->
+    refunded' = φ refunded ->
+    memory' = φ memory ->
+    OfValue.t (
+      Value.StructRecord "revm_interpreter::gas::Gas" [
+        ("limit", limit');
+        ("remaining", remaining');
+        ("refunded", refunded');
+        ("memory", memory')
+      ]
+    ).
+  Proof. econstructor; apply of_value_impl; eassumption. Defined.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
@@ -547,11 +623,24 @@ Module Impl_revm_interpreter_gas_Gas.
         reflexivity.
       }
       run_symbolic.
-      eapply Run.CallClosure. {
-        admit.
+      eapply Run.Rewrite. {
+        rewrite cast_integer_eq with
+          (kind_source := IntegerKind.I64)
+          (kind_target := IntegerKind.U64).
+        reflexivity.
       }
-      admit.
+      eapply Run.CallClosure. {
+        apply run_min.
+      }
+      cbn; intros []; run_symbolic.
+      eapply Run.Rewrite. {
+        rewrite cast_integer_eq with
+          (kind_source := IntegerKind.U64)
+          (kind_target := IntegerKind.I64).
+        reflexivity.
+      }
+      run_symbolic.
     }
-    admit.
-  Admitted.
+    intros []; run_symbolic.
+  Defined.
 End Impl_revm_interpreter_gas_Gas.

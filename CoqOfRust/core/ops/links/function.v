@@ -43,8 +43,7 @@ Module Impl_FnOnce_for_Function2.
       eapply Run.CallClosure. {
         apply self.
       }
-      intros.
-      run_symbolic.
+      intros []; run_symbolic.
     }
   Defined.
 

@@ -16,3 +16,12 @@ Module BinOp.
     Qed.
   End Wrap.
 End BinOp.
+
+Parameter cast_integer : forall {kind_source} kind_target,
+  Integer.t kind_source -> Integer.t kind_target.
+
+Lemma cast_integer_eq (kind_source kind_target : IntegerKind.t) (source : Integer.t kind_source) :
+  M.cast (Φ (Integer.t kind_target)) (φ source) =
+  φ (cast_integer kind_target source).
+Proof.
+Admitted.
