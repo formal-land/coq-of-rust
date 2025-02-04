@@ -1685,6 +1685,7 @@ Module cell.
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
   
   Axiom Constant_value_UNUSED : (M.get_constant "core::cell::UNUSED") = value_UNUSED.
+  Global Hint Rewrite Constant_value_UNUSED : constant_rewrites.
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {

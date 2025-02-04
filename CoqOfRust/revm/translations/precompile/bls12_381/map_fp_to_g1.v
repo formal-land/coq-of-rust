@@ -27,12 +27,14 @@ Module bls12_381.
     
     Axiom Constant_value_PRECOMPILE :
       (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::PRECOMPILE") = value_PRECOMPILE.
+    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
     
     Definition value_ADDRESS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 18 |))).
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_MAP_FP_TO_G1_BASE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5500 |))).
@@ -40,6 +42,7 @@ Module bls12_381.
     Axiom Constant_value_MAP_FP_TO_G1_BASE :
       (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::MAP_FP_TO_G1_BASE") =
         value_MAP_FP_TO_G1_BASE.
+    Global Hint Rewrite Constant_value_MAP_FP_TO_G1_BASE : constant_rewrites.
     
     (*
     pub(super) fn map_fp_to_g1(input: &Bytes, gas_limit: u64) -> PrecompileResult {

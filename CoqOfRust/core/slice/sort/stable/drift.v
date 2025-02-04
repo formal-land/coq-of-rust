@@ -868,6 +868,7 @@ Module slice.
           Axiom Constant_value_MIN_SQRT_RUN_LEN :
             (M.get_constant "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN") =
               value_MIN_SQRT_RUN_LEN.
+          Global Hint Rewrite Constant_value_MIN_SQRT_RUN_LEN : constant_rewrites.
         End sort.
         
         (*

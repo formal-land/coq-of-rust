@@ -21,6 +21,7 @@ Module modexp.
   
   Axiom Constant_value_BYZANTIUM :
     (M.get_constant "revm_precompile::modexp::BYZANTIUM") = value_BYZANTIUM.
+  Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
   
   Definition value_BERLIN : Value.t :=
     M.run_constant
@@ -40,6 +41,7 @@ Module modexp.
         |))).
   
   Axiom Constant_value_BERLIN : (M.get_constant "revm_precompile::modexp::BERLIN") = value_BERLIN.
+  Global Hint Rewrite Constant_value_BERLIN : constant_rewrites.
   
   (*
   pub fn byzantium_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -1738,6 +1740,7 @@ Module modexp.
     
     Axiom Constant_value_HEADER_LENGTH :
       (M.get_constant "revm_precompile::modexp::run_inner::HEADER_LENGTH") = value_HEADER_LENGTH.
+    Global Hint Rewrite Constant_value_HEADER_LENGTH : constant_rewrites.
   End run_inner.
   
   (*

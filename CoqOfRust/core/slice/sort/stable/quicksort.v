@@ -1749,6 +1749,7 @@ Module slice.
           Axiom Constant_value_UNROLL_LEN :
             (M.get_constant "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN") =
               value_UNROLL_LEN.
+          Global Hint Rewrite Constant_value_UNROLL_LEN : constant_rewrites.
         End stable_partition.
         
         (* StructRecord

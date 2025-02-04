@@ -994,6 +994,7 @@ Module num.
         Axiom Constant_value_MAX_SHIFT :
           (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT") =
             value_MAX_SHIFT.
+        Global Hint Rewrite Constant_value_MAX_SHIFT : constant_rewrites.
         
         Definition value_NUM_POWERS : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
@@ -1001,6 +1002,7 @@ Module num.
         Axiom Constant_value_NUM_POWERS :
           (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::NUM_POWERS") =
             value_NUM_POWERS.
+        Global Hint Rewrite Constant_value_NUM_POWERS : constant_rewrites.
         
         Definition value_POWERS : Value.t :=
           M.run_constant
@@ -1032,6 +1034,7 @@ Module num.
         
         Axiom Constant_value_POWERS :
           (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::POWERS") = value_POWERS.
+        Global Hint Rewrite Constant_value_POWERS : constant_rewrites.
       End parse_long_mantissa.
     End slow.
   End dec2flt.

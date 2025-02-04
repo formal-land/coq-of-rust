@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter message : Value.t.
 
 Axiom Constant_message : (M.get_constant "hello_world::message") = message.
+Global Hint Rewrite Constant_message : constant_rewrites.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

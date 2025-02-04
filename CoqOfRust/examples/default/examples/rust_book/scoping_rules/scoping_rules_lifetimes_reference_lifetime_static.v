@@ -6,6 +6,7 @@ Definition value_NUM : Value.t :=
 
 Axiom Constant_value_NUM :
   (M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM") = value_NUM.
+Global Hint Rewrite Constant_value_NUM : constant_rewrites.
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {

@@ -27,12 +27,14 @@ Module bls12_381.
     
     Axiom Constant_value_PRECOMPILE :
       (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE") = value_PRECOMPILE.
+    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
     
     Definition value_ADDRESS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 19 |))).
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_BASE_GAS_FEE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 75000 |))).
@@ -40,6 +42,7 @@ Module bls12_381.
     Axiom Constant_value_BASE_GAS_FEE :
       (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE") =
         value_BASE_GAS_FEE.
+    Global Hint Rewrite Constant_value_BASE_GAS_FEE : constant_rewrites.
     
     (*
     pub(super) fn map_fp2_to_g2(input: &Bytes, gas_limit: u64) -> PrecompileResult {

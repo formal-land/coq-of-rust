@@ -22,12 +22,14 @@ Module bls12_381.
     
     Axiom Constant_value_PRECOMPILE :
       (M.get_constant "revm_precompile::bls12_381::pairing::PRECOMPILE") = value_PRECOMPILE.
+    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
     
     Definition value_ADDRESS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 17 |))).
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bls12_381::pairing::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_PAIRING_MULTIPLIER_BASE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 43000 |))).
@@ -35,6 +37,7 @@ Module bls12_381.
     Axiom Constant_value_PAIRING_MULTIPLIER_BASE :
       (M.get_constant "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE") =
         value_PAIRING_MULTIPLIER_BASE.
+    Global Hint Rewrite Constant_value_PAIRING_MULTIPLIER_BASE : constant_rewrites.
     
     Definition value_PAIRING_OFFSET_BASE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65000 |))).
@@ -42,12 +45,14 @@ Module bls12_381.
     Axiom Constant_value_PAIRING_OFFSET_BASE :
       (M.get_constant "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE") =
         value_PAIRING_OFFSET_BASE.
+    Global Hint Rewrite Constant_value_PAIRING_OFFSET_BASE : constant_rewrites.
     
     Definition value_INPUT_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 384 |))).
     
     Axiom Constant_value_INPUT_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::pairing::INPUT_LENGTH") = value_INPUT_LENGTH.
+    Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
     
     (*
     pub(super) fn pairing(input: &Bytes, gas_limit: u64) -> PrecompileResult {

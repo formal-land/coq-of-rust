@@ -8,12 +8,14 @@ Module bls12_381.
     
     Axiom Constant_value_NBITS :
       (M.get_constant "revm_precompile::bls12_381::utils::NBITS") = value_NBITS.
+    Global Hint Rewrite Constant_value_NBITS : constant_rewrites.
     
     Definition value_FP_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
     
     Axiom Constant_value_FP_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::FP_LENGTH") = value_FP_LENGTH.
+    Global Hint Rewrite Constant_value_FP_LENGTH : constant_rewrites.
     
     Definition value_PADDED_FP_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
@@ -21,6 +23,7 @@ Module bls12_381.
     Axiom Constant_value_PADDED_FP_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH") =
         value_PADDED_FP_LENGTH.
+    Global Hint Rewrite Constant_value_PADDED_FP_LENGTH : constant_rewrites.
     
     Definition value_PADDED_FP2_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
@@ -28,18 +31,21 @@ Module bls12_381.
     Axiom Constant_value_PADDED_FP2_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH") =
         value_PADDED_FP2_LENGTH.
+    Global Hint Rewrite Constant_value_PADDED_FP2_LENGTH : constant_rewrites.
     
     Definition value_PADDING_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
     Axiom Constant_value_PADDING_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH") = value_PADDING_LENGTH.
+    Global Hint Rewrite Constant_value_PADDING_LENGTH : constant_rewrites.
     
     Definition value_SCALAR_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
     Axiom Constant_value_SCALAR_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH") = value_SCALAR_LENGTH.
+    Global Hint Rewrite Constant_value_SCALAR_LENGTH : constant_rewrites.
     
     Definition value_MODULUS_REPR : Value.t :=
       M.run_constant
@@ -100,6 +106,7 @@ Module bls12_381.
     
     Axiom Constant_value_MODULUS_REPR :
       (M.get_constant "revm_precompile::bls12_381::utils::MODULUS_REPR") = value_MODULUS_REPR.
+    Global Hint Rewrite Constant_value_MODULUS_REPR : constant_rewrites.
     
     (*
     pub(super) fn fp_to_bytes(out: &mut [u8], input: *const blst_fp) {

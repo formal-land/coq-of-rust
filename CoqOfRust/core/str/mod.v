@@ -765,6 +765,7 @@ Module str.
     Axiom Constant_value_MAX_DISPLAY_LENGTH :
       (M.get_constant "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH") =
         value_MAX_DISPLAY_LENGTH.
+    Global Hint Rewrite Constant_value_MAX_DISPLAY_LENGTH : constant_rewrites.
   End slice_error_fail_rt.
   
   Module Impl_str.

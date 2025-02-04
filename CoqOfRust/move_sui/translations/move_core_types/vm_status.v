@@ -8,6 +8,7 @@ Module vm_status.
   Axiom Constant_value_VALIDATION_STATUS_MIN_CODE :
     (M.get_constant "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE") =
       value_VALIDATION_STATUS_MIN_CODE.
+  Global Hint Rewrite Constant_value_VALIDATION_STATUS_MIN_CODE : constant_rewrites.
   
   Definition value_VALIDATION_STATUS_MAX_CODE : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 999 |) |))).
@@ -15,6 +16,7 @@ Module vm_status.
   Axiom Constant_value_VALIDATION_STATUS_MAX_CODE :
     (M.get_constant "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE") =
       value_VALIDATION_STATUS_MAX_CODE.
+  Global Hint Rewrite Constant_value_VALIDATION_STATUS_MAX_CODE : constant_rewrites.
   
   Definition value_VERIFICATION_STATUS_MIN_CODE : Value.t :=
     M.run_constant
@@ -23,6 +25,7 @@ Module vm_status.
   Axiom Constant_value_VERIFICATION_STATUS_MIN_CODE :
     (M.get_constant "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE") =
       value_VERIFICATION_STATUS_MIN_CODE.
+  Global Hint Rewrite Constant_value_VERIFICATION_STATUS_MIN_CODE : constant_rewrites.
   
   Definition value_VERIFICATION_STATUS_MAX_CODE : Value.t :=
     M.run_constant
@@ -31,6 +34,7 @@ Module vm_status.
   Axiom Constant_value_VERIFICATION_STATUS_MAX_CODE :
     (M.get_constant "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE") =
       value_VERIFICATION_STATUS_MAX_CODE.
+  Global Hint Rewrite Constant_value_VERIFICATION_STATUS_MAX_CODE : constant_rewrites.
   
   Definition value_INVARIANT_VIOLATION_STATUS_MIN_CODE : Value.t :=
     M.run_constant
@@ -39,6 +43,7 @@ Module vm_status.
   Axiom Constant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE :
     (M.get_constant "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE") =
       value_INVARIANT_VIOLATION_STATUS_MIN_CODE.
+  Global Hint Rewrite Constant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE : constant_rewrites.
   
   Definition value_INVARIANT_VIOLATION_STATUS_MAX_CODE : Value.t :=
     M.run_constant
@@ -47,6 +52,7 @@ Module vm_status.
   Axiom Constant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE :
     (M.get_constant "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE") =
       value_INVARIANT_VIOLATION_STATUS_MAX_CODE.
+  Global Hint Rewrite Constant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE : constant_rewrites.
   
   Definition value_DESERIALIZATION_STATUS_MIN_CODE : Value.t :=
     M.run_constant
@@ -55,6 +61,7 @@ Module vm_status.
   Axiom Constant_value_DESERIALIZATION_STATUS_MIN_CODE :
     (M.get_constant "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE") =
       value_DESERIALIZATION_STATUS_MIN_CODE.
+  Global Hint Rewrite Constant_value_DESERIALIZATION_STATUS_MIN_CODE : constant_rewrites.
   
   Definition value_DESERIALIZATION_STATUS_MAX_CODE : Value.t :=
     M.run_constant
@@ -63,6 +70,7 @@ Module vm_status.
   Axiom Constant_value_DESERIALIZATION_STATUS_MAX_CODE :
     (M.get_constant "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE") =
       value_DESERIALIZATION_STATUS_MAX_CODE.
+  Global Hint Rewrite Constant_value_DESERIALIZATION_STATUS_MAX_CODE : constant_rewrites.
   
   Definition value_EXECUTION_STATUS_MIN_CODE : Value.t :=
     M.run_constant
@@ -71,6 +79,7 @@ Module vm_status.
   Axiom Constant_value_EXECUTION_STATUS_MIN_CODE :
     (M.get_constant "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE") =
       value_EXECUTION_STATUS_MIN_CODE.
+  Global Hint Rewrite Constant_value_EXECUTION_STATUS_MIN_CODE : constant_rewrites.
   
   Definition value_EXECUTION_STATUS_MAX_CODE : Value.t :=
     M.run_constant
@@ -79,6 +88,7 @@ Module vm_status.
   Axiom Constant_value_EXECUTION_STATUS_MAX_CODE :
     (M.get_constant "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE") =
       value_EXECUTION_STATUS_MAX_CODE.
+  Global Hint Rewrite Constant_value_EXECUTION_STATUS_MAX_CODE : constant_rewrites.
   
   (*
   Enum StatusType
@@ -8618,6 +8628,7 @@ Module vm_status.
     Axiom Constant_value_NFE_VECTOR_ERROR_BASE :
       (M.get_constant "move_core_types::vm_status::sub_status::NFE_VECTOR_ERROR_BASE") =
         value_NFE_VECTOR_ERROR_BASE.
+    Global Hint Rewrite Constant_value_NFE_VECTOR_ERROR_BASE : constant_rewrites.
     
     Definition value_NFE_OUT_OF_GAS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
@@ -8625,6 +8636,7 @@ Module vm_status.
     Axiom Constant_value_NFE_OUT_OF_GAS :
       (M.get_constant "move_core_types::vm_status::sub_status::NFE_OUT_OF_GAS") =
         value_NFE_OUT_OF_GAS.
+    Global Hint Rewrite Constant_value_NFE_OUT_OF_GAS : constant_rewrites.
     
     Definition value_NFE_BCS_SERIALIZATION_FAILURE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 453 |))).
@@ -8632,5 +8644,6 @@ Module vm_status.
     Axiom Constant_value_NFE_BCS_SERIALIZATION_FAILURE :
       (M.get_constant "move_core_types::vm_status::sub_status::NFE_BCS_SERIALIZATION_FAILURE") =
         value_NFE_BCS_SERIALIZATION_FAILURE.
+    Global Hint Rewrite Constant_value_NFE_BCS_SERIALIZATION_FAILURE : constant_rewrites.
   End sub_status.
 End vm_status.

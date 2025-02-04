@@ -22,13 +22,6 @@ Proof.
   run_symbolic.
   eapply Run.Let. {
     run_symbolic.
-    eapply Run.Rewrite. {
-      rewrite cast_integer_eq with
-        (kind_source := IntegerKind.Usize)
-        (kind_target := IntegerKind.U64).
-      reflexivity.
-    }
-    run_symbolic.
   }
   intros []; run_symbolic.
   eapply Run.CallPrimitiveGetAssociatedFunction. {

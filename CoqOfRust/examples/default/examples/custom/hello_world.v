@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition message : Value.t := M.run_constant ltac:(M.monadic (Value.String "Hello, World!")).
 
 Axiom Constant_message : (M.get_constant "hello_world::message") = message.
+Global Hint Rewrite Constant_message : constant_rewrites.
 
 (*
 fn main() {

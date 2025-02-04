@@ -10,6 +10,7 @@ Module num.
       
       Axiom Constant_value_MIN_19DIGIT_INT :
         (M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT") = value_MIN_19DIGIT_INT.
+      Global Hint Rewrite Constant_value_MIN_19DIGIT_INT : constant_rewrites.
       
       (*
       fn parse_8digits(mut v: u64) -> u64 {
@@ -101,6 +102,7 @@ Module num.
         
         Axiom Constant_value_MASK :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK") = value_MASK.
+        Global Hint Rewrite Constant_value_MASK : constant_rewrites.
         
         Definition value_MUL1 : Value.t :=
           M.run_constant
@@ -108,6 +110,7 @@ Module num.
         
         Axiom Constant_value_MUL1 :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1") = value_MUL1.
+        Global Hint Rewrite Constant_value_MUL1 : constant_rewrites.
         
         Definition value_MUL2 : Value.t :=
           M.run_constant
@@ -115,6 +118,7 @@ Module num.
         
         Axiom Constant_value_MUL2 :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2") = value_MUL2.
+        Global Hint Rewrite Constant_value_MUL2 : constant_rewrites.
       End parse_8digits.
       
       (*
@@ -2190,6 +2194,7 @@ Module num.
         
         Axiom Constant_value_INF_3 :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_3") = value_INF_3.
+        Global Hint Rewrite Constant_value_INF_3 : constant_rewrites.
         
         Definition value_INF_8 : Value.t :=
           M.run_constant
@@ -2197,12 +2202,14 @@ Module num.
         
         Axiom Constant_value_INF_8 :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_8") = value_INF_8.
+        Global Hint Rewrite Constant_value_INF_8 : constant_rewrites.
         
         Definition value_NAN : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
         
         Axiom Constant_value_NAN :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::NAN") = value_NAN.
+        Global Hint Rewrite Constant_value_NAN : constant_rewrites.
       End parse_inf_nan.
     End parse.
   End dec2flt.

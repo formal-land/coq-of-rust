@@ -28,6 +28,7 @@ Module num.
         
         Axiom Constant_value_POW10 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW10") = value_POW10.
+        Global Hint Rewrite Constant_value_POW10 : constant_rewrites.
         
         Definition value_POW5TO16 : Value.t :=
           M.run_constant
@@ -41,6 +42,7 @@ Module num.
         
         Axiom Constant_value_POW5TO16 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO16") = value_POW5TO16.
+        Global Hint Rewrite Constant_value_POW5TO16 : constant_rewrites.
         
         Definition value_POW5TO32 : Value.t :=
           M.run_constant
@@ -58,6 +60,7 @@ Module num.
         
         Axiom Constant_value_POW5TO32 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO32") = value_POW5TO32.
+        Global Hint Rewrite Constant_value_POW5TO32 : constant_rewrites.
         
         Definition value_POW5TO64 : Value.t :=
           M.run_constant
@@ -77,6 +80,7 @@ Module num.
         
         Axiom Constant_value_POW5TO64 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO64") = value_POW5TO64.
+        Global Hint Rewrite Constant_value_POW5TO64 : constant_rewrites.
         
         Definition value_POW5TO128 : Value.t :=
           M.run_constant
@@ -101,6 +105,7 @@ Module num.
         
         Axiom Constant_value_POW5TO128 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO128") = value_POW5TO128.
+        Global Hint Rewrite Constant_value_POW5TO128 : constant_rewrites.
         
         Definition value_POW5TO256 : Value.t :=
           M.run_constant
@@ -134,6 +139,7 @@ Module num.
         
         Axiom Constant_value_POW5TO256 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO256") = value_POW5TO256.
+        Global Hint Rewrite Constant_value_POW5TO256 : constant_rewrites.
         
         (*
         pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big {

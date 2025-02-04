@@ -234,6 +234,7 @@ Module locals_safety.
     Axiom Constant_value_STEP_BASE_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST") =
         value_STEP_BASE_COST.
+    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
     
     Definition value_RET_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
@@ -241,6 +242,7 @@ Module locals_safety.
     Axiom Constant_value_RET_PER_LOCAL_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST") =
         value_RET_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_RET_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_JOIN_BASE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -248,6 +250,7 @@ Module locals_safety.
     Axiom Constant_value_JOIN_BASE_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST") =
         value_JOIN_BASE_COST.
+    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
@@ -256,6 +259,7 @@ Module locals_safety.
       (M.get_constant
           "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST") =
         value_JOIN_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
     
     (* StructRecord
       {

@@ -194,6 +194,7 @@ Module absint.
   Axiom Constant_value_ANALYZE_FUNCTION_BASE_COST :
     (M.get_constant "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST") =
       value_ANALYZE_FUNCTION_BASE_COST.
+  Global Hint Rewrite Constant_value_ANALYZE_FUNCTION_BASE_COST : constant_rewrites.
   
   Definition value_EXECUTE_BLOCK_BASE_COST : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -201,12 +202,14 @@ Module absint.
   Axiom Constant_value_EXECUTE_BLOCK_BASE_COST :
     (M.get_constant "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST") =
       value_EXECUTE_BLOCK_BASE_COST.
+  Global Hint Rewrite Constant_value_EXECUTE_BLOCK_BASE_COST : constant_rewrites.
   
   Definition value_PER_BACKEDGE_COST : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
   Axiom Constant_value_PER_BACKEDGE_COST :
     (M.get_constant "move_bytecode_verifier::absint::PER_BACKEDGE_COST") = value_PER_BACKEDGE_COST.
+  Global Hint Rewrite Constant_value_PER_BACKEDGE_COST : constant_rewrites.
   
   Definition value_PER_SUCCESSOR_COST : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -214,6 +217,7 @@ Module absint.
   Axiom Constant_value_PER_SUCCESSOR_COST :
     (M.get_constant "move_bytecode_verifier::absint::PER_SUCCESSOR_COST") =
       value_PER_SUCCESSOR_COST.
+  Global Hint Rewrite Constant_value_PER_SUCCESSOR_COST : constant_rewrites.
   
   (* Trait *)
   (* Empty module 'TransferFunctions' *)

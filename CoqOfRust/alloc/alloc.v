@@ -24,6 +24,7 @@ Module alloc.
   Axiom Constant___rust_no_alloc_shim_is_unstable :
     (M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable") =
       __rust_no_alloc_shim_is_unstable.
+  Global Hint Rewrite Constant___rust_no_alloc_shim_is_unstable : constant_rewrites.
   
   (* StructTuple
     {
@@ -2420,6 +2421,7 @@ Module alloc.
         (M.get_constant
             "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic") =
           __rust_alloc_error_handler_should_panic.
+      Global Hint Rewrite Constant___rust_alloc_error_handler_should_panic : constant_rewrites.
     End __rdl_oom.
   End __alloc_error_handler.
 End alloc.

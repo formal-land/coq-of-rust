@@ -1011,6 +1011,7 @@ Module slice.
             (M.get_constant
                 "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE") =
               value_MAX_BRANCHLESS_PARTITION_SIZE.
+          Global Hint Rewrite Constant_value_MAX_BRANCHLESS_PARTITION_SIZE : constant_rewrites.
         End inst_partition.
         
         (*

@@ -62,6 +62,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::u8::C1") = value_C1.
+      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
       
       Definition value_C2 : Value.t :=
         M.run_constant
@@ -74,6 +75,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::u8::C2") = value_C2.
+      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
     End u8.
     
     (*
@@ -140,6 +142,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::less_than_5::C1") = value_C1.
+      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
       
       Definition value_C2 : Value.t :=
         M.run_constant
@@ -152,6 +155,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::less_than_5::C2") = value_C2.
+      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
       
       Definition value_C3 : Value.t :=
         M.run_constant
@@ -164,6 +168,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C3 : (M.get_constant "core::num::int_log10::less_than_5::C3") = value_C3.
+      Global Hint Rewrite Constant_value_C3 : constant_rewrites.
       
       Definition value_C4 : Value.t :=
         M.run_constant
@@ -176,6 +181,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C4 : (M.get_constant "core::num::int_log10::less_than_5::C4") = value_C4.
+      Global Hint Rewrite Constant_value_C4 : constant_rewrites.
     End less_than_5.
     
     (*

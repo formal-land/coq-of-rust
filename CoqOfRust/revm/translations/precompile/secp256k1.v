@@ -21,6 +21,7 @@ Module secp256k1.
   
   Axiom Constant_value_ECRECOVER :
     (M.get_constant "revm_precompile::secp256k1::ECRECOVER") = value_ECRECOVER.
+  Global Hint Rewrite Constant_value_ECRECOVER : constant_rewrites.
   
   Module secp256k1.
     (*
@@ -1249,5 +1250,6 @@ Module secp256k1.
     Axiom Constant_value_ECRECOVER_BASE :
       (M.get_constant "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE") =
         value_ECRECOVER_BASE.
+    Global Hint Rewrite Constant_value_ECRECOVER_BASE : constant_rewrites.
   End ec_recover_run.
 End secp256k1.

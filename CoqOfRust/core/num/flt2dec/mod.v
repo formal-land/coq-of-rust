@@ -8,6 +8,7 @@ Module num.
     
     Axiom Constant_value_MAX_SIG_DIGITS :
       (M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS") = value_MAX_SIG_DIGITS.
+    Global Hint Rewrite Constant_value_MAX_SIG_DIGITS : constant_rewrites.
     
     (*
     pub fn round_up(d: &mut [u8]) -> Option<u8> {

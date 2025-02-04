@@ -6263,6 +6263,7 @@ Module fmt.
     
     Axiom Constant_value_DEC_DIGITS_LUT :
       (M.get_constant "core::fmt::num::DEC_DIGITS_LUT") = value_DEC_DIGITS_LUT.
+    Global Hint Rewrite Constant_value_DEC_DIGITS_LUT : constant_rewrites.
     
     Module imp.
       (*
@@ -15179,6 +15180,7 @@ Module fmt.
           ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
       
       Axiom Constant_value_DIV : (M.get_constant "core::fmt::num::udiv_1e19::DIV") = value_DIV.
+      Global Hint Rewrite Constant_value_DIV : constant_rewrites.
       
       Definition value_FACTOR : Value.t :=
         M.run_constant
@@ -15187,6 +15189,7 @@ Module fmt.
       
       Axiom Constant_value_FACTOR :
         (M.get_constant "core::fmt::num::udiv_1e19::FACTOR") = value_FACTOR.
+      Global Hint Rewrite Constant_value_FACTOR : constant_rewrites.
     End udiv_1e19.
     
     (*

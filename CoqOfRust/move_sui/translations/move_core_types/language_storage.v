@@ -7,12 +7,14 @@ Module language_storage.
   
   Axiom Constant_value_CODE_TAG :
     (M.get_constant "move_core_types::language_storage::CODE_TAG") = value_CODE_TAG.
+  Global Hint Rewrite Constant_value_CODE_TAG : constant_rewrites.
   
   Definition value_RESOURCE_TAG : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
   Axiom Constant_value_RESOURCE_TAG :
     (M.get_constant "move_core_types::language_storage::RESOURCE_TAG") = value_RESOURCE_TAG.
+  Global Hint Rewrite Constant_value_RESOURCE_TAG : constant_rewrites.
   
   Definition value_CORE_CODE_ADDRESS : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "move_core_types::account_address::ONE")).
@@ -20,6 +22,7 @@ Module language_storage.
   Axiom Constant_value_CORE_CODE_ADDRESS :
     (M.get_constant "move_core_types::language_storage::CORE_CODE_ADDRESS") =
       value_CORE_CODE_ADDRESS.
+  Global Hint Rewrite Constant_value_CORE_CODE_ADDRESS : constant_rewrites.
   
   Definition value_TYPETAG_ENUM_ABSTRACT_SIZE : Value.t :=
     M.run_constant
@@ -108,6 +111,7 @@ Module language_storage.
   Axiom Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE :
     (M.get_constant "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE") =
       value_TYPETAG_ENUM_ABSTRACT_SIZE.
+  Global Hint Rewrite Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE : constant_rewrites.
   
   (*
   Enum TypeTag

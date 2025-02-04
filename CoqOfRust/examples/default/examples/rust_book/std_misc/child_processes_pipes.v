@@ -7,6 +7,7 @@ Definition value_PANGRAM : Value.t :=
 " |))).
 
 Axiom Constant_value_PANGRAM : (M.get_constant "child_processes_pipes::PANGRAM") = value_PANGRAM.
+Global Hint Rewrite Constant_value_PANGRAM : constant_rewrites.
 
 (*
 fn main() {

@@ -9,12 +9,14 @@ Module bls12_381.
     Axiom Constant_value_G2_INPUT_ITEM_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH") =
         value_G2_INPUT_ITEM_LENGTH.
+    Global Hint Rewrite Constant_value_G2_INPUT_ITEM_LENGTH : constant_rewrites.
     
     Definition value_G2_OUTPUT_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
     Axiom Constant_value_G2_OUTPUT_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH") = value_G2_OUTPUT_LENGTH.
+    Global Hint Rewrite Constant_value_G2_OUTPUT_LENGTH : constant_rewrites.
     
     (*
     pub(super) fn encode_g2_point(input: &blst_p2_affine) -> Bytes {

@@ -431,6 +431,7 @@ Module instructions.
     Axiom Constant_value_MAX_POSITIVE_VALUE :
       (M.get_constant "revm_interpreter::instructions::i256::MAX_POSITIVE_VALUE") =
         value_MAX_POSITIVE_VALUE.
+    Global Hint Rewrite Constant_value_MAX_POSITIVE_VALUE : constant_rewrites.
     
     Definition value_MIN_NEGATIVE_VALUE : Value.t :=
       M.run_constant
@@ -461,6 +462,7 @@ Module instructions.
     Axiom Constant_value_MIN_NEGATIVE_VALUE :
       (M.get_constant "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE") =
         value_MIN_NEGATIVE_VALUE.
+    Global Hint Rewrite Constant_value_MIN_NEGATIVE_VALUE : constant_rewrites.
     
     Definition value_FLIPH_BITMASK_U64 : Value.t :=
       M.run_constant
@@ -469,6 +471,7 @@ Module instructions.
     Axiom Constant_value_FLIPH_BITMASK_U64 :
       (M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64") =
         value_FLIPH_BITMASK_U64.
+    Global Hint Rewrite Constant_value_FLIPH_BITMASK_U64 : constant_rewrites.
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {

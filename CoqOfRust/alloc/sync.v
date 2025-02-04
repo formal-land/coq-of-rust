@@ -9,12 +9,14 @@ Module sync.
   
   Axiom Constant_value_MAX_REFCOUNT :
     (M.get_constant "alloc::sync::MAX_REFCOUNT") = value_MAX_REFCOUNT.
+  Global Hint Rewrite Constant_value_MAX_REFCOUNT : constant_rewrites.
   
   Definition value_INTERNAL_OVERFLOW_ERROR : Value.t :=
     M.run_constant ltac:(M.monadic (Value.String "Arc counter overflow")).
   
   Axiom Constant_value_INTERNAL_OVERFLOW_ERROR :
     (M.get_constant "alloc::sync::INTERNAL_OVERFLOW_ERROR") = value_INTERNAL_OVERFLOW_ERROR.
+  Global Hint Rewrite Constant_value_INTERNAL_OVERFLOW_ERROR : constant_rewrites.
   
   (* StructRecord
     {
@@ -12867,6 +12869,7 @@ Module sync.
   Axiom Constant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT :
     (M.get_constant "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT") =
       value_MAX_STATIC_INNER_SLICE_ALIGNMENT.
+  Global Hint Rewrite Constant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT : constant_rewrites.
   
   Definition value_STATIC_INNER_SLICE : Value.t :=
     M.run_constant
@@ -12908,6 +12911,7 @@ Module sync.
   
   Axiom Constant_value_STATIC_INNER_SLICE :
     (M.get_constant "alloc::sync::STATIC_INNER_SLICE") = value_STATIC_INNER_SLICE.
+  Global Hint Rewrite Constant_value_STATIC_INNER_SLICE : constant_rewrites.
   
   Module Impl_core_default_Default_for_alloc_sync_Arc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=

@@ -7,12 +7,14 @@ Module u256.
   
   Axiom Constant_value_NUM_BITS_PER_BYTE :
     (M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE") = value_NUM_BITS_PER_BYTE.
+  Global Hint Rewrite Constant_value_NUM_BITS_PER_BYTE : constant_rewrites.
   
   Definition value_U256_NUM_BITS : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   
   Axiom Constant_value_U256_NUM_BITS :
     (M.get_constant "move_core_types::u256::U256_NUM_BITS") = value_U256_NUM_BITS.
+  Global Hint Rewrite Constant_value_U256_NUM_BITS : constant_rewrites.
   
   Definition value_U256_NUM_BYTES : Value.t :=
     M.run_constant
@@ -26,6 +28,7 @@ Module u256.
   
   Axiom Constant_value_U256_NUM_BYTES :
     (M.get_constant "move_core_types::u256::U256_NUM_BYTES") = value_U256_NUM_BYTES.
+  Global Hint Rewrite Constant_value_U256_NUM_BYTES : constant_rewrites.
   
   (* StructTuple
     {

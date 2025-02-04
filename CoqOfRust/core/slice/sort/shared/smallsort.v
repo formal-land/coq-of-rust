@@ -864,6 +864,7 @@ Module slice.
         Axiom Constant_value_SMALL_SORT_FALLBACK_THRESHOLD :
           (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD") =
             value_SMALL_SORT_FALLBACK_THRESHOLD.
+        Global Hint Rewrite Constant_value_SMALL_SORT_FALLBACK_THRESHOLD : constant_rewrites.
         
         Definition value_SMALL_SORT_GENERAL_THRESHOLD : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
@@ -871,6 +872,7 @@ Module slice.
         Axiom Constant_value_SMALL_SORT_GENERAL_THRESHOLD :
           (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD") =
             value_SMALL_SORT_GENERAL_THRESHOLD.
+        Global Hint Rewrite Constant_value_SMALL_SORT_GENERAL_THRESHOLD : constant_rewrites.
         
         Definition value_SMALL_SORT_GENERAL_SCRATCH_LEN : Value.t :=
           M.run_constant
@@ -888,6 +890,7 @@ Module slice.
         Axiom Constant_value_SMALL_SORT_GENERAL_SCRATCH_LEN :
           (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN") =
             value_SMALL_SORT_GENERAL_SCRATCH_LEN.
+        Global Hint Rewrite Constant_value_SMALL_SORT_GENERAL_SCRATCH_LEN : constant_rewrites.
         
         Definition value_SMALL_SORT_NETWORK_THRESHOLD : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
@@ -895,6 +898,7 @@ Module slice.
         Axiom Constant_value_SMALL_SORT_NETWORK_THRESHOLD :
           (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD") =
             value_SMALL_SORT_NETWORK_THRESHOLD.
+        Global Hint Rewrite Constant_value_SMALL_SORT_NETWORK_THRESHOLD : constant_rewrites.
         
         Definition value_SMALL_SORT_NETWORK_SCRATCH_LEN : Value.t :=
           M.run_constant
@@ -905,6 +909,7 @@ Module slice.
         Axiom Constant_value_SMALL_SORT_NETWORK_SCRATCH_LEN :
           (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN") =
             value_SMALL_SORT_NETWORK_SCRATCH_LEN.
+        Global Hint Rewrite Constant_value_SMALL_SORT_NETWORK_SCRATCH_LEN : constant_rewrites.
         
         Definition value_MAX_STACK_ARRAY_SIZE : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4096 |))).
@@ -912,6 +917,7 @@ Module slice.
         Axiom Constant_value_MAX_STACK_ARRAY_SIZE :
           (M.get_constant "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE") =
             value_MAX_STACK_ARRAY_SIZE.
+        Global Hint Rewrite Constant_value_MAX_STACK_ARRAY_SIZE : constant_rewrites.
         
         (*
         fn small_sort_fallback<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) {

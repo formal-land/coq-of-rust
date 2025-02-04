@@ -9,6 +9,7 @@ Module eip7702.
     Axiom Constant_value_PER_AUTH_BASE_COST :
       (M.get_constant "revm_specification::eip7702::constants::PER_AUTH_BASE_COST") =
         value_PER_AUTH_BASE_COST.
+    Global Hint Rewrite Constant_value_PER_AUTH_BASE_COST : constant_rewrites.
     
     Definition value_PER_EMPTY_ACCOUNT_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
@@ -16,5 +17,6 @@ Module eip7702.
     Axiom Constant_value_PER_EMPTY_ACCOUNT_COST :
       (M.get_constant "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST") =
         value_PER_EMPTY_ACCOUNT_COST.
+    Global Hint Rewrite Constant_value_PER_EMPTY_ACCOUNT_COST : constant_rewrites.
   End constants.
 End eip7702.

@@ -850,6 +850,7 @@ Module str.
     
     Axiom Constant_value_NONASCII_MASK :
       (M.get_constant "core::str::validations::NONASCII_MASK") = value_NONASCII_MASK.
+    Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
     
     (*
     const fn contains_nonascii(x: usize) -> bool {
@@ -2649,6 +2650,7 @@ Module str.
     
     Axiom Constant_value_UTF8_CHAR_WIDTH :
       (M.get_constant "core::str::validations::UTF8_CHAR_WIDTH") = value_UTF8_CHAR_WIDTH.
+    Global Hint Rewrite Constant_value_UTF8_CHAR_WIDTH : constant_rewrites.
     
     (*
     pub const fn utf8_char_width(b: u8) -> usize {
@@ -2679,5 +2681,6 @@ Module str.
     
     Axiom Constant_value_CONT_MASK :
       (M.get_constant "core::str::validations::CONT_MASK") = value_CONT_MASK.
+    Global Hint Rewrite Constant_value_CONT_MASK : constant_rewrites.
   End validations.
 End str.

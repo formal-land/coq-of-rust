@@ -31,6 +31,7 @@ Module num.
       
       Axiom Constant_value_INT_POW10 :
         (M.get_constant "core::num::dec2flt::number::INT_POW10") = value_INT_POW10.
+      Global Hint Rewrite Constant_value_INT_POW10 : constant_rewrites.
       
       (* StructRecord
         {

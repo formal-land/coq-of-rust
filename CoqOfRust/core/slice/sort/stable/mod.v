@@ -208,6 +208,7 @@ Module slice.
         Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
           (M.get_constant "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
             value_MAX_LEN_ALWAYS_INSERTION_SORT.
+        Global Hint Rewrite Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT : constant_rewrites.
       End sort.
       
       (*
@@ -458,6 +459,7 @@ Module slice.
         Axiom Constant_value_MAX_FULL_ALLOC_BYTES :
           (M.get_constant "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES") =
             value_MAX_FULL_ALLOC_BYTES.
+        Global Hint Rewrite Constant_value_MAX_FULL_ALLOC_BYTES : constant_rewrites.
       End driftsort_main.
       
       (* Trait *)

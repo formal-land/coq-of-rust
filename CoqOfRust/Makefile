@@ -1,4 +1,4 @@
-.PHONY: all clean clean-util distclean default
+.PHONY: all clean clean-util distclean default watch generate
 
 VFILES := $(shell find -L . -name "*.v" | grep -v -f blacklist.txt | sort)
 
@@ -32,4 +32,12 @@ watch:
 	while true; do \
 		inotifywait -e modify $(VFILES) Makefile; \
 		make -k -j3; \
+	done
+
+GENERATE_FILES := $(shell find . -type f -name "generate.py")
+
+generate: $(GENERATE_FILES)
+	@for file in $(GENERATE_FILES); do \
+		echo "python $$file"; \
+		python $$file; \
 	done

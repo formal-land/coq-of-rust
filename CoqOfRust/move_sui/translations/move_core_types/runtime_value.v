@@ -7,12 +7,14 @@ Module runtime_value.
   
   Axiom Constant_value_MOVE_STRUCT_NAME :
     (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
+  Global Hint Rewrite Constant_value_MOVE_STRUCT_NAME : constant_rewrites.
   
   Definition value_MOVE_STRUCT_TYPE : Value.t :=
     M.run_constant ltac:(M.monadic (Value.String "type")).
   
   Axiom Constant_value_MOVE_STRUCT_TYPE :
     (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
+  Global Hint Rewrite Constant_value_MOVE_STRUCT_TYPE : constant_rewrites.
   
   Definition value_MOVE_STRUCT_FIELDS : Value.t :=
     M.run_constant ltac:(M.monadic (Value.String "fields")).
@@ -20,6 +22,7 @@ Module runtime_value.
   Axiom Constant_value_MOVE_STRUCT_FIELDS :
     (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_FIELDS") =
       value_MOVE_STRUCT_FIELDS.
+  Global Hint Rewrite Constant_value_MOVE_STRUCT_FIELDS : constant_rewrites.
   
   (* StructTuple
     {

@@ -454,6 +454,7 @@ Module control_flow_graph.
   Axiom Constant_value_ENTRY_BLOCK_ID :
     (M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID") =
       value_ENTRY_BLOCK_ID.
+  Global Hint Rewrite Constant_value_ENTRY_BLOCK_ID : constant_rewrites.
   
   Module Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
     Definition Self : Ty.t := Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph".

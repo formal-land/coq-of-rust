@@ -7,12 +7,14 @@ Module blake2.
   
   Axiom Constant_value_F_ROUND :
     (M.get_constant "revm_precompile::blake2::F_ROUND") = value_F_ROUND.
+  Global Hint Rewrite Constant_value_F_ROUND : constant_rewrites.
   
   Definition value_INPUT_LENGTH : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
   
   Axiom Constant_value_INPUT_LENGTH :
     (M.get_constant "revm_precompile::blake2::INPUT_LENGTH") = value_INPUT_LENGTH.
+  Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
   
   Definition value_FUN : Value.t :=
     M.run_constant
@@ -31,6 +33,7 @@ Module blake2.
         |))).
   
   Axiom Constant_value_FUN : (M.get_constant "revm_precompile::blake2::FUN") = value_FUN.
+  Global Hint Rewrite Constant_value_FUN : constant_rewrites.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -1553,6 +1556,7 @@ Module blake2.
     
     Axiom Constant_value_SIGMA :
       (M.get_constant "revm_precompile::blake2::algo::SIGMA") = value_SIGMA.
+    Global Hint Rewrite Constant_value_SIGMA : constant_rewrites.
     
     Definition value_IV : Value.t :=
       M.run_constant
@@ -1572,6 +1576,7 @@ Module blake2.
           |))).
     
     Axiom Constant_value_IV : (M.get_constant "revm_precompile::blake2::algo::IV") = value_IV.
+    Global Hint Rewrite Constant_value_IV : constant_rewrites.
     
     (*
         pub fn g(v: &mut [u64], a: usize, b: usize, c: usize, d: usize, x: u64, y: u64) {

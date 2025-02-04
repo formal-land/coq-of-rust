@@ -11,6 +11,7 @@ Module slice.
         Axiom Constant_value_PSEUDO_MEDIAN_REC_THRESHOLD :
           (M.get_constant "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD") =
             value_PSEUDO_MEDIAN_REC_THRESHOLD.
+        Global Hint Rewrite Constant_value_PSEUDO_MEDIAN_REC_THRESHOLD : constant_rewrites.
         
         (*
         pub fn choose_pivot<T, F: FnMut(&T, &T) -> bool>(v: &[T], is_less: &mut F) -> usize {

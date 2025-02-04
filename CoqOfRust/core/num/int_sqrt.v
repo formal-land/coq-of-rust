@@ -136,6 +136,7 @@ Module num.
     Axiom Constant_value_U8_ISQRT_WITH_REMAINDER :
       (M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER") =
         value_U8_ISQRT_WITH_REMAINDER.
+    Global Hint Rewrite Constant_value_U8_ISQRT_WITH_REMAINDER : constant_rewrites.
     
     (*
     pub const fn u8(n: u8) -> u8 {
@@ -973,6 +974,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u16_stages::N_SHIFT") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -986,6 +988,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u16_stages::HALF_BITS") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -999,6 +1002,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -1016,6 +1020,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
     End u16_stages.
     
     (*
@@ -1599,6 +1604,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -1612,6 +1618,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT'1") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -1625,6 +1632,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -1638,6 +1646,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -1655,6 +1664,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -1672,6 +1682,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -1685,6 +1696,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS'1") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -1698,6 +1710,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -1715,6 +1728,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
     End u32_stages.
     
     (*
@@ -2568,6 +2582,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -2581,6 +2596,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'1") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -2594,6 +2610,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -2607,6 +2624,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -2624,6 +2642,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -2641,6 +2660,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -2654,6 +2674,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'2") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -2667,6 +2688,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'1") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -2680,6 +2702,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -2697,6 +2720,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -2714,6 +2738,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -2727,6 +2752,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'2") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -2740,6 +2766,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -2757,6 +2784,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
     End u64_stages.
     
     (*
@@ -3896,6 +3924,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -3909,6 +3938,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'1") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -3922,6 +3952,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -3935,6 +3966,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -3952,6 +3984,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -3969,6 +4002,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -3982,6 +4016,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'2") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -3995,6 +4030,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'1") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -4008,6 +4044,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -4025,6 +4062,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -4042,6 +4080,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_N_SHIFT : Value.t :=
         M.run_constant
@@ -4055,6 +4094,7 @@ Module num.
       
       Axiom Constant_value_N_SHIFT :
         (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'3") = value_N_SHIFT.
+      Global Hint Rewrite Constant_value_N_SHIFT : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -4068,6 +4108,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'2") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -4081,6 +4122,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -4098,6 +4140,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
         M.run_constant
@@ -4115,6 +4158,7 @@ Module num.
       Axiom Constant_value_LOWEST_QUARTER_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2") =
           value_LOWEST_QUARTER_1_BITS.
+      Global Hint Rewrite Constant_value_LOWEST_QUARTER_1_BITS : constant_rewrites.
       
       Definition value_HALF_BITS : Value.t :=
         M.run_constant
@@ -4128,6 +4172,7 @@ Module num.
       
       Axiom Constant_value_HALF_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'3") = value_HALF_BITS.
+      Global Hint Rewrite Constant_value_HALF_BITS : constant_rewrites.
       
       Definition value_QUARTER_BITS : Value.t :=
         M.run_constant
@@ -4141,6 +4186,7 @@ Module num.
       
       Axiom Constant_value_QUARTER_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'3") = value_QUARTER_BITS.
+      Global Hint Rewrite Constant_value_QUARTER_BITS : constant_rewrites.
       
       Definition value_LOWER_HALF_1_BITS : Value.t :=
         M.run_constant
@@ -4158,6 +4204,7 @@ Module num.
       Axiom Constant_value_LOWER_HALF_1_BITS :
         (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3") =
           value_LOWER_HALF_1_BITS.
+      Global Hint Rewrite Constant_value_LOWER_HALF_1_BITS : constant_rewrites.
     End u128_stages.
     
     (*
@@ -4286,6 +4333,7 @@ Module num.
       Axiom Constant_value_EVEN_MAKING_BITMASK :
         (M.get_constant "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK") =
           value_EVEN_MAKING_BITMASK.
+      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
     End u16.
     
     (*
@@ -4414,6 +4462,7 @@ Module num.
       Axiom Constant_value_EVEN_MAKING_BITMASK :
         (M.get_constant "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK") =
           value_EVEN_MAKING_BITMASK.
+      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
     End u32.
     
     (*
@@ -4542,6 +4591,7 @@ Module num.
       Axiom Constant_value_EVEN_MAKING_BITMASK :
         (M.get_constant "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK") =
           value_EVEN_MAKING_BITMASK.
+      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
     End u64.
     
     (*
@@ -4670,6 +4720,7 @@ Module num.
       Axiom Constant_value_EVEN_MAKING_BITMASK :
         (M.get_constant "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK") =
           value_EVEN_MAKING_BITMASK.
+      Global Hint Rewrite Constant_value_EVEN_MAKING_BITMASK : constant_rewrites.
     End u128.
     
     (*

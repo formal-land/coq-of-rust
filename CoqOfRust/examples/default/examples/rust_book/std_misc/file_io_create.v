@@ -17,6 +17,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 Axiom Constant_value_LOREM_IPSUM :
   (M.get_constant "file_io_create::LOREM_IPSUM") = value_LOREM_IPSUM.
+Global Hint Rewrite Constant_value_LOREM_IPSUM : constant_rewrites.
 
 (*
 fn main() {

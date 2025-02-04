@@ -2356,6 +2356,7 @@ Module slice.
       Axiom Constant_value_NONASCII_MASK :
         (M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK") =
           value_NONASCII_MASK.
+      Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
     End contains_nonascii.
     
     (*
@@ -3301,6 +3302,7 @@ Module slice.
       
       Axiom Constant_value_USIZE_SIZE :
         (M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE") = value_USIZE_SIZE.
+      Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
     End is_ascii.
   End ascii.
 End slice.

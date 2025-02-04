@@ -22,6 +22,7 @@ Module type_safety.
   
   Axiom Constant_value_TYPE_NODE_COST :
     (M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST") = value_TYPE_NODE_COST.
+  Global Hint Rewrite Constant_value_TYPE_NODE_COST : constant_rewrites.
   
   Module Impl_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::type_safety::Locals".

@@ -19,6 +19,7 @@ Module kzg_point_evaluation.
   Axiom Constant_value_POINT_EVALUATION :
     (M.get_constant "revm_precompile::kzg_point_evaluation::POINT_EVALUATION") =
       value_POINT_EVALUATION.
+  Global Hint Rewrite Constant_value_POINT_EVALUATION : constant_rewrites.
   
   Definition value_ADDRESS : Value.t :=
     M.run_constant
@@ -32,12 +33,14 @@ Module kzg_point_evaluation.
   
   Axiom Constant_value_ADDRESS :
     (M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS") = value_ADDRESS.
+  Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
   
   Definition value_GAS_COST : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
   
   Axiom Constant_value_GAS_COST :
     (M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST") = value_GAS_COST.
+  Global Hint Rewrite Constant_value_GAS_COST : constant_rewrites.
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
@@ -45,6 +48,7 @@ Module kzg_point_evaluation.
   Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
     (M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG") =
       value_VERSIONED_HASH_VERSION_KZG.
+  Global Hint Rewrite Constant_value_VERSIONED_HASH_VERSION_KZG : constant_rewrites.
   
   Definition value_RETURN_VALUE : Value.t :=
     M.run_constant
@@ -63,6 +67,7 @@ Module kzg_point_evaluation.
   
   Axiom Constant_value_RETURN_VALUE :
     (M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE") = value_RETURN_VALUE.
+  Global Hint Rewrite Constant_value_RETURN_VALUE : constant_rewrites.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {

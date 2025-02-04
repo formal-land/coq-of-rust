@@ -1790,6 +1790,7 @@ Module collections.
       Axiom Constant_value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF :
         (M.get_constant "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF") =
           value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF.
+      Global Hint Rewrite Constant_value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF : constant_rewrites.
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=

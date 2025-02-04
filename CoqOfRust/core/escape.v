@@ -44,6 +44,7 @@ Module escape.
         |))).
   
   Axiom Constant_value_HEX_DIGITS : (M.get_constant "core::escape::HEX_DIGITS") = value_HEX_DIGITS.
+  Global Hint Rewrite Constant_value_HEX_DIGITS : constant_rewrites.
   
   (*
   const fn backslash<const N: usize>(a: ascii::Char) -> ([ascii::Char; N], Range<u8>) {

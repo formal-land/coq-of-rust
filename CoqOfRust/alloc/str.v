@@ -6571,5 +6571,6 @@ Module str.
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
     Axiom Constant_value_N : (M.get_constant "alloc::str::convert_while_ascii::N") = value_N.
+    Global Hint Rewrite Constant_value_N : constant_rewrites.
   End convert_while_ascii.
 End str.

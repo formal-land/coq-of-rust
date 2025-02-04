@@ -21,3 +21,4 @@ Definition value_KECCAK_EMPTY : Value.t :=
 
 Axiom Constant_value_KECCAK_EMPTY :
   (M.get_constant "revm_primitives::KECCAK_EMPTY") = value_KECCAK_EMPTY.
+Global Hint Rewrite Constant_value_KECCAK_EMPTY : constant_rewrites.

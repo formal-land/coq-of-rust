@@ -183,6 +183,7 @@ Module slice.
         Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
           (M.get_constant "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
             value_MAX_LEN_ALWAYS_INSERTION_SORT.
+        Global Hint Rewrite Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT : constant_rewrites.
       End sort.
       
       (*

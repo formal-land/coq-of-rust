@@ -623,23 +623,10 @@ Module Impl_revm_interpreter_gas_Gas.
         reflexivity.
       }
       run_symbolic.
-      eapply Run.Rewrite. {
-        rewrite cast_integer_eq with
-          (kind_source := IntegerKind.I64)
-          (kind_target := IntegerKind.U64).
-        reflexivity.
-      }
       eapply Run.CallClosure. {
         apply run_min.
       }
       cbn; intros []; run_symbolic.
-      eapply Run.Rewrite. {
-        rewrite cast_integer_eq with
-          (kind_source := IntegerKind.U64)
-          (kind_target := IntegerKind.I64).
-        reflexivity.
-      }
-      run_symbolic.
     }
     intros []; run_symbolic.
   Defined.

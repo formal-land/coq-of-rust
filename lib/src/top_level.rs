@@ -1766,6 +1766,10 @@ impl TopLevelItem {
                         },
                     },
                 )),
+                coq::TopLevelItem::HintRewrite {
+                    hint: format!("Constant_{name}"),
+                    database: "constant_rewrites".to_string(),
+                },
             ],
             TopLevelItem::Definition {
                 name,

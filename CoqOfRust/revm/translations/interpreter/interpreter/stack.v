@@ -8,6 +8,7 @@ Module interpreter.
     
     Axiom Constant_value_STACK_LIMIT :
       (M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT") = value_STACK_LIMIT.
+    Global Hint Rewrite Constant_value_STACK_LIMIT : constant_rewrites.
     
     (* StructRecord
       {

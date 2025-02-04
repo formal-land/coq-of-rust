@@ -8,6 +8,7 @@ Module collections.
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 6 |))).
       
       Axiom Constant_value_B : (M.get_constant "alloc::collections::btree::node::B") = value_B.
+      Global Hint Rewrite Constant_value_B : constant_rewrites.
       
       Definition value_CAPACITY : Value.t :=
         M.run_constant
@@ -24,6 +25,7 @@ Module collections.
       
       Axiom Constant_value_CAPACITY :
         (M.get_constant "alloc::collections::btree::node::CAPACITY") = value_CAPACITY.
+      Global Hint Rewrite Constant_value_CAPACITY : constant_rewrites.
       
       Definition value_MIN_LEN_AFTER_SPLIT : Value.t :=
         M.run_constant
@@ -38,6 +40,7 @@ Module collections.
       Axiom Constant_value_MIN_LEN_AFTER_SPLIT :
         (M.get_constant "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT") =
           value_MIN_LEN_AFTER_SPLIT.
+      Global Hint Rewrite Constant_value_MIN_LEN_AFTER_SPLIT : constant_rewrites.
       
       Definition value_KV_IDX_CENTER : Value.t :=
         M.run_constant
@@ -51,6 +54,7 @@ Module collections.
       
       Axiom Constant_value_KV_IDX_CENTER :
         (M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER") = value_KV_IDX_CENTER.
+      Global Hint Rewrite Constant_value_KV_IDX_CENTER : constant_rewrites.
       
       Definition value_EDGE_IDX_LEFT_OF_CENTER : Value.t :=
         M.run_constant
@@ -65,6 +69,7 @@ Module collections.
       Axiom Constant_value_EDGE_IDX_LEFT_OF_CENTER :
         (M.get_constant "alloc::collections::btree::node::EDGE_IDX_LEFT_OF_CENTER") =
           value_EDGE_IDX_LEFT_OF_CENTER.
+      Global Hint Rewrite Constant_value_EDGE_IDX_LEFT_OF_CENTER : constant_rewrites.
       
       Definition value_EDGE_IDX_RIGHT_OF_CENTER : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "alloc::collections::btree::node::B")).
@@ -72,6 +77,7 @@ Module collections.
       Axiom Constant_value_EDGE_IDX_RIGHT_OF_CENTER :
         (M.get_constant "alloc::collections::btree::node::EDGE_IDX_RIGHT_OF_CENTER") =
           value_EDGE_IDX_RIGHT_OF_CENTER.
+      Global Hint Rewrite Constant_value_EDGE_IDX_RIGHT_OF_CENTER : constant_rewrites.
       
       (* StructRecord
         {

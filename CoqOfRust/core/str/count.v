@@ -15,12 +15,14 @@ Module str.
     
     Axiom Constant_value_USIZE_SIZE :
       (M.get_constant "core::str::count::USIZE_SIZE") = value_USIZE_SIZE.
+    Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
     
     Definition value_UNROLL_INNER : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
     Axiom Constant_value_UNROLL_INNER :
       (M.get_constant "core::str::count::UNROLL_INNER") = value_UNROLL_INNER.
+    Global Hint Rewrite Constant_value_UNROLL_INNER : constant_rewrites.
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
@@ -1025,6 +1027,7 @@ Module str.
       
       Axiom Constant_value_CHUNK_SIZE :
         (M.get_constant "core::str::count::do_count_chars::CHUNK_SIZE") = value_CHUNK_SIZE.
+      Global Hint Rewrite Constant_value_CHUNK_SIZE : constant_rewrites.
     End do_count_chars.
     
     (*
@@ -1068,6 +1071,7 @@ Module str.
       
       Axiom Constant_value_LSB :
         (M.get_constant "core::str::count::contains_non_continuation_byte::LSB") = value_LSB.
+      Global Hint Rewrite Constant_value_LSB : constant_rewrites.
     End contains_non_continuation_byte.
     
     (*
@@ -1136,6 +1140,7 @@ Module str.
       
       Axiom Constant_value_LSB_SHORTS :
         (M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS") = value_LSB_SHORTS.
+      Global Hint Rewrite Constant_value_LSB_SHORTS : constant_rewrites.
       
       Definition value_SKIP_BYTES : Value.t :=
         M.run_constant
@@ -1149,6 +1154,7 @@ Module str.
       
       Axiom Constant_value_SKIP_BYTES :
         (M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES") = value_SKIP_BYTES.
+      Global Hint Rewrite Constant_value_SKIP_BYTES : constant_rewrites.
     End sum_bytes_in_usize.
     
     (*

@@ -10,12 +10,14 @@ Module num.
         
         Axiom Constant_value_ALPHA :
           (M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA") = value_ALPHA.
+        Global Hint Rewrite Constant_value_ALPHA : constant_rewrites.
         
         Definition value_GAMMA : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-32) |))).
         
         Axiom Constant_value_GAMMA :
           (M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA") = value_GAMMA.
+        Global Hint Rewrite Constant_value_GAMMA : constant_rewrites.
         
         Definition value_CACHED_POW10 : Value.t :=
           M.run_constant
@@ -516,6 +518,7 @@ Module num.
         
         Axiom Constant_value_CACHED_POW10 :
           (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10") = value_CACHED_POW10.
+        Global Hint Rewrite Constant_value_CACHED_POW10 : constant_rewrites.
         
         Definition value_CACHED_POW10_FIRST_E : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-1087) |))).
@@ -523,6 +526,7 @@ Module num.
         Axiom Constant_value_CACHED_POW10_FIRST_E :
           (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E") =
             value_CACHED_POW10_FIRST_E.
+        Global Hint Rewrite Constant_value_CACHED_POW10_FIRST_E : constant_rewrites.
         
         Definition value_CACHED_POW10_LAST_E : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 1039 |))).
@@ -530,6 +534,7 @@ Module num.
         Axiom Constant_value_CACHED_POW10_LAST_E :
           (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E") =
             value_CACHED_POW10_LAST_E.
+        Global Hint Rewrite Constant_value_CACHED_POW10_LAST_E : constant_rewrites.
         
         (*
         pub fn cached_power(alpha: i16, gamma: i16) -> (i16, Fp) {
@@ -1134,6 +1139,7 @@ Module num.
           Axiom Constant_value_X9 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9") =
               value_X9.
+          Global Hint Rewrite Constant_value_X9 : constant_rewrites.
           
           Definition value_X8 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000000 |))).
@@ -1141,6 +1147,7 @@ Module num.
           Axiom Constant_value_X8 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8") =
               value_X8.
+          Global Hint Rewrite Constant_value_X8 : constant_rewrites.
           
           Definition value_X7 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000000 |))).
@@ -1148,6 +1155,7 @@ Module num.
           Axiom Constant_value_X7 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7") =
               value_X7.
+          Global Hint Rewrite Constant_value_X7 : constant_rewrites.
           
           Definition value_X6 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
@@ -1155,6 +1163,7 @@ Module num.
           Axiom Constant_value_X6 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6") =
               value_X6.
+          Global Hint Rewrite Constant_value_X6 : constant_rewrites.
           
           Definition value_X5 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000 |))).
@@ -1162,6 +1171,7 @@ Module num.
           Axiom Constant_value_X5 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5") =
               value_X5.
+          Global Hint Rewrite Constant_value_X5 : constant_rewrites.
           
           Definition value_X4 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000 |))).
@@ -1169,6 +1179,7 @@ Module num.
           Axiom Constant_value_X4 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4") =
               value_X4.
+          Global Hint Rewrite Constant_value_X4 : constant_rewrites.
           
           Definition value_X3 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
@@ -1176,6 +1187,7 @@ Module num.
           Axiom Constant_value_X3 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3") =
               value_X3.
+          Global Hint Rewrite Constant_value_X3 : constant_rewrites.
           
           Definition value_X2 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100 |))).
@@ -1183,6 +1195,7 @@ Module num.
           Axiom Constant_value_X2 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2") =
               value_X2.
+          Global Hint Rewrite Constant_value_X2 : constant_rewrites.
           
           Definition value_X1 : Value.t :=
             M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
@@ -1190,6 +1203,7 @@ Module num.
           Axiom Constant_value_X1 :
             (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1") =
               value_X1.
+          Global Hint Rewrite Constant_value_X1 : constant_rewrites.
         End max_pow10_no_more_than.
         
         (*
@@ -5684,6 +5698,7 @@ Module num.
             (M.get_constant
                 "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9") =
               value_POW10_UP_TO_9.
+          Global Hint Rewrite Constant_value_POW10_UP_TO_9 : constant_rewrites.
           
           (*
               unsafe fn possibly_round(

@@ -735,6 +735,7 @@ Module verifier.
       (M.get_constant
           "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE") =
         value_MAX_MODULE_SIZE.
+    Global Hint Rewrite Constant_value_MAX_MODULE_SIZE : constant_rewrites.
   End verify_module_with_config_for_test.
   
   (*

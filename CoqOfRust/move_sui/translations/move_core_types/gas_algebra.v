@@ -473,6 +473,7 @@ Module gas_algebra.
   
   Axiom Constant_value_BOX_ABSTRACT_SIZE :
     (M.get_constant "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE") = value_BOX_ABSTRACT_SIZE.
+  Global Hint Rewrite Constant_value_BOX_ABSTRACT_SIZE : constant_rewrites.
   
   Definition value_ENUM_BASE_ABSTRACT_SIZE : Value.t :=
     M.run_constant
@@ -495,6 +496,7 @@ Module gas_algebra.
   Axiom Constant_value_ENUM_BASE_ABSTRACT_SIZE :
     (M.get_constant "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE") =
       value_ENUM_BASE_ABSTRACT_SIZE.
+  Global Hint Rewrite Constant_value_ENUM_BASE_ABSTRACT_SIZE : constant_rewrites.
   
   Module Impl_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=

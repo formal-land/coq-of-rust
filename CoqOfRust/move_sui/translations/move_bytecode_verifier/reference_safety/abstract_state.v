@@ -1648,6 +1648,7 @@ Module reference_safety.
     Axiom Constant_value_STEP_BASE_COST :
       (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST") =
         value_STEP_BASE_COST.
+    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
     
     Definition value_STEP_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
@@ -1656,6 +1657,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST") =
         value_STEP_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_STEP_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_STEP_PER_GRAPH_ITEM_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
@@ -1664,6 +1666,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST") =
         value_STEP_PER_GRAPH_ITEM_COST.
+    Global Hint Rewrite Constant_value_STEP_PER_GRAPH_ITEM_COST : constant_rewrites.
     
     Definition value_JOIN_BASE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1671,6 +1674,7 @@ Module reference_safety.
     Axiom Constant_value_JOIN_BASE_COST :
       (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST") =
         value_JOIN_BASE_COST.
+    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -1679,6 +1683,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST") =
         value_JOIN_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_JOIN_PER_GRAPH_ITEM_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
@@ -1687,6 +1692,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST") =
         value_JOIN_PER_GRAPH_ITEM_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_GRAPH_ITEM_COST : constant_rewrites.
     
     Definition value_REF_PARAM_EDGE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1695,6 +1701,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST") =
         value_REF_PARAM_EDGE_COST.
+    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST : constant_rewrites.
     
     Definition value_REF_PARAM_EDGE_COST_GROWTH : Value.t :=
       M.run_constant ltac:(M.monadic UnsupportedLiteral).
@@ -1703,6 +1710,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH") =
         value_REF_PARAM_EDGE_COST_GROWTH.
+    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST_GROWTH : constant_rewrites.
     
     Definition value_CALL_PER_ACQUIRES_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1711,6 +1719,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST") =
         value_CALL_PER_ACQUIRES_COST.
+    Global Hint Rewrite Constant_value_CALL_PER_ACQUIRES_COST : constant_rewrites.
     
     (* StructRecord
       {

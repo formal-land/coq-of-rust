@@ -10,6 +10,7 @@ Module collections.
       
       Axiom Constant_value_MIN_LEN :
         (M.get_constant "alloc::collections::btree::map::MIN_LEN") = value_MIN_LEN.
+      Global Hint Rewrite Constant_value_MIN_LEN : constant_rewrites.
       
       (* StructRecord
         {

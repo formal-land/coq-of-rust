@@ -7190,6 +7190,7 @@ Module file_format.
   
   Axiom Constant_value_NO_TYPE_ARGUMENTS :
     (M.get_constant "move_binary_format::file_format::NO_TYPE_ARGUMENTS") = value_NO_TYPE_ARGUMENTS.
+  Global Hint Rewrite Constant_value_NO_TYPE_ARGUMENTS : constant_rewrites.
   
   (* StructRecord
     {

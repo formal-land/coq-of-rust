@@ -18246,6 +18246,7 @@ Module str.
       
       Axiom Constant_value_UNROLL :
         (M.get_constant "core::str::pattern::simd_contains::UNROLL") = value_UNROLL.
+      Global Hint Rewrite Constant_value_UNROLL : constant_rewrites.
     End simd_contains.
     
     (*

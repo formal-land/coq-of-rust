@@ -8,6 +8,7 @@ Module sync.
     
     Axiom Constant_value_EMULATE_ATOMIC_BOOL :
       (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") = value_EMULATE_ATOMIC_BOOL.
+    Global Hint Rewrite Constant_value_EMULATE_ATOMIC_BOOL : constant_rewrites.
     
     (* StructRecord
       {
@@ -444,6 +445,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_BOOL_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_BOOL_INIT") = value_ATOMIC_BOOL_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_BOOL_INIT : constant_rewrites.
     
     Module Impl_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -16771,6 +16773,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_ISIZE_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_ISIZE_INIT") = value_ATOMIC_ISIZE_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_ISIZE_INIT : constant_rewrites.
     
     Definition value_ATOMIC_USIZE_INIT : Value.t :=
       M.run_constant
@@ -16789,6 +16792,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_USIZE_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_USIZE_INIT") = value_ATOMIC_USIZE_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_USIZE_INIT : constant_rewrites.
     
     (*
     fn strongest_failure_ordering(order: Ordering) -> Ordering {

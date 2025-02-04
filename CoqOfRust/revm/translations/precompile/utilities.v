@@ -822,6 +822,7 @@ Module utilities.
     
     Axiom Constant_value_TRUE :
       (M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE") = value_TRUE.
+    Global Hint Rewrite Constant_value_TRUE : constant_rewrites.
     
     Definition value_FALSE : Value.t :=
       M.run_constant
@@ -857,5 +858,6 @@ Module utilities.
     
     Axiom Constant_value_FALSE :
       (M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE") = value_FALSE.
+    Global Hint Rewrite Constant_value_FALSE : constant_rewrites.
   End bool_to_b256.
 End utilities.

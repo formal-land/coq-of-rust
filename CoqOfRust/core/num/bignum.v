@@ -465,6 +465,7 @@ Module num.
     
     Axiom Constant_value_SMALL_POW5 :
       (M.get_constant "core::num::bignum::SMALL_POW5") = value_SMALL_POW5.
+    Global Hint Rewrite Constant_value_SMALL_POW5 : constant_rewrites.
     
     Axiom Digit32 : (Ty.path "core::num::bignum::Digit32") = (Ty.path "u32").
     

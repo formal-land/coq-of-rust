@@ -28,3 +28,38 @@ Lemma cast_integer_eq (kind_source kind_target : IntegerKind.t) (source : Intege
   φ (cast_integer kind_target source).
 Proof.
 Admitted.
+
+Ltac rewrite_cast :=
+  match goal with
+  | |- context [ M.cast ?x _ ] =>
+    change x with (Φ U8.t) ||
+    change x with (Φ U16.t) ||
+    change x with (Φ U32.t) ||
+    change x with (Φ U64.t) ||
+    change x with (Φ U128.t) ||
+    change x with (Φ Usize.t) ||
+    change x with (Φ I8.t) ||
+    change x with (Φ I16.t) ||
+    change x with (Φ I32.t) ||
+    change x with (Φ I64.t) ||
+    change x with (Φ I128.t) ||
+    change x with (Φ Isize.t)
+  end;
+  eapply Run.Rewrite; [
+    (
+      erewrite cast_integer_eq with (kind_source := IntegerKind.U8) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.U16) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.U32) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.U64) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.U128) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.Usize) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.I8) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.I16) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.I32) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.I64) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.I128) ||
+      erewrite cast_integer_eq with (kind_source := IntegerKind.Isize)
+    );
+    reflexivity
+  |].
+Smpl Add rewrite_cast : run_symbolic.

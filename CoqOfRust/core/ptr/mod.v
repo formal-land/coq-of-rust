@@ -2281,12 +2281,14 @@ Module ptr.
       Axiom Constant_value_INV_TABLE_MOD_16 :
         (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16") =
           value_INV_TABLE_MOD_16.
+      Global Hint Rewrite Constant_value_INV_TABLE_MOD_16 : constant_rewrites.
       
       Definition value_INV_TABLE_MOD : Value.t :=
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
       Axiom Constant_value_INV_TABLE_MOD :
         (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD") = value_INV_TABLE_MOD.
+      Global Hint Rewrite Constant_value_INV_TABLE_MOD : constant_rewrites.
     End mod_inv.
   End align_offset.
   

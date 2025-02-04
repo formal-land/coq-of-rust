@@ -7,6 +7,7 @@ Module constants.
   
   Axiom Constant_value_BLOCK_HASH_HISTORY :
     (M.get_constant "revm_primitives::constants::BLOCK_HASH_HISTORY") = value_BLOCK_HASH_HISTORY.
+  Global Hint Rewrite Constant_value_BLOCK_HASH_HISTORY : constant_rewrites.
   
   Definition value_BLOCKHASH_SERVE_WINDOW : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
@@ -14,6 +15,7 @@ Module constants.
   Axiom Constant_value_BLOCKHASH_SERVE_WINDOW :
     (M.get_constant "revm_primitives::constants::BLOCKHASH_SERVE_WINDOW") =
       value_BLOCKHASH_SERVE_WINDOW.
+  Global Hint Rewrite Constant_value_BLOCKHASH_SERVE_WINDOW : constant_rewrites.
   
   Definition value_BLOCKHASH_STORAGE_ADDRESS : Value.t :=
     M.run_constant
@@ -37,6 +39,7 @@ Module constants.
   Axiom Constant_value_BLOCKHASH_STORAGE_ADDRESS :
     (M.get_constant "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS") =
       value_BLOCKHASH_STORAGE_ADDRESS.
+  Global Hint Rewrite Constant_value_BLOCKHASH_STORAGE_ADDRESS : constant_rewrites.
   
   Definition value_PRECOMPILE3 : Value.t :=
     M.run_constant
@@ -79,4 +82,5 @@ Module constants.
   
   Axiom Constant_value_PRECOMPILE3 :
     (M.get_constant "revm_primitives::constants::PRECOMPILE3") = value_PRECOMPILE3.
+  Global Hint Rewrite Constant_value_PRECOMPILE3 : constant_rewrites.
 End constants.

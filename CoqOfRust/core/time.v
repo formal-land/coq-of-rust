@@ -7,54 +7,63 @@ Module time.
   
   Axiom Constant_value_NANOS_PER_SEC :
     (M.get_constant "core::time::NANOS_PER_SEC") = value_NANOS_PER_SEC.
+  Global Hint Rewrite Constant_value_NANOS_PER_SEC : constant_rewrites.
   
   Definition value_NANOS_PER_MILLI : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
   
   Axiom Constant_value_NANOS_PER_MILLI :
     (M.get_constant "core::time::NANOS_PER_MILLI") = value_NANOS_PER_MILLI.
+  Global Hint Rewrite Constant_value_NANOS_PER_MILLI : constant_rewrites.
   
   Definition value_NANOS_PER_MICRO : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
   
   Axiom Constant_value_NANOS_PER_MICRO :
     (M.get_constant "core::time::NANOS_PER_MICRO") = value_NANOS_PER_MICRO.
+  Global Hint Rewrite Constant_value_NANOS_PER_MICRO : constant_rewrites.
   
   Definition value_MILLIS_PER_SEC : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
   
   Axiom Constant_value_MILLIS_PER_SEC :
     (M.get_constant "core::time::MILLIS_PER_SEC") = value_MILLIS_PER_SEC.
+  Global Hint Rewrite Constant_value_MILLIS_PER_SEC : constant_rewrites.
   
   Definition value_MICROS_PER_SEC : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000 |))).
   
   Axiom Constant_value_MICROS_PER_SEC :
     (M.get_constant "core::time::MICROS_PER_SEC") = value_MICROS_PER_SEC.
+  Global Hint Rewrite Constant_value_MICROS_PER_SEC : constant_rewrites.
   
   Definition value_SECS_PER_MINUTE : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
   
   Axiom Constant_value_SECS_PER_MINUTE :
     (M.get_constant "core::time::SECS_PER_MINUTE") = value_SECS_PER_MINUTE.
+  Global Hint Rewrite Constant_value_SECS_PER_MINUTE : constant_rewrites.
   
   Definition value_MINS_PER_HOUR : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
   
   Axiom Constant_value_MINS_PER_HOUR :
     (M.get_constant "core::time::MINS_PER_HOUR") = value_MINS_PER_HOUR.
+  Global Hint Rewrite Constant_value_MINS_PER_HOUR : constant_rewrites.
   
   Definition value_HOURS_PER_DAY : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 24 |))).
   
   Axiom Constant_value_HOURS_PER_DAY :
     (M.get_constant "core::time::HOURS_PER_DAY") = value_HOURS_PER_DAY.
+  Global Hint Rewrite Constant_value_HOURS_PER_DAY : constant_rewrites.
   
   Definition value_DAYS_PER_WEEK : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 7 |))).
   
   Axiom Constant_value_DAYS_PER_WEEK :
     (M.get_constant "core::time::DAYS_PER_WEEK") = value_DAYS_PER_WEEK.
+  Global Hint Rewrite Constant_value_DAYS_PER_WEEK : constant_rewrites.
   
   (* StructTuple
     {

@@ -449,6 +449,7 @@ Module slice.
       Axiom Constant_value_INSERTION_SORT_THRESHOLD :
         (M.get_constant "core::slice::sort::select::INSERTION_SORT_THRESHOLD") =
           value_INSERTION_SORT_THRESHOLD.
+      Global Hint Rewrite Constant_value_INSERTION_SORT_THRESHOLD : constant_rewrites.
       
       (*
       fn partition_at_index_loop<'a, T, F>(

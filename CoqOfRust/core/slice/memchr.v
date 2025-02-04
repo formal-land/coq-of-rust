@@ -15,6 +15,7 @@ Module slice.
     
     Axiom Constant_value_LO_USIZE :
       (M.get_constant "core::slice::memchr::LO_USIZE") = value_LO_USIZE.
+    Global Hint Rewrite Constant_value_LO_USIZE : constant_rewrites.
     
     Definition value_HI_USIZE : Value.t :=
       M.run_constant
@@ -28,6 +29,7 @@ Module slice.
     
     Axiom Constant_value_HI_USIZE :
       (M.get_constant "core::slice::memchr::HI_USIZE") = value_HI_USIZE.
+    Global Hint Rewrite Constant_value_HI_USIZE : constant_rewrites.
     
     Definition value_USIZE_BYTES : Value.t :=
       M.run_constant
@@ -41,6 +43,7 @@ Module slice.
     
     Axiom Constant_value_USIZE_BYTES :
       (M.get_constant "core::slice::memchr::USIZE_BYTES") = value_USIZE_BYTES.
+    Global Hint Rewrite Constant_value_USIZE_BYTES : constant_rewrites.
     
     (*
     const fn contains_zero_byte(x: usize) -> bool {

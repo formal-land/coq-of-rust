@@ -5,11 +5,13 @@ Definition value_LANGUAGE : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.String "Rust" |))).
 
 Axiom Constant_value_LANGUAGE : (M.get_constant "constants::LANGUAGE") = value_LANGUAGE.
+Global Hint Rewrite Constant_value_LANGUAGE : constant_rewrites.
 
 Definition value_THRESHOLD : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
 
 Axiom Constant_value_THRESHOLD : (M.get_constant "constants::THRESHOLD") = value_THRESHOLD.
+Global Hint Rewrite Constant_value_THRESHOLD : constant_rewrites.
 
 (*
 fn is_big(n: i32) -> bool {

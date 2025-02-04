@@ -4011,6 +4011,7 @@ Module num.
           (M.get_constant
               "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE") =
             value_TABLE.
+        Global Hint Rewrite Constant_value_TABLE : constant_rewrites.
         
         Definition value_TABLE_POW5 : Value.t :=
           M.run_constant
@@ -5333,6 +5334,7 @@ Module num.
           (M.get_constant
               "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5") =
             value_TABLE_POW5.
+        Global Hint Rewrite Constant_value_TABLE_POW5 : constant_rewrites.
       End number_of_digits_decimal_left_shift.
     End decimal.
   End dec2flt.

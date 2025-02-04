@@ -24066,12 +24066,14 @@ Module num.
         
         Axiom Constant_usize :
           (M.get_constant "core::num::wrapping::shift_max::platform::usize") = usize.
+        Global Hint Rewrite Constant_usize : constant_rewrites.
         
         Definition isize : Value.t :=
           M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
         
         Axiom Constant_isize :
           (M.get_constant "core::num::wrapping::shift_max::platform::isize") = isize.
+        Global Hint Rewrite Constant_isize : constant_rewrites.
       End platform.
       
       Definition i8 : Value.t :=
@@ -24088,6 +24090,7 @@ Module num.
             |))).
       
       Axiom Constant_i8 : (M.get_constant "core::num::wrapping::shift_max::i8") = i8.
+      Global Hint Rewrite Constant_i8 : constant_rewrites.
       
       Definition i16 : Value.t :=
         M.run_constant
@@ -24103,6 +24106,7 @@ Module num.
             |))).
       
       Axiom Constant_i16 : (M.get_constant "core::num::wrapping::shift_max::i16") = i16.
+      Global Hint Rewrite Constant_i16 : constant_rewrites.
       
       Definition i32 : Value.t :=
         M.run_constant
@@ -24118,6 +24122,7 @@ Module num.
             |))).
       
       Axiom Constant_i32 : (M.get_constant "core::num::wrapping::shift_max::i32") = i32.
+      Global Hint Rewrite Constant_i32 : constant_rewrites.
       
       Definition i64 : Value.t :=
         M.run_constant
@@ -24133,6 +24138,7 @@ Module num.
             |))).
       
       Axiom Constant_i64 : (M.get_constant "core::num::wrapping::shift_max::i64") = i64.
+      Global Hint Rewrite Constant_i64 : constant_rewrites.
       
       Definition i128 : Value.t :=
         M.run_constant
@@ -24148,31 +24154,37 @@ Module num.
             |))).
       
       Axiom Constant_i128 : (M.get_constant "core::num::wrapping::shift_max::i128") = i128.
+      Global Hint Rewrite Constant_i128 : constant_rewrites.
       
       Definition u8 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i8")).
       
       Axiom Constant_u8 : (M.get_constant "core::num::wrapping::shift_max::u8") = u8.
+      Global Hint Rewrite Constant_u8 : constant_rewrites.
       
       Definition u16 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i16")).
       
       Axiom Constant_u16 : (M.get_constant "core::num::wrapping::shift_max::u16") = u16.
+      Global Hint Rewrite Constant_u16 : constant_rewrites.
       
       Definition u32 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i32")).
       
       Axiom Constant_u32 : (M.get_constant "core::num::wrapping::shift_max::u32") = u32.
+      Global Hint Rewrite Constant_u32 : constant_rewrites.
       
       Definition u64 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
       
       Axiom Constant_u64 : (M.get_constant "core::num::wrapping::shift_max::u64") = u64.
+      Global Hint Rewrite Constant_u64 : constant_rewrites.
       
       Definition u128 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i128")).
       
       Axiom Constant_u128 : (M.get_constant "core::num::wrapping::shift_max::u128") = u128.
+      Global Hint Rewrite Constant_u128 : constant_rewrites.
     End shift_max.
   End wrapping.
 End num.

@@ -44511,6 +44511,7 @@ Module num.
   
   Axiom Constant_value_ASCII_CASE_MASK :
     (M.get_constant "core::num::ASCII_CASE_MASK") = value_ASCII_CASE_MASK.
+  Global Hint Rewrite Constant_value_ASCII_CASE_MASK : constant_rewrites.
   
   Module Impl_u8.
     Definition Self : Ty.t := Ty.path "u8".

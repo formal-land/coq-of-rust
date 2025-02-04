@@ -466,6 +466,7 @@ Definition value_MAX_OWNERS : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 50 |))).
 
 Axiom Constant_value_MAX_OWNERS : (M.get_constant "multisig::MAX_OWNERS") = value_MAX_OWNERS.
+Global Hint Rewrite Constant_value_MAX_OWNERS : constant_rewrites.
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
@@ -475,6 +476,7 @@ Definition value_WRONG_TRANSACTION_ID : Value.t :=
 
 Axiom Constant_value_WRONG_TRANSACTION_ID :
   (M.get_constant "multisig::WRONG_TRANSACTION_ID") = value_WRONG_TRANSACTION_ID.
+Global Hint Rewrite Constant_value_WRONG_TRANSACTION_ID : constant_rewrites.
 
 (* StructTuple
   {

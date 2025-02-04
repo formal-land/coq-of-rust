@@ -59,7 +59,9 @@ Module Bool.
 
   Definition of_value (b : bool) :
     OfValue.t (Value.Bool b).
-  Proof. eapply OfValue.Make with (A := bool); smpl of_value. Defined.
+  Proof.
+    eapply OfValue.Make with (A := bool); smpl of_value.
+  Defined.
   Smpl Add apply of_value : of_value.
 End Bool.
 
@@ -317,6 +319,31 @@ Module Ref.
   Proof.
     reflexivity.
   Qed.
+
+  (** We can make the conversion of values for immediate pointers that are used in Rust `const`. *)
+  Lemma of_value_with {A : Set} `{Link A} (value : A) value' :
+    value' = φ value ->
+    Value.Pointer {|
+      Pointer.kind := Pointer.Kind.Raw;
+      Pointer.core := Pointer.Core.Immediate value';
+    |} = φ (immediate Pointer.Kind.Raw value).
+  Proof.
+    now intros; subst.
+  Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (value' : Value.t) :
+    OfValue.t value' ->
+    OfValue.t (Value.Pointer {|
+      Pointer.kind := Pointer.Kind.Raw;
+      Pointer.core := Pointer.Core.Immediate value';
+    |}).
+  Proof.
+    intros [A].
+    eapply OfValue.Make with (A := t Pointer.Kind.Raw A).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
 End Ref.
 
 Module SubPointer.
@@ -804,9 +831,14 @@ Ltac run_symbolic_one_step_immediate :=
     cbn
   end.
 
+Smpl Create run_symbolic.
+
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  repeat run_symbolic_one_step_immediate.
+  repeat (
+    run_symbolic_one_step_immediate ||
+    smpl run_symbolic
+  ).
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)
